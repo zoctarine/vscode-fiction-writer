@@ -1,17 +1,36 @@
-# Welcome to MkDocs
+## Markdown Fiction Writer
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+A set of tools for writing fiction with Visual Studio Code.
 
-## Commands
+Provides features like:
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+## Main Features
 
-## Project layout
+- [Enhanced text editing](features/editing):
+    - automatically insert new paragraph at ++enter++, or ++shift+enter++
+    - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either `em-dash` (—) or other marks.
+    - typewriter mode
+    - fold paragraph lines
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+- [Text formatting](features/formatting)
+    - cleaning up spaces
+    - fixing dialogue lines, indents
+    - fixing paragraph spaces (add/remove empty lines)
+    - remove trailing spaces
+
+- [Export/Combine files](features/exporting)
+    - combine multiple `.md` files into one single file
+    - export `md`, or collection of files, to other formats (like `.doc` or `.docx`)
+        - uses `pandoc`
+
+- [Analyze text](features/analysing)
+    - count words, phrases, visualize repetitions
+
+
+## Installation
+
+tbd
+
+## GitHub
+
+tbd

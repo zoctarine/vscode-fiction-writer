@@ -1,21 +1,62 @@
-site_name: Cinder
-site_url: https://sourcefoundry.org/cinder/
-site_author: Christopher Simpkins
-site_description: "A clean, responsive theme for static documentation websites that are generated with MkDocs"
-repo_url: "https://github.com/chrissimpkins/cinder"
-copyright: "Cinder is licensed under the <a href='https://github.com/chrissimpkins/cinder/blob/master/LICENSE.md'>MIT license</a>"
+site_name: Markdown Fiction Writer
+site_url: https://zoctarine.github.io/vscode-fiction-writer/index.html
+site_author: ZOctarine
+site_description: "Fiction Writer VSCode Extension Documentation"
+repo_url: "https://github.com/zoctarine/vscode-fiction-writer"
+copyright: "Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>"
+edit_uri: "" 
 
 theme:
-  name: null
-  custom_dir: cinder
-  colorscheme: github
-  highlightjs: true
+  name: material
+  custom_dir: overrides
+
+  # Necessary for search to work properly
+  include_search_page: false
+  search_index_only: true
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand 
+    - toc.integrate
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+  icon:
+    logo: material/book
+  palette:
+    scheme: default
+    primary: blue
+    accent: amber
 
 nav:
-  - Home: index.md
-  - Specimen: specimen.md
+  - Overview: index.md
+  - Features:
+    - Edit: features/editing.md
+    - Format: features/formatting.md
+    - View: features/view.md
+    - Export: features/exporting.md
+    - Analyse: features/analysing.md
+  - Settings: settings.md
+  - Keyboard Shortcuts: shortcuts.md
+  - Changelog: changelog.md
+  - About Writing: writing.md
 
 markdown_extensions:
+  - pymdownx.highlight:
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
+  - abbr
   - toc:
       permalink: true
+      baselevel: 2
