@@ -37,6 +37,14 @@
     
     
     
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
       
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,6 +53,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="../../resources/extra.css">
     
     
       
@@ -598,25 +608,19 @@
                   <h1>Format</h1>
                 
                 <h3 id="enable-document-formatting">Enable Document Formatting<a class="headerlink" href="#enable-document-formatting" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.enableDocumentFormatting</code></p>
+</details>
 <div class="admonition danger">
 <p class="admonition-title">Experimental</p>
-<p>This is an experimental feature. It works by changing text in your document. 
+<p>This is an experimental feature. It works by changing text in your document.
 Make sure you make a backup of your document before enabling this, or use
 is on drafts and test documents only.</p>
 </div>
-<ul>
-<li>
-<p>enables all document formatting features</p>
-</li>
-<li>
-<p><code>markdown-fiction-writer.format.enableDocumentFormatting</code> is enabled</p>
-</li>
-</ul>
+<p>Enables all document formatting features.</p>
 <h3 id="backup-before-each-format">Backup Before Each Format<a class="headerlink" href="#backup-before-each-format" title="Permanent link">&para;</a></h3>
+<details class="setting key"><summary>Setting</summary><p><code>markdown-fiction-writer.format.backupBeforeEachFormat</code></p>
+</details>
 <ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.backupBeforeEachFormat</code> is enabled.</p>
-</li>
 <li>
 <p>because text formatting is under experimental use only, you can choose to create a backup of the file before each format operation.</p>
 </li>
@@ -629,12 +633,9 @@ is on drafts and test documents only.</p>
 <p>If you want to use this backup feature, don't forget to cleanup the <code>.fic/bk/</code> folder as, in time, it might grow in size.</p>
 </div>
 <h3 id="remove-extra-spaces">Remove extra spaces<a class="headerlink" href="#remove-extra-spaces" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.removeExtraSpaces</code> is enabled</p>
-</li>
-<li>
-<p>Remove multiple spaces (not at beginning or ending of lines), with one space</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.removeExtraSpaces</code></p>
+</details>
+<p>Removes multiple spaces (not at beginning or ending of lines), with one space</p>
 <div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Before</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>This is   a  text with  a lot  ,  of spaces.
 On multiple  lines  .
@@ -650,18 +651,13 @@ On multiple lines.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="remove-trailing-spaces">Remove Trailing Spaces<a class="headerlink" href="#remove-trailing-spaces" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.removeTrailingSpaces</code> is enabled</p>
-</li>
-<li>
-<p>remove all whitespace characters from line ends.</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.removeTrailingSpaces</code></p>
+</details>
+<p>Remove all whitespace characters from line ends.</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Before</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code>This is a text.   
-Having too much space at the end of each line.    
+<div class="highlight"><pre><span></span><code>This is a text.
+Having too much space at the end of each line.
 </code></pre></div>
 </div>
 <input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">After</label><div class="tabbed-content">
@@ -670,12 +666,15 @@ Having too much space at the end of each line.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="fix-paragraph-breaks">Fix Paragraph Breaks<a class="headerlink" href="#fix-paragraph-breaks" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.fixParagraphBreaks</code> one of:</p>
 <ul>
-<li>works if <code>markdown-fiction-writer.format.fixParagraphBreaks</code> has other selection than <code>none</code></li>
+<li><code>none</code> <strong>default</strong></li>
+<li><code>softBreaksInSameParagraph</code></li>
+<li><code>softBreaksAsNewParagraphs</code></li>
+<li><code>oneSentencePerLine</code></li>
 </ul>
+</details>
 <h4 id="softbreaksinsameparagraph">softBreaksInSameParagraph<a class="headerlink" href="#softbreaksinsameparagraph" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
@@ -731,10 +730,10 @@ And another line break
 <li>Splits each paragraph in sentences.</li>
 <li>Adds every sentence on a new line.</li>
 <li>Keeps spacing between paragraphs.</li>
-<li>
-<p>Sentences are split by sentence boundaries defined under: <code>markdown-fiction-writer.format.oneSentencePerLine.sentenceBoundaries</code> (Default characters are: <code>.!?;:</code>)</p>
+<li>Sentences are split by sentence boundaries defined under: <code>markdown-fiction-writer.format.oneSentencePerLine.sentenceBoundaries</code> (Default characters are: <code>.!?;:</code>)</li>
+</ul>
 <div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Before</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh"># Using one sentence per line</span>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
 
 This means, each sentence. If in the same paragraph.
 Uses a soft line break.
@@ -743,7 +742,7 @@ Paragraphs, are still separated: by one emtpy line; This is it
 </code></pre></div>
 </div>
 <input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">After</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh"># Using one sentence per line</span>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
 
 This means, each sentence.
 If in the same paragraph.
@@ -755,37 +754,30 @@ This is it
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="fix-paragraph-spacing">Fix Paragraph Spacing<a class="headerlink" href="#fix-paragraph-spacing" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.fixParagraphSpacing</code> is enabled</p>
-</li>
-<li>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.fixParagraphSpacing</code></p>
+</details>
 <p>Normalizes space between different paragraph types (header, body, dialogue, ...) by adding a new line if needed</p>
-</li>
-<li>
 <p>Fix paragraph spacings</p>
 <div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Before</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh"># This is a header</span>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
 And this is a first line. The second sentence is this.
 
 Then, a lot of empty lines here.
-<span class="gu">## This can be another header</span>
+<span class="gu">##</span> This can be another header
 
 And a lot here.
 ***
 </code></pre></div>
 </div>
 <input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">After</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh"># This is a header</span>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
 
 And this is a first line. The second sentence is this.
 
 Then, a lot of empty lines here.
 
-<span class="gu">## This can be another header</span>
+<span class="gu">##</span> This can be another header
 
 And a lot here.
 
@@ -793,15 +785,10 @@ And a lot here.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="remove-extra-lines">Remove Extra Lines<a class="headerlink" href="#remove-extra-lines" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.removeExtraLines</code> is enabled</p>
-</li>
-<li>
-<p>reduce multiple empty lines (two or more) with one single line.</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.removeExtraLines</code></p>
+</details>
+<p>Replaces multiple empty lines (two or more) with one single line.</p>
 <div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Before</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>And this is a first line. The second sentence is this.
 
@@ -827,15 +814,10 @@ And a lot here.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="fix-mismatch-dialogue-markers">Fix Mismatch Dialogue Markers<a class="headerlink" href="#fix-mismatch-dialogue-markers" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.fixMismatchDialogueMarkers</code> is enabled.</p>
-</li>
-<li>
-<p>replaces all known dialogue markers with the currently selected one.</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.fixMismatchDialogueMarkers</code></p>
+</details>
+<p>Replaces all known dialogue markers with the currently selected one.</p>
 <div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Before</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>-- This text has mixed dialogue markers.
 
@@ -853,24 +835,19 @@ And a lot here.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
 <h3 id="fix-dialogue-indents">Fix Dialogue Indents<a class="headerlink" href="#fix-dialogue-indents" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p>works if <code>markdown-fiction-writer.format.fixDialogueIndents</code> is enabled.</p>
-</li>
-<li>
-<p>replaces all dialogue indents (visible if one sentence per line technique is used) with the currently selected dialogue indent.</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.format.fixDialogueIndents</code></p>
+</details>
+<p>Replaces all dialogue indents (visible if one sentence per line technique is used) with the currently selected dialogue indent.</p>
 <div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Before</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>This text has mixed dialogue indents.
 
 -- Sentences for same dialogue.
-  Start at different indents.
+    Start at different indents.
 
 -- Yes, this can be quite annoing sometimes.
 Some start too early.
-           And some start too late.
+            And some start too late.
 
 Of course, normal paragraphs are left untouched.
 </code></pre></div>
@@ -879,18 +856,16 @@ Of course, normal paragraphs are left untouched.
 <div class="highlight"><pre><span></span><code>This text has mixed dialogue indents.
 
 -- Sentences for same dialogue.
-   Start at different indents.
+    Start at different indents.
 
 -- Yes, this can be quite annoing sometimes.
-   Some start too early.
-   And some start too late.
+    Some start too early.
+    And some start too late.
 
 Of course, normal paragraphs are left untouched.
 </code></pre></div>
 </div>
 </div>
-</li>
-</ul>
                 
               
               
@@ -973,6 +948,8 @@ Of course, normal paragraphs are left untouched.
           }, typeof search !== "undefined" && search)
         })
       </script>
+      
+        <script src="../../resources/extra.js"></script>
       
     
   </body>

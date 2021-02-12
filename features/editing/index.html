@@ -37,6 +37,14 @@
     
     
     
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
       
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,6 +53,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="../../resources/extra.css">
     
     
       
@@ -68,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#1-paragraphs" class="md-skip">
+        <a href="#disable-key-bindings" class="md-skip">
           Skip to content
         </a>
       
@@ -371,37 +381,64 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-paragraphs" class="md-nav__link">
-    1. Paragraphs
+  <a href="#disable-key-bindings" class="md-nav__link">
+    Disable Key-bindings
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-folding" class="md-nav__link">
-    2. Folding
+  <a href="#new-paragraph-handling" class="md-nav__link">
+    New Paragraph Handling
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-dialogues" class="md-nav__link">
-    3. Dialogues
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Dialogues">
+    <nav class="md-nav" aria-label="New Paragraph Handling">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#a-markers" class="md-nav__link">
-    a) Markers
+  <a href="#1-newparagraphonshiftenter" class="md-nav__link">
+    1. newParagraphOnShiftEnter
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#b-indents" class="md-nav__link">
-    b) Indents
+  <a href="#2-newparagraphonenter" class="md-nav__link">
+    2. newParagraphOnEnter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folding" class="md-nav__link">
+    Folding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-dialogues" class="md-nav__link">
+    Writing Dialogues
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Dialogues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-dialgoue-markers" class="md-nav__link">
+    Using Dialgoue markers:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-dialgoue-indents" class="md-nav__link">
+    Using Dialgoue indents:
   </a>
   
 </li>
@@ -548,30 +585,75 @@
                 
                   <h1>Edit</h1>
                 
-                <h5 id="1-paragraphs">1. Paragraphs<a class="headerlink" href="#1-paragraphs" title="Permanent link">&para;</a></h5>
+                <h3 id="disable-key-bindings">Disable Key-bindings<a class="headerlink" href="#disable-key-bindings" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.edit.disableKeybindings</code></p>
+</details>
+<p>If <code>false</code>, custom editing actions will be enabled, on: <span class="keys"><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-tab">Tab</kbd></span>, <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span>.</p>
+<p>Read more <a href="../../shortcuts/">here</a></p>
+<p>If <code>true</code>, then no keybindings will be set. So all editing features will be disabled.</p>
+<h3 id="new-paragraph-handling">New Paragraph Handling<a class="headerlink" href="#new-paragraph-handling" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.general.new-paragraph-handling</code></p>
+</details>
+<p>It has two options:</p>
+<h4 id="1-newparagraphonshiftenter">1. newParagraphOnShiftEnter<a class="headerlink" href="#1-newparagraphonshiftenter" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Create new paragraph (empty lines) without hitting <kbd>enter</kbd> twice. This comes especially handy when writing short dialogue sentences: <kbd>enter</kbd> adds two empty lines, and <kbd>shift</kbd>+<kbd>enter</kbd> adds simple line break.</li>
-<li>in this case use <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> to create new paragraph, and <kbd>enter</kbd> to add normal line break.</li>
-<li>Distinguih between new lines and wrapped lines: Use <em>hanging-indent</em> for wrapped lines</li>
+<li>
+<p>Create new paragraph with <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>.</p>
+<p><img alt="NewOnShiftEnter" src="../img/shift_enter_01.gif" /></p>
+</li>
 </ul>
-<h5 id="2-folding">2. Folding<a class="headerlink" href="#2-folding" title="Permanent link">&para;</a></h5>
+<h4 id="2-newparagraphonenter">2. newParagraphOnEnter<a class="headerlink" href="#2-newparagraphonenter" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>Create new paragraph (empty lines) without hitting <span class="keys"><kbd class="key-enter">Enter</kbd></span> twice.</p>
+</li>
+<li>
+<p>This comes especially handy when writing short paragraphs. <span class="keys"><kbd class="key-enter">Enter</kbd></span> adds two one empty line, and <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> adds simple line break.</p>
+<p><img alt="NewOnEnter" src="../img/shift_enter_02.gif" /></p>
+</li>
+</ul>
+<h3 id="folding">Folding<a class="headerlink" href="#folding" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Get a outline view of all text: Fold paragraph sentences, leving only the first line visible.</li>
 </ul>
-<h5 id="3-dialogues">3. Dialogues<a class="headerlink" href="#3-dialogues" title="Permanent link">&para;</a></h5>
-<h6 id="a-markers">a) Markers<a class="headerlink" href="#a-markers" title="Permanent link">&para;</a></h6>
+<h3 id="writing-dialogues">Writing Dialogues<a class="headerlink" href="#writing-dialogues" title="Permanent link">&para;</a></h3>
+<h4 id="using-dialgoue-markers">Using Dialgoue markers:<a class="headerlink" href="#using-dialgoue-markers" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.edit.dialogueMarker</code> one of:</p>
+<ul>
+<li><code>"Hello,"</code> (quotes) <strong>default</strong></li>
+<li><code>— Hello,</code> (em-dash followed by one space)</li>
+<li><code>-- Hello</code>, (two dashes followed by one space)</li>
+<li><code>--- Hello,</code> (three dashes followed by one space)</li>
+<li><code>—Hello,</code> (em-dash, no space)</li>
+<li><code>--Hello,</code> (two dashes, no space)</li>
+<li><code>---Hello,</code> (three dashes, no space</li>
+</ul>
+</details>
+<p>In some non-english languages, you need to write dialgoue lines using an em-dash (—) at the begining of each line.</p>
+<p>Markdown, by default, converts three dashes to em-dash and two dashes to en-dash. However, that is not necessarly convenient when writing lots of dialogue lines.</p>
+<p><img alt="SelectMarker" src="../img/dlg_marker_03.gif" /></p>
+<p>Once a dialogue marker is selected (otehr than quotes), you can easily insert the dialogue marker by opting in for <strong>auto-replacing</strong> <code>--</code> to that marker.</p>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.edit.dialogueMarkerAutoReplace</code></p>
+</details>
+<p><img alt="AutoReplace" src="../img/dlg_marker_01.gif" /></p>
+<p>Selecting a dialogue marker, changes the insert new paragraph behaviour as follows:</p>
+<ul>
+<li>if new paragraph is created (either by <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> or by <span class="keys"><kbd class="key-enter">Enter</kbd></span>), and is from a dialogue paragraph (meaning, the paragraph starts with a marker), then the next paragraph will automatically start with the selected dialogue marker. Making writing quick dialogue lines much faster.</li>
+</ul>
+<p><img alt="Auto dialogue" src="../img/dlg_marker_02.gif" /></p>
 <ul>
 <li>
-<p>Easily insert the dialogue marker (—): Automatically convert  <code>--</code> to prefered marker, either on compile time, or as you type it.</p>
+<p>when hitting new line, if the only thing on that line is a dialogue marker, is automatically deleted</p>
 </li>
 <li>
-<p>Automatically add new dialogue marker, when creating a new paragraph from within a dialogue.</p>
+<p>when hitting backspace, and the only thing in front of the cursor is the dialogue marker, it will delete it completely</p>
 </li>
 </ul>
-<h6 id="b-indents">b) Indents<a class="headerlink" href="#b-indents" title="Permanent link">&para;</a></h6>
-<ul>
-<li>Get a better view of dialogue paragraphs: automatically indent dialogue paragraph sentences.</li>
-</ul>
+<h4 id="using-dialgoue-indents">Using Dialgoue indents:<a class="headerlink" href="#using-dialgoue-indents" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.edit.dialogueIndent</code></p>
+</details>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.edit.dialogueIndentAutoDetect</code></p>
+</details>
                 
               
               
@@ -654,6 +736,8 @@
           }, typeof search !== "undefined" && search)
         })
       </script>
+      
+        <script src="../../resources/extra.js"></script>
       
     
   </body>
