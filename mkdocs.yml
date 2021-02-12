@@ -4,7 +4,7 @@ site_author: ZOctarine
 site_description: "Fiction Writer VSCode Extension Documentation"
 repo_url: "https://github.com/zoctarine/vscode-fiction-writer"
 copyright: "Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>"
-edit_uri: "" 
+edit_uri: ""
 
 theme:
   name: material
@@ -17,7 +17,7 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
-    - navigation.expand 
+    - navigation.expand
     - toc.integrate
   # Default values, taken from mkdocs_theme.yml
   language: en
@@ -46,12 +46,20 @@ nav:
   - About Writing: writing.md
 
 markdown_extensions:
-  - pymdownx.highlight:
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.snippets
   - pymdownx.tabbed
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - attr_list
+  - pymdownx.betterem:
+      smart_enable: all
   - pymdownx.emoji:
         emoji_index: !!python/name:materialx.emoji.twemoji
         emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -60,3 +68,9 @@ markdown_extensions:
   - toc:
       permalink: true
       baselevel: 2
+
+extra_javascript:
+  - resources/extra.js
+
+extra_css:
+  - resources/extra.css

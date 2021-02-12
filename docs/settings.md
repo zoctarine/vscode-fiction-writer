@@ -3,7 +3,7 @@ This extension has the following settings:
 
 | Setting | Default | Description|
 |:---------|:---------:|:------------|
-| General: New Paragraph Handling   | `newParagraphOnShiftEnter` | The ++enter++ (or ++shift+enter++) key produces a new paragraph
+| General: New Paragraph Handling   | `newParagraphOnShiftEnter` | The ++enter++ (or ++shift+enter++) key produces a [new paragraph](features/editing.md#1-paragraphs)
 | Edit: Disable KeyBindings         | `false` | Disable custom editing keybindings.\n\n**Note:** all `#markdown-fiction-writer.editing#` settings will be disabled.
 | Edit: Dialogue Marker             | `-- `   | Selects preferred way of writing dialogues( using, quotes `""`, dashes `-- `, em-dash `— `, ...)
 | Edit: Dialogue Marker AutoReplace | `true`  |
@@ -59,5 +59,5 @@ This extension has the following settings:
 "softBreaksAsNewParagraphs",
 "softBreaksInSameParagraph",
 "oneSentencePerLine"
-    
+
 
