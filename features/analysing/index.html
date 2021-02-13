@@ -77,13 +77,18 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#compute-word-frequency" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
         <aside class="md-announce">
           <div class="md-announce__inner md-grid md-typeset">
             
-<small><strong>v0.0.1-beta3</strong> | The documentation is work in progress, the extension is only on early draft stage.</small>
+<small><strong>v0.0.*-alpha</strong> | The documentation is work in progress, the extension is only on early draft stage.</small>
 
           </div>
         </aside>
@@ -403,9 +408,43 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Analyse
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Analyse
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#compute-word-frequency" class="md-nav__link">
+    Compute word frequency
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-writing-statistics" class="md-nav__link">
+    Get Writing Statistics
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -492,7 +531,22 @@
                 
                   <h1>Analyse</h1>
                 
-                
+                <h3 id="compute-word-frequency">Compute word frequency<a class="headerlink" href="#compute-word-frequency" title="Permanent link">&para;</a></h3>
+<p>You can compute the repetition frequency of words and phrases up to 5 words.</p>
+<p><img alt="Frequency" src="../img/freq_01.gif" /></p>
+<h3 id="get-writing-statistics">Get Writing Statistics<a class="headerlink" href="#get-writing-statistics" title="Permanent link">&para;</a></h3>
+<p>Compute statistics like:</p>
+<ul>
+<li>word count</li>
+<li>characters (excluding spaces)</li>
+<li>characters (including spaces)</li>
+<li>estimates:</li>
+<li>word count (At 6 characters per word)</li>
+<li>lines (At 10 words per line)</li>
+<li>pages (At 24 lines per page)</li>
+</ul>
+<p>Press the refresh button to compute statistics for the current open file.</p>
+<p><img alt="Stats" src="../img/stats_01.png" /></p>
                 
               
               
