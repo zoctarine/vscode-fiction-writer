@@ -11,6 +11,6 @@ Separate lines from same paragraph can be folded/unfolded. This is specailly use
 
 Folding works for dialogue indents as well, if writing dialgoues with dialogue markers (like em-dash) is used:
 
-![Folding 01](img/folding_01.gif)
-
 # Word Wrap Indent
+
+[tbd]
