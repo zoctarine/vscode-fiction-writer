@@ -34,10 +34,6 @@ It has two options:
 
     ![NewOnEnter](img/shift_enter_02.gif)
 
-## Folding
-
-  - Get a outline view of all text: Fold paragraph sentences, leving only the first line visible.
-
 ## Writing Dialogues
 
 ### Using Dialgoue markers:
