@@ -1,14 +1,18 @@
-# 0.0.1 - alpha4
+# 0.0.11 - alpha11
+
+- add writing statistics (word count, etc)
+  
+# 0.0.6 - alpha6
 
 - add text analysis (word frequency count)
 
-# 0.0.1 - alpha3
+# 0.0.3 - alpha3
 
 - add status bar buttons
 - folding, unfolding of paragraph lines
 - more support for one-sentence-per line
 
-# 0.0.1 - alpha2
+# 0.0.2 - alpha2
 
 - add text formatting options
 - add include `.md` file support using `{file.md}` syntax

@@ -20,7 +20,6 @@ This extension has the following settings:
 | Format: Remove Trailing Spaces        | `true` |
 | Format: Remove Extra Lines            | `true` |
 | Format: Fix Paragraph Breaks          | `true` |
-| Format: Sentence Boundaries           | `.!?;:`|
 | Export: Output Format              | `odt`  |
 | Export: Show Format Picker         | `true` |
 | Export: Use Template File          | `false`|
@@ -46,7 +45,6 @@ This extension has the following settings:
 *[Format: Remove Trailing Spaces]:markdown-fiction-writer.format.removeTrailingSpaces
 *[Format: Remove Extra Lines]:markdown-fiction-writer.format.removeExtraLines
 *[Format: Fix Paragraph Breaks]:markdown-fiction-writer.format.fixParagraphBreaks
-*[Format: Sentence Boundaries]:markdown-fiction-writer.format.oneSentencePerLine.sentenceBoundaries
 *[Export: Output Format]: markdown-fiction-writer.export.outputFormat
 *[Export: Show Format Picker]: markdown-fiction-writer.export.showFormatPicker
 *[Export: Use Template File]: markdown-fiction-writer.export.useTemplateFile

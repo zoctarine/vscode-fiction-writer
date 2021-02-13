@@ -148,7 +148,7 @@ Remove all whitespace characters from line ends.
 - Splits each paragraph in sentences.
 - Adds every sentence on a new line.
 - Keeps spacing between paragraphs.
-- Sentences are split by sentence boundaries defined under: `markdown-fiction-writer.format.oneSentencePerLine.sentenceBoundaries` (Default characters are: `.!?;:`)
+- Sentences are split by sentence boundary characters: `.` `!` `?` `;` `:`
 
 === "Before"
 

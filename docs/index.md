@@ -24,7 +24,7 @@ Provides features like:
         - uses `pandoc`
 
 - [Analyze text](features/analysing)
-    - count words, phrases, visualize repetitions
+    - count words, phrases, word repetitions, ...
 
 
 ## Installation
