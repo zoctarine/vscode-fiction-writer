@@ -22,10 +22,13 @@ This extension has the following settings:
 | Format: Fix Paragraph Breaks          | `true` |
 | Export: Output Format              | `odt`  |
 | Export: Show Format Picker         | `true` |
+| Export: Show Save Dialogue         | `always` |
 | Export: Use Template File          | `false`|
 | Export: Template File              | ` `    |
 | Export: Smart Dashes               | `true` |
+| Export: Smart Dashes               | `true` |
 | Export: Skip Comments from TOC     | `true` |
+| Export: TOC Filename               | `toc.md` |
 
 *[General: New Paragraph Handling]: markdown-fiction-writer.general.new-paragraph-handling
 *[Edit: Disable KeyBindings]: markdown-fiction-writer.edit.disableKeybindings
@@ -51,11 +54,5 @@ This extension has the following settings:
 *[Export: Template File]: markdown-fiction-writer.export.templateFile
 *[Export: Smart Dashes]: markdown-fiction-writer.export.smartDeshes
 *[Export: Skip Comments from TOC]: markdown-fiction-writer.export.skipCommentsFromToc
-
-
-"none",
-"softBreaksAsNewParagraphs",
-"softBreaksInSameParagraph",
-"oneSentencePerLine"
-
-
+*[Export: Show Save Dialogue]: markdown-fiction-writer.export.showSaveDialogue
+*[Export: TOC Filename]: markdown-fiction-writer.export.tocFilename

@@ -1,3 +1,10 @@
+# 0.0.17 - alpha17
+
+- Export: Add SaveAs dialogue to export commands.
+- Export: Add option to always show SaveAs dialgoue
+- Export: Add option to change TOC filename
+- Export: Show OpenFileDialogue when use template is enabled
+
 # 0.0.11 - alpha11
 
 - add writing statistics (word count, etc)
