@@ -1,0 +1,12 @@
+.vscode-body p,
+.vscode-dark
+.vscode-body blockquote,
+.vscode-body ul,
+.vscode-body ol,
+.vscode-body dl,
+.vscode-body table,
+.vscode-body pre {
+    text-indent: 2em;
+    margin-bottom: 0.1em !important;
+    margin-top: 0.1em !important;
+}

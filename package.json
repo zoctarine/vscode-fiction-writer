@@ -1,0 +1,429 @@
+{
+  "name": "markdown-fiction-writer",
+  "displayName": "Markdown Fiction Writer",
+  "description": "Tools for writing fiction",
+  "icon": "resources/fiction-writer-icon.png",
+  "publisher": "vsc-zoctarine",
+  "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
+  "version": "0.0.18",
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "writing",
+    "fiction",
+    "dialogue",
+    "pandoc"
+  ],
+  "bugs": {
+    "url": "https://github.com/zoctarine/vscode-fiction-writer/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zoctarine/vscode-fiction-writer/tree/drafts/draft-01"
+  },
+  "license": "MIT",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configurationDefaults": {
+      "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": false
+      }
+    },
+    "views": {
+      "word-frequency-explorer": [
+        {
+          "id": "wordFrequencies",
+          "name": "Word Frequencies",
+          "icon": "$(eye)",
+          "contextualTitle": "Word n-Gram Frequencies"
+        },
+        {
+          "id": "statistics",
+          "name": "Statistics",
+          "icon": "$(eye)",
+          "contextualTitle": "Document statistics"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "wordFrequencies",
+        "contents": "Press refresh button to compute word-gram frequencies for current file.\n[Refresh](command:fiction-writer.extension.wordFrequency.refresh)"
+      },
+      {
+        "view": "statistics",
+        "contents": "Press refresh button to compute statistics for current file.\n[Refresh](command:fiction-writer.extension.statistics.refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.down",
+          "when": "view == wordFrequencies",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.up",
+          "when": "view == wordFrequencies",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.refresh",
+          "when": "view == wordFrequencies",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.clear",
+          "when": "view == wordFrequencies",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.statistics.refresh",
+          "when": "view == statistics",
+          "group": "navigation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "word-frequency-explorer",
+          "title": "Document Statistics",
+          "icon": "$(book)"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "array",
+      "name": "markdown-fiction-writer",
+      "title": ".Markdown Fiction Writer",
+      "properties": {
+        "markdown-fiction-writer.edit.newParagraphHandling": {
+          "type": "string",
+          "default": "newParagraphOnEnter",
+          "markdownDescription": "The `enter` key produces a new paragraph",
+          "enum": [
+            "newParagraphOnEnter",
+            "newParagraphOnShiftEnter"
+          ]
+        },
+        "markdown-fiction-writer.edit.disableKeybindings": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Disable custom editing keybindings.\n\n**Note:** all `#markdown-fiction-writer.editing#` settings will be disabled."
+        },
+        "markdown-fiction-writer.edit.dialogueMarker": {
+          "type": "string",
+          "default": "-- ",
+          "markdownDescription": "Dialogue marker.",
+          "enum": [
+            "\"Hello,\" (quotes)",
+            "— Hello, (em-dash followed by one space)",
+            "-- Hello, (two dashes followed by one space)",
+            "--- Hello, (three dashes followed by one space)",
+            "—Hello, (em-dash, no space)",
+            "--Hello, (two dashes, no space)",
+            "---Hello, (three dashes, no space)"
+          ]
+        },
+        "markdown-fiction-writer.edit.dialogueMarkerAutoReplace": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
+        },
+        "markdown-fiction-writer.edit.dialogueIndent": {
+          "type": "number",
+          "default": 3,
+          "markdownDescription": "Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.general.dialogue-marker#`)"
+        },
+        "markdown-fiction-writer.edit.dialogueIndentAutoDetect": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.general.dialogue-marker#`."
+        },
+        "markdown-fiction-writer.edit.typewriterMode": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Rudimentary implementation of typewriter mode (centerd typing).\n\n**Warning:** it changes `#editor.cursorSurroundingLines#` workspace setting."
+        },
+        "markdown-fiction-writer.view.wordWrapIndent": {
+          "type": "number",
+          "default": 0,
+          "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if [Editor: Word Wrap](#editor.wordWrap) is enabled, and changes the [Editor: tabSize](#editor.tabSize) setting for `markdown`._"
+        },
+        "markdown-fiction-writer.view.foldSentences": {
+          "type": "boolean",
+          "default": true,
+          "description": "Treats paragraphs as folding entities"
+        },
+        "markdown-fiction-writer.export.outputFormat": {
+          "type": "string",
+          "default": "odt",
+          "enum": [
+            "docx",
+            "odt",
+            "html",
+            "asciidoc",
+            "adoc",
+            "epub",
+            "fb2",
+            "docbook"
+          ],
+          "markdownDescription": "The output document format.\n\n**Note:** This works only if you have [Pandoc](https://pandoc.org/installing.html) installed."
+        },
+        "markdown-fiction-writer.export.showFormatPicker": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Always show format picker before running convert command. If set to `false`, the selected `#markdown-fiction-writer.compile.outputFormat#` will be selected."
+        },
+        "markdown-fiction-writer.export.showSaveDialogue": {
+          "type": "string",
+          "default": "always",
+          "enum": [
+            "always",
+            "never (save in same directory as exported file)"
+          ],
+          "markdownDescription": "Always show save file dialogue when exporting a file, or save in same directory"
+        },
+        "markdown-fiction-writer.export.useTemplateFile": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "If the template file from `#markdown-fiction-writer.compile.template#` should be used when compiling to markdown."
+        },
+        "markdown-fiction-writer.export.templateFile": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "The output template to be used when compiling to `docx` or `odt`. **Note:** the template extension must match the output type. It can be absolut path, or relative to compiled document."
+        },
+        "markdown-fiction-writer.export.tocFilename": {
+          "type": "string",
+          "default": "toc.md",
+          "markdownDescription": "The filename that can be quickly compiled using Compile TOC command"
+        },
+        "markdown-fiction-writer.export.smartDeshes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Convert `--` to `em-dash` (—) character. If not selected, it will defaul to `en-dash` (–)"
+        },
+        "markdown-fiction-writer.export.skipCommentsFromToc": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "When parsing `toc.md, skips lines starting with `//`. "
+        },
+        "markdown-fiction-writer.format.enableDocumentFormatting": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out."
+        },
+        "markdown-fiction-writer.format.backupBeforeEachFormat": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Will save a snapshot of the file, before formatting, in a `_bk` folder, in the same directory as the formatted file.\n\n**Note:** This is will result in creating a lot of files. Use this feature only if necessary."
+        },
+        "markdown-fiction-writer.format.fixMismatchDialogueMarkers": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "If in `EnhancedDialogue` `#markdown-fiction-writer.edit.writingMode#`, replaces mismatched dialogue markers with current selected marker."
+        },
+        "markdown-fiction-writer.format.fixDialogueIndents": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "If in `EnhancedDialogue` `#markdown-fiction-writer.edit.writingMode#`, reformats dialogue indents to selected dialogue indent."
+        },
+        "markdown-fiction-writer.format.fixParagraphSpacing": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
+        },
+        "markdown-fiction-writer.format.removeExtraSpaces": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Replace multiple spaces from paragraphs or sentenes (not at the begining of line) with one space."
+        },
+        "markdown-fiction-writer.format.removeExtraLines": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Replace multiple empty lines (more than two)."
+        },
+        "markdown-fiction-writer.format.removeTrailingSpaces": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Remove all whitespace characters from line ends."
+        },
+        "markdown-fiction-writer.format.fixParagraphBreaks": {
+          "type": "string",
+          "default": "none",
+          "enum": [
+            "none",
+            "softBreaksAsNewParagraphs",
+            "softBreaksInSameParagraph",
+            "oneSentencePerLine"
+          ],
+          "markdownDescription": "Formats document to one sentence per line format."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "fiction-writer.extension.compile",
+        "title": "Compile...",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.compileFile",
+        "title": "Compile current document",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.compileAll",
+        "title": "Compile all documents",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.compileToc",
+        "title": "Compile toc.md",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.selectEditMode",
+        "title": "Select Edit Mode",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.toggleNewParagraph",
+        "title": "Toggle New Paragraph on Enter",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.toggleKeybindings",
+        "title": "Toggle custom keybindings enabled/disabled",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.toggleTypewriterMode",
+        "title": "Toggle Typewriter Mode",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.wordFrequency.refresh",
+        "title": "Refresh Word Frequencies",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "fiction-writer.extension.statistics.refresh",
+        "title": "Refresh Document Statistics",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "fiction-writer.extension.wordFrequency.clear",
+        "title": "Clear",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "fiction-writer.extension.wordFrequency.next.up",
+        "title": "Select Previous",
+        "icon": "$(find-previous-match)"
+      },
+      {
+        "command": "fiction-writer.extension.wordFrequency.next.down",
+        "title": "Select Next",
+        "icon": "$(find-next-match)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "fiction-writer.extension.onNewLine",
+        "key": "enter",
+        "mac": "enter",
+        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+      },
+      {
+        "command": "fiction-writer.extension.onNewLineAltered",
+        "key": "shift+enter",
+        "mac": "shift+enter",
+        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+      },
+      {
+        "command": "fiction-writer.extension.onBackspace",
+        "key": "backspace",
+        "mac": "backspace",
+        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+      },
+      {
+        "command": "fiction-writer.extension.onDelete",
+        "key": "delete",
+        "mac": "delete",
+        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+      },
+      {
+        "command": "fiction-writer.extension.onTab",
+        "key": "tab",
+        "mac": "tab",
+        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+      },
+      {
+        "command": "fiction-writer.extension.compileFile",
+        "key": "f9",
+        "mac": "f9",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.compileAll",
+        "key": "shift+f9",
+        "mac": "shift+f9",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.compileToc",
+        "key": "ctrl+shift+f9",
+        "mac": "cmf+shift+f9",
+        "when": "textInputFocus && editorLangId == markdown"
+      }
+    ],
+    "grammars": [
+      {
+        "scopeName": "markdown.fiction",
+        "path": "./grammars/fiction.markdown.tmGrammar.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "deploy": "vsce publish --yarn",
+    "postversion": "git push --tags && git push",
+    "release": "npm version patch"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.52.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.15.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.1.3",
+    "typescript": "^4.1.2",
+    "vsce": "^1.85.0",
+    "vscode-test": "^1.4.1"
+  }
+}
