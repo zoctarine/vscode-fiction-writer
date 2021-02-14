@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#export" class="md-skip">
+        <a href="#requirements" class="md-skip">
           Skip to content
         </a>
       
@@ -418,13 +418,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#export" class="md-nav__link">
-    Export
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#requirements" class="md-nav__link">
     Requirements
   </a>
@@ -454,8 +447,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#compile-all" class="md-nav__link">
-    Compile All
+  <a href="#compile-selected-files" class="md-nav__link">
+    Compile Selected files
   </a>
   
 </li>
@@ -573,48 +566,49 @@
                 
                   <h1>Export</h1>
                 
-                <h3 id="export">Export<a class="headerlink" href="#export" title="Permanent link">&para;</a></h3>
+                <p><img alt="Export01" src="../img/export_01.gif" /></p>
 <h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
 <p>If you want to also compile <code>.md</code> to other document formats, you need to have <code>pandoc</code> installed. You can get it from here: <a href="https://pandoc.org/installing.html">Installing pandoc</a>.</p>
 <h3 id="including-other-documents">Including other documents<a class="headerlink" href="#including-other-documents" title="Permanent link">&para;</a></h3>
-<p>Compiles <code>toc.md</code> file from current directory.</p>
-<p>If no <code>toc.md</code> file exists, it will show an error message.</p>
-<p>The toc file can contain any markdown syntax. If you want to include a extenal file (relative to <code>toc.md</code> directory) surround the filename with <code>{}</code>.</p>
-<p>Simple <code>toc.md</code> document:
-<div class="highlight"><pre><span></span><code>{chapter01.md}
+<p>This extension adds support for including in another document.</p>
+<p>The best practice is to have a TOC document, where you include all other documents.</p>
+<p>A simple <code>toc.md</code> document can look like this:</p>
+<p><div class="highlight"><pre><span></span><code>{chapter01.md}
 {chapter02.md}
 {chapter03.md}
 {chapter04.md}
-</code></pre></div></p>
-<p><code>toc.md</code> document containg additional markdown syntax:</p>
-<div class="highlight"><pre><span></span><code># My Book Title
+</code></pre></div>
+This will include all 4 referenced files.</p>
+<p>Of course a TOC document can contain any additional markdown syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="gh"># My Book Title</span>
 
-## Preface
+<span class="gu">## Preface</span>
 
 Some opening words
 
-## Chapter One
+<span class="gu">## Chapter One</span>
 
 {chapter01.md}
 
-## Chapter Tso
+<span class="gu">## Chapter Tso</span>
+
 {chapter02.md}
 
-## The End
+<span class="gu">## The End</span>
 
 This is the end.
 </code></pre></div>
-<p>The compiled output filename is <code>compiled.toc.[format]</code> (ex: <code>compiled.toc.odt</code> or <code>compiled.toc.epub</code>)</p>
+<p>The path to included file needs to be relative to the document they are reference from.</p>
 <h3 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h3>
 <h4 id="compile-current-file">Compile Current File<a class="headerlink" href="#compile-current-file" title="Permanent link">&para;</a></h4>
-<h4 id="compile-all">Compile All<a class="headerlink" href="#compile-all" title="Permanent link">&para;</a></h4>
-<p>Compiles all markdown documents (having <code>.md</code> extension) from current directory, into one file.</p>
+<h4 id="compile-selected-files">Compile Selected files<a class="headerlink" href="#compile-selected-files" title="Permanent link">&para;</a></h4>
+<p>Compiles all selected markdown documents (having <code>.md</code> extension) from current directory, into one file.</p>
 <p>The include order is filename order.</p>
 <p><strong>Example:</strong> if <code>odt</code> output is selected, it produces <code>compiled.odt</code> file, in same directory</p>
 <h4 id="compile-toc">Compile TOC<a class="headerlink" href="#compile-toc" title="Permanent link">&para;</a></h4>
 <div class="admonition note test">
 <p class="admonition-title">Note</p>
-<p>If there is a <code>toc.md</code> file in the same folder as the opened document, that file will be used. Othwrise, it will search in the workspace root.</p>
+<p>If there is a <code>toc.md</code> file in the same folder as the opened document, that file will be used. Otherwise, it will search in the workspace root.</p>
 <p>If no <code>toc.md</code> files is found in either location, then compile will fail.</p>
 </div>
 <p><strong>Example:</strong></p>
@@ -633,6 +627,9 @@ part2/
 <li>if <code>chapter1.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/part1/toc.md</code> will be used.</li>
 <li>if <code>chapter4.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/toc.md</code> from workspace root will be used.</li>
 </ul>
+<blockquote>
+<p>Note: the name of the toc.md can be configured in settings.</p>
+</blockquote>
                 
               
               
