@@ -22,6 +22,7 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/dlg_marker_02.gif)
     
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/dlg_marker_03.gif)
+  
   - typewriter mode
 
 - Export/Combine files
@@ -36,9 +37,9 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
   
   - count words, phrases, visualize repetitions
   
-  ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/freq_01.gif)
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/freq_01.gif)
   
-  ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/stats_01.gif)
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/stats_01.gif)
 
 
 - Text formatting
@@ -49,7 +50,7 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
 - fold paragraph lines
 
-  ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/folding_01.gif)
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/folding_01.gif)
 
 All features are detailed here: [**Full Documentation**](https://zoctarine.github.io/vscode-fiction-writer/)
 
