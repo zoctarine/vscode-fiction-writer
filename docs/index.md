@@ -1,8 +1,12 @@
+
 ## Markdown Fiction Writer
 
 A set of tools for writing fiction with Visual Studio Code.
 
-Provides features like:
+Dowload from:<br>
+
+[Extension Marketplace](https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer){: .md-button }
+
 
 ## Main Features
 
@@ -29,7 +33,7 @@ Provides features like:
 
 ## Installation
 
-tbd
+
 
 ## GitHub
 

@@ -1,6 +1,5 @@
 
-## Export
-
+![Export01](img/export_01.gif)
 
 ## Requirements
 
@@ -9,24 +8,23 @@ If you want to also compile `.md` to other document formats, you need to have `p
 
 ## Including other documents
 
+This extension adds support for including in another document.
 
-Compiles `toc.md` file from current directory.
+The best practice is to have a TOC document, where you include all other documents.
 
-If no `toc.md` file exists, it will show an error message.
+A simple `toc.md` document can look like this:
 
-The toc file can contain any markdown syntax. If you want to include a extenal file (relative to `toc.md` directory) surround the filename with `{}`.
-
-Simple `toc.md` document:
 ```md
 {chapter01.md}
 {chapter02.md}
 {chapter03.md}
 {chapter04.md}
 ```
+This will include all 4 referenced files.
 
-`toc.md` document containg additional markdown syntax:
+Of course a TOC document can contain any additional markdown syntax:
 
-``` markdown
+```md
 
 # My Book Title
 
@@ -39,6 +37,7 @@ Some opening words
 {chapter01.md}
 
 ## Chapter Tso
+
 {chapter02.md}
 
 ## The End
@@ -46,15 +45,16 @@ Some opening words
 This is the end.
 ```
 
-The compiled output filename is `compiled.toc.[format]` (ex: `compiled.toc.odt` or `compiled.toc.epub`)
+The path to included file needs to be relative to the document they are reference from.
+
 
 ## Commands
 
 ### Compile Current File
 
-### Compile All
+### Compile Selected files
 
-Compiles all markdown documents (having `.md` extension) from current directory, into one file.
+Compiles all selected markdown documents (having `.md` extension) from current directory, into one file.
 
 The include order is filename order.
 
@@ -63,7 +63,7 @@ The include order is filename order.
 ### Compile TOC
 
 !!! note Test
-    If there is a `toc.md` file in the same folder as the opened document, that file will be used. Othwrise, it will search in the workspace root.
+    If there is a `toc.md` file in the same folder as the opened document, that file will be used. Otherwise, it will search in the workspace root.
 
     If no `toc.md` files is found in either location, then compile will fail.
 
@@ -82,4 +82,7 @@ The include order is filename order.
 
 - if `chapter1.md` is opened, and **Compile toc.md** command is run, then `/part1/toc.md` will be used.
 - if `chapter4.md` is opened, and **Compile toc.md** command is run, then `/toc.md` from workspace root will be used.
+
+> Note: the name of the toc.md can be configured in settings.
+
 

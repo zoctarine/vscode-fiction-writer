@@ -19,4 +19,4 @@ Compute statistics like:
 
 Press the refresh button to compute statistics for the current open file.
 
-![Stats](img/stats_01.png)
+![Stats](img/stats_01.gif)
