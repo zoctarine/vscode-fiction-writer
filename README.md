@@ -10,9 +10,36 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
 - Enhanced text editing:
   - automatically insert new paragraph at Enter, or Shift+Enter
+    
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/shift_enter_01.gif)
+    
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/shift_enter_02.gif)
+  
   - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either em-dash (—) or other marks.
+    
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/dlg_marker_01.gif)
+    
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/dlg_marker_02.gif)
+    
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/dlg_marker_03.gif)
   - typewriter mode
-  - fold paragraph lines
+
+- Export/Combine files
+  
+  - combine multiple .md files into one single file
+  
+  - export md, or collection of files, to other formats (uses `pandoc`)
+  
+    ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/export_01.gif)
+
+- Analyze text
+  
+  - count words, phrases, visualize repetitions
+  
+  ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/freq_01.gif)
+  
+  ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/stats_01.gif)
+
 
 - Text formatting
   - cleaning up spaces
@@ -20,12 +47,9 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
   - fixing paragraph spaces (add/remove empty lines)
   - remove trailing spaces
 
-- Export/Combine files
-  - combine multiple .md files into one single file
-  - export md, or collection of files, to other formats (uses `pandoc`)
+- fold paragraph lines
 
-- Analyze text
-  - count words, phrases, visualize repetitions
+  ![](https://github.com/zoctarine/vscode-fiction-writer/blob/gh-pages-source-material/docs/features/img/folding_01.gif)
 
 All features are detailed here: [**Full Documentation**](https://zoctarine.github.io/vscode-fiction-writer/)
 
