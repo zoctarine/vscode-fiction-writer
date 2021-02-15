@@ -5,7 +5,7 @@ import { EnhancedEditorBehaviour, EnhancedDialogueEditorBehaviour, TypewriterMod
 import { Constants, DialogueMarkerMappings } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
-import { FoldingObserver, StatusBarObserver } from './view';
+import { dec, FoldingObserver, StatusBarObserver } from './view';
 let currentConfig: Config;
 
 
