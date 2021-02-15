@@ -86,7 +86,7 @@ export const RegEx = {
 
   WHOLE_WORD: /[\p{L}'\-]+/igu,
 
-  ANY_CHARACTER_ESCEPT_NEWLINE: /[^\n\r]/ug,
+  ANY_CHARACTER_ESCEPT_NEWLINE: /[^\r\n]/ug,
   
   ANY_CHARACTER_EXCEPT_WHITESPACE: /[^\s]/ug,
 
@@ -105,4 +105,6 @@ export const RegEx = {
   MARKDOWN_INCLUDE_FILE:  /{(.*?)}/g,
 
   MARKDOWN_INCLUDE_FILE_BOUNDARIES:  /[{}]/g,
+
+  NEWLINE: /\r?\n/g
 };
