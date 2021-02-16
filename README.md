@@ -50,6 +50,11 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
   - fixing paragraph spaces (add/remove empty lines)
   - remove trailing spaces
 
+- View
+  - add tag to files in File Explorer
+  
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/tags_01.gif)
+
 - fold paragraph lines
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/features/img/folding_01.gif)
