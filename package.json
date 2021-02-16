@@ -5,7 +5,7 @@
   "icon": "resources/fiction-writer-icon.png",
   "publisher": "vsc-zoctarine",
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -172,9 +172,9 @@
           "markdownDescription": "Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n.**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive",
           "additionalProperties": {
             "type": "string",
-            "default": "test"        
-          }         
-        },        
+            "default": "test"
+          }
+        },
         "markdown-fiction-writer.view.fileTagsEnabled": {
           "type": "boolean",
           "default": false,
@@ -189,7 +189,7 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Highlights the dialogue markers (either -- or quote marks)"
-        },       
+        },
         "markdown-fiction-writer.export.outputFormat": {
           "type": "string",
           "default": "odt",
