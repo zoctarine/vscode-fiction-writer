@@ -1,4 +1,4 @@
-import { Disposable, DocumentFormattingEditProvider, languages, Range, TextDocument, TextEdit, TextLine, window, workspace } from 'vscode';
+import { DocumentFormattingEditProvider, languages, Range, TextDocument, TextEdit, TextLine, window } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer } from '../observable';
 import { Constants, RegEx } from '../utils';
@@ -7,7 +7,6 @@ import * as path from 'path';
 
 
 export class FormatProviderObserver extends Observer<Config> implements DocumentFormattingEditProvider {
-  formatterDisposable?: Disposable;
 
   constructor(observable: IObservable<Config>) {
     super(observable);
@@ -20,15 +19,11 @@ export class FormatProviderObserver extends Observer<Config> implements Document
   }
 
   private tryRegisterFormatProvider() {
-    this.formatterDisposable?.dispose();
+    this.clearDisposable('FP');
 
     if (this.state.formattingIsEnabled) {
-      this.formatterDisposable = languages.registerDocumentFormattingEditProvider('markdown', this);
+      this.addDisposable(languages.registerDocumentFormattingEditProvider('markdown', this), 'FP');
     }
-  }
-
-  dispose() {
-    this.formatterDisposable?.dispose();
   }
 
   backupOriginal(document: TextDocument) {
@@ -46,9 +41,14 @@ export class FormatProviderObserver extends Observer<Config> implements Document
     }
   }
 
-  provideDocumentFormattingEdits(document: TextDocument): TextEdit[] {
+  async provideDocumentFormattingEdits(document: TextDocument): Promise<TextEdit[]> {
+    var result = await window.showInformationMessage(
+      'This is an experimental feature. ' +
+       'Would you like to backup the current file before continuing?', 
+       'Yes', 'No');
 
-    if (this.state.formattingBackupBeforeEachFormat) this.backupOriginal(document);
+    if (result === 'Yes') 
+      this.backupOriginal(document);
 
     const formatting: Array<TextEdit> = [];
     let textLines = 0;

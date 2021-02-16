@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import { IObservable, Observer } from '../observable';
+import { IDisposable } from '../utils';
 import { Config } from './../config';
 
-export class StatusBarObserver extends Observer<Config> implements vscode.Disposable {
+export class StatusBarObserver extends Observer<Config> implements IDisposable {
   private compileButton: vscode.StatusBarItem;
   private foldButton: vscode.StatusBarItem;
   private unfoldButton: vscode.StatusBarItem;
@@ -85,7 +86,7 @@ export class StatusBarObserver extends Observer<Config> implements vscode.Dispos
     this.dialogueMarkerSelector.tooltip = 'Select dialogue editing mode (change marker).';
     this.updateDialogueSelector();
 
-    vscode.window.onDidChangeActiveTextEditor(e => this.showHide());
+    this.showHide();
   }
 
   showHide() {

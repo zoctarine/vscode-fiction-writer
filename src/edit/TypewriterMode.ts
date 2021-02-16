@@ -2,7 +2,7 @@ import { window, workspace } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer } from '../observable';
 
-export class TypewriterModeObserver extends Observer<Config> {
+export class TypewriterModeObserver extends Observer<Config>{
 
   constructor(observable: IObservable<Config>) {
     super(observable);

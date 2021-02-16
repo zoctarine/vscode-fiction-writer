@@ -58,7 +58,6 @@ export class ConfigObservable extends Observable<Config> {
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
 
       formattingIsEnabled: this.read<boolean>(formatting, 'enableDocumentFormatting', true),
-      formattingBackupBeforeEachFormat: this.read<boolean>(formatting, 'backupBeforeEachFormat', false),
       formattingFixMismatchDialogueMarkers: this.read<boolean>(formatting, 'fixMismatchDialogueMarkers', true),
       formattingFixDialogueIndents: this.read<boolean>(formatting, 'fixDialogueIndents', true),
       formattingFixParagraphSpacing: this.read<boolean>(formatting, 'fixParagraphSpacing', true),
@@ -86,8 +85,12 @@ export class ConfigObservable extends Observable<Config> {
         (this.config.dialgoueIndentLength < 0 || this.config.dialogueIndentAutoDetect)
           ? this.config.dialoguePrefix.length
           : this.config.dialgoueIndentLength);
-    };
+    }; 
 
+    this.config.viewFileTags = this.read<{[key:string]:string}>(view, 'fileTags', {});
+    this.config.viewFileTagsEnabled = this.read<boolean>(view, 'fileTagsEnabled', false);
+    this.config.viewDialogueHighlight = this.read<boolean>(view, 'highlightDialogue', false);
+    this.config.viewDialogueHighlightMarkers = this.read<boolean>(view, 'highlightDialogueMarkers', true);
 
     // TODO: Move some settings to extension settings.
     let localSettings = this.localSettings.getValue<any>('config', {  });

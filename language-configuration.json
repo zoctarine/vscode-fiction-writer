@@ -1,8 +1,0 @@
-{
-    "folding": {
-      "markers": {
-        "start": "^\\s*//\\s*region\\b",
-        "end": "^\\s*//\\s*endregion\\b"
-      }
-    }
-  }
