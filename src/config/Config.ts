@@ -7,13 +7,14 @@ export interface Config {
     keybindingsDisabled?: boolean,
     dialogueIndentAutoDetect?: boolean;
     dialogueMarkerAutoDetect?: boolean;
+    viewDialogueHighlight?: boolean;
+    viewDialogueHighlightMarkers?: boolean;
     foldSentences?: boolean;
     inverseEnter?: boolean;
     isTypewriterMode?: boolean;
     isDialogueEnabled?: boolean;
     
     formattingIsEnabled?: boolean;
-    formattingBackupBeforeEachFormat?: boolean;
     formattingFixMismatchDialogueMarkers?: boolean;
     formattingFixDialogueIndents?: boolean;
     formattingFixParagraphSpacing?: boolean;
@@ -29,5 +30,8 @@ export interface Config {
     compileShowFormatPicker?: boolean,
     compileShowSaveDialogue?: boolean,
     compileSkipCommentsFromToc?: boolean
-    compileTocFilename: string
+    compileTocFilename: string,
+
+    viewFileTagsEnabled?: boolean,
+    viewFileTags?: {[key:string]:string}
 }

@@ -43,11 +43,11 @@ export const Constants = {
     SELECT_EDIT_MODE: 'fiction-writer.extension.selectEditMode',
     TOGGLE_PARAGRAPH: 'fiction-writer.extension.toggleNewParagraph',
     TOGGLE_TYPEWRITER: 'fiction-writer.extension.toggleTypewriterMode',
-    TOGGLE_KEYBINDINGS: 'fiction-writer.extension.toggleKeybindings', 
+    TOGGLE_KEYBINDINGS: 'fiction-writer.extension.toggleKeybindings',
     WORDFREQ_FIND_PREV: 'fiction-writer.extension.wordFrequency.next.up',
     WORDFREQ_FIND_NEXT: 'fiction-writer.extension.wordFrequency.next.down',
-    WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh', 
-    WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear', 
+    WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh',
+    WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
     DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh'
   }
 };
@@ -87,7 +87,7 @@ export const RegEx = {
   WHOLE_WORD: /[\p{L}'\-]+/igu,
 
   ANY_CHARACTER_ESCEPT_NEWLINE: /[^\r\n]/ug,
-  
+
   ANY_CHARACTER_EXCEPT_WHITESPACE: /[^\s]/ug,
 
   KNOWN_DIALOGUE_MARKERS: /^(\-\-{1,2} {0,1}|— {0,1})/,

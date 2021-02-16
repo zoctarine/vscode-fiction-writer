@@ -12,8 +12,6 @@ export class CompileAllCommand extends CompileFileCommand {
     super(config);
   }
 
-
-
   getFiles(dirPath: string, recursive: boolean) {
     const entries = fs.readdirSync(dirPath, { withFileTypes: true });
 

@@ -2,10 +2,10 @@
   "injectionSelector": "L:meta.paragraph.markdown",
   "patterns": [
     {
-      "include": "#dialogue"
+      "include": "#file"
     },
     {
-      "include": "#file"
+      "include": "#comment"
     }
   ],
   "repository": {
@@ -28,6 +28,17 @@
         },
         "3": {
           "name": "punctuation.definition.metadata.markdown"
+        }
+      }
+    },
+    "comment": {
+      "match": "(^//)(.*)",
+      "captures": {
+        "1": {
+          "name": "comment.block.html"
+        },
+        "2": {
+          "name": "comment.block.html"
         }
       }
     }

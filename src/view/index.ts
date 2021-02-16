@@ -1,4 +1,5 @@
 export * from './folding';
 export * from './changePreview';
 export * from './statusbar';
-export * from './decorations';
+export * from './textDecorations';
+export * from './fileDecorations';

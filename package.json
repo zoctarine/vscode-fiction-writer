@@ -107,7 +107,7 @@
     "configuration": {
       "type": "array",
       "name": "markdown-fiction-writer",
-      "title": ".Markdown Fiction Writer",
+      "title": "Markdown Fiction Writer",
       "properties": {
         "markdown-fiction-writer.edit.newParagraphHandling": {
           "type": "string",
@@ -145,12 +145,12 @@
         "markdown-fiction-writer.edit.dialogueIndent": {
           "type": "number",
           "default": 3,
-          "markdownDescription": "Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.general.dialogue-marker#`)"
+          "markdownDescription": "Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.edit.dialogueMarker#`)"
         },
         "markdown-fiction-writer.edit.dialogueIndentAutoDetect": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.general.dialogue-marker#`."
+          "markdownDescription": "Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.edit.dialogueMarker#`."
         },
         "markdown-fiction-writer.edit.typewriterMode": {
           "type": "boolean",
@@ -167,6 +167,29 @@
           "default": true,
           "description": "Treats paragraphs as folding entities"
         },
+        "markdown-fiction-writer.view.fileTags": {
+          "type": "object",
+          "markdownDescription": "Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n.**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive",
+          "additionalProperties": {
+            "type": "string",
+            "default": "test"        
+          }         
+        },        
+        "markdown-fiction-writer.view.fileTagsEnabled": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Adds support for adding file tags, and displaying the corresponding badge in file explorer."
+        },
+        "markdown-fiction-writer.view.highlightDialogue": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Highlights the text between quotes."
+        },
+        "markdown-fiction-writer.view.highlightDialogueMarkers": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Highlights the dialogue markers (either -- or quote marks)"
+        },       
         "markdown-fiction-writer.export.outputFormat": {
           "type": "string",
           "default": "odt",
@@ -185,7 +208,7 @@
         "markdown-fiction-writer.export.showFormatPicker": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Always show format picker before running convert command. If set to `false`, the selected `#markdown-fiction-writer.compile.outputFormat#` will be selected."
+          "markdownDescription": "Always show format picker before running convert command. If set to `false`, the selected `#markdown-fiction-writer.export.outputFormat#` will be selected."
         },
         "markdown-fiction-writer.export.showSaveDialogue": {
           "type": "string",
@@ -199,7 +222,7 @@
         "markdown-fiction-writer.export.useTemplateFile": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "If the template file from `#markdown-fiction-writer.compile.template#` should be used when compiling to markdown."
+          "markdownDescription": "If the template file from `#markdown-fiction-writer.export.templateFile#` should be used when compiling to markdown."
         },
         "markdown-fiction-writer.export.templateFile": {
           "type": "string",
@@ -226,20 +249,15 @@
           "default": true,
           "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out."
         },
-        "markdown-fiction-writer.format.backupBeforeEachFormat": {
-          "type": "boolean",
-          "default": false,
-          "markdownDescription": "Will save a snapshot of the file, before formatting, in a `_bk` folder, in the same directory as the formatted file.\n\n**Note:** This is will result in creating a lot of files. Use this feature only if necessary."
-        },
         "markdown-fiction-writer.format.fixMismatchDialogueMarkers": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "If in `EnhancedDialogue` `#markdown-fiction-writer.edit.writingMode#`, replaces mismatched dialogue markers with current selected marker."
+          "markdownDescription": "If `#markdown-fiction-writer.edit.dialogueMarker#` is not quotes, replaces mismatched dialogue markers with current selected marker."
         },
         "markdown-fiction-writer.format.fixDialogueIndents": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "If in `EnhancedDialogue` `#markdown-fiction-writer.edit.writingMode#`, reformats dialogue indents to selected dialogue indent."
+          "markdownDescription": "If `#markdown-fiction-writer.edit.dialogueMarker#` is not quotes, indents are inabled, reformats dialogue indents to selected dialogue indent."
         },
         "markdown-fiction-writer.format.fixParagraphSpacing": {
           "type": "boolean",

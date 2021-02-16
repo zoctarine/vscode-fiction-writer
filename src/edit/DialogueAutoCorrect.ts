@@ -1,26 +1,24 @@
-import { Disposable, Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
+import { Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer } from '../observable';
-import { Constants } from '../utils';
+import { Constants, IDisposable } from '../utils';
 
-export class DialogueAutoCorrectObserver extends Observer<Config> {
-  private textChangeEvent?: Disposable;
-
+export class DialogueAutoCorrectObserver extends Observer<Config> implements IDisposable {
   constructor(observable: IObservable<Config>) {
     super(observable);
     this.tryBindTextChange();
   }
-
+  
   protected onStateChange(newState: Config): void {
     super.onStateChange(newState);
     this.tryBindTextChange();
   }
 
   tryBindTextChange() {
-    this.textChangeEvent?.dispose()
+    this.clearDisposable('TC');
 
     if (this.state.dialogueMarkerAutoReplace) {
-      this.textChangeEvent = workspace.onDidChangeTextDocument(e => this.onTextChange(e));
+      this.addDisposable(workspace.onDidChangeTextDocument(e => this.onTextChange(e)), 'TC');
     }
   }
 

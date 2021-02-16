@@ -5,7 +5,7 @@ import { EnhancedEditorBehaviour, EnhancedDialogueEditorBehaviour, TypewriterMod
 import { Constants, DialogueMarkerMappings } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
-import { dec, FoldingObserver, StatusBarObserver } from './view';
+import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver } from './view';
 let currentConfig: Config;
 
 
@@ -15,14 +15,8 @@ export function activate(context: vscode.ExtensionContext) {
   let storageManager = new LocalSettingsService(context.globalState);
   let configurationService = new ConfigObservable(storageManager);
   currentConfig = configurationService.getState();
-  
-  const folding = new FoldingObserver(configurationService);
-  const typewriterMode = new TypewriterModeObserver(configurationService);
-  const formatProvider = new FormatProviderObserver(configurationService);
-  const dialogueAutoCorrect = new DialogueAutoCorrectObserver(configurationService);
-  const statusBar = new StatusBarObserver(configurationService);
-  statusBar.showHide();
 
+  const statusBar = new StatusBarObserver(configurationService);
   const enhancedBehaviour = new EnhancedEditorBehaviour(configurationService);
   const dialogueBehaviour = new EnhancedDialogueEditorBehaviour(configurationService);
 
@@ -35,12 +29,24 @@ export function activate(context: vscode.ExtensionContext) {
   const docStatisticProvider = new DocStatisticTreeDataProvider();
 
   var freqTree = vscode.window.createTreeView('wordFrequencies', { treeDataProvider: wordFrequencyProvider });
-
   const statTree = vscode.window.createTreeView('statistics', { treeDataProvider: docStatisticProvider  });
 
   const cmd = Constants.Commands;
 
   context.subscriptions.push(
+    statTree,
+    freqTree,
+    statusBar,
+    new FoldingObserver(configurationService),
+    new TypewriterModeObserver(configurationService),
+    new FormatProviderObserver(configurationService),
+    new DialogueAutoCorrectObserver(configurationService),
+    new TextDecorations(configurationService),
+    new FileTagDecorationProvider(configurationService),
+    
+    vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configurationService)),
+    vscode.window.onDidChangeActiveTextEditor(() => statusBar.showHide()),
+    
     vscode.commands.registerCommand(cmd.ON_NEW_LINE, () => behaviour().onEnterKey()),
     vscode.commands.registerCommand(cmd.ON_NEW_LINE_ALTERED, () => behaviour().onShiftEnterKey()),
     vscode.commands.registerCommand(cmd.ON_BACKSPACE, () => behaviour().onBackspaceKey()),
@@ -56,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_KEYBINDINGS, toggleKeybindingsCommand),
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, () => { WordStatTreeItemSelector.prev(freqTree.selection); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, () => { WordStatTreeItemSelector.next(freqTree.selection); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => { 
+    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => {
       freqTree.title = 'Frequencies: ' + getCurrentFile();
       wordFrequencyProvider.refresh();
     }),
@@ -70,7 +76,6 @@ export function activate(context: vscode.ExtensionContext) {
     }),
   );
 
-  vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configurationService));
 }
 
 function getCurrentFile(): string {
