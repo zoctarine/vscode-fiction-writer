@@ -10,16 +10,6 @@ This extension has the following settings:
 | Edit: Dialogue Indent             | `0`     | Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.general.dialogue-marker#`)
 | Edit: Dialogue Indent Auto Detect | `true`  | Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.general.dialogue-marker#`.
 | Edit: Typewriter Mode             | `false` |
-| View: Word Wrap Indent            | `0`     |
-| View: Fold Paragraph Sentences    | `true`  |
-| Format: Backup Before Each Format | `true` |
-| Format: Fix Mismatch Dialogue Markers | `true` :material-check: |
-| Format: Fix Dialogue Indents          | `true` |
-| Format: Fix Paragraph Spacings        | `true` |
-| Format: Remove Extra Spaces           | `true` |
-| Format: Remove Trailing Spaces        | `true` |
-| Format: Remove Extra Lines            | `true` |
-| Format: Fix Paragraph Breaks          | `true` |
 | Export: Output Format              | `odt`  |
 | Export: Show Format Picker         | `true` |
 | Export: Show Save Dialogue         | `always` |
@@ -29,7 +19,25 @@ This extension has the following settings:
 | Export: Smart Dashes               | `true` |
 | Export: Skip Comments from TOC     | `true` |
 | Export: TOC Filename               | `toc.md` |
+| Format: Fix Mismatch Dialogue Markers | `true` :material-check: |
+| Format: Fix Dialogue Indents          | `true` |
+| Format: Fix Paragraph Spacings        | `true` |
+| Format: Remove Extra Spaces           | `true` |
+| Format: Remove Trailing Spaces        | `true` |
+| Format: Remove Extra Lines            | `true` |
+| Format: Fix Paragraph Breaks          | `true` |
+| View: Word Wrap Indent            | `0`     |
+| View: Fold Paragraph Sentences    | `true` |
+| View: File Tags                   |        | Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n.**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive
+| View: File Tags Enabled           | `true` |
+| View: Highlight Dialogue          | `false` |  Highlights the text between quotes.
+| View: Highlight Dialogue Markers  | `true` | Highlights the dialogue markers (either `--`, `---`, `—` or quote marks `"`)
 
+
+*[View: Highlight Dialogu]: markdown-fiction-writer.view.highlightDialogue
+*[View: Highlight Dialogue Markers]: markdown-fiction-writer.view.highlightDialogueMarkers 
+*[View: File Tags Enabled]: markdown-fiction-writer.view.fileTagsEnabled
+*[View: File Tags]: markdown-fiction-writer.view.fileTags
 *[General: New Paragraph Handling]: markdown-fiction-writer.general.new-paragraph-handling
 *[Edit: Disable KeyBindings]: markdown-fiction-writer.edit.disableKeybindings
 *[Edit: Dialogue Marker]: markdown-fiction-writer.edit.dialogueMarker

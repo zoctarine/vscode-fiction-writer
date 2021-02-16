@@ -1,3 +1,14 @@
+# 0.0.21 - alpha21
+
+- Adds:
+ - View: Highlight dialogue markers
+ - View: Highlight quoted dialogue 
+ - View: File Tags - add small 2 letter badges to files form current directory `markdown-fiction-writer.view.fileTags`
+ - Major Refactorings to Disposable usage
+
+- Removes:
+ - `markdown-fiction-writer.format.backupBeforeEachFormat` setting. It always asks before performing formatting.
+
 # 0.0.17 - alpha17
 
 - Export: Add SaveAs dialogue to export commands.

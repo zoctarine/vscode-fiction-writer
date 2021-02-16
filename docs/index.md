@@ -30,6 +30,10 @@ Dowload from:<br>
 - [Analyze text](features/analysing)
     - count words, phrases, word repetitions, ...
 
+- [View](features/view)
+    - fold paragraph lines
+    - use simple file tags
+    - highlight dialogue markers or quoted sentences
 
 ## Installation
 
