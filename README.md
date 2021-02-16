@@ -77,6 +77,7 @@ The current version is an **early draft** implementation. Features are still mis
 
 The code is not refined and needs refactoring.
 
+[View Changelog](https://zoctarine.github.io/vscode-fiction-writer/changelog/)
 
 -----------------------------------------------------------------------------------------------------------
 
