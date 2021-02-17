@@ -48,7 +48,10 @@ export const Constants = {
     WORDFREQ_FIND_NEXT: 'fiction-writer.extension.wordFrequency.next.down',
     WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh',
     WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
-    DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh'
+    DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh',
+    TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleZenWritingMode',
+    EXIT_ZEN_MODE: 'fiction-writer.extension.exitZenWritingMode',
+    SET_FULLSCREEN_THEME: 'fiction-writer.extension.setFullscreenTheme'
   }
 };
 

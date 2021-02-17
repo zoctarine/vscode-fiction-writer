@@ -1,4 +1,12 @@
-export interface Config {
+export interface LocalConfig {
+    [key: string]: string | number | boolean | undefined | {[key:string]:string};
+    fullscreenTheme?: string;
+    bk_colorTheme?: string;
+
+    bk_fontSize?: number;
+    isFullScreen?: boolean;
+}
+export interface Config extends LocalConfig{
     dialoguePrefix: string;
     dialgoueIndent: string;
     dialgoueIndentLength: number;
@@ -34,4 +42,5 @@ export interface Config {
 
     viewFileTagsEnabled?: boolean,
     viewFileTags?: {[key:string]:string}
+    viewFullscreenFontSize?: number;
 }
