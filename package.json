@@ -289,10 +289,30 @@
             "oneSentencePerLine"
           ],
           "markdownDescription": "Formats document to one sentence per line format."
+        },
+        "markdown-fiction-writer.view.writeModeFontSize": {
+          "type": "number",
+          "default": 16,
+          "markdownDescription": "Font size for when Zen Writing Mode is enabled"
         }
       }
     },
     "commands": [
+      {
+        "command": "fiction-writer.extension.setFullscreenTheme",
+        "title": "Set Current theme as Zen Writing Mode theme",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.exitZenWritingMode",
+        "title": "Exit Zen Writing Mode",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.toggleZenWritingMode",
+        "title": "Toggle Zen Writing Mode",
+        "category": "Markdown Fiction Writer"
+      },
       {
         "command": "fiction-writer.extension.compile",
         "title": "Compile...",
@@ -336,27 +356,37 @@
       {
         "command": "fiction-writer.extension.wordFrequency.refresh",
         "title": "Refresh Word Frequencies",
-        "icon": "$(refresh)"
+        "icon": "$(refresh)",
+        "category": "Markdown Fiction Writer",
+        "when": "false"
       },
       {
         "command": "fiction-writer.extension.statistics.refresh",
         "title": "Refresh Document Statistics",
-        "icon": "$(refresh)"
+        "icon": "$(refresh)",
+        "category": "Markdown Fiction Writer",
+        "when": "false"
       },
       {
         "command": "fiction-writer.extension.wordFrequency.clear",
         "title": "Clear",
-        "icon": "$(clear-all)"
+        "icon": "$(clear-all)",
+        "category": "Markdown Fiction Writer",
+        "when": "false"
       },
       {
         "command": "fiction-writer.extension.wordFrequency.next.up",
         "title": "Select Previous",
-        "icon": "$(find-previous-match)"
+        "icon": "$(find-previous-match)",
+        "category": "Markdown Fiction Writer",
+        "when": "false"
       },
       {
         "command": "fiction-writer.extension.wordFrequency.next.down",
         "title": "Select Next",
-        "icon": "$(find-next-match)"
+        "icon": "$(find-next-match)",
+        "category": "Markdown Fiction Writer",
+        "when": "false"
       }
     ],
     "keybindings": [
@@ -407,6 +437,18 @@
         "key": "ctrl+shift+f9",
         "mac": "cmf+shift+f9",
         "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.toggleZenWritingMode",
+        "key": "ctrl+k z",
+        "mac": "cmd+k z",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.exitZenWritingMode",
+        "key": "escape escape",
+        "mac": "escape escape",
+        "when": "textInputFocus && editorLangId == markdown && inZenMode"
       }
     ],
     "grammars": [

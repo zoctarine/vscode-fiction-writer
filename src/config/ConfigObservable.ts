@@ -1,7 +1,7 @@
 import { Constants, DialogueMarkerMappings, OutputFormats } from '../utils/constants';
 import { workspace, WorkspaceConfiguration } from 'vscode';
 import { Observable } from '../observable';
-import { Config } from './Config';
+import { Config, LocalConfig } from './Config';
 import { LocalSettingsService } from './LocalSettingsService';
 
 export class ConfigObservable extends Observable<Config> {
@@ -20,7 +20,7 @@ export class ConfigObservable extends Observable<Config> {
     return { ...this.config };
   }
 
-  read<T>(config: WorkspaceConfiguration, key: string, fallback: T): T {
+  read<T>(config: WorkspaceConfiguration, key: string, fallback: T ): T {
     return config.get<T>(key, fallback);
   }
 
@@ -33,7 +33,7 @@ export class ConfigObservable extends Observable<Config> {
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editing, 'dialogueMarker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
 
-    this.config = {
+    let config = {
       inverseEnter: this.read<string>(editing, 'newParagraphHandling', Constants.Paragraph.NEW_ON_ENTER)
         === Constants.Paragraph.NEW_ON_ENTER,
       dialoguePrefix,
@@ -66,42 +66,52 @@ export class ConfigObservable extends Observable<Config> {
       formattingRemoveExtraLines: this.read<boolean>(formatting, 'removeExtraLines', true),
       formattingRemoveTrailingSpaces: this.read<boolean>(formatting, 'removeTrailingSpaces', true),
 
+      viewFileTags: this.read<{[key:string]:string}>(view, 'fileTags', {}),
+      viewFileTagsEnabled: this.read<boolean>(view, 'fileTagsEnabled', false),
+      viewDialogueHighlight: this.read<boolean>(view, 'highlightDialogue', false),
+      viewDialogueHighlightMarkers: this.read<boolean>(view, 'highlightDialogueMarkers', true),
+
+      viewFullscreenFontSize: this.read<number>(view, 'writeModeFontSize', 0),
+
       isDialogueEnabled,
-      dialgoueIndent: ''
+      dialgoueIndent: '',
     };
 
 
     // Disable dialogue related settings
     if (!isDialogueEnabled) {
-      this.config.dialgoueIndent = '';
-      this.config.dialogueIndentAutoDetect = false;
-      this.config.dialgoueIndentLength = 0;
-      this.config.dialogueMarkerAutoReplace = false;
-      this.config.dialogueMarkerAutoDetect = false;
-      this.config.formattingFixDialogueIndents = false;
-      this.config.formattingFixMismatchDialogueMarkers = false;
+      config.dialgoueIndent = '';
+      config.dialogueIndentAutoDetect = false;
+      config.dialgoueIndentLength = 0;
+      config.dialogueMarkerAutoReplace = false;
+      config.dialogueMarkerAutoDetect = false;
+      config.formattingFixDialogueIndents = false;
+      config.formattingFixMismatchDialogueMarkers = false;
     } else {
-      this.config.dialgoueIndent = ' '.repeat(
-        (this.config.dialgoueIndentLength < 0 || this.config.dialogueIndentAutoDetect)
-          ? this.config.dialoguePrefix.length
-          : this.config.dialgoueIndentLength);
+      config.dialgoueIndent = ' '.repeat(
+        (config.dialgoueIndentLength < 0 || config.dialogueIndentAutoDetect)
+          ? config.dialoguePrefix.length
+          : config.dialgoueIndentLength);
     }; 
 
-    this.config.viewFileTags = this.read<{[key:string]:string}>(view, 'fileTags', {});
-    this.config.viewFileTagsEnabled = this.read<boolean>(view, 'fileTagsEnabled', false);
-    this.config.viewDialogueHighlight = this.read<boolean>(view, 'highlightDialogue', false);
-    this.config.viewDialogueHighlightMarkers = this.read<boolean>(view, 'highlightDialogueMarkers', true);
-
     // TODO: Move some settings to extension settings.
-    let localSettings = this.localSettings.getValue<any>('config', {  });
-    this.config = { ...this.config, ...localSettings };
+    let localSettings = this.localSettings.getValue<LocalConfig>('config', { });
+    this.config = { ...config, ...localSettings };
 
     // Notify observers
     this.notify();
   }
 
-  setLocal<T>(key: string, value: T) {
-    this.localSettings.setValue<T>(key, value);
-    this.notify;
+  setLocal<T extends string | number | boolean | undefined | {[key:string]:string}>(key: string, value: T) {
+    if (!this.config) { return; }
+
+    this.config[key] = value;
+
+    let localConfig = this.localSettings.getValue<LocalConfig>('config', { });
+    localConfig[key] = value;
+    this.localSettings.setValue<LocalConfig>('config', localConfig);
+    
+    this.notify();
   }
+
 }
