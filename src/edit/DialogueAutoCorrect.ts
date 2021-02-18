@@ -1,14 +1,14 @@
 import { Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer } from '../observable';
-import { Constants, IDisposable } from '../utils';
+import { Constants, getActiveEditor, IDisposable } from '../utils';
 
 export class DialogueAutoCorrectObserver extends Observer<Config> implements IDisposable {
   constructor(observable: IObservable<Config>) {
     super(observable);
     this.tryBindTextChange();
   }
-  
+
   protected onStateChange(newState: Config): void {
     super.onStateChange(newState);
     this.tryBindTextChange();
@@ -27,8 +27,7 @@ export class DialogueAutoCorrectObserver extends Observer<Config> implements IDi
     if (!event?.contentChanges?.length) return;
     if (event.contentChanges[0].text !== ' ') return;
 
-    const editor = window.activeTextEditor;
-
+    const editor = getActiveEditor();
     if (!editor) return;
 
     let cursorPos: Position = editor.selection.active;
@@ -43,7 +42,7 @@ export class DialogueAutoCorrectObserver extends Observer<Config> implements IDi
         editor.selection.start.translate(replaceLength);
       }).then(() => {
         editor?.revealRange(editor.selection);
-      })
+      });
     }
   }
 }

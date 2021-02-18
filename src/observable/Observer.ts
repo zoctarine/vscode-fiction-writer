@@ -16,7 +16,7 @@ export abstract class Observer<T extends {}>  extends WithDisposables  implement
   }
 
   update(): void {
-    this.onStateChange(this.observable.getState())
+    this.onStateChange(this.observable.getState());
   }
 
   protected onStateChange(newState: T) {

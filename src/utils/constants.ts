@@ -2,8 +2,8 @@
 export const Constants = {
   WorkDir: '.fic',
   Paragraph: {
-    NEW_ON_ENTER: 'newParagraphOnEnter',
-    NEW_ON_SHIFT_ENTER: 'newParagraphOnShiftEnter',
+    NEW_ON_ENTER: 'Enter',
+    NEW_ON_SHIFT_ENTER: 'Shift+Enter',
   },
   Compile: {
     SaveDialogue: {
@@ -25,9 +25,9 @@ export const Constants = {
     BACKUP_DIR: '_bk',
     ParagraphBreaks: {
       NONE: 'none',
-      SOFT_BREAK_NEW_PARAGRAPH: 'softBreaksAsNewParagraphs',
-      SOFT_BREAK_SAME_PARAGRAPH: 'softBreaksInSameParagraph',
-      ONE_SENTENCE_PER_LINE: 'oneSentencePerLine'
+      SOFT_BREAK_NEW_PARAGRAPH: 'Soft line-breaks As New Paragraph',
+      SOFT_BREAK_SAME_PARAGRAPH: 'Soft line-breaks In Same Paragraph',
+      ONE_SENTENCE_PER_LINE: 'One Sentence Per Line'
     }
   },
   Commands: {
@@ -49,9 +49,9 @@ export const Constants = {
     WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh',
     WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
     DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh',
-    TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleZenWritingMode',
-    EXIT_ZEN_MODE: 'fiction-writer.extension.exitZenWritingMode',
-    SET_FULLSCREEN_THEME: 'fiction-writer.extension.setFullscreenTheme'
+    TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleEnhancedZenMode',
+    EXIT_ZEN_MODE: 'fiction-writer.extension.exitEnhancedZenMode',
+    SET_FULLSCREEN_THEME: 'fiction-writer.extension.setEnhancedZenModeTheme'
   }
 };
 
