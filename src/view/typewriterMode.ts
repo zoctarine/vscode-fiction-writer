@@ -1,7 +1,6 @@
 import { window, workspace } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer } from '../observable';
-import { getActiveEditor } from '../utils';
+import { IObservable, Observer, getActiveEditor } from '../utils';
 
 export class TypewriterModeObserver extends Observer<Config>{
 

@@ -2,8 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Config } from '../config';
-import { IObservable } from '../observable';
-import { ReservedNames } from '../utils';
+import { IObservable, ReservedNames } from '../utils';
 import { CompileFileCommand } from './CompileFileCommand';
 
 export class CompileAllCommand extends CompileFileCommand {

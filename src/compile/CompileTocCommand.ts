@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CompileFileCommand } from './CompileFileCommand';
 import { Config } from '../config';
-import { IObservable } from '../observable';
+import { IObservable } from '../utils';
 
 export class CompileTocCommand extends CompileFileCommand {
 

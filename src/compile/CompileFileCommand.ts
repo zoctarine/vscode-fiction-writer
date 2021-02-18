@@ -1,11 +1,10 @@
-import { StatusBarAlignment, StatusBarItem, Uri, window, workspace } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, Uri, window } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
 import { Config } from '../config';
-import { getActiveEditor, OutputFormats, RegEx } from '../utils';
+import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx } from '../utils';
 import { TextEditor } from 'vscode';
-import { IObservable, Observer } from '../observable';
 
 export class CompileFileCommand extends Observer<Config> {
   protected item: StatusBarItem;

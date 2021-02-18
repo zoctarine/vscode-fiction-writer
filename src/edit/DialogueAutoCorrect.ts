@@ -1,7 +1,6 @@
 import { Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer } from '../observable';
-import { Constants, getActiveEditor, IDisposable } from '../utils';
+import { IObservable, Observer, Constants, getActiveEditor, IDisposable } from '../utils';
 
 export class DialogueAutoCorrectObserver extends Observer<Config> implements IDisposable {
   constructor(observable: IObservable<Config>) {

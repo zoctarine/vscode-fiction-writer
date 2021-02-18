@@ -1,6 +1,6 @@
 import { commands } from 'vscode';
-import { Config } from '../config/interfaces';
-import { Observer } from '../observable';
+import { Config } from '../config';
+import { Observer } from '../utils';
 
 export class EnhancedEditBehaviour extends Observer<Config> {
 

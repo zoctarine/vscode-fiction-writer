@@ -1,6 +1,5 @@
-import { Constants, DialogueMarkerMappings, OutputFormats } from '../utils/constants';
-import { window, workspace, WorkspaceConfiguration } from 'vscode';
-import { Observable } from '../observable';
+import { Observable, Constants, DialogueMarkerMappings, OutputFormats } from '../utils';
+import { workspace, WorkspaceConfiguration } from 'vscode';
 import { Config, ContextConfig } from './interfaces';
 import { ContextService } from './contextService';
 

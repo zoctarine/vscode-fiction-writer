@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import { IObservable, Observer } from '../observable';
-import { Constants, getActiveEditor } from '../utils';
-import { Config } from './../config';
+import { IObservable, Observer, Constants, getActiveEditor } from '../utils';
+import { Config } from '../config';
 
 export class StatusBarObserver extends Observer<Config>{
   private buttons: vscode.StatusBarItem[];

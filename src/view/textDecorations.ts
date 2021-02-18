@@ -1,6 +1,6 @@
 import { DecorationRangeBehavior, Range, TextDocument, TextEditor, TextEditorDecorationType, window, workspace } from 'vscode';
 import * as vscode from 'vscode';
-import { IObservable, Observer } from '../observable';
+import { IObservable, Observer } from '../utils';
 import { Config } from '../config';
 
 const decorationTypes = {
