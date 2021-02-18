@@ -1,13 +1,13 @@
 import { Constants, DialogueMarkerMappings, OutputFormats } from '../utils/constants';
 import { window, workspace, WorkspaceConfiguration } from 'vscode';
 import { Observable } from '../observable';
-import { Config, LocalConfig } from './interfaces';
-import { LocalSettingsService } from './LocalSettingsService';
+import { Config, ContextConfig } from './interfaces';
+import { ContextService } from './contextService';
 
 export class ConfigService extends Observable<Config> {
   private config?: Config;
 
-  constructor(private localSettings: LocalSettingsService) {
+  constructor(private localSettings: ContextService) {
     super();
     this.reload();
   }
@@ -102,7 +102,7 @@ export class ConfigService extends Observable<Config> {
       };
       
       // TODO: Move some settings to extension settings.
-      let localSettings = this.localSettings.getValue<LocalConfig>('config', {});
+      let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
       this.config = { ...config, ...localSettings };
       
       // Notify observers
@@ -114,8 +114,8 @@ export class ConfigService extends Observable<Config> {
       
       this.config[key] = value;
 
-    let localConfig = this.localSettings.getValue<LocalConfig>('config', {});
-    this.localSettings.setValue<LocalConfig>('config', localConfig);
+    let localConfig = this.localSettings.getValue<ContextConfig>('config', {});
+    this.localSettings.setValue<ContextConfig>('config', localConfig);
     localConfig[key] = value;
 
     this.notify();

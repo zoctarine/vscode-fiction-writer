@@ -1,6 +1,6 @@
 import { Memento } from 'vscode';
 
-export class LocalSettingsService {
+export class ContextService {
 
   constructor(private storage: Memento) { }
 

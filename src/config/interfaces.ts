@@ -1,9 +1,9 @@
-export interface LocalConfig {
+export interface ContextConfig {
     [key: string]: string | number | boolean | undefined | {[key:string]:string};
     isZenMode?: boolean;
     isTypewriterMode?:boolean;
 }
-export interface Config extends LocalConfig{
+export interface Config extends ContextConfig{
     dialoguePrefix: string;
     dialgoueIndent: string;
     dialgoueIndentLength: number;

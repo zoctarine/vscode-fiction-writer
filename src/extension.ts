@@ -1,23 +1,23 @@
 import * as vscode from 'vscode';
-import { ConfigService, Config, LocalSettingsService } from './config';
+import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
-import { EnhancedEditorBehaviour, EnhancedDialogueEditorBehaviour, TypewriterModeObserver, FormatProviderObserver, DialogueAutoCorrectObserver } from "./edit";
+import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
 import { Constants, DialogueMarkerMappings } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
-import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver } from './view';
+import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 let currentConfig: Config;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  const storageManager = new LocalSettingsService(context.globalState);
+  const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
   currentConfig = configService.getState();
 
   const statusBar = new StatusBarObserver(configService);
-  const enhancedBehaviour = new EnhancedEditorBehaviour(configService);
-  const dialogueBehaviour = new EnhancedDialogueEditorBehaviour(configService);
+  const enhancedBehaviour = new EnhancedEditBehaviour(configService);
+  const dialogueBehaviour = new EnhancedEditDialogueBehaviour(configService);
 
   const behaviour = () => currentConfig.isDialogueEnabled ? dialogueBehaviour : enhancedBehaviour;
   const compileFileCommand = new CompileFileCommand(configService);
@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     statusBar,
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
-    new FormatProviderObserver(configService),
+    new CustomFormattingProvider(configService),
     new DialogueAutoCorrectObserver(configService),
     new TextDecorations(configService),
     new FileTagDecorationProvider(configService),
