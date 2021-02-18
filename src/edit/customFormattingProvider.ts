@@ -1,4 +1,4 @@
-import { DocumentFormattingEditProvider, languages, Range, TextDocument, TextEdit, TextLine, window } from 'vscode';
+import { DocumentFormattingEditProvider, languages, TextDocument, TextEdit, TextLine, window } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer } from '../observable';
 import { Constants, RegEx } from '../utils';
@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 
-export class FormatProviderObserver extends Observer<Config> implements DocumentFormattingEditProvider {
+export class CustomFormattingProvider extends Observer<Config> implements DocumentFormattingEditProvider {
 
   constructor(observable: IObservable<Config>) {
     super(observable);

@@ -2,9 +2,9 @@ import { commands, Position, Selection, window, workspace, WorkspaceEdit } from 
 import { Config } from '../config';
 import { IObservable } from '../observable';
 import { getActiveEditor, StringUtils } from '../utils';
-import { EnhancedEditorBehaviour } from "./EnhancedEditorBehaviour";
+import { EnhancedEditBehaviour } from "./enhancedEditBehaviour";
 
-export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
+export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
     constructor(config: IObservable<Config>) {
         super(config);
     }

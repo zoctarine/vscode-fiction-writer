@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { Constants } from '../utils';
 
 export class WordStatTreeItem extends vscode.TreeItem {
   constructor(

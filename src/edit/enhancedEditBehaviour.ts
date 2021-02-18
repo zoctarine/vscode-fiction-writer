@@ -2,7 +2,7 @@ import { commands } from 'vscode';
 import { Config } from '../config/interfaces';
 import { Observer } from '../observable';
 
-export class EnhancedEditorBehaviour extends Observer<Config> {
+export class EnhancedEditBehaviour extends Observer<Config> {
 
     onEnterKey(): any {
         return this.state.inverseEnter
