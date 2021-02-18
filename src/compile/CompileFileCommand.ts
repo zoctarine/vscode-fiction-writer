@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
 import { Config } from '../config';
-import { Constants, OutputFormats, RegEx } from '../utils';
+import { getActiveEditor, OutputFormats, RegEx } from '../utils';
 import { TextEditor } from 'vscode';
 import { IObservable, Observer } from '../observable';
 
@@ -18,8 +18,8 @@ export class CompileFileCommand extends Observer<Config> {
   }
 
   public async execute() {
-    const editor = window.activeTextEditor;
-    if (!editor) { return; }
+    const editor = getActiveEditor();
+    if (!editor) return;
 
     let format = undefined;
     if (this.state.compileShowFormatPicker) {
@@ -172,7 +172,7 @@ export class CompileFileCommand extends Observer<Config> {
   private loadFile(filePath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>) {
     if (opened.includes(filePath)) {
       errors.push(`File: ${filePath} is included multiple times. Skipping.`);
-      return [];
+      return;
     }
 
     const index = opened.push(filePath) - 1;

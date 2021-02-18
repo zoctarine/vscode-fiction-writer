@@ -1,5 +1,5 @@
 import { commands } from 'vscode';
-import { Config } from '../config/Config';
+import { Config } from '../config/interfaces';
 import { Observer } from '../observable';
 
 export class EnhancedEditorBehaviour extends Observer<Config> {

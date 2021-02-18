@@ -32,9 +32,9 @@ export class TextDecorations extends Observer<Config>{
   timeout: NodeJS.Timeout | null = null;
   trigger: RegExp;
 
-  decorations = new Map<string, { 
-    decoration: TextEditorDecorationType | (TextEditorDecorationType | undefined)[], 
-    pattern: RegExp, 
+  decorations = new Map<string, {
+    decoration: TextEditorDecorationType | (TextEditorDecorationType | undefined)[],
+    pattern: RegExp,
     trigger?: string[],
     isEnabled: (config: Config) => boolean
   }
@@ -80,7 +80,7 @@ export class TextDecorations extends Observer<Config>{
     let contentTriggers: string[] = [];
     this.decorations.forEach(val => {
       if (val.trigger) contentTriggers.push(...val.trigger);
-    })
+    });
     return new RegExp(`[${contentTriggers.join()}]`, 'giu');
   }
 
@@ -88,9 +88,11 @@ export class TextDecorations extends Observer<Config>{
     const fileTag = this.decorations.get('fileTag');
     if (!fileTag) return;
 
+
     const knownTags = Object.getOwnPropertyNames(this.state.viewFileTags);
-    knownTags.push(...knownTags.map(t => this.state.viewFileTags![t]?.substr(0, 2)).filter(t => t?.length > 0))
-    if (knownTags.length == 0) return;
+    if (!knownTags || knownTags.length === 0) return;
+    knownTags.push(...knownTags.map(t => this.state.viewFileTags![t]?.substr(0, 2)).filter(t => t?.length > 0));
+    if (!knownTags || knownTags.length === 0) return;
 
     fileTag.pattern = new RegExp(`(^\\/\\/\\s+)(${knownTags.join('|')})\\b`, 'gu');
 
@@ -156,7 +158,7 @@ export class TextDecorations extends Observer<Config>{
           }
         }
       };
-    })
+    });
     this.activeDecorations.forEach((value, key) => {
       editor.setDecorations(key, value);
     });
@@ -169,11 +171,11 @@ export class TextDecorations extends Observer<Config>{
     this.timeout = setTimeout(() => this.updateDecorations(editor), ms);
   }
 
-  
+
   protected onStateChange(newState: Config) {
-    if (this.state.viewDialogueHighlight != newState.viewDialogueHighlight ||
-        this.state.viewDialogueHighlightMarkers != newState.viewDialogueHighlightMarkers ||
-        this.state.viewFileTagsEnabled != newState.viewFileTagsEnabled ){
+    if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
+        this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
+        this.state.viewFileTagsEnabled !== newState.viewFileTagsEnabled ){
           this.loadTags();
           vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
         }

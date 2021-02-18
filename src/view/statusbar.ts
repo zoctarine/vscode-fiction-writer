@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
 import { IObservable, Observer } from '../observable';
-import { IDisposable } from '../utils';
+import { Constants, getActiveEditor } from '../utils';
 import { Config } from './../config';
 
-export class StatusBarObserver extends Observer<Config> implements IDisposable {
+export class StatusBarObserver extends Observer<Config>{
+  private buttons: vscode.StatusBarItem[];
   private compileButton: vscode.StatusBarItem;
   private foldButton: vscode.StatusBarItem;
   private unfoldButton: vscode.StatusBarItem;
@@ -11,11 +12,14 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
   private paragraphToggleButton: vscode.StatusBarItem;
   private typewriterToggleButton: vscode.StatusBarItem;
   private keybindingToggleButton: vscode.StatusBarItem;
+  private zenModeButton: vscode.StatusBarItem;
 
   private dialogueMarkerSelector: vscode.StatusBarItem;
 
   constructor(configuration: IObservable<Config>) {
     super(configuration);
+
+    this.buttons = [];
 
     // Toggle Keybindigns
     this.keybindingToggleButton = vscode.window.createStatusBarItem(
@@ -42,8 +46,8 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
       Number.MAX_SAFE_INTEGER,
     );
     this.paragraphToggleButton.command = 'fiction-writer.extension.toggleNewParagraph';
-    this.paragraphToggleButton.tooltip = 'Toggle new paragraph on Enter'
-    this.updateParagrahpToggle();
+    this.paragraphToggleButton.tooltip = 'Toggle new paragraph on Enter';
+    this.updateParagraphToggle();
 
     // Toggle Typewriter Mode
     this.typewriterToggleButton = vscode.window.createStatusBarItem(
@@ -51,7 +55,7 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
       Number.MAX_SAFE_INTEGER,
     );
     this.typewriterToggleButton.command = 'fiction-writer.extension.toggleTypewriterMode';
-    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter (focus) mode.'
+    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter (focus) mode.';
     this.updateTypewriterToggle();
 
     // Export: Compile
@@ -86,28 +90,37 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
     this.dialogueMarkerSelector.tooltip = 'Select dialogue editing mode (change marker).';
     this.updateDialogueSelector();
 
+    // Toggle Zen Mode
+    this.zenModeButton = vscode.window.createStatusBarItem(
+      vscode.StatusBarAlignment.Right,
+      Number.MAX_SAFE_INTEGER,
+    );
+    this.zenModeButton.command = Constants.Commands.TOGGLE_ZEN_MODE;
+    this.zenModeButton.tooltip = 'Toggle Enhanced ZenMode';
+    this.zenModeButton.text = `$(zap)`;
+
+    this.buttons.push(
+      this.settingsButton,
+      this.compileButton,
+      this.unfoldButton,
+      this.foldButton,
+      this.zenModeButton,
+      this.typewriterToggleButton,
+      this.paragraphToggleButton,
+      this.keybindingToggleButton,
+      this.dialogueMarkerSelector
+    );
+    this.buttons.forEach(b => this.addDisposable(b));
+
     this.showHide();
   }
 
   showHide() {
-    if (vscode.window.activeTextEditor?.document?.languageId == 'markdown') {
-      this.settingsButton.show();
-      this.compileButton.show();
-      this.unfoldButton.show();
-      this.foldButton.show();
-      this.typewriterToggleButton.show();
-      this.paragraphToggleButton.show();
-      this.keybindingToggleButton.show();
-      this.dialogueMarkerSelector.show();
+
+    if (getActiveEditor() && this.state.viewStatusBarEnabled) {
+      this.buttons.forEach(b => b.show());
     } else {
-      this.settingsButton.hide();
-      this.keybindingToggleButton.hide();
-      this.compileButton.hide();
-      this.unfoldButton.hide();
-      this.foldButton.hide();
-      this.typewriterToggleButton.hide();
-      this.paragraphToggleButton.hide();
-      this.dialogueMarkerSelector.hide();
+      this.buttons.forEach(b => b.hide());
     }
   }
 
@@ -117,15 +130,15 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
 
   updateKeybindingToggle() {
     if (this.state.keybindingsDisabled) {
-      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: disabled'
-      this.keybindingToggleButton.text = `$(clear-all)`
+      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: disabled';
+      this.keybindingToggleButton.text = `$(clear-all)`;
     } else {
-      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: enabled'
-      this.keybindingToggleButton.text = `$(keyboard)`
+      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: enabled';
+      this.keybindingToggleButton.text = `$(keyboard)`;
     }
   }
 
-  updateParagrahpToggle() {
+  updateParagraphToggle() {
     this.paragraphToggleButton.text = this.state.inverseEnter
       ? `$(list-selection)`
       : `$(list-flat)`;
@@ -137,26 +150,12 @@ export class StatusBarObserver extends Observer<Config> implements IDisposable {
       : `$(circle-outline)`;
   }
 
-  update(): void {
-    super.update();
-    this.updateParagrahpToggle();
+  protected onStateChange(newState: Config) {
+    super.onStateChange(newState);
+
+    this.updateParagraphToggle();
     this.updateTypewriterToggle();
     this.updateDialogueSelector();
     this.updateKeybindingToggle();
-  }
-
-  dispose() {
-    this.compileButton.dispose();
-    this.dialogueMarkerSelector.dispose();
-    this.typewriterToggleButton.dispose();
-    this.foldButton.dispose();
-    this.unfoldButton.dispose();
-    this.paragraphToggleButton.dispose();
-    this.keybindingToggleButton.dispose();
-    this.settingsButton.dispose();
-  }
-
-  public updateEditingType(newType: string) {
-    this.dialogueMarkerSelector.text = newType;
   }
 }
