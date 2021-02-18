@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ConfigObservable, Config, LocalSettingsService } from './config';
+import { ConfigService, Config, LocalSettingsService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
 import { EnhancedEditorBehaviour, EnhancedDialogueEditorBehaviour, TypewriterModeObserver, FormatProviderObserver, DialogueAutoCorrectObserver } from "./edit";
 import { Constants, DialogueMarkerMappings } from './utils';
@@ -8,22 +8,21 @@ import * as path from 'path';
 import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver } from './view';
 let currentConfig: Config;
 
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  let storageManager = new LocalSettingsService(context.globalState);
-  let configurationService = new ConfigObservable(storageManager);
-  currentConfig = configurationService.getState();
+  const storageManager = new LocalSettingsService(context.globalState);
+  const configService = new ConfigService(storageManager);
+  currentConfig = configService.getState();
 
-  const statusBar = new StatusBarObserver(configurationService);
-  const enhancedBehaviour = new EnhancedEditorBehaviour(configurationService);
-  const dialogueBehaviour = new EnhancedDialogueEditorBehaviour(configurationService);
+  const statusBar = new StatusBarObserver(configService);
+  const enhancedBehaviour = new EnhancedEditorBehaviour(configService);
+  const dialogueBehaviour = new EnhancedDialogueEditorBehaviour(configService);
 
   const behaviour = () => currentConfig.isDialogueEnabled ? dialogueBehaviour : enhancedBehaviour;
-  const compileFileCommand = new CompileFileCommand(configurationService);
-  const compileAllCommand = new CompileAllCommand(configurationService);
-  const compileTocCommand = new CompileTocCommand(configurationService);
+  const compileFileCommand = new CompileFileCommand(configService);
+  const compileAllCommand = new CompileAllCommand(configService);
+  const compileTocCommand = new CompileTocCommand(configService);
 
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
@@ -37,14 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
     statTree,
     freqTree,
     statusBar,
-    new FoldingObserver(configurationService),
-    new TypewriterModeObserver(configurationService),
-    new FormatProviderObserver(configurationService),
-    new DialogueAutoCorrectObserver(configurationService),
-    new TextDecorations(configurationService),
-    new FileTagDecorationProvider(configurationService),
+    new FoldingObserver(configService),
+    new TypewriterModeObserver(configService),
+    new FormatProviderObserver(configService),
+    new DialogueAutoCorrectObserver(configService),
+    new TextDecorations(configService),
+    new FileTagDecorationProvider(configService),
 
-    vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configurationService)),
+    vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configService)),
     vscode.window.onDidChangeActiveTextEditor(() => statusBar.showHide()),
 
     vscode.commands.registerCommand(cmd.ON_NEW_LINE, () => behaviour().onEnterKey()),
@@ -58,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.COMPILE, compileCommand),
     vscode.commands.registerCommand(cmd.SELECT_EDIT_MODE, selectDialogueMode),
     vscode.commands.registerCommand(cmd.TOGGLE_PARAGRAPH, toggleParagraphCommand),
-    vscode.commands.registerCommand(cmd.TOGGLE_TYPEWRITER, toggleTypewriterModeCommand),
+    vscode.commands.registerCommand(cmd.TOGGLE_TYPEWRITER, () => toggleTypewriterModeCommand(configService)),
     vscode.commands.registerCommand(cmd.TOGGLE_KEYBINDINGS, toggleKeybindingsCommand),
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, () => { WordStatTreeItemSelector.prev(freqTree.selection); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, () => { WordStatTreeItemSelector.next(freqTree.selection); }),
@@ -74,70 +73,65 @@ export function activate(context: vscode.ExtensionContext) {
       statTree.title = 'Statistics: ' + getCurrentFile();
       docStatisticProvider.refresh();
     }),
-    vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configurationService)),
-    vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configurationService)),
-    vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configurationService)),
+    vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
+    vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
+    vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
   );
 
 }
 
-function exitZenWritingMode(configurationService: ConfigObservable) {
-
+function exitZenWritingMode(configurationService: ConfigService) {
   vscode.commands.executeCommand('workbench.action.exitZenMode');
 
-  const workbenchConfig = vscode.workspace.getConfiguration('workbench');
-  const editorConfig = vscode.workspace.getConfiguration('editor');
-
-  const changeThemeTo = configurationService.getState().bk_colorTheme;
-  const changeFontTo = configurationService.getState().bk_fontSize;
-
-  if (changeThemeTo) { workbenchConfig.update('colorTheme', changeThemeTo); }
-  if (changeFontTo) { editorConfig.update('fontSize', changeFontTo); }
-
-  configurationService.setLocal('isFullScreen', false);
+  configurationService.restore('workbench', 'colorTheme');
+  configurationService.restore('editor', 'fontSize');
+  configurationService.setLocal('isZenMode', false);
 }
 
-function toggleZenWritingMode(configurationService: ConfigObservable) {
-
-  const isInWritingMode = configurationService.getState().isFullScreen;
+function enterZenWritingMode(configurationService: ConfigService) {
+  const changeThemeTo = configurationService.getState().viewZenModeTheme;
+  const changeFontTo = configurationService.getState().viewZenModeFontSize;
   vscode.commands.executeCommand('workbench.action.toggleZenMode');
 
-  const workbenchConfig = vscode.workspace.getConfiguration('workbench');
-  const editorConfig = vscode.workspace.getConfiguration('editor');
+  if (changeThemeTo) {
+    configurationService.backup('workbench', 'colorTheme');
+    vscode.workspace.getConfiguration('workbench').update('colorTheme', changeThemeTo);
+  }
 
-  // Exit Writing Mode
-  if (isInWritingMode) {
-    const changeThemeTo = configurationService.getState().bk_colorTheme;
-    const changeFontTo = configurationService.getState().bk_fontSize;
+  if (changeFontTo && changeFontTo > 0) {
+    configurationService.backup('editor', 'fontSize');
+    vscode.workspace.getConfiguration('editor').update('fontSize', changeFontTo);
+  }
+  configurationService.setLocal('isZenMode', true);
+}
 
-    if (changeThemeTo) { workbenchConfig.update('colorTheme', changeThemeTo); }
-    if (changeFontTo) { editorConfig.update('fontSize', changeFontTo); }
-  } else {
+async function toggleZenWritingMode(configService: ConfigService) {
+  if (!configService.getFlag('isAgreeZenMode')) {
+    const option = await vscode.window.showWarningMessage(
+      'Enhanced ZenMode overrides some editor settings.\n\n' +
+      'It can be that some settings would need to be restored manually.\n\n' +
+      'Please refer to: .',
+      'OK, Continue', 'Cancel');
 
-    // Enter writing mode
-    const changeThemeTo = configurationService.getState().fullscreenTheme;
-    const changeFontTo = configurationService.getState().viewFullscreenFontSize;
-
-    if (changeThemeTo) {
-      configurationService.setLocal('bk_colorTheme', workbenchConfig.get<string>('colorTheme'));
-      workbenchConfig.update('colorTheme', changeThemeTo);
-    }
-
-    if (changeFontTo && changeFontTo > 0) {
-      configurationService.setLocal('bk_fontSize', editorConfig.get<string>('fontSize'));
-      editorConfig.update('fontSize', changeFontTo);
+    if (option === 'Cancel') {
+      return;
+    } else {
+      configService.setFlag('isAgreeZenMode');
     }
   }
 
-  configurationService.setLocal('isFullScreen', !isInWritingMode);
+  if (configService.getState().isZenMode) {
+    exitZenWritingMode(configService);
+  } else {
+    enterZenWritingMode(configService);
+  }
 }
 
 
-function setFullscreenTheme(configurationService: ConfigObservable) {
-  const currentTheme = vscode.workspace.getConfiguration('workbench').get<string>('colorTheme');
-  configurationService.setLocal('fullscreenTheme', currentTheme);
-
-  vscode.window.showInformationMessage(`Zen Writing Mode theme set to: ${currentTheme}`);
+function setFullscreenTheme(configurationService: ConfigService) {
+  const theme = configurationService.backup('workbench', 'colorTheme');
+  vscode.workspace.getConfiguration('markdown-fiction-writer.view.enhancedZenMode').update('theme', theme, vscode.ConfigurationTarget.Global);
+  vscode.window.showInformationMessage(`Zen Writing Mode theme set to: ${theme}`);
 }
 
 function getCurrentFile(): string {
@@ -150,16 +144,19 @@ function getCurrentFile(): string {
 }
 
 function compileCommand() {
-  const options: { [key: string]: string; } = {
-    'Compile: Current file': 'fiction-writer.extension.compileFile',
-    'Compile: TOC file': 'fiction-writer.extension.compileToc',
-    'Compile: Selection of files from current folder': 'fiction-writer.extension.compileAll',
-    'Cancel': '',
-  };
+  const options = new Map<string, string>([
+    ['Compile: Current file', 'fiction-writer.extension.compileFile'],
+    ['Compile: TOC file', 'fiction-writer.extension.compileToc'],
+    ['Compile: Selection of files from current folder', 'fiction-writer.extension.compileAll'],
+    ['Cancel', '']
+  ]);
   vscode.window.showQuickPick(Object.keys(options), { 'canPickMany': false, 'ignoreFocusOut': false })
     .then(selection => {
-      if (selection && selection !== 'Cancel') {
-        vscode.commands.executeCommand(options[selection]);
+      if (!selection) return;
+
+      const cmd = options.get(selection);
+      if (cmd) {
+        vscode.commands.executeCommand(cmd);
       }
     });
 }
@@ -168,35 +165,49 @@ function selectDialogueMode() {
   vscode.window.showQuickPick(Object.keys(DialogueMarkerMappings), { 'canPickMany': false, 'ignoreFocusOut': false })
     .then(selection => {
       if (selection && selection !== 'Cancel') {
-        let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-        config.update('dialogueMarker', selection, vscode.ConfigurationTarget.Workspace);
+        vscode.workspace
+        .getConfiguration('markdown-fiction-writer.editDialogue')
+        .update('marker', selection, vscode.ConfigurationTarget.Global);
       }
     });
 }
 
 function toggleParagraphCommand() {
   let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<string>('newParagraphHandling');
+  let current = config.get<string>('easyParagraphCreation');
   if (current === Constants.Paragraph.NEW_ON_ENTER) {
-    config.update('newParagraphHandling', Constants.Paragraph.NEW_ON_SHIFT_ENTER, vscode.ConfigurationTarget.Workspace);
+    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_SHIFT_ENTER, vscode.ConfigurationTarget.Global);
   } else {
-    config.update('newParagraphHandling', Constants.Paragraph.NEW_ON_ENTER, vscode.ConfigurationTarget.Workspace);
+    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER, vscode.ConfigurationTarget.Global);
   }
 }
 
-function toggleTypewriterModeCommand() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<boolean>('typewriterMode');
-  config.update('typewriterMode', !current, vscode.ConfigurationTarget.Workspace);
+async function toggleTypewriterModeCommand(configService: ConfigService) {
+  if (!configService.getFlag('isAgreeTypewriterMode')) {
+    const option = await vscode.window.showWarningMessage(
+      'Typewriter Mode overrides some editor settings.\n\n' +
+      'It can be that some settings would need to be restored manually.\n\n' +
+      'Please refer to: <a href="#">Tesst</a>.',
+      'OK, Continue', 'Cancel');
+
+    if (option === 'Cancel') {
+      return;
+    } else {
+      configService.setFlag('isAgreeTypewriterMode');
+    }
+  }
+
+  currentConfig.isTypewriterMode = !currentConfig.isTypewriterMode;
+  configService.setLocal('isTypewriterMode', currentConfig.isTypewriterMode);
 }
 
 function toggleKeybindingsCommand() {
   let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
   let current = config.get<boolean>('disableKeybindings');
-  config.update('disableKeybindings', !current, vscode.ConfigurationTarget.Workspace);
+  config.update('disableKeybindings', !current, vscode.ConfigurationTarget.Global);
 }
 
-async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigObservable) {
+async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
   if (event.affectsConfiguration('markdown-fiction-writer')) {
     const previousConfig = { ...currentConfig };
     configuration.reload();
@@ -215,8 +226,8 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
       });
 
       if (selectedTemplate) {
-        vscode.workspace.getConfiguration('markdown-fiction-writer.export')
-          .update('templateFile', selectedTemplate[0].fsPath, vscode.ConfigurationTarget.Global);
+        vscode.workspace.getConfiguration('markdown-fiction-writer.export.outputTemplate')
+          .update('file', selectedTemplate[0].fsPath, vscode.ConfigurationTarget.Global);
       }
     }
 

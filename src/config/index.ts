@@ -1,3 +1,3 @@
-export * from './Config';
-export * from './ConfigObservable';
+export * from './interfaces';
+export * from './ConfigService';
 export * from './LocalSettingsService';
