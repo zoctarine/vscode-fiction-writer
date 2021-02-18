@@ -1,7 +1,6 @@
 import { commands, Position, Selection, window, workspace, WorkspaceEdit } from 'vscode';
 import { Config } from '../config';
-import { IObservable } from '../observable';
-import { getActiveEditor, StringUtils } from '../utils';
+import { IObservable, getActiveEditor, StringUtils } from '../utils';
 import { EnhancedEditBehaviour } from "./enhancedEditBehaviour";
 
 export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {

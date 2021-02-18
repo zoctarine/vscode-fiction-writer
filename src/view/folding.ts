@@ -2,7 +2,7 @@ import {
   FoldingContext, FoldingRange, FoldingRangeKind, FoldingRangeProvider, Disposable,
   CancellationToken, TextDocument, languages
 } from 'vscode';
-import { IObservable, Observer } from '../observable';
+import { IObservable, Observer } from '../utils';
 import { Config } from '../config';
 
 class ParagraphFoldingProvider implements FoldingRangeProvider {

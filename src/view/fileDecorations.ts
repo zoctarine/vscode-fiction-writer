@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { Observer, IObservable } from '../observable';
+import { Observer, IObservable } from '../utils';
 import { Config } from '../config';
 
 export class FileTagDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {

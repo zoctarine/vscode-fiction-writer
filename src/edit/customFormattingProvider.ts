@@ -1,7 +1,6 @@
 import { DocumentFormattingEditProvider, languages, TextDocument, TextEdit, TextLine, window } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer } from '../observable';
-import { Constants, RegEx } from '../utils';
+import { IObservable, Observer, Constants, RegEx } from '../utils';
 import * as fs from 'fs';
 import * as path from 'path';
 

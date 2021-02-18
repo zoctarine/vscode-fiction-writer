@@ -3,7 +3,7 @@ import { TextEditor, window } from 'vscode';
 export * from './constants';
 export * from './disposables';
 export * as StringUtils from './strings';
-
+export * from './observables';
 /**
  * Checks that the editor is valid editor for this extension
  * @param editor Usually the active text editor
