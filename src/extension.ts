@@ -145,13 +145,14 @@ function getCurrentFile(): string {
 
 function compileCommand() {
   const options = new Map<string, string>([
-    ['Compile: Current file', 'fiction-writer.extension.compileFile'],
-    ['Compile: TOC file', 'fiction-writer.extension.compileToc'],
-    ['Compile: Selection of files from current folder', 'fiction-writer.extension.compileAll'],
+    ['Compile current document', 'fiction-writer.extension.compileFile'],
+    [`Compile TOC file: ${currentConfig.compileTocFilename}`, 'fiction-writer.extension.compileToc'],
+    ['Compile all documents', 'fiction-writer.extension.compileAll'],
     ['Cancel', '']
   ]);
-  vscode.window.showQuickPick(Object.keys(options), { 'canPickMany': false, 'ignoreFocusOut': false })
+  vscode.window.showQuickPick([...options.keys()], { 'canPickMany': false, 'ignoreFocusOut': false })
     .then(selection => {
+      console.log(selection);
       if (!selection) return;
 
       const cmd = options.get(selection);
