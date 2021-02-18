@@ -112,6 +112,7 @@
         "markdown-fiction-writer.edit.newParagraphHandling": {
           "type": "string",
           "default": "newParagraphOnEnter",
+          "scope": "application",
           "markdownDescription": "The `enter` key produces a new paragraph",
           "enum": [
             "newParagraphOnEnter",
@@ -120,11 +121,13 @@
         },
         "markdown-fiction-writer.edit.disableKeybindings": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "Disable custom editing keybindings.\n\n**Note:** all `#markdown-fiction-writer.editing#` settings will be disabled."
         },
         "markdown-fiction-writer.edit.dialogueMarker": {
           "type": "string",
+          "scope": "application",
           "default": "-- ",
           "markdownDescription": "Dialogue marker.",
           "enum": [
@@ -135,40 +138,60 @@
             "—Hello, (em-dash, no space)",
             "--Hello, (two dashes, no space)",
             "---Hello, (three dashes, no space)"
+          ],
+          "markdownEnumDescriptions": [
+            "Quotes: \"Hello,\" John said.",
+            "Em-dash followed by one space: \n\n — Hello, John said.",
+            "Two dashes followed by one space: \n\n -- Hello, John said.",
+            "Three dashes followed by one space: \n\n --- Hello, John said.",
+            "Em-dash, no space: \n\n —Hello, John said.",
+            "Two dashes, no space: \n\n --Hello, John said.",
+            "Three dashes, no space: \n\n ---Hello, John said."
           ]
         },
         "markdown-fiction-writer.edit.dialogueMarkerAutoReplace": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
         },
         "markdown-fiction-writer.edit.dialogueIndent": {
           "type": "number",
+          "scope": "application",
           "default": 3,
-          "markdownDescription": "Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.edit.dialogueMarker#`)"
+          "minimum": 0,
+          "maximum": 100,
+          "markdownDescription": "Dialogue line indenting. (`0` for no indenting)"
         },
         "markdown-fiction-writer.edit.dialogueIndentAutoDetect": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.edit.dialogueMarker#`."
         },
         "markdown-fiction-writer.edit.typewriterMode": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "Rudimentary implementation of typewriter mode (centerd typing).\n\n**Warning:** it changes `#editor.cursorSurroundingLines#` workspace setting."
         },
         "markdown-fiction-writer.view.wordWrapIndent": {
           "type": "number",
+          "scope": "application",
           "default": 0,
+          "minimum": -1,
+          "maximum": 100,
           "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if [Editor: Word Wrap](#editor.wordWrap) is enabled, and changes the [Editor: tabSize](#editor.tabSize) setting for `markdown`._"
         },
         "markdown-fiction-writer.view.foldSentences": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "description": "Treats paragraphs as folding entities"
         },
         "markdown-fiction-writer.view.fileTags": {
           "type": "object",
+          "scope": "application",
           "markdownDescription": "Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n.**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive",
           "additionalProperties": {
             "type": "string",
@@ -177,21 +200,25 @@
         },        
         "markdown-fiction-writer.view.fileTagsEnabled": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "Adds support for adding file tags, and displaying the corresponding badge in file explorer."
         },
         "markdown-fiction-writer.view.highlightDialogue": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "Highlights the text between quotes."
         },
         "markdown-fiction-writer.view.highlightDialogueMarkers": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "Highlights the dialogue markers (either -- or quote marks)"
         },       
         "markdown-fiction-writer.export.outputFormat": {
           "type": "string",
+          "scope": "application",
           "default": "odt",
           "enum": [
             "docx",
@@ -207,11 +234,13 @@
         },
         "markdown-fiction-writer.export.showFormatPicker": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "Always show format picker before running convert command. If set to `false`, the selected `#markdown-fiction-writer.export.outputFormat#` will be selected."
         },
         "markdown-fiction-writer.export.showSaveDialogue": {
           "type": "string",
+          "scope": "application",
           "default": "always",
           "enum": [
             "always",
@@ -221,65 +250,78 @@
         },
         "markdown-fiction-writer.export.useTemplateFile": {
           "type": "boolean",
+          "scope": "application",
           "default": false,
           "markdownDescription": "If the template file from `#markdown-fiction-writer.export.templateFile#` should be used when compiling to markdown."
         },
         "markdown-fiction-writer.export.templateFile": {
           "type": "string",
+          "scope": "application",
           "default": "",
           "markdownDescription": "The output template to be used when compiling to `docx` or `odt`. **Note:** the template extension must match the output type. It can be absolut path, or relative to compiled document."
         },
         "markdown-fiction-writer.export.tocFilename": {
           "type": "string",
+          "scope": "application",
           "default": "toc.md",
           "markdownDescription": "The filename that can be quickly compiled using Compile TOC command"
         },
         "markdown-fiction-writer.export.smartDeshes": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "Convert `--` to `em-dash` (—) character. If not selected, it will defaul to `en-dash` (–)"
         },
         "markdown-fiction-writer.export.skipCommentsFromToc": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "When parsing `toc.md, skips lines starting with `//`. "
         },
         "markdown-fiction-writer.format.enableDocumentFormatting": {
           "type": "boolean",
+          "scope": "application",
           "default": true,
           "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out."
         },
         "markdown-fiction-writer.format.fixMismatchDialogueMarkers": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "If `#markdown-fiction-writer.edit.dialogueMarker#` is not quotes, replaces mismatched dialogue markers with current selected marker."
         },
         "markdown-fiction-writer.format.fixDialogueIndents": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "If `#markdown-fiction-writer.edit.dialogueMarker#` is not quotes, indents are inabled, reformats dialogue indents to selected dialogue indent."
         },
         "markdown-fiction-writer.format.fixParagraphSpacing": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
         },
         "markdown-fiction-writer.format.removeExtraSpaces": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Replace multiple spaces from paragraphs or sentenes (not at the begining of line) with one space."
         },
         "markdown-fiction-writer.format.removeExtraLines": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Replace multiple empty lines (more than two)."
         },
         "markdown-fiction-writer.format.removeTrailingSpaces": {
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Remove all whitespace characters from line ends."
         },
         "markdown-fiction-writer.format.fixParagraphBreaks": {
+          "scope": "application",
           "type": "string",
           "default": "none",
           "enum": [
@@ -291,8 +333,11 @@
           "markdownDescription": "Formats document to one sentence per line format."
         },
         "markdown-fiction-writer.view.writeModeFontSize": {
+          "scope": "application",
           "type": "number",
           "default": 16,
+          "minimum": 5,
+          "maximum": 100,
           "markdownDescription": "Font size for when Zen Writing Mode is enabled"
         }
       }
