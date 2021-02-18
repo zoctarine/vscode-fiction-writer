@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getActiveEditor } from '../utils';
 import { WordStatTreeItem } from './WordStatTreeItem';
 
 class TextSelector {
@@ -27,21 +28,21 @@ class TextSelector {
           return text.lastIndexOf(search);
         }
         return index;
-      })
+      });
     } catch (error) {
       // debug write error
     }
   }
 
   private find(selection: WordStatTreeItem[], findAction: (text: string, search: string) => number) {
-    const editor = vscode.window.activeTextEditor;
+    const editor = getActiveEditor();
     if (!editor) return;
-    if (!selection || selection.length == 0) return;
+    if (!selection || selection.length === 0) return;
 
     const search = selection[0].label;
     const text = editor.document.getText();
 
-    if (search != this.lastSearch) {
+    if (search !== this.lastSearch) {
       this.lastIndex = 0;
     }
 

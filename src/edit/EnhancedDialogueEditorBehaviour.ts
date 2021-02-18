@@ -1,7 +1,7 @@
 import { commands, Position, Selection, window, workspace, WorkspaceEdit } from 'vscode';
 import { Config } from '../config';
 import { IObservable } from '../observable';
-import { StringUtils } from '../utils';
+import { getActiveEditor, StringUtils } from '../utils';
 import { EnhancedEditorBehaviour } from "./EnhancedEditorBehaviour";
 
 export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
@@ -10,9 +10,9 @@ export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
     }
 
     protected onNewLine() {
-        let editor = window.activeTextEditor;
-        if (!editor)
-            return;
+        let editor = getActiveEditor();
+        if (!editor) return;
+
         let selection: Selection = editor.selection;
         let cursorPos: Position = editor.selection.active;
         let line = editor.document.lineAt(cursorPos.line);
@@ -46,9 +46,8 @@ export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
     }
 
     protected onNewParagraph() {
-        let editor = window.activeTextEditor;
-        if (!editor)
-            return;
+        const editor = getActiveEditor();
+        if (!editor) return;
 
         let selection: Selection = editor.selection;
         let cursorPos: Position = editor.selection.active;
@@ -83,9 +82,8 @@ export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
         });
     }
     onTabKey() {
-        let editor = window.activeTextEditor;
-        if (!editor)
-            return;
+        const editor = getActiveEditor();
+        if (!editor) return;
 
         let selection: Selection = editor.selection;
         let cursorPos: Position = editor.selection.active;
@@ -117,9 +115,8 @@ export class EnhancedDialogueEditorBehaviour extends EnhancedEditorBehaviour {
         return super.onTabKey();
     }
     onBackspaceKey(): any {
-        let editor = window.activeTextEditor;
-        if (!editor)
-            return;
+        const editor = getActiveEditor();
+        if (!editor) return;
 
         let cursorPos: Position = editor.selection.active;
         let line = editor.document.lineAt(cursorPos.line);

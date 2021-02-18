@@ -42,10 +42,10 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
 
   protected onStateChange(newState: Config) {
     let prev = { ...this.state };
-    
+
     super.onStateChange(newState);
-    
-    if (newState.viewFileTags != prev.viewFileTags || newState.viewFileTagsEnabled != prev.viewFileTagsEnabled) {
+
+    if (JSON.stringify(newState.viewFileTags) != JSON.stringify(prev.viewFileTags) || newState.viewFileTagsEnabled != prev.viewFileTagsEnabled) {
       this.loadDecorations();
       this.register();
 

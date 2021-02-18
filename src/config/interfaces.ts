@@ -1,4 +1,9 @@
-export interface Config {
+export interface LocalConfig {
+    [key: string]: string | number | boolean | undefined | {[key:string]:string};
+    isZenMode?: boolean;
+    isTypewriterMode?:boolean;
+}
+export interface Config extends LocalConfig{
     dialoguePrefix: string;
     dialgoueIndent: string;
     dialgoueIndentLength: number;
@@ -11,9 +16,8 @@ export interface Config {
     viewDialogueHighlightMarkers?: boolean;
     foldSentences?: boolean;
     inverseEnter?: boolean;
-    isTypewriterMode?: boolean;
     isDialogueEnabled?: boolean;
-    
+
     formattingIsEnabled?: boolean;
     formattingFixMismatchDialogueMarkers?: boolean;
     formattingFixDialogueIndents?: boolean;
@@ -22,7 +26,7 @@ export interface Config {
     formattingRemoveExtraSpaces?: boolean;
     formattingRemoveExtraLines?: boolean;
     formattingRemoveTrailingSpaces?: boolean,
-    
+
     compileTemplateFile: string,
     compileOutputFormat: string,
     compileUseTemplateFile?: boolean,
@@ -34,4 +38,9 @@ export interface Config {
 
     viewFileTagsEnabled?: boolean,
     viewFileTags?: {[key:string]:string}
+    viewZenModeEnabled?: boolean;
+    viewZenModeFontSize?: number;
+    viewZenModeTheme?: string;
+
+    viewStatusBarEnabled?: boolean;
 }
