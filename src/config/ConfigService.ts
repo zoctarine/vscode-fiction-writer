@@ -49,8 +49,8 @@ export class ConfigService extends Observable<Config> {
       compileTemplateFile: this.read<string>(exporting, 'outputTemplate.file', ''),
       compileUseTemplateFile: this.read<boolean>(exporting, 'outputTemplate.enabled', false),
       compileOutputFormat: this.read<string>(exporting, 'outputFormat.default', OutputFormats['odt']),
-      compileEmDash: this.read<boolean>(exporting, 'smartDeshes', true),
       compileShowFormatPicker: this.read<boolean>(exporting, 'outputFormat.alwaysShowFormatPicker', true),
+      compileEmDash: this.read<boolean>(exporting, 'smartDeshes', true),
       compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)
       === Constants.Compile.SaveDialogue.ALWAYS,
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),

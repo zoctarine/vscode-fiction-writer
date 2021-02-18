@@ -400,7 +400,7 @@
       },
       {
         "command": "fiction-writer.extension.compileToc",
-        "title": "Compile toc.md",
+        "title": "Compile TOC file",
         "category": "Markdown Fiction Writer"
       },
       {
