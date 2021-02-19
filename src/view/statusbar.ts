@@ -11,7 +11,7 @@ export class StatusBarObserver extends Observer<Config>{
   private paragraphToggleButton: vscode.StatusBarItem;
   private typewriterToggleButton: vscode.StatusBarItem;
   private keybindingToggleButton: vscode.StatusBarItem;
-  private zenModeButton: vscode.StatusBarItem;
+  private writingModeToggleButton: vscode.StatusBarItem;
 
   private dialogueMarkerSelector: vscode.StatusBarItem;
 
@@ -90,20 +90,20 @@ export class StatusBarObserver extends Observer<Config>{
     this.updateDialogueSelector();
 
     // Toggle Zen Mode
-    this.zenModeButton = vscode.window.createStatusBarItem(
+    this.writingModeToggleButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.zenModeButton.command = Constants.Commands.TOGGLE_ZEN_MODE;
-    this.zenModeButton.tooltip = 'Toggle Enhanced ZenMode';
-    this.zenModeButton.text = `$(zap)`;
+    this.writingModeToggleButton.command = Constants.Commands.TOGGLE_ZEN_MODE;
+    this.writingModeToggleButton.tooltip = 'Toggle Writing Mode';
+    this.updateWritingModeToggle();
 
     this.buttons.push(
       this.settingsButton,
       this.compileButton,
       this.unfoldButton,
       this.foldButton,
-      this.zenModeButton,
+      this.writingModeToggleButton,
       this.typewriterToggleButton,
       this.paragraphToggleButton,
       this.keybindingToggleButton,
@@ -137,6 +137,11 @@ export class StatusBarObserver extends Observer<Config>{
     }
   }
 
+  updateWritingModeToggle() {
+    this.writingModeToggleButton.text = this.state.isZenMode 
+      ? `$(zap)`
+      : `-`
+  }
   updateParagraphToggle() {
     this.paragraphToggleButton.text = this.state.inverseEnter
       ? `$(list-selection)`
@@ -156,5 +161,6 @@ export class StatusBarObserver extends Observer<Config>{
     this.updateTypewriterToggle();
     this.updateDialogueSelector();
     this.updateKeybindingToggle();
+    this.updateWritingModeToggle();
   }
 }

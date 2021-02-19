@@ -313,25 +313,19 @@
             "Splits lines into sentences. Each sentence is on a separate line."
           ]
         },
-        "markdown-fiction-writer.view.enhancedZenMode.enabled": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "If enabled, the default keyboard shortcuts for Zen Mode will be overloaded with enhanced version."
-        },
-        "markdown-fiction-writer.view.enhancedZenMode.theme": {
+        "markdown-fiction-writer.view.writingMode.theme": {
           "scope": "application",
           "type": "string",
           "default": "",
-          "markdownDescription": "The theme to be used in Enhanced Zen Mode. _(leave empty for no theme switch)_"
+          "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
         },
-        "markdown-fiction-writer.view.enhancedZenMode.fontSize": {
+        "markdown-fiction-writer.view.writingMode.fontSize": {
           "scope": "application",
           "type": "number",
           "default": 16,
           "minimum": 5,
           "maximum": 100,
-          "markdownDescription": "The font size to be used in Enhanced Zen Mode."
+          "markdownDescription": "The font size to be used in Writing Mode Mode."
         },
         "markdown-fiction-writer.view.statusBar.enabled": {
           "scope": "application",
@@ -369,17 +363,17 @@
     },
     "commands": [
       {
-        "command": "fiction-writer.extension.setEnhancedZenModeTheme",
+        "command": "fiction-writer.extension.setWritingModeTheme",
         "title": "Set Current theme as Enhanced Zen Mode theme",
         "category": "Markdown Fiction Writer"
       },
       {
-        "command": "fiction-writer.extension.exitEnhancedZenMode",
+        "command": "fiction-writer.extension.exitWritingMode",
         "title": "Exit Enhanced Zen Mode",
         "category": "Markdown Fiction Writer"
       },
       {
-        "command": "fiction-writer.extension.toggleEnhancedZenMode",
+        "command": "fiction-writer.extension.toggleWritingMode",
         "title": "Toggle Enhanced Zen Mode",
         "category": "Markdown Fiction Writer"
       },
@@ -509,16 +503,16 @@
         "when": "textInputFocus && editorLangId == markdown"
       },
       {
-        "command": "fiction-writer.extension.toggleEnhancedZenMode",
+        "command": "fiction-writer.extension.toggleWritingMode",
         "key": "ctrl+k z",
         "mac": "cmd+k z",
-        "when": "config.markdown-fiction-writer.view.enhancedZenMode.enabled && textInputFocus && editorLangId == markdown"
+        "when": "config.markdown-fiction-writer.view.writingMode.enabled && textInputFocus && editorLangId == markdown"
       },
       {
-        "command": "fiction-writer.extension.exitEnhancedZenMode",
+        "command": "fiction-writer.extension.exitWritingMode",
         "key": "escape escape",
         "mac": "escape escape",
-        "when": "config.markdown-fiction-writer.view.enhancedZenMode.enabled && textInputFocus && editorLangId == markdown && inZenMode"
+        "when": "config.markdown-fiction-writer.view.writingMode.enabled && textInputFocus && editorLangId == markdown && inZenMode"
       }
     ],
     "grammars": [

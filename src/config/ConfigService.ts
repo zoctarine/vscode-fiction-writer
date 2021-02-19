@@ -71,9 +71,9 @@ export class ConfigService extends Observable<Config> {
       viewDialogueHighlight: this.read<boolean>(view, 'highlight.textBetweenQuotes', false),
       viewDialogueHighlightMarkers: this.read<boolean>(view, 'highlight.dialogueMarkers', true),
       
-      viewZenModeEnabled: this.read<boolean>(view, 'enhancedZenMode.enabled', false),
-      viewZenModeTheme: this.read<string>(view, 'enhancedZenMode.theme', ''),
-      viewZenModeFontSize: this.read<number>(view, 'enhancedZenMode.fontSize', 0),
+      viewZenModeEnabled: this.read<boolean>(view, 'writingMode.enabled', false),
+      viewZenModeTheme: this.read<string>(view, 'writingMode.theme', ''),
+      viewZenModeFontSize: this.read<number>(view, 'writingMode.fontSize', 0),
       wrapIndent: this.read<number>(view, 'wordWrapIndent', 0),
       
       foldSentences: this.read<boolean>(view, 'foldParagraphLines', true),
@@ -103,7 +103,7 @@ export class ConfigService extends Observable<Config> {
       // TODO: Move some settings to extension settings.
       let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
       this.config = { ...config, ...localSettings };
-      
+      console.log(this.config.isZenMode);
       // Notify observers
       this.notify();
     }
@@ -114,9 +114,10 @@ export class ConfigService extends Observable<Config> {
       this.config[key] = value;
 
     let localConfig = this.localSettings.getValue<ContextConfig>('config', {});
-    this.localSettings.setValue<ContextConfig>('config', localConfig);
     localConfig[key] = value;
-
+    this.localSettings.setValue<ContextConfig>('config', localConfig);
+    console.log(this.config.isZenMode);
+ 
     this.notify();
   }
 

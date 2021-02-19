@@ -81,8 +81,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function exitZenWritingMode(configurationService: ConfigService) {
-  vscode.commands.executeCommand('workbench.action.exitZenMode');
-
   configurationService.restore('workbench', 'colorTheme');
   configurationService.restore('editor', 'fontSize');
   configurationService.setLocal('isZenMode', false);
@@ -91,7 +89,6 @@ function exitZenWritingMode(configurationService: ConfigService) {
 function enterZenWritingMode(configurationService: ConfigService) {
   const changeThemeTo = configurationService.getState().viewZenModeTheme;
   const changeFontTo = configurationService.getState().viewZenModeFontSize;
-  vscode.commands.executeCommand('workbench.action.toggleZenMode');
 
   if (changeThemeTo) {
     configurationService.backup('workbench', 'colorTheme');
@@ -130,7 +127,7 @@ async function toggleZenWritingMode(configService: ConfigService) {
 
 function setFullscreenTheme(configurationService: ConfigService) {
   const theme = configurationService.backup('workbench', 'colorTheme');
-  vscode.workspace.getConfiguration('markdown-fiction-writer.view.enhancedZenMode').update('theme', theme, vscode.ConfigurationTarget.Global);
+  vscode.workspace.getConfiguration('markdown-fiction-writer.view.writingMode').update('theme', theme, vscode.ConfigurationTarget.Global);
   vscode.window.showInformationMessage(`Zen Writing Mode theme set to: ${theme}`);
 }
 
