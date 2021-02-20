@@ -33,6 +33,7 @@ export class StatusBarObserver extends Observer<Config>{
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
+    this.settingsButton.tooltip = `Open extension settings`
     this.settingsButton.text = `$(settings-gear)`;
     this.settingsButton.command = {
       title: 'Open Settings', command: 'workbench.action.openSettings', arguments: [
@@ -54,7 +55,7 @@ export class StatusBarObserver extends Observer<Config>{
       Number.MAX_SAFE_INTEGER,
     );
     this.typewriterToggleButton.command = 'fiction-writer.extension.toggleTypewriterMode';
-    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter (focus) mode.';
+    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter (focus) mode';
     this.updateTypewriterToggle();
 
     // Export: Compile
@@ -63,6 +64,7 @@ export class StatusBarObserver extends Observer<Config>{
       Number.MAX_SAFE_INTEGER,
     );
     this.compileButton.text = `$(desktop-download) Export`;
+    this.compileButton.tooltip = `Compile/Export document(s)`;
     this.compileButton.command = 'fiction-writer.extension.compile';
 
     this.foldButton = vscode.window.createStatusBarItem(
@@ -71,7 +73,7 @@ export class StatusBarObserver extends Observer<Config>{
     );
     this.foldButton.text = `$(folding-collapsed)`;
     this.foldButton.command = 'editor.foldAllMarkerRegions';
-    this.foldButton.tooltip = 'Fold all Sentences';
+    this.foldButton.tooltip = 'Fold all';
 
     this.unfoldButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
@@ -79,14 +81,14 @@ export class StatusBarObserver extends Observer<Config>{
     );
     this.unfoldButton.text = `$(folding-expanded)`;
     this.unfoldButton.command = 'editor.unfoldAllMarkerRegions';
-    this.unfoldButton.tooltip = 'Unfold All Sentences';
+    this.unfoldButton.tooltip = 'Unfold All';
 
     this.dialogueMarkerSelector = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER
     );
     this.dialogueMarkerSelector.command = 'fiction-writer.extension.selectEditMode';
-    this.dialogueMarkerSelector.tooltip = 'Select dialogue editing mode (change marker).';
+    this.dialogueMarkerSelector.tooltip = 'Select dialogue punctuation (change marker)';
     this.updateDialogueSelector();
 
     // Toggle Zen Mode
@@ -139,8 +141,8 @@ export class StatusBarObserver extends Observer<Config>{
 
   updateWritingModeToggle() {
     this.writingModeToggleButton.text = this.state.isZenMode 
-      ? `$(zap)`
-      : `-`
+      ? `$(discard)`
+      : `$(zap)`
   }
   updateParagraphToggle() {
     this.paragraphToggleButton.text = this.state.inverseEnter

@@ -1,9 +1,3 @@
 # Change Log
 
-All notable changes to the "fiction-writer" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+Please visit: [https://zoctarine.github.io/vscode-fiction-writer/changelog/](https://zoctarine.github.io/vscode-fiction-writer/changelog/)

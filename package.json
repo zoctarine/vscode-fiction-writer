@@ -281,7 +281,7 @@
           "scope": "application",
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Replaces multiple consecutive spaces to one single space. (not from begining or ending of line)"
+          "markdownDescription": "Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)"
         },
         "markdown-fiction-writer.textFormatting.removeExtraLines": {
           "scope": "application",
@@ -504,15 +504,9 @@
       },
       {
         "command": "fiction-writer.extension.toggleWritingMode",
-        "key": "ctrl+k z",
-        "mac": "cmd+k z",
-        "when": "config.markdown-fiction-writer.view.writingMode.enabled && textInputFocus && editorLangId == markdown"
-      },
-      {
-        "command": "fiction-writer.extension.exitWritingMode",
-        "key": "escape escape",
-        "mac": "escape escape",
-        "when": "config.markdown-fiction-writer.view.writingMode.enabled && textInputFocus && editorLangId == markdown && inZenMode"
+        "key": "shift+f11",
+        "mac": "shift+f11",
+        "when": "textInputFocus && editorLangId == markdown"
       }
     ],
     "grammars": [
