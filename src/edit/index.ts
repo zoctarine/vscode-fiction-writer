@@ -1,4 +1,4 @@
 export * from './enhancedEditBehaviour';
 export * from './enhancedEditDialogueBehaviour'
-export * from './dialogueAutoCorrect'
+export * from './_dialogueAutoCorrect'
 export * from './customFormattingProvider'
