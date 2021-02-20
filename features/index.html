@@ -1,0 +1,1307 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fiction Writer VSCode Extension Documentation">
+      
+      
+      
+        <meta name="author" content="ZOctarine">
+      
+      
+        <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/features/">
+      
+      <link rel="shortcut icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Features - Markdown Fiction Writer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../resources/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#text-editing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-announce">
+          <div class="md-announce__inner md-grid md-typeset">
+            
+
+<a style="float:right;" href="https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer"><img src="https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg"/></a> <small>The documentation is work in progress, the extension is only on early draft stage.</small>
+
+
+          </div>
+        </aside>
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Markdown Fiction Writer
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    Markdown Fiction Writer
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Features
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#text-editing" class="md-nav__link">
+    Text Editing
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Editing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disable-key-bindings" class="md-nav__link">
+    Disable Key-bindings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#easy-paragraph-creation" class="md-nav__link">
+    Easy Paragraph Creation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-dialogues" class="md-nav__link">
+    Writing Dialogues
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Dialogues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-dialogue-punctuation" class="md-nav__link">
+    Selecting dialogue punctuation:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-replace-dialogue-markers" class="md-nav__link">
+    Auto-replace dialogue markers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#easily-create-new-dialogue-paragraphs" class="md-nav__link">
+    Easily create new dialogue paragraphs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-dialgoue-indents" class="md-nav__link">
+    Using Dialgoue indents:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#formatting" class="md-nav__link">
+    Formatting
+  </a>
+  
+    <nav class="md-nav" aria-label="Formatting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enable-document-formatting" class="md-nav__link">
+    Enable Document Formatting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-extra-spaces" class="md-nav__link">
+    Remove extra spaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-trailing-spaces" class="md-nav__link">
+    Remove Trailing Spaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-paragraph-breaks" class="md-nav__link">
+    Fix Paragraph Breaks
+  </a>
+  
+    <nav class="md-nav" aria-label="Fix Paragraph Breaks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#soft-line-breaks-as-new-paragraph" class="md-nav__link">
+    Soft line-breaks As New Paragraph
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soft-line-breaks-in-same-paragraph" class="md-nav__link">
+    Soft line-breaks In Same Paragraph
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-sentence-per-line" class="md-nav__link">
+    One Sentence Per Line
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-paragraph-spacing" class="md-nav__link">
+    Fix Paragraph Spacing
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-extra-lines" class="md-nav__link">
+    Remove Extra Lines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-mismatch-dialogue-markers" class="md-nav__link">
+    Fix Mismatch Dialogue Markers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fix-dialogue-indents" class="md-nav__link">
+    Fix Dialogue Indents
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exporting" class="md-nav__link">
+    Exporting
+  </a>
+  
+    <nav class="md-nav" aria-label="Exporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#including-other-documents" class="md-nav__link">
+    Including other documents
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-current-file" class="md-nav__link">
+    Compile Current File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-selected-files" class="md-nav__link">
+    Compile Selected files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-toc" class="md-nav__link">
+    Compile TOC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    View
+  </a>
+  
+    <nav class="md-nav" aria-label="View">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typewriter-mode" class="md-nav__link">
+    Typewriter Mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#file-tags" class="md-nav__link">
+    File Tags
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-mode" class="md-nav__link">
+    Writing Mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fold-paragraph-lines" class="md-nav__link">
+    Fold Paragraph lines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syntax-highlighting" class="md-nav__link">
+    Syntax Highlighting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#word-wrap-indent" class="md-nav__link">
+    Word Wrap Indent
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-analysis" class="md-nav__link">
+    Text Analysis
+  </a>
+  
+    <nav class="md-nav" aria-label="Text Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute-word-frequency" class="md-nav__link">
+    Compute word frequency
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-writing-statistics" class="md-nav__link">
+    Get Writing Statistics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writer-mode" class="md-nav__link">
+    Writer Mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-bar" class="md-nav__link">
+    Status Bar
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        Settings
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shortcuts/" class="md-nav__link">
+        Keyboard Shortcuts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing/" class="md-nav__link">
+        About Writing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Features</h1>
+                
+                <h2 id="text-editing">Text Editing<a class="headerlink" href="#text-editing" title="Permanent link">&para;</a></h2>
+<h3 id="disable-key-bindings">Disable Key-bindings<a class="headerlink" href="#disable-key-bindings" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.edit.disableKeybindings</code></p>
+</div>
+<p>Disables the following keybindings added by this extension:
+- <span class="keys"><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span>, <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-tab">Tab</kbd></span>)</p>
+<p><strong>Note:</strong> If <code>disabled</code>, some of the other features, that depend or ar triggered by this keybindings will be disabled (eg. easy Paragraph Creation needs <span class="keys"><kbd class="key-enter">Enter</kbd></span> end <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> in order to work properly).</p>
+<h3 id="easy-paragraph-creation">Easy Paragraph Creation<a class="headerlink" href="#easy-paragraph-creation" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.edit.easyParagraphCreation</code></p>
+</div>
+<p>To create paragraphs in markdown, you need to add an extra empty line. That, usually, means pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> key twice.</p>
+<p>With this setting, you can easily create new paragraphs by hitting one key only (or a combination).</p>
+<p>It has two options:</p>
+<ul>
+<li>
+<p><strong>Enter</strong>: pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> once will add two line-breaks, and pressing <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> will add one line-break.</p>
+<p><img alt="NewOnShiftEnter" src="../img/shift_enter_01.gif" /></p>
+</li>
+<li>
+<p><strong>Shift+Enter</strong>: pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> once will add one line-break, but <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> will add two line-breaks.</p>
+<p><img alt="NewOnEnter" src="../img/shift_enter_02.gif" /></p>
+</li>
+</ul>
+<h3 id="writing-dialogues">Writing Dialogues<a class="headerlink" href="#writing-dialogues" title="Permanent link">&para;</a></h3>
+<p>This is a proposed solution for writing dialogue. In some languages, dialogue is not marked by quotation marks, but is marked only at the beginning a dialogue line.</p>
+<p>For example, each line can start with em-dash (—), like so:</p>
+<div class="admonition quote">
+<p class="admonition-title">The Time Machine, by H. G. Wells</p>
+<p>— You mean to say that that machine has travelled into the future? said Filby.</p>
+<p>— Into the future or the past. I don’t, for certain, know which.</p>
+<p>After an interval the Psychologist had an inspiration. </p>
+<p>— It must have gone into the past if it has gone anywhere, he said.</p>
+</div>
+<p>Markdown can convert three dashes to em-dash and two dashes to en-dash. However, typing three dash character and one space is not necessarly convenient when writing lots of dialogue lines. </p>
+<p>A widespread practice is to write <code>--</code> for an <code>em-dash</code>, and the text editor will automatically replace it.</p>
+<h4 id="selecting-dialogue-punctuation">Selecting dialogue punctuation:<a class="headerlink" href="#selecting-dialogue-punctuation" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary><code>markdown-fiction-writer.editDialogue.marker</code></summary><ul>
+<li><code>"Hello,"</code> (quotes) <strong>default</strong></li>
+<li><code>— Hello,</code> (em-dash followed by one space)</li>
+<li><code>-- Hello</code>, (two dashes followed by one space)</li>
+<li><code>--- Hello,</code> (three dashes followed by one space)</li>
+<li><code>—Hello,</code> (em-dash, no space)</li>
+<li><code>--Hello,</code> (two dashes, no space)</li>
+<li><code>---Hello,</code> (three dashes, no space</li>
+</ul>
+</details>
+<p>With this feature, you can controlsthe punctuation used when writing dialogue.</p>
+<p>The following options are possible:</p>
+<ul>
+<li>Quotes: <em>"Hello," John said.</em> (<strong>default</strong>: this is equivalent with disabling all proposed dialogue features)</li>
+<li>Em-dash followed by one space: <em>— Hello, John said.</em></li>
+<li>Two dashes followed by one space:  <em><code>--</code>Hello, John said.</em></li>
+<li>Three dashes followed by one space: <em><code>---</code>Hello, John said.</em></li>
+<li>Em-dash, no space: <em>—Hello, John said.</em></li>
+<li>Two dashes, no space: <em><code>--</code>Hello, John said.</em></li>
+<li>Three dashes, no space: <em><code>---</code>Hello, John said.</em></li>
+</ul>
+<p><img alt="SelectMarker" src="../img/dlg_marker_03.gif" /></p>
+<p>Once a dialogue marker is selected (other than quotes), the paragraph starting with that marker will be recognized as a dialogue paragraph enabeling other dialogue related features, like text formatting, auto replace, etc.</p>
+<h4 id="auto-replace-dialogue-markers">Auto-replace dialogue markers<a class="headerlink" href="#auto-replace-dialogue-markers" title="Permanent link">&para;</a></h4>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.markerAutoReplace</code></p>
+</div>
+<p>If enabled, typing <code>--</code> followed by a space will insert the selected marker.</p>
+<p><img alt="AutoReplace" src="../img/dlg_marker_01.gif" /></p>
+<p>Disable this feature if you do not want to auto-replace markers.</p>
+<h4 id="easily-create-new-dialogue-paragraphs">Easily create new dialogue paragraphs<a class="headerlink" href="#easily-create-new-dialogue-paragraphs" title="Permanent link">&para;</a></h4>
+<p>Selecting a dialogue marker (other than quotes) changes the <em>Easy Paragraph Creation</em> behaviour as follows:</p>
+<ul>
+<li>if new paragraph is created (either by <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> or by <span class="keys"><kbd class="key-enter">Enter</kbd></span>), and is from a dialogue paragraph (meaning, the paragraph starts with a marker), then the next paragraph will automatically start with the selected dialogue marker. </li>
+</ul>
+<p>This makes writing alternative dialogue lines much faster.</p>
+<p><img alt="Auto dialogue" src="../img/dlg_marker_02.gif" /></p>
+<ul>
+<li>
+<p>when hitting new line, if the only thing on that line is a dialogue marker, is automatically deleted.</p>
+</li>
+<li>
+<p>when hitting backspace, and the only thing in front of the cursor is the dialogue marker, the line will be cleared</p>
+</li>
+</ul>
+<h4 id="using-dialgoue-indents">Using Dialgoue indents:<a class="headerlink" href="#using-dialgoue-indents" title="Permanent link">&para;</a></h4>
+<p>Indent for sequential lines of the same dialogue paragraph. (<code>0</code> for no indenting)</p>
+<p>This is especially useful when using the <em>one sentence per line</em> technique. Thus, having sentences from the same dialogue separated by simple line-breaks.</p>
+<div class="highlight"><pre><span></span><code>-- Hi, said the first dialogue line.
+   I am here, on multiple lines.
+
+-- Hi, said the other dialogue line.
+   I am also here.
+
+The two lines continued their chat.
+</code></pre></div>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.sentenceIndent</code></p>
+</div>
+<p>The indent can be manually set under <em>Edit Dialouge - Sentence Indent</em>.</p>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect</code></p>
+</div>
+<p>If <em>Edit Dialogue: Sentence Indent Auto-Detect</em> is enabled, the indent will be automatically calculated based on the selected dialogue marker, and the previous setting will be ignored.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code>-- Hi, this is a dialogue.
+   It uses two dashes and one space.
+   Thus, it has a 3 space indent.
+
+— Hi, this uses em-dash and one space.
+  It has just a two space indent.
+</code></pre></div>
+<h2 id="formatting">Formatting<a class="headerlink" href="#formatting" title="Permanent link">&para;</a></h2>
+<h3 id="enable-document-formatting">Enable Document Formatting<a class="headerlink" href="#enable-document-formatting" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.enabled</code></p>
+</div>
+<p>Enables all document formatting features.</p>
+<div class="admonition danger">
+<p class="admonition-title">Experimental</p>
+<p>This is an experimental feature. It works by changing text in your document.
+Make sure you make a backup of your document before enabling this, or use
+is on drafts and test documents only.</p>
+</div>
+<h3 id="remove-extra-spaces">Remove extra spaces<a class="headerlink" href="#remove-extra-spaces" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeExtraSpaces</code></p>
+</div>
+<p>Removes multiple spaces (not at beginning or ending of lines), with one space.</p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is   a  text with  a lot  ,  of spaces.
+On multiple  lines  .
+
+    Indents   are not removed    !
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a text with a lot, of spaces.
+On multiple lines.
+
+    Indents are not removed!
+</code></pre></div>
+</div>
+</div>
+<h3 id="remove-trailing-spaces">Remove Trailing Spaces<a class="headerlink" href="#remove-trailing-spaces" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeTrailingSpaces</code></p>
+</div>
+<p>Removes all whitespace characters from line ends.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a text.
+Having too much space at the end of each line.
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a text.
+Having too much space at the end of each line.
+</code></pre></div>
+</div>
+</div>
+<h3 id="fix-paragraph-breaks">Fix Paragraph Breaks<a class="headerlink" href="#fix-paragraph-breaks" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary><code>markdown-fiction-writer.textFormatting.fixParagraphBreaks</code></summary><ul>
+<li><code>none</code> <strong>default</strong></li>
+<li><code>Soft line-breaks As New Paragraph</code></li>
+<li><code>Soft line-breaks In Same Paragraph</code></li>
+<li><code>One Sentence Per Line</code></li>
+</ul>
+</details>
+<p>Converts soft and hard breaks, depending on the selected behaviour:</p>
+<h4 id="soft-line-breaks-as-new-paragraph">Soft line-breaks As New Paragraph<a class="headerlink" href="#soft-line-breaks-as-new-paragraph" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>combines soft breaks from same paragraph into one line. (joins multi-line paragraphs)</p>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a line
+with a soft linebreak.
+
+This is a new paragraph.
+With another line break.
+And another line break
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a line with a soft linebreak.
+
+This is a new paragraph. With another line break. And another line break
+</code></pre></div>
+</div>
+</div>
+</li>
+</ul>
+<h4 id="soft-line-breaks-in-same-paragraph">Soft line-breaks In Same Paragraph<a class="headerlink" href="#soft-line-breaks-in-same-paragraph" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>Converts soft line-breaks to hard line-breaks. The result is having an extra empty before each soft break. (multiple paragraphs)</p>
+<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a line
+with a soft linebreak.
+
+This is a new paragraph.
+With another line break.
+And another line break
+</code></pre></div>
+</div>
+<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This is a line
+
+with a soft linebreak.
+
+This is a new paragraph.
+
+With another line break.
+
+And another line break
+</code></pre></div>
+</div>
+</div>
+</li>
+</ul>
+<h4 id="one-sentence-per-line">One Sentence Per Line<a class="headerlink" href="#one-sentence-per-line" title="Permanent link">&para;</a></h4>
+<p>This is a technique used by some writers. It consists of writing each sentence from the same paragraph on a new line. Paragraphs are still marked with an empty line.</p>
+<p>If enabled, this setting does the following:
+- Splits each line in sentences (using the boundary characters: <code>.</code> <code>!</code> <code>?</code> <code>;</code> <code>:</code>)
+- Adds every sentence on a new line.
+- Keeps spacing between paragraphs.</p>
+<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
+
+This means, each sentence. If in the same paragraph. Uses a soft line break.
+Already separated sentences, will remain as they are.
+
+Paragraph breaks are also kept. This is it.
+</code></pre></div>
+</div>
+<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
+
+This means, each sentence.
+If in the same paragraph.
+Uses a soft line break.
+Already separated sentences, will remain as they are.
+
+Paragraph breaks are also kept.
+This is it.
+</code></pre></div>
+</div>
+</div>
+<h3 id="fix-paragraph-spacing">Fix Paragraph Spacing<a class="headerlink" href="#fix-paragraph-spacing" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixParagraphSpacing</code></p>
+</div>
+<p>Normalizes space between different paragraph types (header, body, dialogue, ...) by adding a new line if needed.</p>
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
+And this is a first line. The second sentence is this.
+
+Then, a lot of empty lines here.
+<span class="gu">##</span> This can be another header
+
+And a lot here.
+***
+</code></pre></div>
+</div>
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
+
+And this is a first line. The second sentence is this.
+
+Then, a lot of empty lines here.
+
+<span class="gu">##</span> This can be another header
+
+And a lot here.
+
+***
+</code></pre></div>
+</div>
+</div>
+<h3 id="remove-extra-lines">Remove Extra Lines<a class="headerlink" href="#remove-extra-lines" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeExtraLines</code></p>
+</div>
+<p>Reduces multiple empty lines (more than two), to a single empty line.</p>
+<div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>And this is a first line. The second sentence is this.
+
+
+
+Then, a lot of empty lines here.
+
+
+
+
+And a lot here.
+***
+</code></pre></div>
+</div>
+<input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><label for="__tabbed_7_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>And this is a first line. The second sentence is this.
+
+Then, a lot of empty lines here.
+
+And a lot here.
+
+***
+</code></pre></div>
+</div>
+</div>
+<h3 id="fix-mismatch-dialogue-markers">Fix Mismatch Dialogue Markers<a class="headerlink" href="#fix-mismatch-dialogue-markers" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixMismatchDialogueMarkers</code></p>
+</div>
+<p>If the currently selected dialogue marker is not quotes, then it replaces all known dialogue markers (not quotes) with the selected one.</p>
+<div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>-- This text has mixed dialogue markers.
+
+--Some are without space.
+
+--- Yes, it has quite a lot.
+
+— It can be fixed.
+</code></pre></div>
+</div>
+<input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><label for="__tabbed_8_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>— This text has mixed dialogue markers.
+
+— Some are without space.
+
+— Yes, it has quite a lot.
+
+— It can be fixed.
+</code></pre></div>
+</div>
+</div>
+<h3 id="fix-dialogue-indents">Fix Dialogue Indents<a class="headerlink" href="#fix-dialogue-indents" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixDialogueIndents</code></p>
+</div>
+<p>Replaces all dialogue indents (visible if one sentence per line technique is used) with the currently selected dialogue indent.</p>
+<p>This works only if  <code>markdown-fiction-writer.editDialogue.marker</code>is not <code>quotes</code>, and <code>markdown-fiction-writer.editDialogue.sentenceIndent</code> is greater than 0, or <code>markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect</code> is enabled</p>
+<div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Before</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This text has mixed dialogue indents.
+
+-- Sentences for same dialogue.
+    Start at different indents.
+
+-- Yes, this can be quite annoing sometimes.
+Some start too early.
+            And some start too late.
+
+Of course, normal paragraphs are left untouched.
+</code></pre></div>
+</div>
+<input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><label for="__tabbed_9_2">After</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>This text has mixed dialogue indents.
+
+-- Sentences for same dialogue.
+    Start at different indents.
+
+-- Yes, this can be quite annoing sometimes.
+    Some start too early.
+    And some start too late.
+
+Of course, normal paragraphs are left untouched.
+</code></pre></div>
+</div>
+</div>
+<h2 id="exporting">Exporting<a class="headerlink" href="#exporting" title="Permanent link">&para;</a></h2>
+<p><img alt="Export01" src="../img/export_01.gif" /></p>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Important!</p>
+<p>This feature requires <a href="https://pandoc.org">Pandoc</a>. </p>
+</div>
+<p>If you want to also compile <code>.md</code> to other document formats using this extension, you need to have <a href="https://pandoc.org">Pandoc</a> installed on your machine, and configured to run from command line!</p>
+<p>Pandoc is a universal document converter, that understands a large number of useful markdown syntax extensions, including document metadata (title, author, date); footnotes; tables; etc.</p>
+<p>You can get it from here: <a href="https://pandoc.org/installing.html">Installing pandoc</a>.</p>
+<p>You can test that pandoc is properly installed by opening your prefered command-line app and running:
+<div class="highlight"><pre><span></span><code>pandoc --version
+</code></pre></div></p>
+<p>You should get an output similar to:
+<div class="highlight"><pre><span></span><code>pandoc 2.11.4
+Compiled with pandoc-types 1.22, texmath 0.12.1, skylighting 0.10.2,
+citeproc 0.3.0.5, ipynb 0.1.0.1
+User data directory: C:\Users\YourUserName\AppData\Roaming\pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+</code></pre></div></p>
+<h3 id="including-other-documents">Including other documents<a class="headerlink" href="#including-other-documents" title="Permanent link">&para;</a></h3>
+<p>This extension adds support for combining multiple markdown documents into one.</p>
+<p>You can use the following syntax</p>
+<div class="highlight"><pre><span></span><code>{your_file.md}
+</code></pre></div>
+<p>from the markdown document you want to export, and this extension will include the contents of <code>your_file.md</code> in the exported document.</p>
+<p>A common practice is to have just one TOC document, where you include all other documents.</p>
+<p>A simple <code>toc.md</code> document can look like this:</p>
+<p><div class="highlight"><pre><span></span><code>{chapter01.md}
+{chapter02.md}
+{chapter03.md}
+{chapter04.md}
+</code></pre></div>
+This will include all 4 referenced files.</p>
+<p>Of course a TOC document can contain any additional markdown syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="gh">#</span> My Book Title
+
+<span class="gu">##</span> Preface
+
+Some opening words
+
+<span class="gu">##</span> Chapter One
+
+{chapter01.md}
+
+<span class="gu">##</span> Chapter Tso
+
+{chapter02.md}
+
+<span class="gu">##</span> The End
+
+This is the end.
+</code></pre></div>
+<p>If <code>{chapter01.md}</code> does not exist, you will get a warning message, but the exporting will still continue with the other documents.</p>
+<p>The path to included file needs to be relative to the document they are reference from.</p>
+<p>For example, the <code>toc.md</code> from the following directory:
+<div class="highlight"><pre><span></span><code>.
+├─ toc.md
+├─ prologue.md
+├─ part1
+│  ├─ ch1.md
+│  ├─ ch2.md
+│  └─ ch3.md
+├─ part2/
+│  ├─ ch4.md/
+│  └─ ch5.md
+└─ epilogue.md
+</code></pre></div></p>
+<p>could look like:</p>
+<div class="highlight"><pre><span></span><code>{prologue.md}
+
+{part1\ch1.md}
+{part1\ch2.md}
+{part1\ch3.md}
+
+{part2\ch4.md}
+{part2\ch5.md}
+
+{epilogue.md}
+</code></pre></div>
+<h3 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h3>
+<h4 id="compile-current-file">Compile Current File<a class="headerlink" href="#compile-current-file" title="Permanent link">&para;</a></h4>
+<p><code>[TBD]</code></p>
+<h4 id="compile-selected-files">Compile Selected files<a class="headerlink" href="#compile-selected-files" title="Permanent link">&para;</a></h4>
+<p>Compiles all selected markdown documents (having <code>.md</code> extension) from current directory, into one file.</p>
+<p>The include order is filename order.</p>
+<p><code>[TBD]</code></p>
+<h4 id="compile-toc">Compile TOC<a class="headerlink" href="#compile-toc" title="Permanent link">&para;</a></h4>
+<p>Exports the TOC file.</p>
+<p>A TOC file is a simple <code>.md</code> file that serves as a table of contents for exporting. The file-name can be configured under <code>markdown-fiction-writer.export.tocFilename</code>.</p>
+<p>By default, the <code>toc.md</code> file-name will be used. </p>
+<p>If the TOC file is searched for in two locations:</p>
+<ul>
+<li>first, in the same folder as the opened document</li>
+<li>second, in the workspace root.</li>
+</ul>
+<p>If no TOC files is found in either location, then compile will fail.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code>.
+├─ toc.md          # The toc.md in workspace root
+├─ part1
+│  ├─ chapter1.md
+│  ├─ chapter2.md
+│  └─ toc.md        # The toc.md from part.1
+├─ part2/
+│  ├─ chapter3.md/
+│  └─ chapter4.md
+</code></pre></div></p>
+<ul>
+<li>
+<p>if <code>chapter1.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/part1/toc.md</code> will be used.</p>
+</li>
+<li>
+<p>if <code>chapter4.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/toc.md</code> from workspace root will be used.</p>
+</li>
+</ul>
+<h2 id="view">View<a class="headerlink" href="#view" title="Permanent link">&para;</a></h2>
+<h3 id="typewriter-mode">Typewriter Mode<a class="headerlink" href="#typewriter-mode" title="Permanent link">&para;</a></h3>
+<p><code>[TBD]</code></p>
+<h3 id="file-tags">File Tags<a class="headerlink" href="#file-tags" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Settings</summary><p><code>markdown-fiction-writer.view.fileTags</code>
+<code>markdown-fiction-writer.view.fileTagsEnabled</code></p>
+</details>
+<p>Ability to add tags to files. Each file will display the corresponding badge (1 or 2 letter word) in file explorer:</p>
+<p><img alt="Tags 01" src="../img/tags_01.gif" /></p>
+<ul>
+<li>Go to: <code>markdown-fiction-writer.view.fileTags</code></li>
+<li>Add a few tags (eg. <code>draft</code> = <code>D</code>, and <code>rev1</code> = <code>R1</code>)</li>
+<li>Then open any <code>.md</code> file, and add <code>// draft</code> or <code>// rev1</code> on <strong>the first line</strong>.</li>
+<li>if the tag line is not on the first line of the file, the tag will be ignored</li>
+<li>Save the document.</li>
+<li>You should see <code>D</code> or <code>R1</code> as a badge in file explorer, near your document.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Under development</p>
+<p>Tagging works for files in the same folder as opened file. 
+Soon will work on all opened files in the workspace.</p>
+</div>
+<h3 id="writing-mode">Writing Mode<a class="headerlink" href="#writing-mode" title="Permanent link">&para;</a></h3>
+<p><code>[TBD]</code></p>
+<h3 id="fold-paragraph-lines">Fold Paragraph lines<a class="headerlink" href="#fold-paragraph-lines" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Setting</summary><p><code>markdown-fiction-writer.view.foldSentences</code></p>
+</details>
+<p>Separate lines from same paragraph can be folded/unfolded. This is specailly useful when OneSentencePerLine writing technique is used.</p>
+<p><img alt="Folding 01" src="../img/folding_01.gif" /></p>
+<p>Folding works for dialogue indents as well, if writing dialgoues with dialogue markers (like em-dash) is used:</p>
+<h3 id="syntax-highlighting">Syntax Highlighting<a class="headerlink" href="#syntax-highlighting" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Settings</summary><p><code>mmarkdown-fiction-writer.view.highlightDialogueMarkers</code>
+<code>markdown-fiction-writer.view.highlightDialogue</code></p>
+</details>
+<h3 id="word-wrap-indent">Word Wrap Indent<a class="headerlink" href="#word-wrap-indent" title="Permanent link">&para;</a></h3>
+<p>[tbd]</p>
+<h2 id="text-analysis">Text Analysis<a class="headerlink" href="#text-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="compute-word-frequency">Compute word frequency<a class="headerlink" href="#compute-word-frequency" title="Permanent link">&para;</a></h3>
+<p>You can compute the repetition frequency of words and phrases up to 5 words.</p>
+<p><img alt="Frequency" src="../img/freq_01.gif" /></p>
+<h3 id="get-writing-statistics">Get Writing Statistics<a class="headerlink" href="#get-writing-statistics" title="Permanent link">&para;</a></h3>
+<p>Compute statistics like:</p>
+<ul>
+<li>word count</li>
+<li>characters (excluding spaces)</li>
+<li>characters (including spaces)</li>
+<li>estimates:</li>
+<li>word count (At 6 characters per word)</li>
+<li>lines (At 10 words per line)</li>
+<li>pages (At 24 lines per page)</li>
+</ul>
+<p>Press the refresh button to compute statistics for the current open file.</p>
+<p><img alt="Stats" src="../img/stats_01.gif" /></p>
+<h3 id="writer-mode">Writer Mode<a class="headerlink" href="#writer-mode" title="Permanent link">&para;</a></h3>
+<p><code>[TBD]</code></p>
+<h3 id="status-bar">Status Bar<a class="headerlink" href="#status-bar" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title">markdown-fiction-writer.view.statusBar.enabled</p>
+</div>
+<p>This extension comes with a status bar, enabled by default.</p>
+<p><img alt="StatusBar" src="../img/statusbar_01.gif" /></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../settings/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Settings
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ['navigation.sections', 'navigation.expand', 'toc.integrate'],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../resources/extra.js"></script>
+      
+    
+  </body>
+</html>

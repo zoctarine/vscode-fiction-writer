@@ -173,93 +173,6 @@
       
       
         
-          
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
-  <div class="md-tabs__inner md-grid">
-    <ul class="md-tabs__list">
-      
-        
-  
-  
-
-
-  <li class="md-tabs__item">
-    <a href=".." class="md-tabs__link">
-      Overview
-    </a>
-  </li>
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../features/editing/" class="md-tabs__link">
-        Features
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-    
-  
-
-
-  <li class="md-tabs__item">
-    <a href="./" class="md-tabs__link md-tabs__link--active">
-      Settings
-    </a>
-  </li>
-
-      
-        
-  
-  
-
-
-  <li class="md-tabs__item">
-    <a href="../shortcuts/" class="md-tabs__link">
-      Keyboard Shortcuts
-    </a>
-  </li>
-
-      
-        
-  
-  
-
-
-  <li class="md-tabs__item">
-    <a href="../changelog/" class="md-tabs__link">
-      Changelog
-    </a>
-  </li>
-
-      
-        
-  
-  
-
-
-  <li class="md-tabs__item">
-    <a href="../writing/" class="md-tabs__link">
-      About Writing
-    </a>
-  </li>
-
-      
-    </ul>
-  </div>
-</nav>
-        
       
       <main class="md-main" data-md-component="main">
         <div class="md-main__inner md-grid">
@@ -273,12 +186,10 @@
 
 
 
-  
-
 
   
 
-<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
@@ -326,86 +237,10 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" data-md-state="indeterminate" type="checkbox" id="nav-2" checked>
-      
-      <label class="md-nav__link" for="nav-2">
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
         Features
-        <span class="md-nav__icon md-icon"></span>
-      </label>
-      <nav class="md-nav" aria-label="Features" data-md-level="1">
-        <label class="md-nav__title" for="nav-2">
-          <span class="md-nav__icon md-icon"></span>
-          Features
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/editing/" class="md-nav__link">
-        Edit
       </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/formatting/" class="md-nav__link">
-        Format
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/view/" class="md-nav__link">
-        View
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/exporting/" class="md-nav__link">
-        Export
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/analysing/" class="md-nav__link">
-        Analyse
-      </a>
-    </li>
-  
-
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -503,149 +338,159 @@
 </thead>
 <tbody>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.general.new-paragraph-handling">General: New Paragraph Handling</abbr></td>
-<td align="center"><code>newParagraphOnShiftEnter</code></td>
-<td align="left">The <span class="keys"><kbd class="key-enter">Enter</kbd></span> (or <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>) key produces a <a href="../features/editing/#1-paragraphs">new paragraph</a></td>
+<td align="left"><code>edit.disableKeybindings</code></td>
+<td align="center">false</td>
+<td align="left">Disable editor keybindings added by this extension (<code>enter</code>, <code>shift+enter</code>, <code>delete</code>, <code>backspace</code>, <code>tab</code>). <strong>Note:</strong> If <code>disabled</code>, some of the settings will not work.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.disableKeybindings">Edit: Disable KeyBindings</abbr></td>
-<td align="center"><code>false</code></td>
-<td align="left">Disable custom editing keybindings.\n\n**Note:** all <code>#markdown-fiction-writer.editing#</code> settings will be disabled.</td>
+<td align="left"><code>edit.easyParagraphCreation</code></td>
+<td align="center">Shift+Enter</td>
+<td align="left">A new paragraph (two line breaks) will be created when pressing:</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.dialogueMarker">Edit: Dialogue Marker</abbr></td>
-<td align="center"><code>--</code></td>
-<td align="left">Selects preferred way of writing dialogues( using, quotes <code>""</code>, dashes <code>--</code>, em-dash <code>—</code>, ...)</td>
+<td align="left"><code>editDialogue.marker</code></td>
+<td align="center">--</td>
+<td align="left">Controls what punctuation is used when dialogue.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.dialogueMarker">Edit: Dialogue Marker</abbr> AutoReplace</td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
+<td align="left"><code>editDialogue.markerAutoReplace</code></td>
+<td align="center">true</td>
+<td align="left">If anything other than <code>quotes</code> is selected, it automatically replaces the <code>--</code> text at the begining of a new line, with the selected marker.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.dialogueIndent">Edit: Dialogue Indent</abbr></td>
-<td align="center"><code>0</code></td>
-<td align="left">Dialogue line indenting. (<code>0</code> for no indenting, <code>-1</code> for same length as <code>#markdown-fiction-writer.general.dialogue-marker#</code>)</td>
+<td align="left"><code>editDialogue.sentenceIndent</code></td>
+<td align="center">3</td>
+<td align="left">Indent for sequential lines of the same dialogue paragraph. (<code>0</code> for no indenting)</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.dialogueIndent">Edit: Dialogue Indent</abbr> Auto Detect</td>
-<td align="center"><code>true</code></td>
-<td align="left">Sets the dialogue indent length equal with the selected <code>#markdown-fiction-writer.general.dialogue-marker#</code>.</td>
+<td align="left"><code>editDialogue.sentenceIndentAutoDetect</code></td>
+<td align="center">true</td>
+<td align="left">Sets the line indent from the same dialogue paragraph equal with the selected <code>markdown-fiction-writer.editDialogue.marker</code>.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.edit.typewriterMode">Edit: Typewriter Mode</abbr></td>
-<td align="center"><code>false</code></td>
-<td align="left"></td>
+<td align="left"><code>view.wordWrapIndent</code></td>
+<td align="center">0</td>
+<td align="left">The hanging indent of wrapped lines. <strong>Warning:</strong> Only works if <code>editor.wordWrap</code> is enabled, and might change the <code>editor.tabSize</code> setting for <code>markdown</code>._</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.outputFormat">Export: Output Format</abbr></td>
-<td align="center"><code>odt</code></td>
-<td align="left"></td>
+<td align="left"><code>view.foldParagraphLines</code></td>
+<td align="center">true</td>
+<td align="left">undefined</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.showFormatPicker">Export: Show Format Picker</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
+<td align="left"><code>export.outputFormat.default</code></td>
+<td align="center">odt</td>
+<td align="left">The output document format. <strong>Important:</strong> This requires having <a href="https://pandoc.org/installing.html">Pandoc</a> installed on your system, and available to be run from commandline.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.showSaveDialogue">Export: Show Save Dialogue</abbr></td>
-<td align="center"><code>always</code></td>
-<td align="left"></td>
+<td align="left"><code>export.outputFormat.alwaysShowFormatPicker</code></td>
+<td align="center">false</td>
+<td align="left">Select the output format each time an export command is run. If set to <code>false</code>, the selected <code>markdown-fiction-writer.export.outputFormat.default</code> will be used.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.useTemplateFile">Export: Use Template File</abbr></td>
-<td align="center"><code>false</code></td>
-<td align="left"></td>
+<td align="left"><code>export.showSaveDialogue</code></td>
+<td align="center">Always</td>
+<td align="left">Control when the Save File Dialogue is shown.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.templateFile">Export: Template File</abbr></td>
-<td align="center"><code></code></td>
-<td align="left"></td>
+<td align="left"><code>export.outputTemplate.enabled</code></td>
+<td align="center">false</td>
+<td align="left">If enabled, the template file selected at <code>markdown-fiction-writer.export.outputTemplate.file</code> will be used when exporting to <code>docx</code> or <code>odt</code> formats.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.smartDeshes">Export: Smart Dashes</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.smartDeshes">Export: Smart Dashes</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.skipCommentsFromToc">Export: Skip Comments from TOC</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.export.tocFilename">Export: TOC Filename</abbr></td>
-<td align="center"><code>toc.md</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.fixMismatchDialogueMarkers">Format: Fix Mismatch Dialogue Markers</abbr></td>
-<td align="center"><code>true</code> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7L9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.fixDialogueIndents">Format: Fix Dialogue Indents</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.fixParagraphSpacing">Format: Fix Paragraph Spacings</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.removeExtraSpaces">Format: Remove Extra Spaces</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.removeTrailingSpaces">Format: Remove Trailing Spaces</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.removeExtraLines">Format: Remove Extra Lines</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.format.fixParagraphBreaks">Format: Fix Paragraph Breaks</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.view.wordWrapIndent">View: Word Wrap Indent</abbr></td>
-<td align="center"><code>0</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.view.foldSentences">View: Fold Paragraph Sentences</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"><abbr title="markdown-fiction-writer.view.fileTags">View: File Tags</abbr></td>
+<td align="left"><code>export.outputTemplate.file</code></td>
 <td align="center"></td>
-<td align="left">Custom file tags. Add the tag (<code>item</code>) on the first line of a .md file, like this: <code>// draft</code>, and you will see the <code>value</code> as a badge in file explorer.\n\n.<strong>Note:</strong> the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive</td>
+<td align="left">The output template to be used when exporting to <code>docx</code> or <code>odt</code>. <strong>Note:</strong> the template file extension must match the output type. It can be an absolut path, or relative to exported document.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.view.fileTagsEnabled">View: File Tags Enabled</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left"></td>
+<td align="left"><code>export.tocFilename</code></td>
+<td align="center">toc.md</td>
+<td align="left">The filename compiled by <strong>Compile TOC command.</strong>.</td>
 </tr>
 <tr>
-<td align="left">View: Highlight Dialogue</td>
-<td align="center"><code>false</code></td>
-<td align="left">Highlights the text between quotes.</td>
+<td align="left"><code>export.smartDeshes</code></td>
+<td align="center">true</td>
+<td align="left">Converts <code>--</code> to <code>em-dash</code> (—) character in exported output. If not selected, it will default to <code>en-dash</code> (–). Is PanDoc <code>+old_dashes</code> markdown extension.</td>
 </tr>
 <tr>
-<td align="left"><abbr title="markdown-fiction-writer.view.highlightDialogueMarkers">View: Highlight Dialogue Markers</abbr></td>
-<td align="center"><code>true</code></td>
-<td align="left">Highlights the dialogue markers (either <code>--</code>, <code>---</code>, <code>—</code> or quote marks <code>"</code>)</td>
+<td align="left"><code>export.skipCodeComments</code></td>
+<td align="center">true</td>
+<td align="left">When parsing <code>.md</code> files, skips lines starting with <code>//</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.enabled</code></td>
+<td align="center">true</td>
+<td align="left">This is feature is <strong>EXPERIMENTAL</strong>. Make sure make a backup before trying it out. If enabled, it formats document using the selected formatters. Formatting is available with <code>Format Document</code> command</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixMismatchDialogueMarkers</code></td>
+<td align="center">true</td>
+<td align="left">If <code>markdown-fiction-writer.editDialogue.marker</code> is not quotes, replaces mismatched markers with current selected marker.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixDialogueIndents</code></td>
+<td align="center">true</td>
+<td align="left">If <code>markdown-fiction-writer.editDialogue.marker</code> is not quotes, and <code>markdown-fiction-writer.editDialogue.sentenceIndent</code> is enabled, reformats dialogue indents to selected dialogue indent.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixParagraphSpacing</code></td>
+<td align="center">true</td>
+<td align="left">Normalizes space between different paragraph types (header, body, dialogue, ...).</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeExtraSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Replaces multiple consecutive spaces to one single space. (not from begining or ending of line)</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeExtraLines</code></td>
+<td align="center">true</td>
+<td align="left">Reduces multiple empty lines (more than two), to a single empty line.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeTrailingSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Remove all whitespace characters from line ends.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixParagraphBreaks</code></td>
+<td align="center">none</td>
+<td align="left">Controls how paragraph breaks and soft line breaks will be formatted.</td>
+</tr>
+<tr>
+<td align="left"><code>view.writingMode.theme</code></td>
+<td align="center"></td>
+<td align="left">The theme to be used in Writing Mode. <em>(leave empty for no theme switch)</em></td>
+</tr>
+<tr>
+<td align="left"><code>view.writingMode.fontSize</code></td>
+<td align="center">16</td>
+<td align="left">The font size to be used in Writing Mode Mode.</td>
+</tr>
+<tr>
+<td align="left"><code>view.statusBar.enabled</code></td>
+<td align="center">true</td>
+<td align="left">If enabled, the custom Fiction Writer status bar will be visible</td>
+</tr>
+<tr>
+<td align="left"><code>view.fileTags.enabled</code></td>
+<td align="center">false</td>
+<td align="left">If enabled, reads tags from <code>.md</code> files and display corresponding badge in file explorer. Recognizes tags defined under <code>markdown-fiction-writer.view.fileTags.definitions</code></td>
+</tr>
+<tr>
+<td align="left"><code>view.fileTags.definitions</code></td>
+<td align="center">undefined</td>
+<td align="left">Custom file tags. Add the tag (<code>item</code>) on the first line of a .md file, like this: <code>// draft</code>, and you will see the <code>value</code> as a badge in file explorer. <strong>Note:</strong> the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive</td>
+</tr>
+<tr>
+<td align="left"><code>view.highlight.textBetweenQuotes</code></td>
+<td align="center">false</td>
+<td align="left">Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)</td>
+</tr>
+<tr>
+<td align="left"><code>view.highlight.dialogueMarkers</code></td>
+<td align="center">true</td>
+<td align="left">Highlights the dialogue markers (---, --, — or quote marks symbols).</td>
 </tr>
 </tbody>
 </table>
@@ -667,7 +512,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../features/analysing/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../features/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -676,7 +521,7 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Analyse
+                Features
               </div>
             </div>
           </a>
@@ -725,7 +570,7 @@
       <script>
         app = initialize({
           base: "..",
-          features: ['navigation.tabs', 'navigation.tabs.sticky', 'navigation.sections', 'navigation.expand', 'toc.integrate'],
+          features: ['navigation.sections', 'navigation.expand', 'toc.integrate'],
           search: Object.assign({
             worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)
