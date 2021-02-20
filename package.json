@@ -1,11 +1,11 @@
 {
   "name": "markdown-fiction-writer",
-  "displayName": "Markdown Fiction Writer",
+  "displayName": "Markdown Fiction Writer (0.0.2-alpha)",
   "description": "Tools for writing fiction",
   "icon": "resources/fiction-writer-icon.png",
   "publisher": "vsc-zoctarine",
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "engines": {
     "vscode": "^1.52.0"
   },
