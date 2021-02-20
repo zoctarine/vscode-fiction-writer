@@ -5,7 +5,7 @@
   "icon": "resources/fiction-writer-icon.png",
   "publisher": "vsc-zoctarine",
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "engines": {
     "vscode": "^1.52.0"
   },
