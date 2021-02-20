@@ -1,3 +1,9 @@
+# 0.0.23 - alpha23
+
+- Adds:
+  - Writing mode
+  - Reorganizes settings (breaking change)
+
 # 0.0.21 - alpha21
 
 - Adds:

@@ -14,8 +14,6 @@ theme:
   include_search_page: false
   search_index_only: true
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - toc.integrate
@@ -34,12 +32,7 @@ theme:
 
 nav:
   - Overview: index.md
-  - Features:
-    - Edit: features/editing.md
-    - Format: features/formatting.md
-    - View: features/view.md
-    - Export: features/exporting.md
-    - Analyse: features/analysing.md
+  - Features: features.md
   - Settings: settings.md
   - Keyboard Shortcuts: shortcuts.md
   - Changelog: changelog.md

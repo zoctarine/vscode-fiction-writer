@@ -2,36 +2,38 @@
 This extension has the following settings:
 
 | Setting | Default | Description|
-|:---------|:---------:|:------------|
-| General: New Paragraph Handling   | `newParagraphOnShiftEnter` | The ++enter++ (or ++shift+enter++) key produces a [new paragraph](features/editing.md#1-paragraphs)
-| Edit: Disable KeyBindings         | `false` | Disable custom editing keybindings.\n\n**Note:** all `#markdown-fiction-writer.editing#` settings will be disabled.
-| Edit: Dialogue Marker             | `-- `   | Selects preferred way of writing dialogues( using, quotes `""`, dashes `-- `, em-dash `— `, ...)
-| Edit: Dialogue Marker AutoReplace | `true`  |
-| Edit: Dialogue Indent             | `0`     | Dialogue line indenting. (`0` for no indenting, `-1` for same length as `#markdown-fiction-writer.general.dialogue-marker#`)
-| Edit: Dialogue Indent Auto Detect | `true`  | Sets the dialogue indent length equal with the selected `#markdown-fiction-writer.general.dialogue-marker#`.
-| Edit: Typewriter Mode             | `false` |
-| Export: Output Format              | `odt`  |
-| Export: Show Format Picker         | `true` |
-| Export: Show Save Dialogue         | `always` |
-| Export: Use Template File          | `false`|
-| Export: Template File              | ` `    |
-| Export: Smart Dashes               | `true` |
-| Export: Smart Dashes               | `true` |
-| Export: Skip Comments from TOC     | `true` |
-| Export: TOC Filename               | `toc.md` |
-| Format: Fix Mismatch Dialogue Markers | `true` :material-check: |
-| Format: Fix Dialogue Indents          | `true` |
-| Format: Fix Paragraph Spacings        | `true` |
-| Format: Remove Extra Spaces           | `true` |
-| Format: Remove Trailing Spaces        | `true` |
-| Format: Remove Extra Lines            | `true` |
-| Format: Fix Paragraph Breaks          | `true` |
-| View: Word Wrap Indent            | `0`     |
-| View: Fold Paragraph Sentences    | `true` |
-| View: File Tags                   |        | Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n.**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive
-| View: File Tags Enabled           | `true` |
-| View: Highlight Dialogue          | `false` |  Highlights the text between quotes.
-| View: Highlight Dialogue Markers  | `true` | Highlights the dialogue markers (either `--`, `---`, `—` or quote marks `"`)
+|:----------------------------------- |:---------:|:------------|
+| `edit.disableKeybindings` | false | Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`). **Note:** If `disabled`, some of the settings will not work. | 
+| `edit.easyParagraphCreation` | Shift+Enter | A new paragraph (two line breaks) will be created when pressing: | 
+| `editDialogue.marker` | --  | Controls what punctuation is used when dialogue. | 
+| `editDialogue.markerAutoReplace` | true | If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker. | 
+| `editDialogue.sentenceIndent` | 3 | Indent for sequential lines of the same dialogue paragraph. (`0` for no indenting) | 
+| `editDialogue.sentenceIndentAutoDetect` | true | Sets the line indent from the same dialogue paragraph equal with the selected `markdown-fiction-writer.editDialogue.marker`. | 
+| `view.wordWrapIndent` | 0 | The hanging indent of wrapped lines. **Warning:** Only works if `editor.wordWrap` is enabled, and might change the `editor.tabSize` setting for `markdown`._ | 
+| `view.foldParagraphLines` | true | undefined | 
+| `export.outputFormat.default` | odt | The output document format. **Important:** This requires having [Pandoc](https://pandoc.org/installing.html) installed on your system, and available to be run from commandline. | 
+| `export.outputFormat.alwaysShowFormatPicker` | false | Select the output format each time an export command is run. If set to `false`, the selected `markdown-fiction-writer.export.outputFormat.default` will be used. | 
+| `export.showSaveDialogue` | Always | Control when the Save File Dialogue is shown. | 
+| `export.outputTemplate.enabled` | false | If enabled, the template file selected at `markdown-fiction-writer.export.outputTemplate.file` will be used when exporting to `docx` or `odt` formats. | 
+| `export.outputTemplate.file` |  | The output template to be used when exporting to `docx` or `odt`. **Note:** the template file extension must match the output type. It can be an absolut path, or relative to exported document. | 
+| `export.tocFilename` | toc.md | The filename compiled by **Compile TOC command.**. | 
+| `export.smartDeshes` | true | Converts `--` to `em-dash` (—) character in exported output. If not selected, it will default to `en-dash` (–). Is PanDoc `+old_dashes` markdown extension. | 
+| `export.skipCodeComments` | true | When parsing `.md` files, skips lines starting with `//`.  | 
+| `textFormatting.enabled` | true | This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out. If enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command | 
+| `textFormatting.fixMismatchDialogueMarkers` | true | If `markdown-fiction-writer.editDialogue.marker` is not quotes, replaces mismatched markers with current selected marker. | 
+| `textFormatting.fixDialogueIndents` | true | If `markdown-fiction-writer.editDialogue.marker` is not quotes, and `markdown-fiction-writer.editDialogue.sentenceIndent` is enabled, reformats dialogue indents to selected dialogue indent. | 
+| `textFormatting.fixParagraphSpacing` | true | Normalizes space between different paragraph types (header, body, dialogue, ...). | 
+| `textFormatting.removeExtraSpaces` | true | Replaces multiple consecutive spaces to one single space. (not from begining or ending of line) | 
+| `textFormatting.removeExtraLines` | true | Reduces multiple empty lines (more than two), to a single empty line. | 
+| `textFormatting.removeTrailingSpaces` | true | Remove all whitespace characters from line ends. | 
+| `textFormatting.fixParagraphBreaks` | none | Controls how paragraph breaks and soft line breaks will be formatted. | 
+| `view.writingMode.theme` |  | The theme to be used in Writing Mode. _(leave empty for no theme switch)_ | 
+| `view.writingMode.fontSize` | 16 | The font size to be used in Writing Mode Mode. | 
+| `view.statusBar.enabled` | true | If enabled, the custom Fiction Writer status bar will be visible | 
+| `view.fileTags.enabled` | false | If enabled, reads tags from `.md` files and display corresponding badge in file explorer. Recognizes tags defined under `markdown-fiction-writer.view.fileTags.definitions` | 
+| `view.fileTags.definitions` | undefined | Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer. **Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive | 
+| `view.highlight.textBetweenQuotes` | false | Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used) | 
+| `view.highlight.dialogueMarkers` | true | Highlights the dialogue markers (---, --, — or quote marks symbols). | 
 
 
 *[View: Highlight Dialogu]: markdown-fiction-writer.view.highlightDialogue
