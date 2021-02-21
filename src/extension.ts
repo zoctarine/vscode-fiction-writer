@@ -3,7 +3,7 @@ import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
 import { Constants, DialogueMarkerMappings } from './utils';
-import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
+import { DocStatisticTreeDataProvider, MarkdownMetadataTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
 import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 let currentConfig: Config;
@@ -26,15 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
 
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
+  const metadataProvider = new MarkdownMetadataTreeDataProvider();
 
-  var freqTree = vscode.window.createTreeView('wordFrequencies', { treeDataProvider: wordFrequencyProvider });
+  const freqTree = vscode.window.createTreeView('wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const statTree = vscode.window.createTreeView('statistics', { treeDataProvider: docStatisticProvider });
+  const metadataTree = vscode.window.createTreeView('metadata', {treeDataProvider: metadataProvider });
 
   const cmd = Constants.Commands;
 
   context.subscriptions.push(
     statTree,
     freqTree,
+    metadataTree,
     statusBar,
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
@@ -76,8 +79,11 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
-  );
 
+    vscode.window.onDidChangeActiveTextEditor(e => { metadataProvider.refresh(); } ),
+    vscode.workspace.onDidSaveTextDocument((e) => { if (e.uri === vscode.window.activeTextEditor?.document.uri)  metadataProvider.refresh(); }, null, context.subscriptions)
+  );
+  metadataProvider.refresh();
 }
 
 function exitZenWritingMode(configurationService: ConfigService) {
