@@ -2,7 +2,7 @@
 
 [![](https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg)](https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer)
 
-![LOGO](resources/fiction-writer-icon.png)
+![LOGO](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/main/resources/fiction-writer-icon.png)
 
 A [vscode](https://code.visualstudio.com) extension for writing fiction using [markdown](https://daringfireball.net/projects/markdown/).
 
