@@ -41,6 +41,14 @@
       }
     },
     "views": {
+      "explorer": [
+        {
+          "id": "metadata",
+          "name": "Metadata",
+          "icon": "$(eye)",
+          "contextualTitle": "Metadata"
+        }
+      ],
       "word-frequency-explorer": [
         {
           "id": "wordFrequencies",
@@ -109,6 +117,45 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
+        "markdown-fiction-writer.1a.locations": {
+          "type": "object",
+          "markdownDescription": "Select appropriate items.\n\n\n\n_<small>**Note:** double click on a `Value` to change it.</small>_",
+          "default": {
+            "prefix": "Enabled",
+            "url": "test",
+            "alphanumeric": false,
+            "ignoreCase": true
+          },
+          "properties": {
+            "prefix": {
+              "type": "string",
+              "description": "Specifies the short prefix to use to generate autolinks for the external resource",
+              "enum": [
+                "Enabled",
+                "Disabled"
+              ],
+              "enumDescriptions": [
+                "shift+enter will add one line-break.",
+                "shift+enter will add two line-breaks."
+              ]
+            },
+            "url": {
+              "type": "string",
+              "description": "Specifies the url of the external resource you want to link to. Use `<num>` as the variable for the reference number"
+            },
+            "alphanumeric": {
+              "type": "boolean",
+              "description": "Specifies whether alphanumeric characters should be allowed in `<num>`",
+              "default": false
+            },
+            "ignoreCase": {
+              "type": "boolean",
+              "description": "Specifies whether case should be ignored when matching the prefix",
+              "default": false
+            }
+          },
+          "additionalProperties": false
+        },
         "markdown-fiction-writer.edit.disableKeybindings": {
           "type": "boolean",
           "scope": "application",
@@ -543,5 +590,10 @@
     "typescript": "^4.1.2",
     "vsce": "^1.85.0",
     "vscode-test": "^1.4.1"
+  },
+  "dependencies": {
+    "@types/js-yaml": "^4.0.0",
+    "js-yaml": "^4.0.0",
+    "jsonc-parser": "^3.0.0"
   }
 }
