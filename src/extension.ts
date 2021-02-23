@@ -3,10 +3,10 @@ import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
 import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPathAsync } from './utils';
-import { DocStatisticTreeDataProvider, MarkdownMetadataTreeDataProvider, MetadataFileCache, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
+import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { MetadataFileDecorationProvider } from './metadata';
+import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
 let currentConfig: Config;
 
 export function activate(context: vscode.ExtensionContext) {
