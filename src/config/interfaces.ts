@@ -1,46 +1,63 @@
-export interface ContextConfig {
-    [key: string]: string | number | boolean | undefined | {[key:string]:string};
-    isZenMode?: boolean;
-    isTypewriterMode?:boolean;
+import { ConfigurationChangeEvent, ThemeColor, ThemeIcon } from "vscode";
+import { KnownColor } from "../utils";
+
+export interface IKvp<T> {
+  [key:string]: T
 }
-export interface Config extends ContextConfig{
-    dialoguePrefix: string;
-    dialgoueIndent: string;
-    dialgoueIndentLength: number;
-    dialogueMarkerAutoReplace?: boolean;
-    wrapIndent: number;
-    keybindingsDisabled?: boolean,
-    dialogueIndentAutoDetect?: boolean;
-    dialogueMarkerAutoDetect?: boolean;
-    viewDialogueHighlight?: boolean;
-    viewDialogueHighlightMarkers?: boolean;
-    foldSentences?: boolean;
-    inverseEnter?: boolean;
-    isDialogueEnabled?: boolean;
 
-    formattingIsEnabled?: boolean;
-    formattingFixMismatchDialogueMarkers?: boolean;
-    formattingFixDialogueIndents?: boolean;
-    formattingFixParagraphSpacing?: boolean;
-    formattingFixParagraphBreaks?: string;
-    formattingRemoveExtraSpaces?: boolean;
-    formattingRemoveExtraLines?: boolean;
-    formattingRemoveTrailingSpaces?: boolean,
+export interface ContextConfig {
+  [key: string]: ConfigurationChangeEvent| string | number | boolean | undefined | IKvp<string> | Map<string, ThemeColor> | Map<string, ThemeColor>;
+  
+  isZenMode?: boolean;
+  isTypewriterMode?: boolean;
+}
+export interface Config extends ContextConfig {
+  changeEvent?: ConfigurationChangeEvent,
 
-    compileTemplateFile: string,
-    compileOutputFormat: string,
-    compileUseTemplateFile?: boolean,
-    compileEmDash?: boolean,
-    compileShowFormatPicker?: boolean,
-    compileShowSaveDialogue?: boolean,
-    compileSkipCommentsFromToc?: boolean
-    compileTocFilename: string,
+  dialoguePrefix: string;
+  dialgoueIndent: string;
+  dialgoueIndentLength: number;
+  dialogueMarkerAutoReplace?: boolean;
+  wrapIndent: number;
+  keybindingsDisabled?: boolean,
+  dialogueIndentAutoDetect?: boolean;
+  dialogueMarkerAutoDetect?: boolean;
+  viewDialogueHighlight?: boolean;
+  viewDialogueHighlightMarkers?: boolean;
+  foldSentences?: boolean;
+  inverseEnter?: boolean;
+  isDialogueEnabled?: boolean;
 
-    viewFileTagsEnabled?: boolean,
-    viewFileTags?: {[key:string]:string}
-    viewZenModeEnabled?: boolean;
-    viewZenModeFontSize?: number;
-    viewZenModeTheme?: string;
+  formattingIsEnabled?: boolean;
+  formattingFixMismatchDialogueMarkers?: boolean;
+  formattingFixDialogueIndents?: boolean;
+  formattingFixParagraphSpacing?: boolean;
+  formattingFixParagraphBreaks?: string;
+  formattingRemoveExtraSpaces?: boolean;
+  formattingRemoveExtraLines?: boolean;
+  formattingRemoveTrailingSpaces?: boolean,
 
-    viewStatusBarEnabled?: boolean;
+  compileTemplateFile: string,
+  compileOutputFormat: string,
+  compileUseTemplateFile?: boolean,
+  compileEmDash?: boolean,
+  compileShowFormatPicker?: boolean,
+  compileShowSaveDialogue?: boolean,
+  compileSkipCommentsFromToc?: boolean
+  compileTocFilename: string,
+
+  viewFileTags?: { [key: string]: string }
+  viewZenModeEnabled?: boolean;
+  viewZenModeFontSize?: number;
+  viewZenModeTheme?: string;
+  viewStatusBarEnabled?: boolean;
+  
+  metaKeywordColors: Map<string, ThemeColor>;
+  metaKeywordsEnabled?: boolean,
+  metaFileBadges: Map<string, string>;
+  metaFileBadgesEnabled?: boolean,
+  metaFileColorsEnabled?: boolean,
+  metaCategories: Map<string, string>;
+  metaCategoriesEnabled?: boolean;
+  metaCatDefault: string;
 }

@@ -2,17 +2,18 @@ import * as vscode from 'vscode';
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings } from './utils';
-import { DocStatisticTreeDataProvider, MarkdownMetadataTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
+import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPathAsync } from './utils';
+import { DocStatisticTreeDataProvider, MarkdownMetadataTreeDataProvider, MetadataFileCache, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
-import { TextDecorations, FileTagDecorationProvider, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
+import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
+import { MetadataFileDecorationProvider } from './metadata';
 let currentConfig: Config;
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
+  const cache = new MetadataFileCache(configService);
+
   currentConfig = configService.getState();
 
   const statusBar = new StatusBarObserver(configService);
@@ -26,25 +27,30 @@ export function activate(context: vscode.ExtensionContext) {
 
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
-  const metadataProvider = new MarkdownMetadataTreeDataProvider();
+  const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
 
   const freqTree = vscode.window.createTreeView('wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const statTree = vscode.window.createTreeView('statistics', { treeDataProvider: docStatisticProvider });
-  const metadataTree = vscode.window.createTreeView('metadata', {treeDataProvider: metadataProvider });
+  const metadataTree = vscode.window.createTreeView('metadata', { treeDataProvider: metadataProvider });
+
+  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
+
+  const watcher = vscode.workspace.createFileSystemWatcher('**/*.md', false, false, false);
 
   const cmd = Constants.Commands;
-
   context.subscriptions.push(
+    cache,
+    watcher,
     statTree,
     freqTree,
     metadataTree,
+    metadataDecoration,
     statusBar,
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
     new CustomFormattingProvider(configService),
     new DialogueAutoCorrectObserver(configService),
     new TextDecorations(configService),
-    new FileTagDecorationProvider(configService),
 
     vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configService)),
     vscode.window.onDidChangeActiveTextEditor(() => statusBar.showHide()),
@@ -62,30 +68,51 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_PARAGRAPH, toggleParagraphCommand),
     vscode.commands.registerCommand(cmd.TOGGLE_TYPEWRITER, () => toggleTypewriterModeCommand(configService)),
     vscode.commands.registerCommand(cmd.TOGGLE_KEYBINDINGS, toggleKeybindingsCommand),
-    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, () => { WordStatTreeItemSelector.prev(freqTree.selection); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, () => { WordStatTreeItemSelector.next(freqTree.selection); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => {
-      freqTree.title = 'Frequencies: ' + getCurrentFile();
-      wordFrequencyProvider.refresh();
-    }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => {
-      freqTree.title = 'Word Frequencies';
-      wordFrequencyProvider.clear();
-    }),
-    vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => {
-      statTree.title = 'Statistics: ' + getCurrentFile();
-      docStatisticProvider.refresh();
-    }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, (e) => { WordStatTreeItemSelector.prev([e]); }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, (e) => { WordStatTreeItemSelector.next([e]); }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => { wordFrequencyProvider.refresh(); }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => { wordFrequencyProvider.clear(); }),
+    vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => { docStatisticProvider.refresh(); }),
     vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
 
-    vscode.window.onDidChangeActiveTextEditor(e => { metadataProvider.refresh(); } ),
-    vscode.workspace.onDidSaveTextDocument((e) => { if (e.uri === vscode.window.activeTextEditor?.document.uri)  metadataProvider.refresh(); }, null, context.subscriptions)
+    vscode.window.onDidChangeActiveTextEditor(async e => {
+      updateIsSupportedEditor(e);
+      if (!isInActiveEditor(e?.document?.uri)) return;
+
+      await metadataProvider.refresh();
+      docStatisticProvider.refresh();
+    }),
+
+    vscode.workspace.onDidSaveTextDocument(async (e) => {
+      if (isInActiveEditor(e?.uri)) {
+        docStatisticProvider.refresh();
+      }
+    }),
+
+    watcher.onDidChange(async e => {
+      if (await isSupportedPathAsync(e)) {
+        cache
+          .refresh(e)
+          .then(() => {
+            if (isInActiveEditor(e)) {
+              metadataProvider.refresh();
+            }
+            metadataDecoration.fire([e]);
+          });
+      }
+    })
   );
+
+  updateIsSupportedEditor(vscode.window.activeTextEditor);
   metadataProvider.refresh();
+  docStatisticProvider.refresh();
 }
 
+function updateIsSupportedEditor(editor: vscode.TextEditor | undefined) {
+  vscode.commands.executeCommand('setContext', 'isSupportedEditor', isSupported(editor));
+}
 function exitZenWritingMode(configurationService: ConfigService) {
   configurationService.restore('workbench', 'colorTheme');
   configurationService.restore('editor', 'fontSize');
@@ -155,7 +182,6 @@ function compileCommand() {
   ]);
   vscode.window.showQuickPick([...options.keys()], { 'canPickMany': false, 'ignoreFocusOut': false })
     .then(selection => {
-      console.log(selection);
       if (!selection) return;
 
       const cmd = options.get(selection);
@@ -170,8 +196,8 @@ function selectDialogueMode() {
     .then(selection => {
       if (selection && selection !== 'Cancel') {
         vscode.workspace
-        .getConfiguration('markdown-fiction-writer.editDialogue')
-        .update('marker', selection, vscode.ConfigurationTarget.Global);
+          .getConfiguration('markdown-fiction-writer.editDialogue')
+          .update('marker', selection, vscode.ConfigurationTarget.Global);
       }
     });
 }
@@ -214,7 +240,7 @@ function toggleKeybindingsCommand() {
 async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
   if (event.affectsConfiguration('markdown-fiction-writer')) {
     const previousConfig = { ...currentConfig };
-    configuration.reload();
+    configuration.reload(event);
     currentConfig = configuration.getState();
 
     var mdConfig = vscode.workspace.getConfiguration('editor', { languageId: 'markdown' });

@@ -20,7 +20,7 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
   private register() {
     this.clearDisposable('FD', 'SV');
 
-    if (this.state.viewFileTagsEnabled) {
+    if (this.state.metaFileBadgesEnabled) {
       this.addDisposable(vscode.window.registerFileDecorationProvider(this), 'FD');
       this.addDisposable(vscode.workspace.onDidSaveTextDocument(e => this.fire([e.uri])), 'SV');
     }
@@ -45,7 +45,7 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
 
     super.onStateChange(newState);
 
-    if (JSON.stringify(newState.viewFileTags) != JSON.stringify(prev.viewFileTags) || newState.viewFileTagsEnabled != prev.viewFileTagsEnabled) {
+    if (JSON.stringify(newState.viewFileTags) !== JSON.stringify(prev.viewFileTags) || newState.metaFileBadgesEnabled !== prev.metaFileBadgesEnabled) {
       this.loadDecorations();
       this.register();
 
@@ -80,7 +80,7 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
             }
           })
           .on('close', () => {
-            let line = buffer.slice(buffer.charCodeAt(0) === 0xFEFF ? 1 : 0, pos)
+            let line = buffer.slice(buffer.charCodeAt(0) === 0xFEFF ? 1 : 0, pos);
             let match = /(?:(\/\/\s+))([\p{L}\p{N}\-_]+)/giu.exec(line);
             let dec: vscode.FileDecoration;
             if (match && match.length >= 3 && (dec = this.decorations[match[2]]))

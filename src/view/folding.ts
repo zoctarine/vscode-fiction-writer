@@ -10,7 +10,8 @@ class ParagraphFoldingProvider implements FoldingRangeProvider {
     const result = [];
     let textLines = 0;
 
-    for (let line = 0; line < document.lineCount; line++) {
+    let line = 0;
+    for (; line < document.lineCount; line++) {
       if (document.lineAt(line).isEmptyOrWhitespace) {
         if (textLines > 0) {
           result.push(new FoldingRange(line - textLines, line - 1, FoldingRangeKind.Region));
@@ -19,6 +20,14 @@ class ParagraphFoldingProvider implements FoldingRangeProvider {
       } else {
         textLines++;
       }
+    }
+
+    // If we have lines left, add them to folding region
+    if (textLines > 0) {
+      result.push(
+        new FoldingRange(
+          line - textLines, line - 1,
+          FoldingRangeKind.Region));
     }
     return result;
   }
@@ -58,5 +67,5 @@ export class FoldingObserver extends Observer<Config> implements Disposable {
 
   dispose() {
     this.foldingDisposable?.dispose();
-   }
+  }
 }

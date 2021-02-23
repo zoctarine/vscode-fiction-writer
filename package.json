@@ -34,6 +34,107 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "colors": [
+      {
+        "id": "fictionwriter.blue",
+        "description": "Blue Color",
+        "defaults": {
+          "dark": "#2196F3",
+          "light": "#2196F3",
+          "highContrast": "#0000FF"
+        }
+      },
+      {
+        "id": "fictionwriter.red",
+        "description": "Red Color",
+        "defaults": {
+          "dark": "#F44336",
+          "light": "#F44336",
+          "highContrast": "#FF0000"
+        }
+      },
+      {
+        "id": "fictionwriter.green",
+        "description": "Green Color",
+        "defaults": {
+          "dark": "#8BC34A",
+          "light": "#8BC34A",
+          "highContrast": "#00FF00"
+        }
+      },
+      {
+        "id": "fictionwriter.orange",
+        "description": "Orange Color",
+        "defaults": {
+          "dark": "#FF9800",
+          "light": "#FF9800",
+          "highContrast": "#000000"
+        }
+      },
+      {
+        "id": "fictionwriter.amber",
+        "description": "Amber Color",
+        "defaults": {
+          "dark": "#FFC107",
+          "light": "#FFC107",
+          "highContrast": "#000000"
+        }
+      },
+      {
+        "id": "fictionwriter.purple",
+        "description": "Purple Color",
+        "defaults": {
+          "dark": "#9C27B0",
+          "light": "#9C27B0",
+          "highContrast": "#ddb6b6"
+        }
+      },
+      {
+        "id": "fictionwriter.bluegrey",
+        "description": "Blue Grey Color",
+        "defaults": {
+          "dark": "#607D8B",
+          "light": "#607D8B",
+          "highContrast": "#000000"
+        }
+      },
+      {
+        "id": "fictionwriter.grey",
+        "description": "Grey Color",
+        "defaults": {
+          "dark": "#9E9E9E",
+          "light": "#9E9E9E",
+          "highContrast": "#000000"
+        }
+      },
+      {
+        "id": "fictionwriter.yellow",
+        "description": "Yellow Color",
+        "defaults": {
+          "dark": "#FFEB3B",
+          "light": "#FFEB3B",
+          "highContrast": "#FFFFFF"
+        }
+      },
+      {
+        "id": "fictionwriter.white",
+        "description": "White Color",
+        "defaults": {
+          "dark": "#cccccc",
+          "light": "#FFFFFF",
+          "highContrast": "#FFFFFF"
+        }
+      },
+      {
+        "id": "fictionwriter.black",
+        "description": "Black Color",
+        "defaults": {
+          "dark": "#111111",
+          "light": "#333333",
+          "highContrast": "#000000"
+        }
+      }
+    ],
     "configurationDefaults": {
       "[markdown]": {
         "editor.wordWrap": "on",
@@ -46,7 +147,8 @@
           "id": "metadata",
           "name": "Metadata",
           "icon": "$(eye)",
-          "contextualTitle": "Metadata"
+          "contextualTitle": "Metadata",
+          "when": "isSupportedEditor"
         }
       ],
       "word-frequency-explorer": [
@@ -54,13 +156,15 @@
           "id": "wordFrequencies",
           "name": "Word Frequencies",
           "icon": "$(eye)",
-          "contextualTitle": "Word n-Gram Frequencies"
+          "contextualTitle": "Word n-Gram Frequencies",
+          "when": "isSupportedEditor"
         },
         {
           "id": "statistics",
           "name": "Statistics",
           "icon": "$(eye)",
-          "contextualTitle": "Document statistics"
+          "contextualTitle": "Document statistics",
+          "when": "isSupportedEditor"
         }
       ]
     },
@@ -75,17 +179,19 @@
       }
     ],
     "menus": {
-      "view/title": [
+      "view/item/context": [
         {
           "command": "fiction-writer.extension.wordFrequency.next.down",
-          "when": "view == wordFrequencies",
-          "group": "navigation"
+          "when": "view == wordFrequencies && viewItem == wordStat",
+          "group": "inline"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.next.up",
-          "when": "view == wordFrequencies",
-          "group": "navigation"
-        },
+          "when": "view == wordFrequencies && viewItem == wordStat",
+          "group": "inline"
+        }
+      ],
+      "view/title": [
         {
           "command": "fiction-writer.extension.wordFrequency.refresh",
           "when": "view == wordFrequencies",
@@ -117,45 +223,6 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
-        "markdown-fiction-writer.1a.locations": {
-          "type": "object",
-          "markdownDescription": "Select appropriate items.\n\n\n\n_<small>**Note:** double click on a `Value` to change it.</small>_",
-          "default": {
-            "prefix": "Enabled",
-            "url": "test",
-            "alphanumeric": false,
-            "ignoreCase": true
-          },
-          "properties": {
-            "prefix": {
-              "type": "string",
-              "description": "Specifies the short prefix to use to generate autolinks for the external resource",
-              "enum": [
-                "Enabled",
-                "Disabled"
-              ],
-              "enumDescriptions": [
-                "shift+enter will add one line-break.",
-                "shift+enter will add two line-breaks."
-              ]
-            },
-            "url": {
-              "type": "string",
-              "description": "Specifies the url of the external resource you want to link to. Use `<num>` as the variable for the reference number"
-            },
-            "alphanumeric": {
-              "type": "boolean",
-              "description": "Specifies whether alphanumeric characters should be allowed in `<num>`",
-              "default": false
-            },
-            "ignoreCase": {
-              "type": "boolean",
-              "description": "Specifies whether case should be ignored when matching the prefix",
-              "default": false
-            }
-          },
-          "additionalProperties": false
-        },
         "markdown-fiction-writer.edit.disableKeybindings": {
           "type": "boolean",
           "scope": "application",
@@ -380,19 +447,90 @@
           "default": true,
           "markdownDescription": "If enabled, the custom Fiction Writer status bar will be visible"
         },
-        "markdown-fiction-writer.view.fileTags.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "If enabled, reads tags from `.md` files and display corresponding badge in file explorer. Recognizes tags defined under `#markdown-fiction-writer.view.fileTags.definitions#`"
-        },
-        "markdown-fiction-writer.view.fileTags.definitions": {
+        "markdown-fiction-writer.metadata.keywords.definitions": {
           "type": "object",
           "scope": "application",
-          "markdownDescription": "Custom file tags. Add the tag (`item`) on the first line of a .md file, like this: `// draft`, and you will see the `value` as a badge in file explorer.\n\n**Note:** the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive",
+          "markdownDescription": "Define a keyqord and associate a color. This will be shown in metadata view, as the icon color\n\n\n\n.Known metadata labels are: `tags`, `tag`, `character`, `characters`, `status`, `keyword`, `keywords` state`",
+          "additionalProperties": {
+            "type": "string",
+            "enum":[
+              "default color",
+              "blue",
+              "red",
+              "green",
+              "orange",
+              "amber",
+              "purple",
+              "bluegrey",
+              "grey",
+              "yellow",
+              "white",
+              "black"
+            ]
+          }
+        },
+        "markdown-fiction-writer.metadata.keywords.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "TBD"
+        },
+        "markdown-fiction-writer.metadata.categories.definitions": {
+          "type": "object",
+          "default": {
+            "tag": "tag",
+            "tags": "tag",
+            "author": "edit",
+            "authors": "edit",
+            "keyword": "circle-filled",
+            "keywords": "circle-filled",
+            "character": "person",
+            "characters": "organization",
+            "title": "symbol-type-parameter",
+            "summary": "debug-stackframe-dot",
+            "description": "debug-stackframe-dot"
+          },
+          "scope": "application",
+          "markdownDescription": "",
+          "additionalProperties": {
+            "type":"string"
+          }
+        },
+        "markdown-fiction-writer.metadata.categories.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "TBD"
+        },
+        "markdown-fiction-writer.metadata.defaultCategory.name": {
+          "type": "string",
+          "scope": "application",
+          "default": "character",
+          "markdownDescription": "TBD"
+        },
+        "markdown-fiction-writer.metadata.defaultCategory.fileBadges": {
+          "type": "object",
+          "default": {
+            "Gandalf": "GD",
+            "John Snow": "JS"
+          },
+          "scope": "application",
+          "markdownDescription": "",
           "additionalProperties": {
             "type": "string"
           }
+        },
+        "markdown-fiction-writer.metadata.defaultCategory.fileBadgesEnabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "TBD"
+        },
+        "markdown-fiction-writer.metadata.defaultCategory.fileColorsEnabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "Contributes to file colors"
         },
         "markdown-fiction-writer.view.highlight.textBetweenQuotes": {
           "type": "boolean",
@@ -405,6 +543,12 @@
           "scope": "application",
           "default": true,
           "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
+        },
+        "markdown-fiction-writer.analysis.statistics.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": false,
+          "markdownDescription": "If enabled, reads tags from `.md` files and display corresponding badge in file explorer. Recognizes tags defined under `#markdown-fiction-writer.view.fileTags.definitions#`"
         }
       }
     },

@@ -4,7 +4,7 @@ import { WordStatTreeItem } from './WordStatTreeItem';
 
 const count = (text:string, pattern:RegExp) => {
   return ((text || '').match(pattern) || []).length;
-}
+};
 
 export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<WordStatTreeItem> {
   private document: vscode.TextDocument | undefined;

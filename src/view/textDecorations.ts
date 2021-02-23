@@ -40,7 +40,7 @@ export class TextDecorations extends Observer<Config>{
   }
   >([
     ['dialogueLine', {
-      pattern: /^(\-\-{1,2}|—)|(")/igm,
+      pattern: /^(--{1,2}|—)(?=\s{0,1}[\p{L}]+)|(")/iugm,
       trigger: ['-'],
       decoration: decorationTypes.semiTransparent,
       isEnabled: c => c.viewDialogueHighlightMarkers === true
@@ -61,7 +61,16 @@ export class TextDecorations extends Observer<Config>{
         undefined,
         decorationTypes.tag,
       ],
-      isEnabled: c => c.viewFileTagsEnabled === true
+      isEnabled: c => c.metaFileBadgesEnabled === true
+    }],
+    ['meta', {
+      pattern: /(^---)(.*?)(---|\.\.\.)/sgu,
+      decoration: [
+        decorationTypes.semiTransparent,
+        decorationTypes.semiTransparent,
+        decorationTypes.semiTransparent,
+      ],
+      isEnabled: c=> true
     }]
   ]);
 
@@ -175,7 +184,7 @@ export class TextDecorations extends Observer<Config>{
   protected onStateChange(newState: Config) {
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
         this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
-        this.state.viewFileTagsEnabled !== newState.viewFileTagsEnabled ){
+        this.state.metaFileBadgesEnabled !== newState.metaFileBadgesEnabled ){
           this.loadTags();
           vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
         }
