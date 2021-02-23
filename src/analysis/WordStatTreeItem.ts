@@ -17,7 +17,9 @@ export class WordStatTreeItem extends vscode.TreeItem {
         title: 'On Click',
         command: commandId,
         arguments: [{ search: this.label }]
-      }
+      };
+
+      this.contextValue = 'wordStat';
     }
   }
 

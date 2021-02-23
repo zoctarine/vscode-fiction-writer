@@ -1,4 +1,4 @@
-import { TextEditor, window } from 'vscode';
+import { TextDocument, TextEditor, window, workspace, Uri, FileType } from 'vscode';
 
 export * from './constants';
 export * from './disposables';
@@ -9,7 +9,26 @@ export * from './observables';
  * @param editor Usually the active text editor
  */
 export function isSupported(editor?: TextEditor) {
-	return editor !== undefined && editor !== null && editor.document && editor.document.languageId === 'markdown';
+	return isSupportedDoc(editor?.document);
+}
+
+export function isSupportedDoc(document?: TextDocument){
+	return document !== undefined && document !== null && document.languageId === 'markdown';
+}
+
+export function isInActiveEditor(uri: Uri | undefined): boolean {
+  if (!uri) return false;
+
+  const editor = getActiveEditor();
+  if (!editor?.document) return false;
+
+  return uri && editor.document.uri.fsPath === uri.fsPath;
+}
+
+export function isSupportedPathAsync(uri: Uri | undefined): boolean {
+  if (!uri) return false;
+
+  return uri.fsPath.endsWith('.md');
 }
 
 /**

@@ -11,6 +11,7 @@ export const Constants = {
       NONE: 'never (save in same directory as exported file)'
     }
   },
+  
   Dialogue : {
     NONE: '"Hello," (quotes)',
     EMDASH: '— Hello, (em-dash followed by one space)',
@@ -52,7 +53,18 @@ export const Constants = {
     TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleWritingMode',
     EXIT_ZEN_MODE: 'fiction-writer.extension.exitWritingMode',
     SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme'
-  }
+  },
+
+  KnownLabels: [
+    'keyword', 'keywords',
+    'tag','tags',
+    'character', 'characters',
+    'title',
+    'summary',
+    'description',
+    'author',
+    'authors'
+  ]
 };
 
 export const ReservedNames: Array<string> = [
@@ -109,5 +121,23 @@ export const RegEx = {
 
   MARKDOWN_INCLUDE_FILE_BOUNDARIES:  /[{}]/g,
 
-  NEWLINE: /\r?\n/g
+  NEWLINE: /\r?\n/g,
+
+  METADATA_MARKER: /^(---|\.\.\.)&/g
 };
+
+
+export enum KnownColor {
+    NONE = 'default color',
+    BLUE = 'blue',
+    RED = 'red',
+    GREEN = 'green',
+    ORANGE = 'orange',
+    AMBER = 'amber',
+    PURPLE = 'purple',
+    BLUEGREY = 'bluegrey',
+    GREY = 'grey',
+    YELLOW = 'yellow',
+    WHITE = 'white',
+    BLACK = 'black',
+}

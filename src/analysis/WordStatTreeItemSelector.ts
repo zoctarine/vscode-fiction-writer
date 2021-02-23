@@ -10,7 +10,7 @@ class TextSelector {
     try {
       this.find(selection, (text, search) => {
         let index = text.indexOf(search, this.lastIndex + 1);
-        if (index == -1) {
+        if (index === -1) {
           return text.indexOf(search);
         }
         return index;
@@ -24,7 +24,7 @@ class TextSelector {
     try {
       this.find(selection, (text, search) => {
         let index = text.lastIndexOf(search, this.lastIndex - 1);
-        if (index == -1) {
+        if (index === -1) {
           return text.lastIndexOf(search);
         }
         return index;

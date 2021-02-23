@@ -1,6 +1,6 @@
-import { Observable, Constants, DialogueMarkerMappings, OutputFormats } from '../utils';
-import { workspace, WorkspaceConfiguration } from 'vscode';
-import { Config, ContextConfig } from './interfaces';
+import { Observable, Constants, DialogueMarkerMappings, OutputFormats, KnownColor } from '../utils';
+import { ConfigurationChangeEvent, ThemeColor, ThemeIcon, workspace, WorkspaceConfiguration } from 'vscode';
+import { Config, ContextConfig, IKvp } from './interfaces';
 import { ContextService } from './contextService';
 
 export class ConfigService extends Observable<Config> {
@@ -23,17 +23,20 @@ export class ConfigService extends Observable<Config> {
     return config.get<T>(key, fallback);
   }
 
-  reload() {
+  reload(event?: ConfigurationChangeEvent) {
     const editing = workspace.getConfiguration('markdown-fiction-writer.edit');
     const editDialogue = workspace.getConfiguration('markdown-fiction-writer.editDialogue');
     const exporting = workspace.getConfiguration('markdown-fiction-writer.export');
     const view = workspace.getConfiguration('markdown-fiction-writer.view');
+    const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
+    let config: Config = {
+      // event responsible
+      changeEvent: event,
 
-    let config = {
       keybindingsDisabled: this.read<boolean>(editing, 'disableKeybindings', false),
       inverseEnter: this.read<string>(editing, 'easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER)
         === Constants.Paragraph.NEW_ON_ENTER,
@@ -42,21 +45,21 @@ export class ConfigService extends Observable<Config> {
       dialogueMarkerAutoDetect: false,
       dialogueIndentAutoDetect: this.read<boolean>(editDialogue, 'sentenceIndentAutoDetect', true),
       dialgoueIndentLength: this.read<number>(editDialogue, 'sentenceIndentAutoDetect', 0),
-      
+
       // EXPORT 
-      
+
       compileTemplateFile: this.read<string>(exporting, 'outputTemplate.file', ''),
       compileUseTemplateFile: this.read<boolean>(exporting, 'outputTemplate.enabled', false),
       compileOutputFormat: this.read<string>(exporting, 'outputFormat.default', OutputFormats['odt']),
       compileShowFormatPicker: this.read<boolean>(exporting, 'outputFormat.alwaysShowFormatPicker', true),
       compileEmDash: this.read<boolean>(exporting, 'smartDeshes', true),
       compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)
-      === Constants.Compile.SaveDialogue.ALWAYS,
+        === Constants.Compile.SaveDialogue.ALWAYS,
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
-      
+
       // FORMATTING
-      
+
       formattingIsEnabled: this.read<boolean>(formatting, 'enabled', true),
       formattingFixMismatchDialogueMarkers: this.read<boolean>(formatting, 'fixMismatchDialogueMarkers', true),
       formattingFixDialogueIndents: this.read<boolean>(formatting, 'fixDialogueIndents', true),
@@ -65,25 +68,72 @@ export class ConfigService extends Observable<Config> {
       formattingRemoveExtraSpaces: this.read<boolean>(formatting, 'removeExtraSpaces', true),
       formattingRemoveExtraLines: this.read<boolean>(formatting, 'removeExtraLines', true),
       formattingRemoveTrailingSpaces: this.read<boolean>(formatting, 'removeTrailingSpaces', true),
-      
+
       viewFileTags: this.read<{ [key: string]: string }>(view, 'fileTags.definitions', {}),
-      viewFileTagsEnabled: this.read<boolean>(view, 'fileTags.enabled', false),
       viewDialogueHighlight: this.read<boolean>(view, 'highlight.textBetweenQuotes', false),
       viewDialogueHighlightMarkers: this.read<boolean>(view, 'highlight.dialogueMarkers', true),
-      
+
       viewZenModeEnabled: this.read<boolean>(view, 'writingMode.enabled', false),
       viewZenModeTheme: this.read<string>(view, 'writingMode.theme', ''),
       viewZenModeFontSize: this.read<number>(view, 'writingMode.fontSize', 0),
       wrapIndent: this.read<number>(view, 'wordWrapIndent', 0),
-      
+
       foldSentences: this.read<boolean>(view, 'foldParagraphLines', true),
       viewStatusBarEnabled: this.read<boolean>(view, 'statusBar.enabled', true),
+
+      isDialogueEnabled: isDialogueEnabled,
+      dialgoueIndent: '',
+
+      // Metadata
+      metaKeywordColors: new Map<string, ThemeColor>(),
+      metaKeywordsEnabled: this.read<boolean>(metadata, 'keywords.enabled', true),
       
-      isDialogueEnabled : isDialogueEnabled,
-      dialgoueIndent: ''
+      metaCategories: new Map<string, string>(),
+      metaCategoriesEnabled: this.read<boolean>(metadata, 'categories.enabled', true),
+      
+      metaCatDefault: this.read<string>(metadata, 'defaultCategory.name', 'tags'),
+      metaFileBadges: new Map<string, string>(),
+      metaFileBadgesEnabled: this.read<boolean>(metadata, 'defaultCategory.fileBadgesEnabled', true),
+      metaFileColorsEnabled: this.read<boolean>(metadata, 'defaultCategory.fileColorsEnabled', true),
     };
     
-    
+    const metaKeywordColors = this.read<IKvp<KnownColor>>(
+      metadata,
+      'keywords.definitions',
+      {}
+    );
+
+    for (const [key, val] of Object.entries(metaKeywordColors)) {
+      if (val && val !== KnownColor.NONE) {
+        config.metaKeywordColors.set(key.toLowerCase(), new ThemeColor(`fictionwriter.${val}`));
+      }
+    };
+
+    const metaFileBadges = this.read<IKvp<string>>(
+      metadata,
+      'defaultCategory.fileBadges',
+      {}
+    );
+
+    for (const [key, val] of Object.entries(metaFileBadges)) {
+      if (val) {
+        config.metaFileBadges.set(key.toLowerCase(), val.substring(0,2));
+      }
+    };
+
+    const metaCatIcons = this.read<IKvp<string>>(
+      metadata,
+      'categories.definitions',
+      {}
+    );
+
+    for (const [key, val] of Object.entries(metaCatIcons)) {
+      if (val) {
+        config.metaCategories.set(key.toLowerCase(), val);
+      }
+    };
+
+
     // Disable dialogue related settings
     if (!isDialogueEnabled) {
       config.dialgoueIndent = '';
@@ -96,39 +146,39 @@ export class ConfigService extends Observable<Config> {
     } else {
       config.dialgoueIndent = ' '.repeat(
         (config.dialgoueIndentLength < 0 || config.dialogueIndentAutoDetect)
-        ? config.dialoguePrefix.length
-        : config.dialgoueIndentLength);
-      };
-      
-      // TODO: Move some settings to extension settings.
-      let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
-      this.config = { ...config, ...localSettings };
-      console.log(this.config.isZenMode);
-      // Notify observers
-      this.notify();
-    }
-    
-    setLocal<T extends string | number | boolean | undefined | { [key: string]: string }>(key: string, value: T) {
-      if (!this.config) { return; }
-      
-      this.config[key] = value;
+          ? config.dialoguePrefix.length
+          : config.dialgoueIndentLength);
+    };
+
+    // TODO: Move some settings to extension settings.
+    let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
+    this.config = { ...config, ...localSettings };
+    console.log(this.config.isZenMode);
+    // Notify observers
+    this.notify();
+  }
+
+  setLocal<T extends string | number | boolean | undefined | { [key: string]: string }>(key: string, value: T) {
+    if (!this.config) { return; }
+
+    this.config[key] = value;
 
     let localConfig = this.localSettings.getValue<ContextConfig>('config', {});
     localConfig[key] = value;
     this.localSettings.setValue<ContextConfig>('config', localConfig);
     console.log(this.config.isZenMode);
- 
+
     this.notify();
   }
 
-  getFlag(key: string) : boolean {
+  getFlag(key: string): boolean {
     return this.localSettings.getValue<boolean>(key, false);
   }
 
   setFlag(key: string) { this.localSettings.setValue<boolean>(key, true); }
   usetFlag(key: string) { this.localSettings.setValue<boolean>(key, false); }
 
-  backup(config: string, key: string) : any {
+  backup(config: string, key: string): any {
     const value = workspace.getConfiguration(config).get(key);
     this.localSettings.setValue(
       `${config}.${key}`,
