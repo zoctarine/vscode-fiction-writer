@@ -93,7 +93,7 @@ export class MetadataFileCache extends Observer<Config> {
     if (typeof(meta) === 'string'){
       const tags = meta.split(EASY_ARRAY_SEPARATOR).map(t => t.trim()).filter(m => m);
       let newMeta: IKvp<string[]|string> = {};
-      newMeta[this.state.metaCatDefault] = tags.length > 1 ? tags : tags[0];
+      newMeta[this.state.metaKeywordBadgeCategory] = tags.length > 1 ? tags : tags[0];
       return newMeta;
     } 
     

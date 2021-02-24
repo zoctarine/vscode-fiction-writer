@@ -15,7 +15,7 @@ export class MetadataTreeItem extends vscode.TreeItem {
       this.description = displayValue;
       if (this.label)
         this.label += ':';
-        this.tooltip = key;
+        this.tooltip = displayValue;
     }
 
   }

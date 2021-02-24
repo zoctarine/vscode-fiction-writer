@@ -72,7 +72,7 @@ export class ConfigService extends Observable<Config> {
       viewFileTags: this.read<{ [key: string]: string }>(view, 'fileTags.definitions', {}),
       viewDialogueHighlight: this.read<boolean>(view, 'highlight.textBetweenQuotes', false),
       viewDialogueHighlightMarkers: this.read<boolean>(view, 'highlight.dialogueMarkers', true),
-
+      viewFadeMetadata: this.read<boolean>(view, 'fadeMetadata', true),
       viewZenModeEnabled: this.read<boolean>(view, 'writingMode.enabled', false),
       viewZenModeTheme: this.read<string>(view, 'writingMode.theme', ''),
       viewZenModeFontSize: this.read<number>(view, 'writingMode.fontSize', 0),
@@ -86,20 +86,21 @@ export class ConfigService extends Observable<Config> {
 
       // Metadata
       metaKeywordColors: new Map<string, ThemeColor>(),
-      metaKeywordsEnabled: this.read<boolean>(metadata, 'keywords.enabled', true),
+      metaKeywordShowInFileExplorer: this.read<boolean>(metadata, 'keywords.showColorsInFileExplorer', true),
+      metaKeywordShowInMetadataView: this.read<boolean>(metadata, 'keywords.showColorsInMetadataView', true),
       
       metaCategories: new Map<string, string>(),
-      metaCategoriesEnabled: this.read<boolean>(metadata, 'categories.enabled', true),
+      metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categoryIconsEnabled', true),
       
-      metaCatDefault: this.read<string>(metadata, 'defaultCategory.name', 'tags'),
+      metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgeCategory', 'keywords'),
+      metaKeywordColorCategory: this.read<string>(metadata, 'keywords.colorCategory', 'tag'),
       metaFileBadges: new Map<string, string>(),
-      metaFileBadgesEnabled: this.read<boolean>(metadata, 'defaultCategory.fileBadgesEnabled', true),
-      metaFileColorsEnabled: this.read<boolean>(metadata, 'defaultCategory.fileColorsEnabled', true),
+      metaKeywordsShowBadges: this.read<boolean>(metadata, 'keywords.showBadgesInFileExplorer', true),
     };
     
     const metaKeywordColors = this.read<IKvp<KnownColor>>(
       metadata,
-      'keywords.definitions',
+      'keywords.colors',
       {}
     );
 
@@ -111,7 +112,7 @@ export class ConfigService extends Observable<Config> {
 
     const metaFileBadges = this.read<IKvp<string>>(
       metadata,
-      'defaultCategory.fileBadges',
+      'keywords.badges',
       {}
     );
 
@@ -123,7 +124,7 @@ export class ConfigService extends Observable<Config> {
 
     const metaCatIcons = this.read<IKvp<string>>(
       metadata,
-      'categories.definitions',
+      'categories',
       {}
     );
 

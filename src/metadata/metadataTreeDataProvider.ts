@@ -25,6 +25,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
       ? this.parseObjectTree(element.value, element)
       : this.parseObjectTree(this.metadata.metadata);
 
+    const useColors = this.state.metaKeywordShowInMetadataView; 
 
     elements.forEach(item => {
       let icon: string | undefined = undefined;
@@ -35,12 +36,12 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
           label = item.key.toLowerCase();
       }
 
-      if (label) {
+      if (label && this.state.metaCategoryIconsEnabled) {
         icon = this.state.metaCategories.get(label);
         if (icon) {
           const keyword = item.description?.toString()?.toLowerCase();
           let color = keyword
-            ? this.state.metaKeywordColors.get(keyword)
+            ? useColors && this.state.metaKeywordColors.get(keyword)
             : undefined;
 
           item.iconPath = new vscode.ThemeIcon(icon, color);

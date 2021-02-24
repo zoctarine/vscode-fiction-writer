@@ -4,6 +4,7 @@
   "description": "Tools for writing fiction",
   "icon": "resources/fiction-writer-icon.png",
   "publisher": "vsc-zoctarine",
+  "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
   "version": "0.0.25",
   "engines": {
@@ -445,12 +446,12 @@
           "scope": "application",
           "type": "boolean",
           "default": true,
-          "markdownDescription": "If enabled, the custom Fiction Writer status bar will be visible"
+          "markdownDescription": "Show the custom Fiction Writer status bar."
         },
-        "markdown-fiction-writer.metadata.keywords.definitions": {
+        "markdown-fiction-writer.metadata.keywords.colors": {
           "type": "object",
           "scope": "application",
-          "markdownDescription": "Define a keyqord and associate a color. This will be shown in metadata view, as the icon color\n\n\n\n.Known metadata labels are: `tags`, `tag`, `character`, `characters`, `status`, `keyword`, `keywords` state`",
+          "markdownDescription": "Defines a keyword and associate a color to it. The colors can be visible in metadata view or Explorer view.",
           "additionalProperties": {
             "type": "string",
             "enum":[
@@ -469,13 +470,19 @@
             ]
           }
         },
-        "markdown-fiction-writer.metadata.keywords.enabled": {
+        "markdown-fiction-writer.metadata.keywords.showColorsInMetadataView": {
           "type": "boolean",
           "scope": "application",
           "default": true,
-          "markdownDescription": "TBD"
+          "markdownDescription": "Use the `#markdown-fiction-writer.metadata.keywords.colors#` as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
         },
-        "markdown-fiction-writer.metadata.categories.definitions": {
+        "markdown-fiction-writer.metadata.keywords.showColorsInFileExplorer": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "Use the `#markdown-fiction-writer.metadata.keywords.colors#` as file color, in **Explorer** view.\n\n\n\nThe color used will be the color of the _first keyword_ that appears in the _default category_ configured here: `#markdown-fiction-writer.metadata.defaultCategory#`\n\n_**Note:** file colors can be ovewritten by other extensions, so they might not show as expected._"
+        },
+        "markdown-fiction-writer.metadata.categories": {
           "type": "object",
           "default": {
             "tag": "tag",
@@ -487,32 +494,40 @@
             "character": "person",
             "characters": "organization",
             "title": "symbol-type-parameter",
-            "summary": "debug-stackframe-dot",
-            "description": "debug-stackframe-dot"
+            "summary": "output",
+            "description": "output"
           },
           "scope": "application",
-          "markdownDescription": "",
+          "markdownDescription": "Assign for each metadata field (**Item**) a vscode icon (**Value**)\n\nYou can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing).\n\nFor example, if you have the following metadata:\n\n`---`\n\n`title: My Awesome Title`\n\n`---`\n\nthe default icon for `title` field will be `symbol-type-parameter`.",
           "additionalProperties": {
             "type":"string"
           }
         },
-        "markdown-fiction-writer.metadata.categories.enabled": {
+        "markdown-fiction-writer.metadata.categoryIconsEnabled": {
           "type": "boolean",
           "scope": "application",
           "default": true,
-          "markdownDescription": "TBD"
+          "markdownDescription": "Show icons in **Metadata** view."
         },
-        "markdown-fiction-writer.metadata.defaultCategory.name": {
+        "markdown-fiction-writer.metadata.keywords.colorCategory": {
           "type": "string",
           "scope": "application",
-          "default": "character",
-          "markdownDescription": "TBD"
+          "default": "tags",
+          "markdownDescription": "The category used for selecting icons, badges and colors."
         },
-        "markdown-fiction-writer.metadata.defaultCategory.fileBadges": {
+        "markdown-fiction-writer.metadata.keywords.badgeCategory": {
+          "type": "string",
+          "scope": "application",
+          "default": "keywords",
+          "markdownDescription": "The category used for selecting icons, badges and colors."
+        },
+        "markdown-fiction-writer.metadata.keywords.badges": {
           "type": "object",
           "default": {
-            "Gandalf": "GD",
-            "John Snow": "JS"
+            "draft": "D",
+            "rev1": "R1",
+            "rev2": "R2",
+            "done": "OK"
           },
           "scope": "application",
           "markdownDescription": "",
@@ -520,17 +535,20 @@
             "type": "string"
           }
         },
-        "markdown-fiction-writer.metadata.defaultCategory.fileBadgesEnabled": {
+        "markdown-fiction-writer.metadata.keywords.showBadgesInFileExplorer": {
           "type": "boolean",
           "scope": "application",
           "default": true,
-          "markdownDescription": "TBD"
+          "markdownDescription":"Use `#markdown-fiction-writer.metadata.keywords.badges#` in the **Explorer** view\n\nThe badge used will be the badge of the _first keyword_ that appears in the _default category_ configured here: `#markdown-fiction-writer.metadata.defaultCategory#`"
         },
-        "markdown-fiction-writer.metadata.defaultCategory.fileColorsEnabled": {
+
+
+
+        "markdown-fiction-writer.view.fadeMetadata": {
           "type": "boolean",
           "scope": "application",
           "default": true,
-          "markdownDescription": "Contributes to file colors"
+          "markdownDescription": "Fade markdown metadata section by 50%."
         },
         "markdown-fiction-writer.view.highlight.textBetweenQuotes": {
           "type": "boolean",
@@ -543,12 +561,6 @@
           "scope": "application",
           "default": true,
           "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
-        },
-        "markdown-fiction-writer.analysis.statistics.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "If enabled, reads tags from `.md` files and display corresponding badge in file explorer. Recognizes tags defined under `#markdown-fiction-writer.view.fileTags.definitions#`"
         }
       }
     },
