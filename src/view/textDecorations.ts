@@ -61,7 +61,7 @@ export class TextDecorations extends Observer<Config>{
         undefined,
         decorationTypes.tag,
       ],
-      isEnabled: c => c.metaFileBadgesEnabled === true
+      isEnabled: c => c.metaKeywordsShowBadges === true
     }],
     ['meta', {
       pattern: /(^---)(.*?)(---|\.\.\.)/sgu,
@@ -70,7 +70,7 @@ export class TextDecorations extends Observer<Config>{
         decorationTypes.semiTransparent,
         decorationTypes.semiTransparent,
       ],
-      isEnabled: c=> true
+      isEnabled: c=> c.viewFadeMetadata === true
     }]
   ]);
 
@@ -184,7 +184,7 @@ export class TextDecorations extends Observer<Config>{
   protected onStateChange(newState: Config) {
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
         this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
-        this.state.metaFileBadgesEnabled !== newState.metaFileBadgesEnabled ){
+        this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ){
           this.loadTags();
           vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
         }

@@ -17,7 +17,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   private register() {
     this.clearDisposable('FD', 'SV');
 
-    if (this.state.metaFileBadgesEnabled) {
+    if (this.state.metaKeywordsShowBadges) {
       this.addDisposable(vscode.window.registerFileDecorationProvider(this), 'FD');
     }
   }
@@ -30,29 +30,34 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
       return Promise.reject();
 
     return new Promise((resolve, reject) => {
+      const useColors = this.state.metaKeywordShowInFileExplorer;
+      const useBadges = this.state.metaKeywordsShowBadges;
       this.cache.get(uri)
         .then(meta => {
 
           const metadata = meta?.metadata as IKvp<string | string[]>;
-          const defaultCat = this.state.metaCatDefault;
-          if (metadata && metadata[defaultCat]) {
-            const cat = metadata[defaultCat];
-            const tag: string = (Array.isArray(cat) ? cat[0] : cat);
-            const keyword = tag?.toLowerCase();
-              console.log(keyword);
-              console.log(this.state.metaKeywordColors.size);
-              this.state.metaFileBadges.forEach((v,k)=>console.log(`${k}:${v}`));
-            const color = this.state.metaKeywordColors.get(keyword);
-            const bg = this.state.metaFileBadges.get(keyword);
+          let badge: string | undefined;
+          let color: vscode.ThemeColor | undefined;
 
-            console.log(color);
-            console.log(bg);
+          if (metadata) {
+            const defaultBadgeCat = this.state.metaKeywordBadgeCategory;
+            if (metadata[defaultBadgeCat]) {
+              const cat = metadata[defaultBadgeCat];
+              const tag: string = (Array.isArray(cat) ? cat[0] : cat);
+              const keyword = tag?.toLowerCase();
+              badge = useBadges
+                ? this.state.metaFileBadges.get(keyword)?.substr(0, 2)
+                : undefined;
+            }
 
-            let badge = bg
-              ? bg.substr(0, 2)
-              : undefined;
-
-            resolve(new vscode.FileDecoration(badge, tag, color));
+            const defaultColorCat = this.state.metaKeywordColorCategory;
+            if (metadata[defaultColorCat]) {
+              const cat = metadata[defaultColorCat];
+              const tag: string = (Array.isArray(cat) ? cat[0] : cat);
+              const keyword = tag?.toLowerCase();
+              color = useColors ? this.state.metaKeywordColors.get(keyword) : undefined;
+            }
+            resolve(new vscode.FileDecoration(badge, `TODO ADD BOTH`, color));
           } else {
             reject();
           }
@@ -69,7 +74,6 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
     super.onStateChange(newState);
 
     if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata')) {
-      console.log("FIRIG FILE CHANGE EVENTS");
       this.fire(this.cache.getAllKeys().map(fp => vscode.Uri.file(fp)));
     }
   }

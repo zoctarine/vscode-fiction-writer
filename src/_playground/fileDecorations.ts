@@ -20,7 +20,7 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
   private register() {
     this.clearDisposable('FD', 'SV');
 
-    if (this.state.metaFileBadgesEnabled) {
+    if (this.state.metaKeywordsShowBadges) {
       this.addDisposable(vscode.window.registerFileDecorationProvider(this), 'FD');
       this.addDisposable(vscode.workspace.onDidSaveTextDocument(e => this.fire([e.uri])), 'SV');
     }
@@ -45,7 +45,7 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
 
     super.onStateChange(newState);
 
-    if (JSON.stringify(newState.viewFileTags) !== JSON.stringify(prev.viewFileTags) || newState.metaFileBadgesEnabled !== prev.metaFileBadgesEnabled) {
+    if (JSON.stringify(newState.viewFileTags) !== JSON.stringify(prev.viewFileTags) || newState.metaKeywordsShowBadges !== prev.metaKeywordsShowBadges) {
       this.loadDecorations();
       this.register();
 

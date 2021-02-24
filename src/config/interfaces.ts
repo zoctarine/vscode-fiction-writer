@@ -51,13 +51,15 @@ export interface Config extends ContextConfig {
   viewZenModeFontSize?: number;
   viewZenModeTheme?: string;
   viewStatusBarEnabled?: boolean;
-  
+  viewFadeMetadata?: boolean;
+
   metaKeywordColors: Map<string, ThemeColor>;
-  metaKeywordsEnabled?: boolean,
+  metaKeywordColorCategory: string;
+  metaKeywordShowInFileExplorer?: boolean;
+  metaKeywordShowInMetadataView?: boolean;
   metaFileBadges: Map<string, string>;
-  metaFileBadgesEnabled?: boolean,
-  metaFileColorsEnabled?: boolean,
+  metaKeywordsShowBadges?: boolean,
   metaCategories: Map<string, string>;
-  metaCategoriesEnabled?: boolean;
-  metaCatDefault: string;
+  metaCategoryIconsEnabled?: boolean;
+  metaKeywordBadgeCategory: string;
 }
