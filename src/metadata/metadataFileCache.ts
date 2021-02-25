@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { extractMetadata } from './index';
-import { IDisposable, IObservable, Observable, Observer } from '../utils';
+import { IDisposable, IObservable, Observer } from '../utils';
 import { Config, IKvp } from '../config';
 
 const EASY_ARRAY_SEPARATOR = ',';
@@ -19,7 +19,6 @@ export class FileInfoCache implements IDisposable {
   public set(path: vscode.Uri, info: IFileInfo): void {
     if (!this.state || !path) return;
 
-    console.log('CACHE: set/save: ' + path);
     this.state.set(path.fsPath, info);
   }
 
@@ -56,26 +55,30 @@ export class MetadataFileCache extends Observer<Config> {
         ._fileCache
         .get(path)
         .then(result => {
-          resolve(result ?? this.refresh(path));
+          resolve(result ? this.prepareMeta(result) : this.refresh(path));
         })
         .catch(reject);
     });
   }
 
-  public refresh(path: vscode.Uri): Promise<IFileInfo | undefined> {
+  public refresh(path?: vscode.Uri): Promise<IFileInfo | undefined> {
+    if (!path)
+    return Promise.resolve(undefined);
+    
     return new Promise((resolve, reject) => {
       try {
         const filePath = path.fsPath;
-        let metadata: IFileInfo | undefined = undefined;
+        let fileInfo: IFileInfo | undefined = undefined;
         if (fs.existsSync(filePath)) {
           const text = fs.readFileSync(filePath, 'utf8');
-          metadata = {
+          fileInfo = {
             metadata: this.getMeta(text)
           };
-          this._fileCache.set(path, metadata);
+          this._fileCache.set(path, fileInfo);
+          
+            fileInfo.metadata = this.prepareMeta(fileInfo.metadata);
         }
-
-        resolve(metadata);
+        resolve(fileInfo);
 
       } catch (error) {
         reject(error);
@@ -84,16 +87,18 @@ export class MetadataFileCache extends Observer<Config> {
   }
 
   private getMeta(text:string): any {
-    let meta = extractMetadata(text);
+    return extractMetadata(text);
+  }
 
+  private prepareMeta(meta: any): any {
     // if is not a truthy value, return it
     if (!meta) return meta;
     
     // if is string, try to assign to default tag category
-    if (typeof(meta) === 'string'){
+    if (typeof(meta) === 'string' && this.state.metaDefaultCategory){
       const tags = meta.split(EASY_ARRAY_SEPARATOR).map(t => t.trim()).filter(m => m);
       let newMeta: IKvp<string[]|string> = {};
-      newMeta[this.state.metaKeywordBadgeCategory] = tags.length > 1 ? tags : tags[0];
+      newMeta[this.state.metaDefaultCategory] = tags.length > 1 ? tags : tags[0];
       return newMeta;
     } 
     

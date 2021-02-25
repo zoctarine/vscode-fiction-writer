@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Constants, RegEx } from '../utils';
-import { WordStatTreeItem } from './WordStatTreeItem';
+import { WordStatTreeItem } from './wordStatTreeItem';
 
 
 export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<WordStatTreeItem> {

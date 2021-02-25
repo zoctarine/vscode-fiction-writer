@@ -1,3 +1,3 @@
-export * from './CompileAllCommand';
-export * from './CompileFileCommand';
-export * from './CompileTocCommand';
+export * from './compileAllCommand';
+export * from './compileFileCommand';
+export * from './compileTocCommand';

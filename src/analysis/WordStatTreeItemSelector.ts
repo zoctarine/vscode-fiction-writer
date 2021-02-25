@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { getActiveEditor } from '../utils';
-import { WordStatTreeItem } from './WordStatTreeItem';
+import { WordStatTreeItem } from './wordStatTreeItem';
 
 class TextSelector {
   private lastSearch: string = '';

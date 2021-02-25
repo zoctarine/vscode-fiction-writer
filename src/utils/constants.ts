@@ -11,7 +11,7 @@ export const Constants = {
       NONE: 'never (save in same directory as exported file)'
     }
   },
-  
+
   Dialogue : {
     NONE: '"Hello," (quotes)',
     EMDASH: '— Hello, (em-dash followed by one space)',
@@ -50,6 +50,7 @@ export const Constants = {
     WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh',
     WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
     DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh',
+    METADATA_REFRESH: 'fiction-writer.extension.metadata.refresh',
     TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleWritingMode',
     EXIT_ZEN_MODE: 'fiction-writer.extension.exitWritingMode',
     SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme'
@@ -117,7 +118,7 @@ export const RegEx = {
 
   SENTENCE_SEPARATORS: /([\.\?\!\:\;])([\s]+)/g,
 
-  MARKDOWN_INCLUDE_FILE:  /{(.*?)}/g,
+  MARKDOWN_INCLUDE_FILE:  /^\s*{(.*?)}/g,
 
   MARKDOWN_INCLUDE_FILE_BOUNDARIES:  /[{}]/g,
 

@@ -37,6 +37,7 @@ export class ConfigService extends Observable<Config> {
       // event responsible
       changeEvent: event,
 
+      // configuration keys
       keybindingsDisabled: this.read<boolean>(editing, 'disableKeybindings', false),
       inverseEnter: this.read<string>(editing, 'easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER)
         === Constants.Paragraph.NEW_ON_ENTER,
@@ -86,16 +87,18 @@ export class ConfigService extends Observable<Config> {
 
       // Metadata
       metaKeywordColors: new Map<string, ThemeColor>(),
-      metaKeywordShowInFileExplorer: this.read<boolean>(metadata, 'keywords.showColorsInFileExplorer', true),
-      metaKeywordShowInMetadataView: this.read<boolean>(metadata, 'keywords.showColorsInMetadataView', true),
+      metaKeywordShowInFileExplorer: this.read<boolean>(metadata, 'keywords.colorsInFileExplorer', true),
+      metaKeywordShowInMetadataView: this.read<boolean>(metadata, 'keywords.colorsInMetadataView', true),
       
       metaCategories: new Map<string, string>(),
-      metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categoryIconsEnabled', true),
+      metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categories.showIcons', true),
+      metaCategoryNamesEnabled: this.read<boolean>(metadata, 'categories.showNames', true),
       
-      metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgeCategory', 'keywords'),
-      metaKeywordColorCategory: this.read<string>(metadata, 'keywords.colorCategory', 'tag'),
+      metaDefaultCategory: this.read<string>(metadata, 'defaultCategory', 'tags'),
+      metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgesCategory', 'tags'),
+      metaKeywordColorCategory: this.read<string>(metadata, 'keywords.colorsCategory', 'tags'),
       metaFileBadges: new Map<string, string>(),
-      metaKeywordsShowBadges: this.read<boolean>(metadata, 'keywords.showBadgesInFileExplorer', true),
+      metaKeywordsShowBadges: this.read<boolean>(metadata, 'keywords.badgesInFileExplorer', true),
     };
     
     const metaKeywordColors = this.read<IKvp<KnownColor>>(
@@ -124,7 +127,7 @@ export class ConfigService extends Observable<Config> {
 
     const metaCatIcons = this.read<IKvp<string>>(
       metadata,
-      'categories',
+      'categories.icons',
       {}
     );
 
@@ -154,7 +157,6 @@ export class ConfigService extends Observable<Config> {
     // TODO: Move some settings to extension settings.
     let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
     this.config = { ...config, ...localSettings };
-    console.log(this.config.isZenMode);
     // Notify observers
     this.notify();
   }
@@ -167,7 +169,6 @@ export class ConfigService extends Observable<Config> {
     let localConfig = this.localSettings.getValue<ContextConfig>('config', {});
     localConfig[key] = value;
     this.localSettings.setValue<ContextConfig>('config', localConfig);
-    console.log(this.config.isZenMode);
 
     this.notify();
   }

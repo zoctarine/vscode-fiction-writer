@@ -4,14 +4,14 @@ export * from './metadataTreeDataProvider';
 export * from './metadataDecorationProvider';
 export * from './metadataTreeItem';
 
-function extract(text: string) {
+export function extract(text: string) {
   const exp = /(?:^---[\n\r]+)(.*?)(?:---|\.\.\.)/sgu;
   const result = exp.exec(text);
   if (result && result.length > 0) return result[1].trim();
   return '';
 }
 
-function parse(yamlText: string | undefined) {
+export function parse(yamlText: string | undefined) {
   if (!yamlText) return undefined;
 
   const result = yaml.load(yamlText, {

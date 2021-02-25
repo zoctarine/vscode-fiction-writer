@@ -1,6 +1,6 @@
 {
   "name": "markdown-fiction-writer",
-  "displayName": "Markdown Fiction Writer (0.0.2-alpha)",
+  "displayName": "Markdown Fiction Writer",
   "description": "Tools for writing fiction",
   "icon": "resources/fiction-writer-icon.png",
   "publisher": "vsc-zoctarine",
@@ -20,6 +20,7 @@
     "writing",
     "fiction",
     "dialogue",
+    "metadata",
     "pandoc"
   ],
   "bugs": {
@@ -145,7 +146,7 @@
     "views": {
       "explorer": [
         {
-          "id": "metadata",
+          "id": "fw-metadata",
           "name": "Metadata",
           "icon": "$(eye)",
           "contextualTitle": "Metadata",
@@ -154,14 +155,14 @@
       ],
       "word-frequency-explorer": [
         {
-          "id": "wordFrequencies",
+          "id": "fw-wordFrequencies",
           "name": "Word Frequencies",
           "icon": "$(eye)",
           "contextualTitle": "Word n-Gram Frequencies",
           "when": "isSupportedEditor"
         },
         {
-          "id": "statistics",
+          "id": "fw-statistics",
           "name": "Statistics",
           "icon": "$(eye)",
           "contextualTitle": "Document statistics",
@@ -195,17 +196,22 @@
       "view/title": [
         {
           "command": "fiction-writer.extension.wordFrequency.refresh",
-          "when": "view == wordFrequencies",
+          "when": "view == fw-wordFrequencies",
           "group": "navigation"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.clear",
-          "when": "view == wordFrequencies",
+          "when": "view == fw-wordFrequencies",
           "group": "navigation"
         },
         {
           "command": "fiction-writer.extension.statistics.refresh",
           "when": "view == statistics",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.refresh",
+          "when": "view == fw-metadata",
           "group": "navigation"
         }
       ]
@@ -224,532 +230,550 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
-        "markdown-fiction-writer.edit.disableKeybindings": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work."
-        },
-        "markdown-fiction-writer.edit.easyParagraphCreation": {
-          "type": "string",
-          "default": "Shift+Enter",
-          "scope": "application",
-          "markdownDescription": "A new paragraph (two line breaks) will be created when pressing:",
-          "enum": [
-            "Enter",
-            "Shift+Enter"
-          ],
-          "markdownEnumDescriptions": [
-            "- `enter` will add two line-breaks.\n\n- `shift`+`enter` will add one line-break.",
-            "- `enter` will add one line-break.\n\n- `shift`+`enter` will add two line-breaks."
-          ]
-        },
-        "markdown-fiction-writer.editDialogue.marker": {
-          "type": "string",
-          "scope": "application",
-          "default": "-- ",
-          "markdownDescription": "Controls what punctuation is used when dialogue.",
-          "enum": [
-            "\"Hello,\" (quotes)",
-            "— Hello, (em-dash followed by one space)",
-            "-- Hello, (two dashes followed by one space)",
-            "--- Hello, (three dashes followed by one space)",
-            "—Hello, (em-dash, no space)",
-            "--Hello, (two dashes, no space)",
-            "---Hello, (three dashes, no space)"
-          ],
-          "markdownEnumDescriptions": [
-            "Quotes:\n\n \"Hello,\" John said.",
-            "Em-dash followed by one space: \n\n — Hello, John said.",
-            "Two dashes followed by one space: \n\n -- Hello, John said.",
-            "Three dashes followed by one space: \n\n --- Hello, John said.",
-            "Em-dash, no space: \n\n —Hello, John said.",
-            "Two dashes, no space: \n\n --Hello, John said.",
-            "Three dashes, no space: \n\n ---Hello, John said."
-          ]
-        },
-        "markdown-fiction-writer.editDialogue.markerAutoReplace": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
-        },
-        "markdown-fiction-writer.editDialogue.sentenceIndent": {
-          "type": "number",
-          "scope": "application",
-          "default": 3,
-          "minimum": 0,
-          "maximum": 100,
-          "markdownDescription": "Indent for sequential lines of the same dialogue paragraph. (`0` for no indenting)"
-        },
-        "markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Sets the line indent from the same dialogue paragraph equal with the selected `#markdown-fiction-writer.editDialogue.marker#`."
-        },
-        "markdown-fiction-writer.view.wordWrapIndent": {
-          "type": "number",
-          "scope": "application",
-          "default": 0,
-          "minimum": -1,
-          "maximum": 100,
-          "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if `#editor.wordWrap#` is enabled, and might change the `#editor.tabSize#` setting for `markdown`._"
-        },
-        "markdown-fiction-writer.view.foldParagraphLines": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
-        },
-        "markdown-fiction-writer.export.outputFormat.default": {
-          "type": "string",
-          "scope": "application",
-          "default": "odt",
-          "enum": [
-            "docx",
-            "odt",
-            "html",
-            "asciidoc",
-            "adoc",
-            "epub",
-            "fb2",
-            "docbook"
-          ],
-          "markdownDescription": "The output document format.\n\n**Important:** This requires having [Pandoc](https://pandoc.org/installing.html) installed on your system, and available to be run from commandline."
-        },
-        "markdown-fiction-writer.export.outputFormat.alwaysShowFormatPicker": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Select the output format each time an export command is run.\n\nIf set to `false`, the selected `#markdown-fiction-writer.export.outputFormat.default#` will be used."
-        },
-        "markdown-fiction-writer.export.showSaveDialogue": {
-          "type": "string",
-          "scope": "application",
-          "default": "Always",
-          "enum": [
-            "Always",
-            "Never"
-          ],
-          "markdownEnumDescriptions": [
-            "The Save File Dialogue is shown every time an export command is run.",
-            "Never show the Save File Dialogue. The exported document will be saved in the same directory with the source document(s)."
-          ],
-          "markdownDescription": "Control when the Save File Dialogue is shown."
-        },
-        "markdown-fiction-writer.export.outputTemplate.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "If enabled, the template file selected at `#markdown-fiction-writer.export.outputTemplate.file#` will be used when exporting to `docx` or `odt` formats."
-        },
-        "markdown-fiction-writer.export.outputTemplate.file": {
-          "type": "string",
-          "scope": "application",
-          "default": "",
-          "markdownDescription": "The output template to be used when exporting to `docx` or `odt`.\n\n**Note:** the template file extension must match the output type. It can be an absolut path, or relative to exported document."
-        },
-        "markdown-fiction-writer.export.tocFilename": {
-          "type": "string",
-          "scope": "application",
-          "default": "toc.md",
-          "markdownDescription": "The filename compiled by **Compile TOC command.**."
-        },
-        "markdown-fiction-writer.export.smartDeshes": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Converts `--` to `em-dash` (—) character in exported output. If not selected, it will default to `en-dash` (–).\n\nIs PanDoc `+old_dashes` markdown extension."
-        },
-        "markdown-fiction-writer.export.skipCodeComments": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "When parsing `.md` files, skips lines starting with `//`. "
-        },
-        "markdown-fiction-writer.textFormatting.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command"
-        },
-        "markdown-fiction-writer.textFormatting.fixMismatchDialogueMarkers": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "If `#markdown-fiction-writer.editDialogue.marker#` is not quotes, replaces mismatched markers with current selected marker."
-        },
-        "markdown-fiction-writer.textFormatting.fixDialogueIndents": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "If `#markdown-fiction-writer.editDialogue.marker#` is not quotes, and `#markdown-fiction-writer.editDialogue.sentenceIndent#` is enabled, reformats dialogue indents to selected dialogue indent."
-        },
-        "markdown-fiction-writer.textFormatting.fixParagraphSpacing": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
-        },
-        "markdown-fiction-writer.textFormatting.removeExtraSpaces": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)"
-        },
-        "markdown-fiction-writer.textFormatting.removeExtraLines": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Reduces multiple empty lines (more than two), to a single empty line."
-        },
-        "markdown-fiction-writer.textFormatting.removeTrailingSpaces": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Remove all whitespace characters from line ends."
-        },
-        "markdown-fiction-writer.textFormatting.fixParagraphBreaks": {
-          "scope": "application",
-          "type": "string",
-          "default": "none",
-          "enum": [
-            "none",
-            "Soft line-breaks As New Paragraph",
-            "Soft line-breaks In Same Paragraph",
-            "One Sentence Per Line"
-          ],
-          "markdownDescription": "Controls how paragraph breaks and soft line breaks will be formatted.",
-          "markdownEnumDescriptions": [
-            "No change to linebreaks",
-            "Transforms each soft line-break to a new paragraph.",
-            "Merges soft line-break lines into same paragraph line.",
-            "Splits lines into sentences. Each sentence is on a separate line."
-          ]
-        },
-        "markdown-fiction-writer.view.writingMode.theme": {
-          "scope": "application",
-          "type": "string",
-          "default": "",
-          "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
-        },
-        "markdown-fiction-writer.view.writingMode.fontSize": {
-          "scope": "application",
-          "type": "number",
-          "default": 16,
-          "minimum": 5,
-          "maximum": 100,
-          "markdownDescription": "The font size to be used in Writing Mode Mode."
-        },
-        "markdown-fiction-writer.view.statusBar.enabled": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Show the custom Fiction Writer status bar."
-        },
-        "markdown-fiction-writer.metadata.keywords.colors": {
-          "type": "object",
-          "scope": "application",
-          "markdownDescription": "Defines a keyword and associate a color to it. The colors can be visible in metadata view or Explorer view.",
-          "additionalProperties": {
+          "markdown-fiction-writer.edit.disableKeybindings": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work."
+          },
+          "markdown-fiction-writer.edit.easyParagraphCreation": {
             "type": "string",
-            "enum":[
-              "default color",
-              "blue",
-              "red",
-              "green",
-              "orange",
-              "amber",
-              "purple",
-              "bluegrey",
-              "grey",
-              "yellow",
-              "white",
-              "black"
+            "default": "Shift+Enter",
+            "scope": "application",
+            "markdownDescription": "A new paragraph (two line breaks) will be created when pressing:",
+            "enum": [
+              "Enter",
+              "Shift+Enter"
+            ],
+            "markdownEnumDescriptions": [
+              "- `enter` will add two line-breaks.\n\n- `shift`+`enter` will add one line-break.",
+              "- `enter` will add one line-break.\n\n- `shift`+`enter` will add two line-breaks."
             ]
-          }
-        },
-        "markdown-fiction-writer.metadata.keywords.showColorsInMetadataView": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Use the `#markdown-fiction-writer.metadata.keywords.colors#` as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
-        },
-        "markdown-fiction-writer.metadata.keywords.showColorsInFileExplorer": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Use the `#markdown-fiction-writer.metadata.keywords.colors#` as file color, in **Explorer** view.\n\n\n\nThe color used will be the color of the _first keyword_ that appears in the _default category_ configured here: `#markdown-fiction-writer.metadata.defaultCategory#`\n\n_**Note:** file colors can be ovewritten by other extensions, so they might not show as expected._"
-        },
-        "markdown-fiction-writer.metadata.categories": {
-          "type": "object",
-          "default": {
-            "tag": "tag",
-            "tags": "tag",
-            "author": "edit",
-            "authors": "edit",
-            "keyword": "circle-filled",
-            "keywords": "circle-filled",
-            "character": "person",
-            "characters": "organization",
-            "title": "symbol-type-parameter",
-            "summary": "output",
-            "description": "output"
           },
-          "scope": "application",
-          "markdownDescription": "Assign for each metadata field (**Item**) a vscode icon (**Value**)\n\nYou can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing).\n\nFor example, if you have the following metadata:\n\n`---`\n\n`title: My Awesome Title`\n\n`---`\n\nthe default icon for `title` field will be `symbol-type-parameter`.",
-          "additionalProperties": {
-            "type":"string"
-          }
-        },
-        "markdown-fiction-writer.metadata.categoryIconsEnabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Show icons in **Metadata** view."
-        },
-        "markdown-fiction-writer.metadata.keywords.colorCategory": {
-          "type": "string",
-          "scope": "application",
-          "default": "tags",
-          "markdownDescription": "The category used for selecting icons, badges and colors."
-        },
-        "markdown-fiction-writer.metadata.keywords.badgeCategory": {
-          "type": "string",
-          "scope": "application",
-          "default": "keywords",
-          "markdownDescription": "The category used for selecting icons, badges and colors."
-        },
-        "markdown-fiction-writer.metadata.keywords.badges": {
-          "type": "object",
-          "default": {
-            "draft": "D",
-            "rev1": "R1",
-            "rev2": "R2",
-            "done": "OK"
+          "markdown-fiction-writer.editDialogue.marker": {
+            "type": "string",
+            "scope": "application",
+            "default": "-- ",
+            "markdownDescription": "Controls what punctuation is used when dialogue.",
+            "enum": [
+              "\"Hello,\" (quotes)",
+              "— Hello, (em-dash followed by one space)",
+              "-- Hello, (two dashes followed by one space)",
+              "--- Hello, (three dashes followed by one space)",
+              "—Hello, (em-dash, no space)",
+              "--Hello, (two dashes, no space)",
+              "---Hello, (three dashes, no space)"
+            ],
+            "markdownEnumDescriptions": [
+              "Quotes:\n\n \"Hello,\" John said.",
+              "Em-dash followed by one space: \n\n — Hello, John said.",
+              "Two dashes followed by one space: \n\n -- Hello, John said.",
+              "Three dashes followed by one space: \n\n --- Hello, John said.",
+              "Em-dash, no space: \n\n —Hello, John said.",
+              "Two dashes, no space: \n\n --Hello, John said.",
+              "Three dashes, no space: \n\n ---Hello, John said."
+            ]
           },
-          "scope": "application",
-          "markdownDescription": "",
-          "additionalProperties": {
-            "type": "string"
+          "markdown-fiction-writer.editDialogue.markerAutoReplace": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
+          },
+          "markdown-fiction-writer.editDialogue.sentenceIndent": {
+            "type": "number",
+            "scope": "application",
+            "default": 3,
+            "minimum": 0,
+            "maximum": 100,
+            "markdownDescription": "Indent for sequential lines of the same dialogue paragraph. (`0` for no indenting)"
+          },
+          "markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Sets the line indent from the same dialogue paragraph equal with the selected `#markdown-fiction-writer.editDialogue.marker#`."
+          },
+          "markdown-fiction-writer.view.wordWrapIndent": {
+            "type": "number",
+            "scope": "application",
+            "default": 0,
+            "minimum": -1,
+            "maximum": 100,
+            "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if `#editor.wordWrap#` is enabled, and might change the `#editor.tabSize#` setting for `markdown`._"
+          },
+          "markdown-fiction-writer.view.foldParagraphLines": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
+          },
+          "markdown-fiction-writer.export.outputFormat.default": {
+            "type": "string",
+            "scope": "application",
+            "default": "odt",
+            "enum": [
+              "docx",
+              "odt",
+              "html",
+              "asciidoc",
+              "adoc",
+              "epub",
+              "fb2",
+              "docbook"
+            ],
+            "markdownDescription": "The output document format.\n\n**Important:** This requires having [Pandoc](https://pandoc.org/installing.html) installed on your system, and available to be run from commandline."
+          },
+          "markdown-fiction-writer.export.outputFormat.alwaysShowFormatPicker": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Select the output format each time an export command is run.\n\nIf set to `false`, the selected `#markdown-fiction-writer.export.outputFormat.default#` will be used."
+          },
+          "markdown-fiction-writer.export.showSaveDialogue": {
+            "type": "string",
+            "scope": "application",
+            "default": "Always",
+            "enum": [
+              "Always",
+              "Never"
+            ],
+            "markdownEnumDescriptions": [
+              "The Save File Dialogue is shown every time an export command is run.",
+              "Never show the Save File Dialogue. The exported document will be saved in the same directory with the source document(s)."
+            ],
+            "markdownDescription": "Control when the Save File Dialogue is shown."
+          },
+          "markdown-fiction-writer.export.outputTemplate.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "If enabled, the template file selected at `#markdown-fiction-writer.export.outputTemplate.file#` will be used when exporting to `docx` or `odt` formats."
+          },
+          "markdown-fiction-writer.export.outputTemplate.file": {
+            "type": "string",
+            "scope": "application",
+            "default": "",
+            "markdownDescription": "The output template to be used when exporting to `docx` or `odt`.\n\n**Note:** the template file extension must match the output type. It can be an absolut path, or relative to exported document."
+          },
+          "markdown-fiction-writer.export.tocFilename": {
+            "type": "string",
+            "scope": "application",
+            "default": "toc.md",
+            "markdownDescription": "The filename compiled by **Compile TOC command.**."
+          },
+          "markdown-fiction-writer.export.smartDeshes": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Converts `--` to `em-dash` (—) character in exported output. If not selected, it will default to `en-dash` (–).\n\nIs PanDoc `+old_dashes` markdown extension."
+          },
+          "markdown-fiction-writer.export.skipCodeComments": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "When parsing `.md` files, skips lines starting with `//`. "
+          },
+          "markdown-fiction-writer.textFormatting.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command"
+          },
+          "markdown-fiction-writer.textFormatting.fixMismatchDialogueMarkers": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "If `#markdown-fiction-writer.editDialogue.marker#` is not quotes, replaces mismatched markers with current selected marker."
+          },
+          "markdown-fiction-writer.textFormatting.fixDialogueIndents": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "If `#markdown-fiction-writer.editDialogue.marker#` is not quotes, and `#markdown-fiction-writer.editDialogue.sentenceIndent#` is enabled, reformats dialogue indents to selected dialogue indent."
+          },
+          "markdown-fiction-writer.textFormatting.fixParagraphSpacing": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
+          },
+          "markdown-fiction-writer.textFormatting.removeExtraSpaces": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)"
+          },
+          "markdown-fiction-writer.textFormatting.removeExtraLines": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Reduces multiple empty lines (more than two), to a single empty line."
+          },
+          "markdown-fiction-writer.textFormatting.removeTrailingSpaces": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Remove all whitespace characters from line ends."
+          },
+          "markdown-fiction-writer.textFormatting.fixParagraphBreaks": {
+            "scope": "application",
+            "type": "string",
+            "default": "none",
+            "enum": [
+              "none",
+              "Soft line-breaks As New Paragraph",
+              "Soft line-breaks In Same Paragraph",
+              "One Sentence Per Line"
+            ],
+            "markdownDescription": "Controls how paragraph breaks and soft line breaks will be formatted.",
+            "markdownEnumDescriptions": [
+              "No change to linebreaks",
+              "Transforms each soft line-break to a new paragraph.",
+              "Merges soft line-break lines into same paragraph line.",
+              "Splits lines into sentences. Each sentence is on a separate line."
+            ]
+          },
+          "markdown-fiction-writer.view.writingMode.theme": {
+            "scope": "application",
+            "type": "string",
+            "default": "",
+            "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
+          },
+          "markdown-fiction-writer.view.writingMode.fontSize": {
+            "scope": "application",
+            "type": "number",
+            "default": 16,
+            "minimum": 5,
+            "maximum": 100,
+            "markdownDescription": "The font size to be used in Writing Mode Mode."
+          },
+          "markdown-fiction-writer.view.statusBar.enabled": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Show the custom Fiction Writer status bar."
+          },
+          "markdown-fiction-writer.metadata.keywords.colors": {
+            "type": "object",
+            "scope": "application",
+            "markdownDescription": "Defines a keyword (**Item**) and associate a color (**Value**) to it. The colors can be visible in **Metadata** view or **Explorer** view.",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "default color",
+                "blue",
+                "red",
+                "green",
+                "orange",
+                "amber",
+                "purple",
+                "bluegrey",
+                "grey",
+                "yellow",
+                "white",
+                "black"
+              ]
+            }
+          },
+          "markdown-fiction-writer.metadata.keywords.colorsInMetadataView": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Use [Keyword Colors](#markdown-fiction-writer.metadata.keywords.colors) as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
+          },
+          "markdown-fiction-writer.metadata.keywords.colorsInFileExplorer": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Use [Keyword Colors](#markdown-fiction-writer.metadata.keywords.colors) in **Explorer** view.\n\n _**Note:** Only the `first matched keyword` will be considered_\n\n_**Note:** file colors can be ovewritten by other extensions, so they might not show as expected._\n\n_**Also:** `#explorer.decorations.colors#` must be `enabled`._"
+          },
+          "markdown-fiction-writer.metadata.categories.icons": {
+            "type": "object",
+            "default": {
+              "tag": "tag",
+              "tags": "tag",
+              "author": "edit",
+              "authors": "edit",
+              "keyword": "circle-filled",
+              "keywords": "circle-filled",
+              "character": "person",
+              "characters": "organization",
+              "title": "symbol-type-parameter",
+              "summary": "output",
+              "description": "output",
+              "status": "repo",
+              "pov": "eye"
+            },
+            "scope": "application",
+            "markdownDescription": "Assign for each metadata field (**Item**) a vscode icon (**Value**)\n\nYou can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing).\n\nFor example, if you have the following metadata:\n\n`---`\n\n`title: My Awesome Title`\n\n`---`\n\nthe default icon for `title` field will be `symbol-type-parameter`.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "markdown-fiction-writer.metadata.categories.showIcons": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Show icons in **Metadata** view."
+          },
+          "markdown-fiction-writer.metadata.categories.showNames": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If `disabled`, it hides category name in **Metadata View** for 1st level categories only."
+          },
+          "markdown-fiction-writer.metadata.defaultCategory": {
+            "type": "string",
+            "scope": "application",
+            "default": "status",
+            "markdownDescription": "Assigning keywords to this category, if none is specified.\n\nFor example, if default category is `tags`, then the metadata block:\n\n`---`\n\n**`draft, ch1`**\n\n`---`\n\n is equivalent to:\n\n`---`\n\n_`tags`_`: `**`draft, ch1`**\n\n`---`"
+          },
+          "markdown-fiction-writer.metadata.keywords.colorsCategory": {
+            "type": "string",
+            "scope": "application",
+            "default": "tag",
+            "markdownDescription": "Uses only this category when resolving **Explorer** colors. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the color._"
+          },
+          "markdown-fiction-writer.metadata.keywords.badgesCategory": {
+            "type": "string",
+            "scope": "application",
+            "default": "status",
+            "markdownDescription": "Uses only this category when resolving **Explorer** badges. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the badge._"
+          },
+          "markdown-fiction-writer.metadata.keywords.badges": {
+            "type": "object",
+            "default": {
+              "draft": "D",
+              "rev1": "R1",
+              "rev2": "R2",
+              "done": "OK"
+            },
+            "scope": "application",
+            "markdownDescription": "",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "markdown-fiction-writer.metadata.keywords.badgesInFileExplorer": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Show [Keyword Badges](#markdown-fiction-writer.metadata.keywords.badges) in **Explorer** view.\n\n _**Note:** Only the first matched keyword will be considered._"
+          },
+          "markdown-fiction-writer.view.fadeMetadata": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Fade markdown metadata section by 50%."
+          },
+          "markdown-fiction-writer.view.highlight.textBetweenQuotes": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)"
+          },
+          "markdown-fiction-writer.view.highlight.dialogueMarkers": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
           }
-        },
-        "markdown-fiction-writer.metadata.keywords.showBadgesInFileExplorer": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription":"Use `#markdown-fiction-writer.metadata.keywords.badges#` in the **Explorer** view\n\nThe badge used will be the badge of the _first keyword_ that appears in the _default category_ configured here: `#markdown-fiction-writer.metadata.defaultCategory#`"
-        },
-
-
-
-        "markdown-fiction-writer.view.fadeMetadata": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Fade markdown metadata section by 50%."
-        },
-        "markdown-fiction-writer.view.highlight.textBetweenQuotes": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)"
-        },
-        "markdown-fiction-writer.view.highlight.dialogueMarkers": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
         }
-      }
+      },
+      "commands": [
+        {
+          "command": "fiction-writer.extension.setWritingModeTheme",
+          "title": "Set Current theme as Enhanced Zen Mode theme",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.exitWritingMode",
+          "title": "Exit Enhanced Zen Mode",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.toggleWritingMode",
+          "title": "Toggle Enhanced Zen Mode",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.compile",
+          "title": "Compile...",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.compileFile",
+          "title": "Compile current document",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.compileAll",
+          "title": "Compile all documents",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.compileToc",
+          "title": "Compile TOC file",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.selectEditMode",
+          "title": "Select Edit Mode",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.toggleNewParagraph",
+          "title": "Toggle New Paragraph on Enter",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.toggleKeybindings",
+          "title": "Toggle custom keybindings enabled/disabled",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.toggleTypewriterMode",
+          "title": "Toggle Typewriter Mode",
+          "category": "Markdown Fiction Writer"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.refresh",
+          "title": "Refresh Word Frequencies",
+          "icon": "$(refresh)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.statistics.refresh",
+          "title": "Refresh Document Statistics",
+          "icon": "$(refresh)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.refresh",
+          "title": "Refresh Metadata",
+          "icon": "$(refresh)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.clear",
+          "title": "Clear",
+          "icon": "$(clear-all)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.up",
+          "title": "Select Previous",
+          "icon": "$(find-previous-match)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.down",
+          "title": "Select Next",
+          "icon": "$(find-next-match)",
+          "category": "Markdown Fiction Writer",
+          "when": "false"
+        }
+      ],
+      "keybindings": [
+        {
+          "command": "fiction-writer.extension.onNewLine",
+          "key": "enter",
+          "mac": "enter",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.onNewLineAltered",
+          "key": "shift+enter",
+          "mac": "shift+enter",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.onBackspace",
+          "key": "backspace",
+          "mac": "backspace",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.onDelete",
+          "key": "delete",
+          "mac": "delete",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.onTab",
+          "key": "tab",
+          "mac": "tab",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.compileFile",
+          "key": "f9",
+          "mac": "f9",
+          "when": "textInputFocus && editorLangId == markdown"
+        },
+        {
+          "command": "fiction-writer.extension.compileAll",
+          "key": "shift+f9",
+          "mac": "shift+f9",
+          "when": "textInputFocus && editorLangId == markdown"
+        },
+        {
+          "command": "fiction-writer.extension.compileToc",
+          "key": "ctrl+shift+f9",
+          "mac": "cmf+shift+f9",
+          "when": "textInputFocus && editorLangId == markdown"
+        },
+        {
+          "command": "fiction-writer.extension.toggleWritingMode",
+          "key": "shift+f11",
+          "mac": "shift+f11",
+          "when": "textInputFocus && editorLangId == markdown"
+        }
+      ],
+      "grammars": [
+        {
+          "scopeName": "markdown.fiction",
+          "path": "./grammars/fiction.markdown.tmGrammar.json",
+          "injectTo": [
+            "text.html.markdown"
+          ]
+        }
+      ]
     },
-    "commands": [
-      {
-        "command": "fiction-writer.extension.setWritingModeTheme",
-        "title": "Set Current theme as Enhanced Zen Mode theme",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.exitWritingMode",
-        "title": "Exit Enhanced Zen Mode",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.toggleWritingMode",
-        "title": "Toggle Enhanced Zen Mode",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.compile",
-        "title": "Compile...",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.compileFile",
-        "title": "Compile current document",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.compileAll",
-        "title": "Compile all documents",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.compileToc",
-        "title": "Compile TOC file",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.selectEditMode",
-        "title": "Select Edit Mode",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.toggleNewParagraph",
-        "title": "Toggle New Paragraph on Enter",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.toggleKeybindings",
-        "title": "Toggle custom keybindings enabled/disabled",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.toggleTypewriterMode",
-        "title": "Toggle Typewriter Mode",
-        "category": "Markdown Fiction Writer"
-      },
-      {
-        "command": "fiction-writer.extension.wordFrequency.refresh",
-        "title": "Refresh Word Frequencies",
-        "icon": "$(refresh)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.statistics.refresh",
-        "title": "Refresh Document Statistics",
-        "icon": "$(refresh)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.wordFrequency.clear",
-        "title": "Clear",
-        "icon": "$(clear-all)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.wordFrequency.next.up",
-        "title": "Select Previous",
-        "icon": "$(find-previous-match)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.wordFrequency.next.down",
-        "title": "Select Next",
-        "icon": "$(find-next-match)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "fiction-writer.extension.onNewLine",
-        "key": "enter",
-        "mac": "enter",
-        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
-      },
-      {
-        "command": "fiction-writer.extension.onNewLineAltered",
-        "key": "shift+enter",
-        "mac": "shift+enter",
-        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
-      },
-      {
-        "command": "fiction-writer.extension.onBackspace",
-        "key": "backspace",
-        "mac": "backspace",
-        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
-      },
-      {
-        "command": "fiction-writer.extension.onDelete",
-        "key": "delete",
-        "mac": "delete",
-        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
-      },
-      {
-        "command": "fiction-writer.extension.onTab",
-        "key": "tab",
-        "mac": "tab",
-        "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
-      },
-      {
-        "command": "fiction-writer.extension.compileFile",
-        "key": "f9",
-        "mac": "f9",
-        "when": "textInputFocus && editorLangId == markdown"
-      },
-      {
-        "command": "fiction-writer.extension.compileAll",
-        "key": "shift+f9",
-        "mac": "shift+f9",
-        "when": "textInputFocus && editorLangId == markdown"
-      },
-      {
-        "command": "fiction-writer.extension.compileToc",
-        "key": "ctrl+shift+f9",
-        "mac": "cmf+shift+f9",
-        "when": "textInputFocus && editorLangId == markdown"
-      },
-      {
-        "command": "fiction-writer.extension.toggleWritingMode",
-        "key": "shift+f11",
-        "mac": "shift+f11",
-        "when": "textInputFocus && editorLangId == markdown"
-      }
-    ],
-    "grammars": [
-      {
-        "scopeName": "markdown.fiction",
-        "path": "./grammars/fiction.markdown.tmGrammar.json",
-        "injectTo": [
-          "text.html.markdown"
-        ]
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
-    "deploy": "vsce publish --yarn",
-    "postversion": "git push --tags && git push",
-    "release": "npm version patch"
-  },
-  "devDependencies": {
-    "@types/glob": "^7.1.3",
-    "@types/mocha": "^8.0.4",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.52.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "eslint": "^7.15.0",
-    "glob": "^7.1.6",
-    "mocha": "^8.1.3",
-    "typescript": "^4.1.2",
-    "vsce": "^1.85.0",
-    "vscode-test": "^1.4.1"
-  },
-  "dependencies": {
-    "@types/js-yaml": "^4.0.0",
-    "js-yaml": "^4.0.0",
-    "jsonc-parser": "^3.0.0"
+    "scripts": {
+      "vscode:prepublish": "npm run compile",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./",
+      "pretest": "npm run compile && npm run lint",
+      "lint": "eslint src --ext ts",
+      "test": "node ./out/test/runTest.js",
+      "deploy": "vsce publish --yarn",
+      "postversion": "git push --tags && git push",
+      "release": "npm version patch"
+    },
+    "devDependencies": {
+      "@types/glob": "^7.1.3",
+      "@types/mocha": "^8.0.4",
+      "@types/node": "^12.11.7",
+      "@types/vscode": "^1.52.0",
+      "@typescript-eslint/eslint-plugin": "^4.9.0",
+      "@typescript-eslint/parser": "^4.9.0",
+      "eslint": "^7.15.0",
+      "glob": "^7.1.6",
+      "mocha": "^8.1.3",
+      "typescript": "^4.1.2",
+      "vsce": "^1.85.0",
+      "vscode-test": "^1.4.1"
+    },
+    "dependencies": {
+      "@types/js-yaml": "^4.0.0",
+      "js-yaml": "^4.0.0",
+      "jsonc-parser": "^3.0.0"
+    }
   }
-}
