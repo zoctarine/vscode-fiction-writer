@@ -6,7 +6,7 @@ import { MetadataTreeItem } from "./metadataTreeItem";
 
 
 export class MarkdownMetadataTreeDataProvider extends Observer<Config> implements vscode.TreeDataProvider<MetadataTreeItem> {
-  private document: vscode.TextDocument | undefined;
+private document: vscode.TextDocument | undefined;
   private metadata: IFileInfo | undefined;
 
   constructor(configService: IObservable<Config>, private cache: MetadataFileCache) {
@@ -26,20 +26,23 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
       : this.parseObjectTree(this.metadata.metadata);
 
     const useColors = this.state.metaKeywordShowInMetadataView; 
+    const showLabels = this.state.metaCategoryNamesEnabled ?? false;
 
     elements.forEach(item => {
       let icon: string | undefined = undefined;
 
-      let label = item.parent?.key.toLowerCase();
+      let label =  showLabels || item.parent
+        ? item.parent?.key.toLowerCase()
+        : item.key.toLowerCase();
 
       if (!label && item.description) {
           label = item.key.toLowerCase();
       }
 
       if (label && this.state.metaCategoryIconsEnabled) {
-        icon = this.state.metaCategories.get(label);
+        icon = this.state.metaCategories.get(label) ?? 'debug-stackframe-dot';
         if (icon) {
-          const keyword = item.description?.toString()?.toLowerCase();
+          const keyword = showLabels ? item.description?.toString()?.toLowerCase() : item.label.toLowerCase();
           let color = keyword
             ? useColors && this.state.metaKeywordColors.get(keyword)
             : undefined;
@@ -58,32 +61,41 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   private parseObjectTree(object: any, parent?: MetadataTreeItem): MetadataTreeItem[] {
     if (object === undefined || object === null)
       return [];
+    const showLabels = this.state.metaCategoryNamesEnabled ?? false;
 
     if (Array.isArray(object)) {
       const r: any[] = [];
+
       object.map((value) => {
         const result = this.parseObjectTree(value, parent);
         r.push(...result);
       });
       return r;
     }
+
     if (typeof object === 'object' && object !== null) {
-      return Object
-        .getOwnPropertyNames(object)
-        .map(p => {
-          const value = object[p];
+      const props = Object.getOwnPropertyNames(object);
+      if (!showLabels && props.length === 1) {
+        return this.parseObjectTree(object[props[0]], new MetadataTreeItem(props[0], '', ''));
+      }
+
+      return props
+      .map(key => {
+          const value = object[key];
           if (Array.isArray(value)) {
             return new MetadataTreeItem(
-              `${p}`,
+              key,
+              key,
               null,
               value,
               parent,
               vscode.TreeItemCollapsibleState.Expanded);
-          };
-
+          }
+          else 
           if (typeof value === 'object' && value !== null) {
             return new MetadataTreeItem(
-              `${p}`,
+              key,
+              key,
               null,
               value,
               parent,
@@ -91,16 +103,19 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
           }
 
           return new MetadataTreeItem(
-            `${p}`,
-            `${value}`,
+            key,
+            showLabels ? key : value,
+            showLabels ? value: '',
             value,
             parent,
             vscode.TreeItemCollapsibleState.None);
         });
     }
 
-    return [new MetadataTreeItem(``,
-      `${object}`,
+    return [new MetadataTreeItem(
+      '',
+      showLabels ? '' : object,
+      showLabels ? object: '',
       object, parent)];
   }
 

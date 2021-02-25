@@ -1,48 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import * as yaml from 'js-yaml';
+import { extract, parse } from '../../metadata';
 
-
-function extract(text: string) {
-  const exp = /(?:^---[\n\r]+)(.*?)(?:---|\.\.\.)/sgu;
-  const result = exp.exec(text);
-  if (result && result.length > 0) return result[1].trim();
-  return '';
-}
-
-function parse(yamlText: string | undefined) {
-  if (!yamlText) return undefined;
-
-  const result = yaml.load(yamlText);
-
-  return result;
-}
-
-export interface Result<T>{
-  value: T;
-  hasValue: boolean;
-}
-
-/**
- * Extracts metadata object from a document
- * @param text the text from which to extract metadata from
- */
-function extractMetadata(text: string): Result<string | object | number | undefined | null> {
-  try {
-    const metadataBlock = extract(text);
-    const metadata = parse(metadataBlock);
-
-    return {
-      hasValue: metadata !== null && metadata !== undefined,
-      value: metadata
-    };
-  } catch {
-    return {
-      hasValue: false,
-      value: undefined
-    };
-  }
-}
 
 function asName(text?: string): string {
   return text
@@ -154,7 +113,5 @@ suite('Markdown Metadata Tests', function () {
         });
       });
     });
-
-
   });
 });

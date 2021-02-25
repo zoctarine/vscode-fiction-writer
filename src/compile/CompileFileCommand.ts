@@ -142,18 +142,19 @@ export class CompileFileCommand extends Observer<Config> {
   }
 
 
-  private load(text: string, rootPath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>) {
+  private load(text: string, rootPath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>): boolean {
     if (!buffer) { buffer = []; }
 
     const lines = text.split(/\n/);
-
+    let insideMeta = false;
     for (let line of lines) {
       let trimmedLine = line.trim();
+
       if (trimmedLine.startsWith('//') && this.state.compileSkipCommentsFromToc) {
         // comment skipped
       } else {
         let includedFiles = trimmedLine.match(RegEx.MARKDOWN_INCLUDE_FILE);
-        if (includedFiles && includedFiles.length > 0) {
+        if (!insideMeta && includedFiles && includedFiles.length > 0) {
           includedFiles.forEach(match => {
             match = match.replace(RegEx.MARKDOWN_INCLUDE_FILE_BOUNDARIES, '').trim();
             let includedPath = path.isAbsolute(match)
@@ -166,23 +167,26 @@ export class CompileFileCommand extends Observer<Config> {
         }
       }
     }
+
+    return true;
   }
 
   private loadFile(filePath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>) {
-    if (opened.includes(filePath)) {
-      errors.push(`File: ${filePath} is included multiple times. Skipping.`);
-      return;
-    }
+    try {
+      if (opened.includes(filePath)) {
+        errors.push(`File: ${filePath} is included multiple times. Skipping.`);
+      }
 
-    const index = opened.push(filePath) - 1;
-
-    if (fs.existsSync(filePath)) {
-      const docPath = path.parse(filePath);
-      const text = fs.readFileSync(filePath, 'UTF-8');
-      this.load(text, docPath.dir, buffer, opened, errors);
-    } else {
-      errors.push(`Could not export file: ${filePath}. File is missing.`);
+      if (fs.existsSync(filePath)) {
+        opened.push(filePath);
+        const docPath = path.parse(filePath);
+        const text = fs.readFileSync(filePath, 'UTF-8');
+        this.load(text, docPath.dir, buffer, opened, errors);
+      } else {
+        errors.push(`Could not export file: ${filePath}. File is missing.`);
+      }
+    } catch (error) {
+      errors.push(error);
     }
-    opened.splice(index, 1);
   }
 }

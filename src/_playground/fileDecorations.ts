@@ -90,7 +90,6 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
           })
           .on('error', err => reject(err));
       } catch (error) {
-        console.log("Err: " + error);
         reject(error);
       }
     });

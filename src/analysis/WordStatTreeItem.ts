@@ -12,6 +12,7 @@ export class WordStatTreeItem extends vscode.TreeItem {
   ) {
     super(label, collapsibleState ?? vscode.TreeItemCollapsibleState.None);
     this.description = desc;
+
     if (commandId){
       this.command = {
         title: 'On Click',

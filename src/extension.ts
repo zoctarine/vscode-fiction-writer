@@ -29,9 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
 
-  const freqTree = vscode.window.createTreeView('wordFrequencies', { treeDataProvider: wordFrequencyProvider });
-  const statTree = vscode.window.createTreeView('statistics', { treeDataProvider: docStatisticProvider });
-  const metadataTree = vscode.window.createTreeView('metadata', { treeDataProvider: metadataProvider });
+  const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
+  const statTree = vscode.window.createTreeView('fw-statistics', { treeDataProvider: docStatisticProvider });
+  const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
 
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
 
@@ -73,6 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => { wordFrequencyProvider.refresh(); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => { wordFrequencyProvider.clear(); }),
     vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => { docStatisticProvider.refresh(); }),
+    vscode.commands.registerCommand(cmd.METADATA_REFRESH, () => { metadataProvider.refresh(); }),
     vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),

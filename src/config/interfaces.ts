@@ -60,6 +60,8 @@ export interface Config extends ContextConfig {
   metaFileBadges: Map<string, string>;
   metaKeywordsShowBadges?: boolean,
   metaCategories: Map<string, string>;
+  metaDefaultCategory?: string;
   metaCategoryIconsEnabled?: boolean;
+  metaCategoryNamesEnabled?: boolean;
   metaKeywordBadgeCategory: string;
 }
