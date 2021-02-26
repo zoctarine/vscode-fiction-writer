@@ -1,58 +1,102 @@
-# 0.0.23 - alpha23
+All notable changes to this project will be documented in this file.
 
-- Adds:
-  - Writing mode
-  - Reorganizes settings (breaking change)
+## 0.0.30 - alpha30
 
-# 0.0.21 - alpha21
+**Added**
 
-- Adds:
- - View: Highlight dialogue markers
- - View: Highlight quoted dialogue 
- - View: File Tags - add small 2 letter badges to files form current directory `markdown-fiction-writer.view.fileTags`
- - Major Refactorings to Disposable usage
+- Metadata: now supports yaml markdown metadata support
+- Metadata: new metadata tree view under explorer
+- Metadata: file colors, badges are resolved using keywords
+- Metadata: easy array parsing (add arrays without `[]`)
+- **Settings**:
+  - `markdown-fiction-writer.metadata.categories`
+  - `markdown-fiction-writer.metadata.categoryIconsEnabled`
+  - `markdown-fiction-writer.metadata.defaultCategory`
+  - `markdown-fiction-writer.metadata.keywords.badges`
+  - `markdown-fiction-writer.metadata.keywords.badgeCategory`
+  - `markdown-fiction-writer.metadata.keywords.badgesInFileExplorer`
+  - `markdown-fiction-writer.metadata.keywords.colors`
+  - `markdown-fiction-writer.metadata.keywords.colorCategory`
+  - `markdown-fiction-writer.metadata.keywords.colorsInMetadataView`
+  - `markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`
 
-- Removes:
- - `markdown-fiction-writer.format.backupBeforeEachFormat` setting. It always asks before performing formatting.
+**Removed**
 
-# 0.0.17 - alpha17
+- **settings**:
+  - `markdown-fiction-writer.view.fileTags.enabled`
+  - `markdown-fiction-writer.view.fileTags.definitions`
+
+**Fixed**
+
+- Fix disposables not disposed of properly
+- Fix Document Statistics view  not refreshing on config change
+
+## 0.0.23 - alpha23
+
+**Added**
+
+- Writing mode
+- Reorganizes settings (breaking change)
+
+## 0.0.21 - alpha21
+
+**Added**
+
+- View: Highlight dialogue markers
+- View: Highlight quoted dialogue
+- View: File Tags - add small 2 letter badges to files form current directory `markdown-fiction-writer.view.fileTags`
+- Major Refactorings to Disposable usage
+- **Settings**:
+  - `markdown-fiction-writer.format.backupBeforeEachFormat` setting. It always asks before performing formatting.
+
+## 0.0.17 - alpha17
+
+**Added**
 
 - Export: Add SaveAs dialogue to export commands.
 - Export: Add option to always show SaveAs dialgoue
 - Export: Add option to change TOC filename
 - Export: Show OpenFileDialogue when use template is enabled
 
-# 0.0.11 - alpha11
+## 0.0.11 - alpha11
+
+**Added**
 
 - add writing statistics (word count, etc)
-  
-# 0.0.6 - alpha6
+
+## 0.0.6 - alpha6
+
+**Added**
 
 - add text analysis (word frequency count)
 
-# 0.0.3 - alpha3
+## 0.0.3 - alpha3
+
+**Added**
 
 - add status bar buttons
 - folding, unfolding of paragraph lines
 - more support for one-sentence-per line
 
-# 0.0.2 - alpha2
+## 0.0.2 - alpha2
+
+**Added**
 
 - add text formatting options
 - add include `.md` file support using `{file.md}` syntax
 - add syntax highlighting for included file
 
-# 0.0.1 - alpha1
+## 0.0.1 - alpha1
+
+**Added**
 
 - add compile/export using `pandoc`
 - supporting `em-dash` (—) dialogue markers
 - new paragraph on ++shift+enter++
 - support for one-sentence-per line
 
-# Known issues
+## Known issues
 
-- As this plugin rebinds some keys, like:<kbd>enter</kbd>, <kbd>shift</kbd>+<kbd>enter</kbd>, <kbd>delete</kbd>, <kbd>tab</kbd>, <kbd>backspace</kbd>, it can interfere with other extensions that also overwrite this key bindings. 
+- As this plugin rebinds some keys, like:<kbd>enter</kbd>, <kbd>shift</kbd>+<kbd>enter</kbd>, <kbd>delete</kbd>, <kbd>tab</kbd>, <kbd>backspace</kbd>, it can interfere with other extensions that also overwrite this key bindings.
 
 - Consider inspecting and rebinding some of them, as described here: [Key Bindings for Visual Studio Code](https://code.visualstudio.com/docs/getstarted/keybindings)
-
-

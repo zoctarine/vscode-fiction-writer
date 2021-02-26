@@ -15,8 +15,8 @@ theme:
   search_index_only: true
   features:
     - navigation.sections
-    - navigation.expand
-    - toc.integrate
+    - navigation.expanded
+
   # Default values, taken from mkdocs_theme.yml
   language: en
   font:
@@ -32,10 +32,19 @@ theme:
 
 nav:
   - Overview: index.md
-  - Features: features.md
-  - Settings: settings.md
-  - Keyboard Shortcuts: shortcuts.md
-  - Changelog: changelog.md
+  - Features: 
+     - Text Editing: edit.md
+     - Formatting: format.md
+     - Exporting: export.md
+     - Metadata: metadata.md
+     - View: view.md
+     - Text Statistics: stats.md
+  - Configuration:
+    - Settings: settings.md
+    - Keyboard Shortcuts: shortcuts.md
+  - Other: 
+    - Changelog: changelog.md
+    - Congribute: contribute.md
   - About Writing: writing.md
 
 markdown_extensions:
@@ -60,7 +69,7 @@ markdown_extensions:
   - abbr
   - toc:
       permalink: true
-      baselevel: 2
+      baselevel: 3
 
 extra_javascript:
   - resources/extra.js

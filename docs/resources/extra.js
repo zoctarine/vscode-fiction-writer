@@ -34,9 +34,7 @@
 		} else {
 			ext[ext.length - 1] = 'gif';
 		}
-
 		img.attr('src', ext.join('.'));
 		img.toggleClass('play');
 	});
-
 })(jQuery);
