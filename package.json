@@ -506,7 +506,7 @@
               "pov": "eye"
             },
             "scope": "application",
-            "markdownDescription": "Assign for each metadata field (**Item**) a vscode icon (**Value**)\n\nYou can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing).\n\nFor example, if you have the following metadata:\n\n`---`\n\n`title: My Awesome Title`\n\n`---`\n\nthe default icon for `title` field will be `symbol-type-parameter`.",
+            "markdownDescription": "Assign for each metadata category (**Item**) a vscode icon (**Value**)\n\n_**Note:** You can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)._",
             "additionalProperties": {
               "type": "string"
             }
@@ -522,6 +522,12 @@
             "scope": "application",
             "default": true,
             "markdownDescription": "If `disabled`, it hides category name in **Metadata View** for 1st level categories only."
+          },
+          "markdown-fiction-writer.metadata.easyLists": {
+            "type": "string",
+            "scope": "application",
+            "default": ",",
+            "markdownDescription": "Metadata values separated by this string, will be treated as list items.\n\nEnter the list item separator character below _(or leave it empty to disable this feature)_:\n\n_**Example:** `item1, item2, item three` will be equivalent to `[item1, item2, item three]` if the separator is comma (`,`)._\n\n"
           },
           "markdown-fiction-writer.metadata.defaultCategory": {
             "type": "string",

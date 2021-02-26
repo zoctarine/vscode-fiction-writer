@@ -94,6 +94,7 @@ export class ConfigService extends Observable<Config> {
       metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categories.showIcons', true),
       metaCategoryNamesEnabled: this.read<boolean>(metadata, 'categories.showNames', true),
       
+      metaEasyLists: this.read<string>(metadata, 'easyLists', ','),
       metaDefaultCategory: this.read<string>(metadata, 'defaultCategory', 'tags'),
       metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgesCategory', 'tags'),
       metaKeywordColorCategory: this.read<string>(metadata, 'keywords.colorsCategory', 'tags'),
