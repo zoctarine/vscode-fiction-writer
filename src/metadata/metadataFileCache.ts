@@ -95,8 +95,8 @@ export class MetadataFileCache extends Observer<Config> {
     if (!meta) return meta;
     
     // if is string, try to assign to default tag category
-    if (typeof(meta) === 'string' && this.state.metaDefaultCategory){
-      const tags = meta.split(EASY_ARRAY_SEPARATOR).map(t => t.trim()).filter(m => m);
+    if (this.state.metaEasyLists && this.state.metaEasyLists.length > 0 && typeof(meta) === 'string' && this.state.metaDefaultCategory){
+      const tags = meta.split(this.state.metaEasyLists).map(t => t.trim()).filter(m => m);
       let newMeta: IKvp<string[]|string> = {};
       newMeta[this.state.metaDefaultCategory] = tags.length > 1 ? tags : tags[0];
       return newMeta;
@@ -112,8 +112,8 @@ export class MetadataFileCache extends Observer<Config> {
 
     for (const [key, val] of Object.entries(meta)) {
       const val = newMeta[key];
-      if (cats.includes(key.toLowerCase()) && typeof(val) === 'string'){
-        const tags = val.split(EASY_ARRAY_SEPARATOR).map(t => t.trim()).filter(m => m);
+      if (this.state.metaEasyLists && this.state.metaEasyLists.length > 0 && cats.includes(key.toLowerCase()) && typeof(val) === 'string'){
+        const tags = val.split(this.state.metaEasyLists).map(t => t.trim()).filter(m => m);
         newMeta[key] = tags.length > 1 ? tags : tags[0];
       }
     }

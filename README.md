@@ -37,6 +37,14 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/export_01.gif)
 
+- Categorize text
+  
+  - Parse yaml metadata
+
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/meta_view_01.gif)
+
+  - Show badges and colors in Explorer.
+
 - Analyze text
 
   - count words, phrases, visualize repetitions
