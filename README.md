@@ -37,7 +37,8 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/export_01.gif)
 
-- Categorize text
+- C
+ategorize text
   
   - Parse yaml metadata
 
