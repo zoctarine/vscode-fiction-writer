@@ -1,4 +1,17 @@
-![Meta view](img/meta_view_01.gif)
+Quick overview:
+
+![Meta view](img/meta_view_02.jpg)
+
+- **(1)**: The `yaml` metadata block. The first thing in the document.
+
+- **(2)**: The **Metadata** tree view. Parses the metadata block.
+
+- **(3)**: Assign keyword badges: `Rake` has the badge `RK`, shown in **Explorer**. It also is part of `pov` category, visible in **Metadata** view
+
+- **(4)**: Assigned keyword colors: `done` has the color green, visible as icon color in **Metadata** and as file color in **Explorer**. The `04 - A door is opened.md` has the tag `rev1` that has the yellow color.
+
+
+# Adding Metadata
 
 **Fiction Writer** understands `yaml` markdown metadata.
 
