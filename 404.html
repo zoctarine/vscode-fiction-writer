@@ -185,9 +185,7 @@
 
 
 
-  
-
-<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
@@ -235,10 +233,100 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="/vscode-fiction-writer/index.html/features/" class="md-nav__link">
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+      
+      <label class="md-nav__link" for="nav-2">
         Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/edit/" class="md-nav__link">
+        Text Editing
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/format/" class="md-nav__link">
+        Formatting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/export/" class="md-nav__link">
+        Exporting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/metadata/" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/view/" class="md-nav__link">
+        View
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/stats/" class="md-nav__link">
+        Text Statistics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -247,6 +335,30 @@
       
       
 
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        Configuration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
   
   
   
@@ -257,11 +369,8 @@
     </li>
   
 
-    
-      
-      
-      
-
+          
+            
   
   
   
@@ -269,6 +378,12 @@
       <a href="/vscode-fiction-writer/index.html/shortcuts/" class="md-nav__link">
         Keyboard Shortcuts
       </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -280,10 +395,52 @@
   
   
   
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+      
+      <label class="md-nav__link" for="nav-4">
+        Other
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
     <li class="md-nav__item">
       <a href="/vscode-fiction-writer/index.html/changelog/" class="md-nav__link">
         Changelog
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/vscode-fiction-writer/index.html/contribute.md" class="md-nav__link">
+        Congribute
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -351,7 +508,7 @@
       <script>
         app = initialize({
           base: "/vscode-fiction-writer/index.html",
-          features: ['navigation.sections', 'navigation.expand', 'toc.integrate'],
+          features: ['navigation.sections', 'navigation.expanded'],
           search: Object.assign({
             worker: "/vscode-fiction-writer/index.html/assets/javascripts/worker/search.9c0e82ba.min.js"
           }, typeof search !== "undefined" && search)

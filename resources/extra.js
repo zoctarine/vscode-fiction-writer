@@ -28,15 +28,14 @@
 		let img = $(this);
 		let src = img.attr('src');
 		let ext = src.split('.');
+    let realExt = ext[ext.length - 1];
 
-		if (ext[ext.length - 1] === 'gif') {
-			ext[ext.length - 1] = 'png';
-		} else {
-			ext[ext.length - 1] = 'gif';
+		if (realExt === 'gif') {
+      ext[ext.length - 1] = 'png';
+		} else if (realExt === 'png') {
+      ext[ext.length - 1] = 'gif';
 		}
-
 		img.attr('src', ext.join('.'));
 		img.toggleClass('play');
 	});
-
 })(jQuery);
