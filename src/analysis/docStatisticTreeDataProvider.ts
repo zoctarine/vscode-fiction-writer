@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { RegEx } from '../utils';
-import { WordStatTreeItem } from './wordStatTreeItem';
+import { WordStatTreeItem } from './ordStatTreeItem';
 
 const count = (text:string, pattern:RegExp) => {
   return ((text || '').match(pattern) || []).length;
