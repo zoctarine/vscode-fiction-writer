@@ -14,7 +14,7 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
 This is a quick overview of the main features. Please read the [Full Documentation](https://zoctarine.github.io/vscode-fiction-writer/) to find out more about this extension.
 
-- [Enhanced text editing](https://zoctarine.github.io/vscode-fiction-writer/edit/):
+- **Enhanced text editing**:
   - automatically insert new paragraph on ++enter++, or ++shift+enter++
   - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either `em-dash` (—) or other marks.
   - autoreplace `-- ` with **—**
@@ -48,15 +48,20 @@ This is a quick overview of the main features. Please read the [Full Documentati
   
   - Parse yaml metadata
 
-    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/meta_view_01.gif)
+    ![](https://zoctarine.github.io/vscode-fiction-writer/img/meta_view_02.jpg)
 
-  - Show badges and colors in Explorer.
+    - (1): The yaml metadata block. The first thing in the document.
+    - (2): The Metadata tree view. Parses the metadata block.
+    - (3), (4): Assigned keyword colors and badges
+
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/meta_view_01.gif)
 
   - [more details](https://zoctarine.github.io/vscode-fiction-writer/metadata/)
 
 - **Analyze text**
 
-  - count words, phrases, visualize repetitions
+  - count words, phrases, standard pages
+  - view word/phrase repetitions
 
   - [more details](https://zoctarine.github.io/vscode-fiction-writer/stats/)
 
@@ -71,13 +76,9 @@ This is a quick overview of the main features. Please read the [Full Documentati
   - remove trailing spaces
   - [more details](https://zoctarine.github.io/vscode-fiction-writer/format/)
 
-
 - View
-  - add tag to files in File Explorer
   
-    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/tags_01.gif)
-
-- fold paragraph lines
+  - fold paragraph lines
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/folding_01.gif)
     
