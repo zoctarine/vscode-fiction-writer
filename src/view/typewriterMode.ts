@@ -1,4 +1,4 @@
-import { window, workspace } from 'vscode';
+import { workspace } from 'vscode';
 import { Config } from '../config';
 import { IObservable, Observer, getActiveEditor } from '../utils';
 
@@ -17,13 +17,13 @@ export class TypewriterModeObserver extends Observer<Config>{
   updateCursorSurroundingLines() {
     const editor = getActiveEditor();
     if (!editor) return;
-
+    
     let maxHeight = 0;
     if (this.state.isTypewriterMode) {
       editor.visibleRanges.forEach(range =>{
         let height = range.end.line - range.start.line;
         if (maxHeight < height) maxHeight = height;
-      })
+      });
     } else {
       maxHeight =  workspace
       .getConfiguration('editor', {languageId:'markdown'})

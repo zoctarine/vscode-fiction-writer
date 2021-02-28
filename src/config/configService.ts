@@ -54,8 +54,7 @@ export class ConfigService extends Observable<Config> {
       compileOutputFormat: this.read<string>(exporting, 'outputFormat.default', OutputFormats['odt']),
       compileShowFormatPicker: this.read<boolean>(exporting, 'outputFormat.alwaysShowFormatPicker', true),
       compileEmDash: this.read<boolean>(exporting, 'smartDeshes', true),
-      compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)
-        === Constants.Compile.SaveDialogue.ALWAYS,
+      compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)  === Constants.Compile.SaveDialogue.ALWAYS,
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
 
@@ -94,6 +93,7 @@ export class ConfigService extends Observable<Config> {
       metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categories.showIcons', true),
       metaCategoryNamesEnabled: this.read<boolean>(metadata, 'categories.showNames', true),
       
+      metaEnabled: this.read<boolean>(metadata, 'enabled', true),
       metaEasyLists: this.read<string>(metadata, 'easyLists', ','),
       metaDefaultCategory: this.read<string>(metadata, 'defaultCategory', 'tags'),
       metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgesCategory', 'tags'),

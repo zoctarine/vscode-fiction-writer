@@ -53,6 +53,7 @@ export interface Config extends ContextConfig {
   viewStatusBarEnabled?: boolean;
   viewFadeMetadata?: boolean;
 
+  metaEnabled?: boolean;
   metaEasyLists: string;
   metaDefaultCategory?: string;
   metaKeywordColors: Map<string, ThemeColor>;
