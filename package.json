@@ -6,7 +6,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -42,7 +42,7 @@
         "description": "Blue Color",
         "defaults": {
           "dark": "#2196F3",
-          "light": "#2196F3",
+          "light": "#1565C0",
           "highContrast": "#0000FF"
         }
       },
@@ -50,17 +50,26 @@
         "id": "fictionwriter.red",
         "description": "Red Color",
         "defaults": {
-          "dark": "#F44336",
-          "light": "#F44336",
+          "dark": "#ef5350",
+          "light": "#e53935",
           "highContrast": "#FF0000"
+        }
+      },
+      {
+        "id": "fictionwriter.lime",
+        "description": "Lime Color",
+        "defaults": {
+          "dark": "#8BC34A",
+          "light": "#8BC34A",
+          "highContrast": "#00FF00"
         }
       },
       {
         "id": "fictionwriter.green",
         "description": "Green Color",
         "defaults": {
-          "dark": "#8BC34A",
-          "light": "#8BC34A",
+          "dark": "#00E676",
+          "light": "#2E7D32",
           "highContrast": "#00FF00"
         }
       },
@@ -69,7 +78,7 @@
         "description": "Orange Color",
         "defaults": {
           "dark": "#FF9800",
-          "light": "#FF9800",
+          "light": "#EF6C00",
           "highContrast": "#000000"
         }
       },
@@ -78,7 +87,7 @@
         "description": "Amber Color",
         "defaults": {
           "dark": "#FFC107",
-          "light": "#FFC107",
+          "light": "#FFA000",
           "highContrast": "#000000"
         }
       },
@@ -104,8 +113,8 @@
         "id": "fictionwriter.grey",
         "description": "Grey Color",
         "defaults": {
-          "dark": "#9E9E9E",
-          "light": "#9E9E9E",
+          "dark": "#7e7e7e",
+          "light": "#8e8e8e",
           "highContrast": "#000000"
         }
       },
@@ -114,8 +123,17 @@
         "description": "Yellow Color",
         "defaults": {
           "dark": "#FFEB3B",
-          "light": "#FFEB3B",
+          "light": "#FBC02D",
           "highContrast": "#FFFFFF"
+        }
+      },
+      {
+        "id": "fictionwriter.pink",
+        "description": "Pink Color",
+        "defaults": {
+          "dark": "#F06292",
+          "light": "#F06292",
+          "highContrast": "#FF0000"
         }
       },
       {
@@ -457,6 +475,25 @@
         "markdown-fiction-writer.metadata.keywords.colors": {
           "type": "object",
           "scope": "application",
+          "default": {
+            "blue": "blue",
+            "red": "red",
+            "green": "green",
+            "orange": "orange",
+            "amber": "amber",
+            "purple": "purple",
+            "pink": "pink",
+            "bluegrey": "bluegrey",
+            "grey": "grey",
+            "yellow": "yellow",
+            "lime": "lime",
+            "white": "white",
+            "black": "black",
+            "draft": "grey",
+            "rev1": "amber",
+            "rev2": "yellow",
+            "done": "green"
+          },
           "markdownDescription": "Defines a keyword (**Item**) and associate a color (**Value**) to it. The colors can be visible in **Metadata** view or **Explorer** view.",
           "additionalProperties": {
             "type": "string",
@@ -538,19 +575,17 @@
         "markdown-fiction-writer.metadata.defaultCategory": {
           "type": "string",
           "scope": "application",
-          "default": "status",
+          "default": "tags",
           "markdownDescription": "Assigning keywords to this category, if none is specified.\n\nFor example, if default category is `tags`, then the metadata block:\n\n`---`\n\n**`draft, ch1`**\n\n`---`\n\n is equivalent to:\n\n`---`\n\n_`tags`_`: `**`draft, ch1`**\n\n`---`"
         },
         "markdown-fiction-writer.metadata.keywords.colorsCategory": {
           "type": "string",
           "scope": "application",
-          "default": "tag",
           "markdownDescription": "Uses only this category when resolving **Explorer** colors. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the color._"
         },
         "markdown-fiction-writer.metadata.keywords.badgesCategory": {
           "type": "string",
           "scope": "application",
-          "default": "status",
           "markdownDescription": "Uses only this category when resolving **Explorer** badges. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the badge._"
         },
         "markdown-fiction-writer.metadata.keywords.badges": {

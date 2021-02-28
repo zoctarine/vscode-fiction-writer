@@ -133,6 +133,7 @@ export enum KnownColor {
     BLUE = 'blue',
     RED = 'red',
     GREEN = 'green',
+    LIME = 'lime',
     ORANGE = 'orange',
     AMBER = 'amber',
     PURPLE = 'purple',
@@ -141,4 +142,5 @@ export enum KnownColor {
     YELLOW = 'yellow',
     WHITE = 'white',
     BLACK = 'black',
+    PINK = 'pink'
 }
