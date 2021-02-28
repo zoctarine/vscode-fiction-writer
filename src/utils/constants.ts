@@ -7,8 +7,8 @@ export const Constants = {
   },
   Compile: {
     SaveDialogue: {
-      ALWAYS: 'always',
-      NONE: 'never (save in same directory as exported file)'
+      ALWAYS: 'Always',
+      NONE: 'Never (save in same directory as exported file)'
     }
   },
 

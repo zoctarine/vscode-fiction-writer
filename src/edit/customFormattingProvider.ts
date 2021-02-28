@@ -86,11 +86,12 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
         lineText = lineText.trimEnd();
 
       // Replace known dialogue markes with selected dialogue marker
-      if (this.state.formattingFixMismatchDialogueMarkers)
+      if (this.state.formattingFixMismatchDialogueMarkers && lineText !== '---') {
         lineText = lineText.replace(RegEx.KNOWN_DIALOGUE_MARKERS, this.state.dialoguePrefix);
+      }
 
       // Check if is first line of dialogue
-      if (isFirstDialogueLine = lineText.startsWith(this.state.dialoguePrefix)) {
+      if (isFirstDialogueLine = lineText.startsWith(this.state.dialoguePrefix) && lineText !== '---') {
         isDialogueParagraph = true;
       }
 

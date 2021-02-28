@@ -35,8 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
 
+  // TODO: disable this if metadata disabled
   const watcher = vscode.workspace.createFileSystemWatcher('**/*.md', false, false, false);
-
   const cmd = Constants.Commands;
   context.subscriptions.push(
     cache,
@@ -109,15 +109,20 @@ export function activate(context: vscode.ExtensionContext) {
   updateIsSupportedEditor(vscode.window.activeTextEditor);
   metadataProvider.refresh();
   docStatisticProvider.refresh();
+  showAgreeWithChanges(configService);
+  exitZenWritingMode(configService);
 }
 
 function updateIsSupportedEditor(editor: vscode.TextEditor | undefined) {
   vscode.commands.executeCommand('setContext', 'isSupportedEditor', isSupported(editor));
 }
+
 function exitZenWritingMode(configurationService: ConfigService) {
-  configurationService.restore('workbench', 'colorTheme');
-  configurationService.restore('editor', 'fontSize');
-  configurationService.setLocal('isZenMode', false);
+  if (configurationService.getState().isZenMode) {
+    configurationService.restore('workbench', 'colorTheme');
+    configurationService.restore('editor', 'fontSize');
+    configurationService.setLocal('isZenMode', false);
+  }
 }
 
 function enterZenWritingMode(configurationService: ConfigService) {
@@ -140,14 +145,15 @@ async function toggleZenWritingMode(configService: ConfigService) {
   if (!configService.getFlag('isAgreeZenMode')) {
     const option = await vscode.window.showWarningMessage(
       'Enhanced ZenMode overrides some editor settings.\n\n' +
-      'It can be that some settings would need to be restored manually.\n\n' +
-      'Please refer to: .',
-      'OK, Continue', 'Cancel');
+      'It can be that some settings would need to be restored manually. Make sure  you turn ZenMode off before deactivating/uninstalling this extension.',
+      'OK, Continue', 'Cancel', 'Read More');
 
-    if (option === 'Cancel') {
-      return;
-    } else {
+    if (option === 'OK') {
       configService.setFlag('isAgreeZenMode');
+    } if (option === 'Read More') {
+      vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
+    } else {
+      return;
     }
   }
 
@@ -158,6 +164,34 @@ async function toggleZenWritingMode(configService: ConfigService) {
   }
 }
 
+
+
+async function showAgreeWithChanges(configService: ConfigService) {
+  let version = 'latest version';
+  let change = '0023-alpha23';
+  try {
+    version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
+    const alphaVersion: string[] = version.split('.');
+    change = alphaVersion.join('') + '-alpha' + alphaVersion[2];
+  } catch { }
+
+  const flag = `isAgreeChanges${change}`;
+  const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/#${change}`;
+
+  if (!configService.getFlag(flag)) {
+    const option = await vscode.window.showWarningMessage(
+      `Markdwon Fiction Writer ${version} introduces some breaking changes from the previous version.\n\n` +
+      'Please review the extension configuration settings.\n\n',
+      'Ok (don\'t show this notification)', 'View Changes');
+
+    if (option === 'View Changes') {
+      vscode.env.openExternal(vscode.Uri.parse(uri));
+      return;
+    } else if (option === 'Ok (don\'t show this notification)') {
+      configService.setFlag(flag);
+    }
+  }
+}
 
 function setFullscreenTheme(configurationService: ConfigService) {
   const theme = configurationService.backup('workbench', 'colorTheme');
@@ -218,13 +252,15 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
     const option = await vscode.window.showWarningMessage(
       'Typewriter Mode overrides some editor settings.\n\n' +
       'It can be that some settings would need to be restored manually.\n\n' +
-      'Please refer to: <a href="#">Tesst</a>.',
-      'OK, Continue', 'Cancel');
+      'Make sure you exit writer mode before deactivating/uninstalling this extension.',
+      'OK, Continue', 'Cancel', 'ReadMore');
 
-    if (option === 'Cancel') {
-      return;
-    } else {
+    if (option === 'OK, Continue') {
       configService.setFlag('isAgreeTypewriterMode');
+    } else if (option === 'ReadMore'){
+      vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
+    } else {
+      return;
     }
   }
 
@@ -284,4 +320,5 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {
+}

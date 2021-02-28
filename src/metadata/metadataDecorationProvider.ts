@@ -17,7 +17,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   private register() {
     this.clearDisposable('FD', 'SV');
 
-    if (this.state.metaKeywordsShowBadges) {
+    if (this.state.metaKeywordsShowBadges && this.state.metaEnabled) {
       this.addDisposable(vscode.window.registerFileDecorationProvider(this), 'FD');
     }
   }
@@ -124,7 +124,10 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
   protected onStateChange(newState: Config) {
     super.onStateChange(newState);
-
+    
+    if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata.enabled')){
+      this.register();
+    }
     if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata')) {
       this.fire(this.cache.getAllKeys().map(fp => vscode.Uri.file(fp)));
     }

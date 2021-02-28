@@ -4,11 +4,10 @@ import { extractMetadata } from './index';
 import { IDisposable, IObservable, Observer } from '../utils';
 import { Config, IKvp } from '../config';
 
-const EASY_ARRAY_SEPARATOR = ',';
-
 export interface IFileInfo {
   metadata: any
 }
+
 export class FileInfoCache implements IDisposable {
   private state?: Map<string, IFileInfo>;
 
@@ -33,6 +32,7 @@ export class FileInfoCache implements IDisposable {
 
     return [...this.state.keys()];
   }
+  
   public dispose() {
     this.state?.clear();
     this.state = undefined;

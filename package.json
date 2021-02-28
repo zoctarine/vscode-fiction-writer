@@ -150,7 +150,7 @@
           "name": "Metadata",
           "icon": "$(eye)",
           "contextualTitle": "Metadata",
-          "when": "isSupportedEditor"
+          "when": "isSupportedEditor && config.markdown-fiction-writer.metadata.enabled"
         }
       ],
       "word-frequency-explorer": [
@@ -234,7 +234,7 @@
             "type": "boolean",
             "scope": "application",
             "default": false,
-            "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work."
+            "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work.\n\n\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/edit/)"
           },
           "markdown-fiction-writer.edit.easyParagraphCreation": {
             "type": "string",
@@ -378,7 +378,7 @@
             "type": "boolean",
             "scope": "application",
             "default": true,
-            "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command"
+            "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command..\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/format/"
           },
           "markdown-fiction-writer.textFormatting.fixMismatchDialogueMarkers": {
             "scope": "application",
@@ -528,6 +528,12 @@
             "scope": "application",
             "default": ",",
             "markdownDescription": "Metadata values separated by this string, will be treated as list items.\n\nEnter the list item separator character below _(or leave it empty to disable this feature)_:\n\n_**Example:** `item1, item2, item three` will be equivalent to `[item1, item2, item three]` if the separator is comma (`,`)._\n\n"
+          },
+          "markdown-fiction-writer.metadata.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "It enables metadata reltated features. If `disabled` then **all** metadata related featueres will be disabled (parsing, metadata view, colors, etc...).\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/metadata/)"
           },
           "markdown-fiction-writer.metadata.defaultCategory": {
             "type": "string",
