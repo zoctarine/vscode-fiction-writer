@@ -10,6 +10,9 @@ Quick overview:
 
 - **(4)**: Assigned keyword colors: `done` has the color green, visible as icon color in **Metadata** and as file color in **Explorer**. The `04 - A door is opened.md` has the tag `rev1` that has the yellow color.
 
+??? setting "`config.markdown-fiction-writer.metadata.enabled`"
+    - Enables/disables all metadata related features described in this section.
+    - Default: `enabled`
 
 # Adding Metadata
 

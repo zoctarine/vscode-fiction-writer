@@ -57,7 +57,3 @@ A set of tools for writing fiction with [Visual Studio Code](https://code.visual
 ## Installation
 
 - More information: [Browse for extensions](https://code.visualstudio.com/docs/editor/extension-gallery)
-
-## GitHub
-
-tbd

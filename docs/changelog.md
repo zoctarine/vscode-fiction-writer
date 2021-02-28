@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Metadata: file colors, badges are resolved using keywords
 - Metadata: easy array parsing (add arrays without `[]`)
 - **Settings**:
+  - `markdown-fiction-writer.metadata.enabled`
   - `markdown-fiction-writer.metadata.categories`
   - `markdown-fiction-writer.metadata.categoryIconsEnabled`
   - `markdown-fiction-writer.metadata.defaultCategory`
@@ -20,10 +21,21 @@ All notable changes to this project will be documented in this file.
   - `markdown-fiction-writer.metadata.keywords.colorsInMetadataView`
   - `markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`
 
+**Changed**
+
+- Updated extension icon (still work in progress)
+- Update configuration setting descriptions (still work in progress)
+- All main settings are now User settings (not workspace settings)
+- various small fixes and bugs
+- Writing Mode now is disabled when restarting editor (if closed with it enabled)
+- **Statistics** view now auto-refreshes when changing text-editor is changed and on save
+- fix Extension name Configuration Settings
+- fix a bug where text formatting was ignoring heading
+
 **Removed**
 
 - **settings**:
-  - `markdown-fiction-writer.view.fileTags.enabled`
+  - `markdown-fiction-writer.view.fileTags.enabled` (replaced by `markdown.fiction-writer.metadata` features)
   - `markdown-fiction-writer.view.fileTags.definitions`
 
 **Fixed**

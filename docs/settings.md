@@ -1,6 +1,8 @@
 
 This extension has the following settings:
 
+!!! danger "This page is for an older version. Updated coming soon"
+
 | Setting | Default | Description|
 |:----------------------------------- |:---------:|:------------|
 | `edit.disableKeybindings` | false | Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`). **Note:** If `disabled`, some of the settings will not work. | 

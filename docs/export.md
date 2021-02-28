@@ -29,7 +29,7 @@ This is free software; see the source for copying conditions. There is no
 warranty, not even for merchantability or fitness for a particular purpose.
 ```
 
-# Markdown flavors - _COMING SOON_
+# Markdown flavors - _COMING IN NEXT ALPHA RELEASE_
 
 As exporting is done by using Pandoc, all Pandoc related markdown flavors can be used.
 
