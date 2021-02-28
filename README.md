@@ -12,33 +12,39 @@ Some tools I wrote for helping with writing fiction (novels/short stories) using
 
 ## Features
 
-- Enhanced text editing:
-  - automatically insert new paragraph at Enter, or Shift+Enter
+This is a quick overview of the main features. Please read the [Full Documentation](https://zoctarine.github.io/vscode-fiction-writer/) to find out more about this extension.
 
+- [Enhanced text editing](https://zoctarine.github.io/vscode-fiction-writer/edit/):
+  - automatically insert new paragraph on ++enter++, or ++shift+enter++
+  - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either `em-dash` (—) or other marks.
+  - autoreplace `-- ` with **—**
+  - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either em-dash (—) or other marks.
+  
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/edit/)
+  
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/shift_enter_01.gif)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/shift_enter_02.gif)
-
-  - solutions for writing dialogue using dialogue markers (like in some non-english languages), using either em-dash (—) or other marks.
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/dlg_marker_01.gif)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/dlg_marker_02.gif)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/dlg_marker_03.gif)
+  
+- **Export/Combine files**
 
-  - typewriter mode
+  - combine multiple `.md` files into one single file.
 
-- Export/Combine files
+  - export `.md` to other formats (like `.doc` or `.docx`)
+  
+    - uses [pandoc](https://pandoc.org/installing.html)
 
-  - combine multiple .md files into one single file
-
-  - export md, or collection of files, to other formats (uses `pandoc`)
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/export/)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/export_01.gif)
 
-- C
-ategorize text
+- **Use metadata to categorize text**
   
   - Parse yaml metadata
 
@@ -46,20 +52,25 @@ ategorize text
 
   - Show badges and colors in Explorer.
 
-- Analyze text
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/metadata/)
+
+- **Analyze text**
 
   - count words, phrases, visualize repetitions
+
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/stats/)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/freq_01.gif)
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/stats_01.gif)
 
-
-- Text formatting
+- **Text formatting**
   - cleaning up spaces
   - fixing dialogue lines, indents
   - fixing paragraph spaces (add/remove empty lines)
   - remove trailing spaces
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/format/)
+
 
 - View
   - add tag to files in File Explorer
@@ -74,8 +85,9 @@ ategorize text
 
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/statusbar_01.gif)
 
+- typewriter mode
 
-All features are detailed here: [**Full Documentation**](https://zoctarine.github.io/vscode-fiction-writer/)
+- [more details](https://zoctarine.github.io/vscode-fiction-writer/view/)
 
 ## Known Issues
 
