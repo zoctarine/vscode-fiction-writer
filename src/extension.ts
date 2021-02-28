@@ -148,7 +148,7 @@ async function toggleZenWritingMode(configService: ConfigService) {
       'It can be that some settings would need to be restored manually. Make sure  you turn ZenMode off before deactivating/uninstalling this extension.',
       'OK, Continue', 'Cancel', 'Read More');
 
-    if (option === 'OK') {
+    if (option === 'OK, Continue') {
       configService.setFlag('isAgreeZenMode');
     } if (option === 'Read More') {
       vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
@@ -168,7 +168,7 @@ async function toggleZenWritingMode(configService: ConfigService) {
 
 async function showAgreeWithChanges(configService: ConfigService) {
   let version = 'latest version';
-  let change = '0023-alpha23';
+  let change = '0034-alpha34';
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
     const alphaVersion: string[] = version.split('.');
