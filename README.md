@@ -115,4 +115,3 @@ The current version is an **early concept**. Features are still missing, and not
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
-

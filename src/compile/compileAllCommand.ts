@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { Config } from '../config';
 import { IObservable, ReservedNames } from '../utils';
-import { CompileFileCommand } from './ompileFileCommand';
+import { CompileFileCommand } from './compileFileCommand';
 
 export class CompileAllCommand extends CompileFileCommand {
 
