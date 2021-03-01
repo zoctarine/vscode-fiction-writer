@@ -44,7 +44,7 @@ nav:
     - Keyboard Shortcuts: shortcuts.md
   - Other: 
     - Changelog: changelog.md
-    - Congribute: contribute.md
+    - Contribute: contribute.md
   - About Writing: writing.md
 
 markdown_extensions:

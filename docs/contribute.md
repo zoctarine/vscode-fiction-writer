@@ -1,0 +1,1 @@
+Please log any issues, suggestions, bugs, questions under [GitHub Issues](https://github.com/zoctarine/vscode-fiction-writer/issues)

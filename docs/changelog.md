@@ -9,17 +9,18 @@ All notable changes to this project will be documented in this file.
 - Metadata: file colors, badges are resolved using keywords
 - Metadata: easy array parsing (add arrays without `[]`)
 - **Settings**:
-  - `markdown-fiction-writer.metadata.enabled`
-  - `markdown-fiction-writer.metadata.categories`
-  - `markdown-fiction-writer.metadata.categoryIconsEnabled`
-  - `markdown-fiction-writer.metadata.defaultCategory`
-  - `markdown-fiction-writer.metadata.keywords.badges`
-  - `markdown-fiction-writer.metadata.keywords.badgeCategory`
-  - `markdown-fiction-writer.metadata.keywords.badgesInFileExplorer`
-  - `markdown-fiction-writer.metadata.keywords.colors`
-  - `markdown-fiction-writer.metadata.keywords.colorCategory`
-  - `markdown-fiction-writer.metadata.keywords.colorsInMetadataView`
-  - `markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`
+
+    - `markdown-fiction-writer.metadata.enabled`
+    - `markdown-fiction-writer.metadata.categories`
+    - `markdown-fiction-writer.metadata.categoryIconsEnabled`
+    - `markdown-fiction-writer.metadata.defaultCategory`
+    - `markdown-fiction-writer.metadata.keywords.badges`
+    - `markdown-fiction-writer.metadata.keywords.badgeCategory`
+    - `markdown-fiction-writer.metadata.keywords.badgesInFileExplorer`
+    - `markdown-fiction-writer.metadata.keywords.colors`
+    - `markdown-fiction-writer.metadata.keywords.colorCategory`
+    - `markdown-fiction-writer.metadata.keywords.colorsInMetadataView`
+    - `markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`
 
 **Changed**
 
