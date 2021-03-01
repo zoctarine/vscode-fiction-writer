@@ -344,6 +344,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-metadata-view" class="md-nav__link">
+    The Metadata View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#yaml-exceptions" class="md-nav__link">
     yaml Exceptions
   </a>
@@ -371,15 +378,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-metadata-view" class="md-nav__link">
-    The Metadata View
+  <a href="#icons" class="md-nav__link">
+    Icons
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#icons" class="md-nav__link">
-    Icons
+  <a href="#disable-category-icons-or-names" class="md-nav__link">
+    Disable category icons or names
   </a>
   
 </li>
@@ -602,6 +609,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-metadata-view" class="md-nav__link">
+    The Metadata View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#yaml-exceptions" class="md-nav__link">
     yaml Exceptions
   </a>
@@ -629,15 +643,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-metadata-view" class="md-nav__link">
-    The Metadata View
+  <a href="#icons" class="md-nav__link">
+    Icons
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#icons" class="md-nav__link">
-    Icons
+  <a href="#disable-category-icons-or-names" class="md-nav__link">
+    Disable category icons or names
   </a>
   
 </li>
@@ -727,6 +741,11 @@
 <span class="nn">---</span>
 </code></pre></div></li>
 </ul>
+<h3 id="the-metadata-view">The Metadata View<a class="headerlink" href="#the-metadata-view" title="Permanent link">&para;</a></h3>
+<p>For all known documents (in this case, markdown) that contain <code>yaml</code> metadata, the <strong>Metadata View</strong> will be enabled in the <strong>Explorer</strong>.</p>
+<p>The view parses known metadata, and displays it as a tree. </p>
+<p>It optionally can include icons, or colors.</p>
+<p><img alt="Meta view" src="../img/meta_view_01.gif" /></p>
 <h3 id="yaml-exceptions"><code>yaml</code> Exceptions<a class="headerlink" href="#yaml-exceptions" title="Permanent link">&para;</a></h3>
 <h4 id="easy-lists">Easy Lists<a class="headerlink" href="#easy-lists" title="Permanent link">&para;</a></h4>
 <details class="setting"><summary>markdown-fiction-writer.metadata.easyLists</summary><p>Under <strong>Metadata: Easy Lists</strong>, you can configure if you want to split metadata values by a specific character.</p>
@@ -753,6 +772,10 @@
 <span class="nn">---</span>
 </code></pre></div>
 <p>if the separator is <code>,</code>. The separator is configurable under <strong>Metadata: Easy Lists</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only if the category is a <em>known category</em>, meaning: the category is added to the <a href="#icons">Category icons</a> list, explained below.</p>
+</div>
 <div class="admonition danger">
 <p class="admonition-title">Spaces are not trimmed</p>
 <p>If this feature does not behave as expected, make sure that the separator value does not include unwanted spaces. Especially at the beginning or end.</p>
@@ -780,19 +803,33 @@
 <span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draft</span>
 <span class="nn">---</span>
 </code></pre></div>
-<h3 id="the-metadata-view">The Metadata View<a class="headerlink" href="#the-metadata-view" title="Permanent link">&para;</a></h3>
-<p>For all known documents (in this case, markdown) that contain <code>yaml</code> metadata, the <strong>Metadata View</strong> will be enabled in the <strong>Explorer</strong>.</p>
-<p>The view parses known metadata, and displays it as a tree. </p>
-<p>It optionally can include icons, or colors.</p>
-<p><img alt="Meta view" src="../img/meta_view_01.gif" /></p>
+<p><img alt="default" src="../img/meta_default_01.gif" /></p>
 <h3 id="icons">Icons<a class="headerlink" href="#icons" title="Permanent link">&para;</a></h3>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.metadata.categories</code></p>
-<p><em>coming soon</em></p>
+<p class="admonition-title"><code>markdown-fiction-writer.metadata.categories.icons</code></p>
+<p>Predefined category icons, with the possiblity to add any number of new ones.</p>
 </div>
+<p>Sets icons for categories in the <strong>Metadata View</strong>.</p>
+<p>Only icons from VSCode <a href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">Product Icon Reference</a> are supported.</p>
+<p>Add your custom category name to the <strong>Metadata &gt; Categories: Icons</strong> list (<strong>Item</strong>) and set it's value to the icon id from Product Icon Reference. (Eg. <code>tag</code>, <code>eye</code>, <code>book</code>).</p>
+<p>There are some predefined icons and categories. If you want, you can easily change any predefined icon by editing it's value.</p>
+<p><img alt="icons" src="../img/meta_icons_01.gif" /></p>
+<p>All categories from this list, are treated as <em>known categories</em>. This means, they will support the <a href="#easy-lists">Easy Lists</a> functionality.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you just want to add a category as <em>known category</em>, add it to this list, but leave the Icon (<strong>Value</strong>) field empty.</p>
+</div>
+<h3 id="disable-category-icons-or-names">Disable category icons or names<a class="headerlink" href="#disable-category-icons-or-names" title="Permanent link">&para;</a></h3>
+<p>You can completely disable icons, by unchecking <strong>Metadata &gt; Category: Show Icons</strong></p>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.metadata.categoryIconsEnabled</code></p>
-<p><em>coming soon</em></p>
+<p class="admonition-title"><code>markdown-fiction-writer.metadata.categories.showIcons</code></p>
+<p>Shows category icons in the <strong>Metadata</strong> view. Disable this if you do not want to view any icons.
+Default value: <code>enabled</code></p>
+</div>
+<p>If you want, you can also hide category labels (only for 1<sup>st</sup> level/root categories) by unchecking <strong>Metadata &gt; Category: Show Names</strong></p>
+<div class="admonition setting">
+<p class="admonition-title"><code>markdown-fiction-writer.metadata.categories.showNames</code></p>
+<p>Default value: <code>enabled</code></p>
 </div>
 <h3 id="file-explorer-badges">File Explorer Badges<a class="headerlink" href="#file-explorer-badges" title="Permanent link">&para;</a></h3>
 <div class="admonition setting">
