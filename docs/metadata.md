@@ -55,6 +55,17 @@ In the context of metadata, this extension uses the following wording:
   ---
   ```
 
+
+# The Metadata View
+
+For all known documents (in this case, markdown) that contain `yaml` metadata, the **Metadata View** will be enabled in the **Explorer**.
+
+The view parses known metadata, and displays it as a tree. 
+
+It optionally can include icons, or colors.
+
+![Meta view](img/meta_view_01.gif)
+
 # `yaml` Exceptions
 
 ## Easy Lists
@@ -97,6 +108,9 @@ items: item1, item2, item3
 
 if the separator is `,`. The separator is configurable under **Metadata: Easy Lists**.
 
+!!! note
+    This is only if the category is a _known category_, meaning: the category is added to the [Category icons](#icons) list, explained below.
+  
 !!! danger "Spaces are not trimmed"
     If this feature does not behave as expected, make sure that the separator value does not include unwanted spaces. Especially at the beginning or end.
 
@@ -138,24 +152,42 @@ status: draft
 ---
 ```
 
+![default](img/meta_default_01.gif)
 
-# The Metadata View
-
-For all known documents (in this case, markdown) that contain `yaml` metadata, the **Metadata View** will be enabled in the **Explorer**.
-
-The view parses known metadata, and displays it as a tree. 
-
-It optionally can include icons, or colors.
-
-![Meta view](img/meta_view_01.gif)
 
 # Icons
 
-!!! setting "`markdown-fiction-writer.metadata.categories`"
-    *coming soon*
+!!! setting "`markdown-fiction-writer.metadata.categories.icons`"
+    Predefined category icons, with the possiblity to add any number of new ones.
 
-!!! setting "`markdown-fiction-writer.metadata.categoryIconsEnabled`"
-    *coming soon*
+Sets icons for categories in the **Metadata View**.
+
+Only icons from VSCode [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing) are supported.
+
+Add your custom category name to the **Metadata > Categories: Icons** list (**Item**) and set it's value to the icon id from Product Icon Reference. (Eg. `tag`, `eye`, `book`).
+
+There are some predefined icons and categories. If you want, you can easily change any predefined icon by editing it's value.
+
+![icons](img/meta_icons_01.gif)
+
+All categories from this list, are treated as _known categories_. This means, they will support the [Easy Lists](#easy-lists) functionality.
+
+!!! note
+    If you just want to add a category as _known category_, add it to this list, but leave the Icon (**Value**) field empty.
+
+# Disable category icons or names
+
+You can completely disable icons, by unchecking **Metadata > Category: Show Icons**
+
+!!! setting "`markdown-fiction-writer.metadata.categories.showIcons`"
+    Shows category icons in the **Metadata** view. Disable this if you do not want to view any icons.
+    Default value: `enabled`
+
+
+If you want, you can also hide category labels (only for 1^st^ level/root categories) by unchecking **Metadata > Category: Show Names**
+
+!!! setting "`markdown-fiction-writer.metadata.categories.showNames`"
+    Default value: `enabled`
 
 # File Explorer Badges
 

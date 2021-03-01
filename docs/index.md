@@ -21,7 +21,7 @@ Browse each category below, to find out more about this extension capabilites.
 <tr>
   <td width="33%"><a href="edit"><img src="img/logo_edit.png" width="200"/></a></td>
   <td width="33%"><a href="format"><img src="img/logo_format.png" width="200"/></a></td>
-  <td width="33%"><a href="export"><img src="img/logo_export.png" width="200"/></a></td>
+  <td width="33%"><a href="export"><img src="img/logo_export.png" width="140"/></a></td>
 </tr>
 <Tr>
   <td style="text-align: center"><a href="edit">Enhanced Editing</a></td>
@@ -57,11 +57,11 @@ Browse each category below, to find out more about this extension capabilites.
 
 <table>
 <tr>
-  <td><a href="metadata"><img src="img/logo_metadata.png" width="200"/></a></td>
+  <td><a href="metadata"><img src="img/logo_metadata.png" width="160"/></a></td>
   <td><a href="stats"><img src="img/logo_stats.png" width="200"/></a></td>
-  <td><a href="view"><img src="img/logo_other.png" width="200"/></a></td>
+  <td><a href="view"><img src="img/logo_other.png" width="190"/></a></td>
 </tr>
-<Tr>
+<Tr >
   <td style="text-align: center"><a href="metadata">Using Metadata</a></td>
   <td style="text-align: center"><a href="stats">Document Statistics</a></td>
   <td style="text-align: center"><a href="view">Other</a></td>
@@ -78,7 +78,6 @@ Browse each category below, to find out more about this extension capabilites.
   </ul></td>
    <td><ul>
     <li>fold paragraph lines</li>
-    <li>tag files (view badges in file explorer)</li>
     <li>writing mode (different theme, different font size)</li>
     <li>text highlighting</li>
     <li>typewriter mode</li>
