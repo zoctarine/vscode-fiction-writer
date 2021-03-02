@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import * as vscode from 'vscode';
-import { extract, parse } from '../../metadata';
+import { extract, parse } from '../../../metadata';
 
+//jest.mock('vscode');
 
 function asName(text?: string): string {
   return text
@@ -9,12 +9,11 @@ function asName(text?: string): string {
     : 'test';
 }
 
-suite('Markdown Metadata Tests', function () {
-  vscode.window.showInformationMessage('Start all tests.');
+describe('Markdown Metadata Tests', function () {
 
-  suite('#extract()', function () {
+  describe('#extract()', function () {
 
-    suite('should return metadata if block is starting with --- and ending with --- or ..., like:', function () {
+    describe('should return metadata if block is starting with --- and ending with --- or ..., like:', function () {
       [
         ['---\ntitle: metadata\nblock:metadata\n---', `title: metadata\nblock:metadata`],
         ['---\ntitle: metadata\nblock:metadata\n...', `title: metadata\nblock:metadata`],
@@ -23,13 +22,13 @@ suite('Markdown Metadata Tests', function () {
         ['---\ntest\n---', `test`],
       ]
         .forEach(([value, expected]) => {
-          test(asName(value), () => {
+          it(asName(value), () => {
             assert.strictEqual(extract(value), expected);
           });
         });
     });
 
-    suite('should return empty string if block is not starting with --- and ending with --- or ..., like:', () => {
+    describe('should return empty string if block is not starting with --- and ending with --- or ..., like:', () => {
       [
         '---\nstarting but not ending\n--',
         '---\nstarting: file\nbut: not ending\n.',
@@ -52,16 +51,16 @@ suite('Markdown Metadata Tests', function () {
         '---\n...'
       ]
         .forEach(function (text) {
-          test(asName(text), function () {
+          it(asName(text), function () {
             assert.strictEqual(extract(text), '');
           });
         });
     });
   });
 
-  suite('#parse()', function () {
+  describe('#parse()', function () {
 
-    suite('should return object with valid yaml block', () => {
+    describe('should return object with valid yaml block', () => {
       [
         {
           text: `title:  'This is the title: it contains a colon'\n` +
@@ -95,20 +94,20 @@ suite('Markdown Metadata Tests', function () {
           expected: 42
         }
       ].forEach(testValue => {
-        test(asName(testValue.text), () => {
+        it(asName(testValue.text), () => {
           assert.deepStrictEqual(parse(testValue.text), testValue.expected);
         });
       });
     });
 
 
-    suite('should return undefined if empty or invalid yaml block', () => {
+    describe('should return undefined if empty or invalid yaml block', () => {
       ['',
         'not yaml',
         '{ "this": "is json" }',
         'unformated: yaml: block\ntitle: test'
       ].forEach(value => {
-        test(value, () => {
+        it(value, () => {
           assert.strictEqual(parse(''), undefined);
         });
       });
