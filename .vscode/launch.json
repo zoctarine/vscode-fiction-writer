@@ -18,14 +18,13 @@
 			"preLaunchTask": "${defaultBuildTask}"
 		},
 		{
-			"name": "Launch Unit Tests",
+			"name": "Unit Tests",
 			"type": "node",
 			"request": "launch",
 			"runtimeArgs": [
 				"--inspect-brk",
 				"${workspaceRoot}/node_modules/jest/bin/jest.js",
 				"--runInBand",
-				"./out/test/unit",
 				"-o"
 			  ],
 			  "console": "integratedTerminal",

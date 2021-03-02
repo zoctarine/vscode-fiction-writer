@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { extract, parse } from '../../../metadata';
 
-//jest.mock('vscode');
+jest.mock('vscode');
 
 function asName(text?: string): string {
   return text

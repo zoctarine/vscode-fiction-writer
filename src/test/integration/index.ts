@@ -1,33 +1,38 @@
 import * as path from 'path';
-import * as jest from 'jest';
+import * as Mocha from 'mocha';
+import * as glob from 'glob';
 
 export function run(): Promise<void> {
+	// Create the mocha test
+	const mocha = new Mocha({
+		ui: 'tdd',
+		color: true,
+	});
+
 	const testsRoot = path.resolve(__dirname);
 
 	return new Promise((c, e) => {
-
-		jest
-		.runCLI({ testMatch: ["<rootDir>/test/integration/**/**.test.js"]} as any, [testsRoot])
-		.then(jestCliCallResult => {
-		  jestCliCallResult.results.testResults.forEach(testResult => {
-			testResult.testResults
-			  .filter(assertionResult => assertionResult.status === "passed")
-			  .forEach(({ ancestorTitles, title, status }) => {
-				console.info(`  ● ${ancestorTitles} › ${title} (${status})`);
-			  });
-		  });
-
-		  jestCliCallResult.results.testResults.forEach(testResult => {
-			if (testResult.failureMessage) {
-			  console.error(testResult.failureMessage);
+		glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
+			if (err) {
+				return e(err);
 			}
-		  });
 
-		  c();
-		})
-		.catch(errorCaughtByJestRunner => {
-		  e(errorCaughtByJestRunner);
+			// Add files to the test suite
+			files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)));
+
+			try {
+				// Run the mocha test
+				mocha.run(failures => {
+					if (failures > 0) {
+						e(new Error(`${failures} tests failed.`));
+					} else {
+						c();
+					}
+				});
+			} catch (err) {
+				console.error(err);
+				e(err);
+			}
 		});
-
 	});
 }
