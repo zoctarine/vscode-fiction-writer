@@ -12,5 +12,6 @@
     "[markdown]": {
       "editor.tabSize": 2,
       "editor.wrappingIndent": "same"
-    }
+    },
+    "jestTestExplorer.flattenExplorer": true
 }
