@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPathAsync } from './utils';
+import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPath } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
@@ -87,22 +87,38 @@ export function activate(context: vscode.ExtensionContext) {
     }),
 
     vscode.workspace.onDidSaveTextDocument(async (e) => {
+      console.log("SaveText: " + e.uri.fsPath);
+
       if (isInActiveEditor(e?.uri)) {
         docStatisticProvider.refresh();
       }
     }),
 
+    watcher.onDidCreate(e => {
+      console.log("Create: " + e.fsPath);
+      if (!isSupportedPath(e)) return;
+
+      cache.refresh(e);
+    }),
+
+    watcher.onDidDelete(e => {
+      console.log("Delete: " + e.fsPath);
+
+      if (!isSupportedPath(e)) return;
+
+      cache.remove(e);
+    }),
+
+
     watcher.onDidChange(async e => {
-      if (await isSupportedPathAsync(e)) {
-        cache
-          .refresh(e)
-          .then(() => {
-            if (isInActiveEditor(e)) {
-              metadataProvider.refresh();
-            }
-            metadataDecoration.fire([e]);
-          });
+      console.log("Change: " + e.fsPath);
+      if (!isSupportedPath(e)) return;
+
+      cache.refresh(e);
+      if (isInActiveEditor(e)) {
+        metadataProvider.refresh();
       }
+      metadataDecoration.fire([e]);
     })
   );
 
@@ -257,7 +273,7 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
 
     if (option === 'OK, Continue') {
       configService.setFlag('isAgreeTypewriterMode');
-    } else if (option === 'ReadMore'){
+    } else if (option === 'ReadMore') {
       vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
     } else {
       return;

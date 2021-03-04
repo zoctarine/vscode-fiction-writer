@@ -1,10 +1,11 @@
-import { StatusBarAlignment, StatusBarItem, Uri, window } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, Uri, window, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
 import { Config } from '../config';
 import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx } from '../utils';
 import { TextEditor } from 'vscode';
+import {FileIndexer} from './fileIndexer';
 
 export class CompileFileCommand extends Observer<Config> {
   protected item: StatusBarItem;
@@ -28,10 +29,27 @@ export class CompileFileCommand extends Observer<Config> {
     await this.convertAndOpen(editor, [editor.document.fileName], undefined, format);
   }
 
+  protected getProjectFilesAsync(inputPath: string): Promise<string[]>{
+    const fi = new FileIndexer('**/**.md');
+    const location = path.parse(inputPath);
+    
+    // index from current directory onward
+    let index = location.dir;
+    
+    // search in current workspace
+    const workspaceFolder = workspace.getWorkspaceFolder(Uri.file(inputPath));
+    if (workspaceFolder){
+      index = workspaceFolder.uri.fsPath;
+    }
+
+    return fi.indexLocation(index);
+  }
+  
   protected makeToc(inputs: Array<string>, errors: Array<string>)
     : { includePath: string, text: string, success: boolean } {
     try {
       const inputPath = inputs[0];
+
       return {
         text: fs.readFileSync(inputPath, 'UTF-8'),
         includePath: path.parse(inputPath).dir,
@@ -56,7 +74,7 @@ export class CompileFileCommand extends Observer<Config> {
       }
 
       const buffer: string[] = [];
-      const compiled = this.makeToc(inputs, errors);
+      const compiled = await this.makeToc(inputs, errors);
 
       if (compiled.success) { this.load(compiled.text, compiled.includePath, buffer, [], errors); }
 
