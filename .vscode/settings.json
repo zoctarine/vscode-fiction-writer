@@ -13,5 +13,10 @@
       "editor.tabSize": 2,
       "editor.wrappingIndent": "same"
     },
-    "jestTestExplorer.flattenExplorer": true
+    "jestTestExplorer.flattenExplorer": true,
+    "jestTestExplorer.logpanel": true,
+    "testExplorer.codeLens": false,
+    "testExplorer.sort": "byLabelWithSuitesFirst",
+    "editor.tabCompletion": "onlySnippets",
+    "jestTestExplorer.debugOutput": "integratedTerminal"
 }

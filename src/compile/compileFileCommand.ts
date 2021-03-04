@@ -42,7 +42,7 @@ export class CompileFileCommand extends Observer<Config> {
       index = workspaceFolder.uri.fsPath;
     }
 
-    return fi.indexLocation(index);
+    return fi.index(index);
   }
   
   protected makeToc(inputs: Array<string>, errors: Array<string>)

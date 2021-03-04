@@ -44,8 +44,9 @@ export class InMemoryCache<T> implements IDisposable {
     return [...this.cache.entries()];
   }
 
+  public clear() { this.cache?.clear(); }
   public dispose() {
-    this.cache?.clear();
+    this.clear();
     this.cache = undefined;
   }
 }

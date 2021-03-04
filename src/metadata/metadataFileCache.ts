@@ -6,7 +6,7 @@ import { Config, IKvp } from '../config';
 import { InMemoryCache } from '../utils';
 
 export interface IFileInfo {
-  id: string,
+  id?: string,
   metadata: any
 }
 
@@ -38,7 +38,7 @@ export class MetadataFileCache extends Observer<Config> {
         const text = fs.readFileSync(filePath, 'utf8');
         const meta = this.getMeta(text);
         fileInfo = {
-          id: meta?.id,
+          id: meta?.id as string,
           metadata: meta
         };
         this._fileCache.set(path.fsPath, fileInfo);

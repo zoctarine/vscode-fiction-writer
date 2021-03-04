@@ -22,6 +22,7 @@ export function parse(yamlText: string | undefined) {
 }
 
 export interface KnownMeta {
+  id: string | undefined,
   description: string[] | string | undefined,
   summary: string[] | string | undefined,
   tag: string[] | string | undefined,
