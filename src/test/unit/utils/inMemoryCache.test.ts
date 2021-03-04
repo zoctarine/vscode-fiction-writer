@@ -1,10 +1,7 @@
-import { extract, parse } from '../../../metadata';
 import { InMemoryCache } from '../../../utils';
+import { unique } from '..';
 
 jest.mock('vscode');
-
-const any = (value: string) => value + ': ' + Math.random().toString(36);
-
 
 describe('InMemoryCache', function () {
 
@@ -22,7 +19,7 @@ describe('InMemoryCache', function () {
     ['', undefined, null, 'a', 'SOME TEST'].forEach(value => {
 
       it(`should add '${value}' value to map`, function () {
-        const key = any('key');
+        const key = unique('key');
         sut.set(key, value);
         expect(sut.getSnapshot()).toStrictEqual([[key, value]]);
       });
@@ -30,7 +27,7 @@ describe('InMemoryCache', function () {
 
     it('should not set empty keys', function () {
       const emptyKey = '';
-      const value = any('value');
+      const value = unique('value');
 
       sut.set(emptyKey, value);
 
@@ -38,9 +35,9 @@ describe('InMemoryCache', function () {
     });
 
     it('should overwrite existing key value', function () {
-      const key = any('key');
-      const oldValue = any('value');
-      const newValue = any('new-value');
+      const key = unique('key');
+      const oldValue = unique('value');
+      const newValue = unique('new-value');
 
       sut.set(key, oldValue);
       sut.set(key, newValue);
@@ -51,9 +48,9 @@ describe('InMemoryCache', function () {
     it(`should add multiple values`, function () {
       const expected =
         [
-          [any('key'), any('value')],
-          [any('key'), any('value')],
-          [any('key'), any('value')]
+          [unique('key'), unique('value')],
+          [unique('key'), unique('value')],
+          [unique('key'), unique('value')]
         ];
 
       expected

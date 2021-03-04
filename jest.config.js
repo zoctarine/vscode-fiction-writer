@@ -4,6 +4,7 @@ module.exports = {
   automock: false,
   clearMocks: true,
   preset: "ts-jest",
+  verbose: false,
   testPathIgnorePatterns: ["/node_modules/", "/out/", "/integration/"],
   globals: {
     preset: 'ts-jest'
