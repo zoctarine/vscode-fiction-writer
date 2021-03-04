@@ -5,6 +5,7 @@ import { CompileFileCommand } from './compileFileCommand';
 import { Config } from '../config';
 import { IObservable } from '../utils';
 
+
 export class CompileTocCommand extends CompileFileCommand {
 
   constructor(config: IObservable<Config>) {

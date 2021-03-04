@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Config, IKvp } from '../config';
-import { IObservable, isSupportedPathAsync, KnownColor, Observer } from '../utils';
+import { IObservable, isSupportedPath, KnownColor, Observer } from '../utils';
 import { KnownMeta, MetadataFileCache } from './index';
 
 
@@ -26,95 +26,92 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   readonly onDidChangeFileDecorations: vscode.Event<vscode.Uri[]> = this._onDidChangeDecorations.event;
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
-    if (!isSupportedPathAsync(uri))
+    if (!isSupportedPath(uri))
       return Promise.reject();
 
     return new Promise((resolve, reject) => {
       const useColors = this.state.metaKeywordShowInFileExplorer;
       const useBadges = this.state.metaKeywordsShowBadges;
-      this.cache.get(uri)
-        .then(meta => {
+      const meta = this.cache.get(uri);
 
-          const metadata = meta?.metadata as IKvp<string | string[]>;
-          let badge: string | undefined;
-          let color: vscode.ThemeColor | undefined;
+      const metadata = meta?.metadata as IKvp<string | string[]>;
+      let badge: string | undefined;
+      let color: vscode.ThemeColor | undefined;
 
-          if (metadata) {
-            let reason = [];
+      if (metadata) {
+        let reason = [];
 
-            /**
-             * Resolve File Explorer Badges
-             */
-            if (useBadges) {
-              const knownKeywords = [...this.state.metaFileBadges.keys()].map(k => k.toLowerCase());
-              const defaultBadgeCat = this.state.metaKeywordBadgeCategory;
+        /**
+         * Resolve File Explorer Badges
+         */
+        if (useBadges) {
+          const knownKeywords = [...this.state.metaFileBadges.keys()].map(k => k.toLowerCase());
+          const defaultBadgeCat = this.state.metaKeywordBadgeCategory;
 
-              // - if we have a default badge category, deep search only
-              //   that category
-              if (defaultBadgeCat) {
-                if (metadata[defaultBadgeCat]) {
-                  const cat = metadata[defaultBadgeCat];
-                  const tag = this.findFirstMatchIn(cat, knownKeywords);
-                  if (tag) {
-                    const keyword = tag?.toLowerCase();
-                    reason.push(`${defaultBadgeCat}: ${tag}`);
-                    badge = useBadges
-                      ? this.state.metaFileBadges.get(keyword)?.substr(0, 2)
-                      : undefined;
-                  }
-                }
-              } else {
-                // - if no default badge category is set, then deep search
-                //   metadata for any known keyword
-                const match = this.findFirstMatchIn(metadata, knownKeywords);
-                if (match) {
-                  reason.push(`B: ${match}`);
-                  badge = useBadges
-                    ? this.state.metaFileBadges.get(match)?.substr(0, 2)
-                    : undefined;
-                }
+          // - if we have a default badge category, deep search only
+          //   that category
+          if (defaultBadgeCat) {
+            if (metadata[defaultBadgeCat]) {
+              const cat = metadata[defaultBadgeCat];
+              const tag = this.findFirstMatchIn(cat, knownKeywords);
+              if (tag) {
+                const keyword = tag?.toLowerCase();
+                reason.push(`${defaultBadgeCat}: ${tag}`);
+                badge = useBadges
+                  ? this.state.metaFileBadges.get(keyword)?.substr(0, 2)
+                  : undefined;
               }
             }
+          } else {
+            // - if no default badge category is set, then deep search
+            //   metadata for any known keyword
+            const match = this.findFirstMatchIn(metadata, knownKeywords);
+            if (match) {
+              reason.push(`B: ${match}`);
+              badge = useBadges
+                ? this.state.metaFileBadges.get(match)?.substr(0, 2)
+                : undefined;
+            }
+          }
+        }
 
-            /**
-             * Resolve File Explorer Colors
-             */
-            if (useColors) {
-              const knownKeywords = [...this.state.metaKeywordColors.keys()].map(k => k.toLowerCase());
-              const defaultColorCat = this.state.metaKeywordColorCategory;
+        /**
+         * Resolve File Explorer Colors
+         */
+        if (useColors) {
+          const knownKeywords = [...this.state.metaKeywordColors.keys()].map(k => k.toLowerCase());
+          const defaultColorCat = this.state.metaKeywordColorCategory;
 
-              // - if we have a default color category, deep search only
-              //   that category
-              if (defaultColorCat) {
-                if (metadata[defaultColorCat]) {
-                  const cat = metadata[defaultColorCat];
-                  const tag = this.findFirstMatchIn(cat, knownKeywords);
-                  if (tag) {
-                    const keyword = tag?.toLowerCase();
-                    reason.push(`${defaultColorCat}: ${tag}`);
-                    color = this.state.metaKeywordColors.get(keyword);
-                  }
-                }
-              } else {
-                // - if no default badge category is set, then deep search
-                //   metadata for any known keyword
-                const match = this.findFirstMatchIn(metadata, knownKeywords);
-                if (match) {
-                  reason.push(`C: ${match}`);
-                  color = this.state.metaKeywordColors.get(match);
-                }
+          // - if we have a default color category, deep search only
+          //   that category
+          if (defaultColorCat) {
+            if (metadata[defaultColorCat]) {
+              const cat = metadata[defaultColorCat];
+              const tag = this.findFirstMatchIn(cat, knownKeywords);
+              if (tag) {
+                const keyword = tag?.toLowerCase();
+                reason.push(`${defaultColorCat}: ${tag}`);
+                color = this.state.metaKeywordColors.get(keyword);
               }
             }
-
-            // Only return decoration if we have a reason to
-            if (color || badge){
-              return resolve(new vscode.FileDecoration(badge, reason.join(', '), color));
+          } else {
+            // - if no default badge category is set, then deep search
+            //   metadata for any known keyword
+            const match = this.findFirstMatchIn(metadata, knownKeywords);
+            if (match) {
+              reason.push(`C: ${match}`);
+              color = this.state.metaKeywordColors.get(match);
             }
-          } 
+          }
+        }
 
-          return reject();
-        })
-        .catch(err => reject(err));
+        // Only return decoration if we have a reason to
+        if (color || badge) {
+          return resolve(new vscode.FileDecoration(badge, reason.join(', '), color));
+        }
+      }
+
+      return reject();
     });
   }
 
@@ -124,8 +121,8 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
   protected onStateChange(newState: Config) {
     super.onStateChange(newState);
-    
-    if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata.enabled')){
+
+    if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata.enabled')) {
       this.register();
     }
     if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata')) {

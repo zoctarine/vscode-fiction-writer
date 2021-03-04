@@ -6,7 +6,7 @@ import { MetadataTreeItem } from "./metadataTreeItem";
 
 
 export class MarkdownMetadataTreeDataProvider extends Observer<Config> implements vscode.TreeDataProvider<MetadataTreeItem> {
-private document: vscode.TextDocument | undefined;
+  private document: vscode.TextDocument | undefined;
   private metadata: IFileInfo | undefined;
 
   constructor(configService: IObservable<Config>, private cache: MetadataFileCache) {
@@ -25,18 +25,18 @@ private document: vscode.TextDocument | undefined;
       ? this.parseObjectTree(element.value, element)
       : this.parseObjectTree(this.metadata.metadata);
 
-    const useColors = this.state.metaKeywordShowInMetadataView; 
+    const useColors = this.state.metaKeywordShowInMetadataView;
     const showLabels = this.state.metaCategoryNamesEnabled ?? false;
 
     elements.forEach(item => {
       let icon: string | undefined = undefined;
 
-      let label =  showLabels || item.parent
+      let label = showLabels || item.parent
         ? item.parent?.key.toLowerCase()
         : item.key.toLowerCase();
 
       if (!label && item.description) {
-          label = item.key.toLowerCase();
+        label = item.key.toLowerCase();
       }
 
       if (label && this.state.metaCategoryIconsEnabled) {
@@ -80,7 +80,7 @@ private document: vscode.TextDocument | undefined;
       }
 
       return props
-      .map(key => {
+        .map(key => {
           const value = object[key];
           if (Array.isArray(value)) {
             return new MetadataTreeItem(
@@ -91,21 +91,21 @@ private document: vscode.TextDocument | undefined;
               parent,
               vscode.TreeItemCollapsibleState.Expanded);
           }
-          else 
-          if (typeof value === 'object' && value !== null) {
-            return new MetadataTreeItem(
-              key,
-              key,
-              null,
-              value,
-              parent,
-              vscode.TreeItemCollapsibleState.Expanded);
-          }
+          else
+            if (typeof value === 'object' && value !== null) {
+              return new MetadataTreeItem(
+                key,
+                key,
+                null,
+                value,
+                parent,
+                vscode.TreeItemCollapsibleState.Expanded);
+            }
 
           return new MetadataTreeItem(
             key,
             showLabels ? key : value,
-            showLabels ? value: '',
+            showLabels ? value : '',
             value,
             parent,
             vscode.TreeItemCollapsibleState.None);
@@ -115,7 +115,7 @@ private document: vscode.TextDocument | undefined;
     return [new MetadataTreeItem(
       '',
       showLabels ? '' : object,
-      showLabels ? object: '',
+      showLabels ? object : '',
       object, parent)];
   }
 
@@ -126,14 +126,14 @@ private document: vscode.TextDocument | undefined;
 
     return new Promise((resolve, reject) => {
       this.document = getActiveEditor()?.document;
-      this.cache
-        .get(this.document?.uri)
-        .then(meta => {
-          this.metadata = meta;
-          this._onDidChangeTreeData.fire();
-          resolve(this.metadata);
-        })
-        .catch(err => reject(err));
+      const meta = this.cache.get(this.document?.uri);
+      if (meta) {
+        this.metadata = meta;
+        this._onDidChangeTreeData.fire();
+        resolve(this.metadata);
+      } else {
+        reject();
+      }
     });
   }
 

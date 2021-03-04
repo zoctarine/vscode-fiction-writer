@@ -6,8 +6,6 @@ module.exports = {
   preset: "ts-jest",
   testPathIgnorePatterns: ["/node_modules/", "/out/", "/integration/"],
   globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.json"
-    }
+    preset: 'ts-jest'
   }
 };
