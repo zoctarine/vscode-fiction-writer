@@ -28,22 +28,22 @@ export class CompileFileCommand extends Observer<Config> {
     this.item.show();
     await this.convertAndOpen(editor, [editor.document.fileName], undefined, format);
   }
-
-  protected getProjectFilesAsync(inputPath: string): Promise<string[]>{
-    const fi = new FileIndexer('**/**.md');
-    const location = path.parse(inputPath);
-    
-    // index from current directory onward
-    let index = location.dir;
-    
-    // search in current workspace
-    const workspaceFolder = workspace.getWorkspaceFolder(Uri.file(inputPath));
-    if (workspaceFolder){
-      index = workspaceFolder.uri.fsPath;
-    }
-
-    return fi.index(index);
-  }
+  //
+  // protected getProjectFilesAsync(inputPath: string): Promise<string[]>{
+  //   const fi = new FileIndexer();
+  //   const location = path.parse(inputPath);
+  //
+  //   // index from current directory onward
+  //   let index = location.dir;
+  //
+  //   // search in current workspace
+  //   const workspaceFolder = workspace.getWorkspaceFolder(Uri.file(inputPath));
+  //   if (workspaceFolder){
+  //     index = workspaceFolder.uri.fsPath;
+  //   }
+  //
+  //   return fi.index(index + '**/**.md');
+  // }
   
   protected makeToc(inputs: Array<string>, errors: Array<string>)
     : { includePath: string, text: string, success: boolean } {

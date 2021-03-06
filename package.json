@@ -795,6 +795,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
+    "run": "\"d:\\Microsoft VS Code\\Code.exe\" --extensionDevelopmentPath=\"e:\\Stuff\\fiction-writer\\vscode-fiction-writer\"",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
