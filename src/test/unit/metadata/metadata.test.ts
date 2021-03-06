@@ -10,7 +10,7 @@ function asName(text?: string): string {
 
 describe('Markdown Metadata Tests', function () {
 
-  describe('#extract()', function () {
+  describe('extract()', function () {
 
     describe('should return metadata if block is starting with --- and ending with --- or ..., like:', function () {
       [
@@ -57,7 +57,7 @@ describe('Markdown Metadata Tests', function () {
     });
   });
 
-  describe('#parse()', function () {
+  describe('parse()', function () {
 
     describe('should return object with valid yaml block', () => {
       [

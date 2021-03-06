@@ -9,13 +9,13 @@ describe('InMemoryCache', function () {
 
   beforeEach(() => { sut = new InMemoryCache(); });
 
-  describe('when created', function () {
-    it('should be empty', function () {
+  describe('_constructor()', function () {
+    it('should create empty cache', function () {
       expect(sut.getAllKeys()).toStrictEqual([]);
     });
   });
 
-  describe('set', function () {
+  describe('set() / get()', function () {
     ['', undefined, null, 'a', 'SOME TEST'].forEach(value => {
 
       it(`should add '${value}' value to map`, function () {
@@ -61,7 +61,7 @@ describe('InMemoryCache', function () {
     });
   });
 
-  describe('dispose', function () {
+  describe('dispose()', function () {
 
     it('should not crash on empty cache', function () {
       expect(() => sut.dispose()).not.toThrowError();

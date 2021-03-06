@@ -8,5 +8,6 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/", "/out/", "/integration/"],
   globals: {
     preset: 'ts-jest'
-  }
+  },
+  setupFilesAfterEnv: ['./jest.setup.js']
 };
