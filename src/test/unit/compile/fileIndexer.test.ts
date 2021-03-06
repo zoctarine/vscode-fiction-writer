@@ -1,14 +1,14 @@
 import { unique } from '..';
-import { mocked } from 'ts-jest/utils';
+import { sync } from 'glob';
 
 const extractMetadata = jest.fn();
+let normalizeMock = jest.fn();
 
 jest.mock('../../../metadata', () => ({ extractMetadata }));
-
+jest.mock('path');
 jest.mock('glob');
 
-const glob = mocked(require('glob'), true);
-
+const syncMock = sync as jest.Mock;
 
 import { FileIndexer } from "../../../compile";
 
@@ -20,13 +20,10 @@ describe('FileIndexer', () => {
   beforeEach(() => {
     sut = new FileIndexer();
     extractMetadata.mockReset();
+    syncMock.mockReset();
   });
 
   describe('_constructor()', () => {
-    it('should create obj with empty id collection', () => {
-      expect(sut.ids()).toStrictEqual([]);
-    });
-
     it('should create obj with empty path collection', () => {
       expect(sut.paths()).toStrictEqual([]);
     });
@@ -39,12 +36,11 @@ describe('FileIndexer', () => {
       expectIsEmpty();
     });
 
-    it('should index only path with files without metadata', () => {
+    it('should index files without metadata', () => {
       const path = unique('file/location');
 
       sut.index(path);
 
-      expect(sut.ids()).toStrictEqual([]);
       expect(sut.paths()).toStrictEqual([path]);
       expect(sut.getByPath(path)).toStrictEqual({
         id: undefined,
@@ -53,23 +49,22 @@ describe('FileIndexer', () => {
       });
     });
 
-    it('should index only info with files without metadata.id', () => {
-      const path = unique('file/location');
+    it('should index file metadata for files without metadata.id', () => {
+      const filePath = unique('file/location');
       const metadata = { notId: 'someValue' };
       extractMetadata.mockReturnValue(metadata);
+      normalizeMock.mockReturnValue(filePath);
+      sut.index(filePath);
 
-      sut.index(path);
-
-      expect(sut.ids()).toStrictEqual([]);
-      expect(sut.paths()).toStrictEqual([path]);
-      expect(sut.getByPath(path)).toStrictEqual({
+      expect(sut.paths()).toStrictEqual([filePath]);
+      expect(sut.getByPath(filePath)).toStrictEqual({
         id: undefined,
-        path,
+        path: filePath,
         metadata
       });
     });
 
-    it('should keep only last entry for wiles with same id', () => {
+    it('should index entries with same id and return all of them', () => {
 
       // ARRANGE
       const path1 = unique('path1');
@@ -98,9 +93,8 @@ describe('FileIndexer', () => {
 
 
       // ASSERT
-      expect(sut.ids().sort()).toStrictEqual([id12, id3].sort());
-      expect(sut.getById(id12)).toStrictEqual(expectedInfo2);
-      expect(sut.getById(id3)).toStrictEqual(expectedInfo3);
+      expect(sut.getById(id12)).toStrictEqual([expectedInfo1, expectedInfo2]);
+      expect(sut.getById(id3)).toStrictEqual([expectedInfo3]);
 
       expect(sut.paths().sort()).toStrictEqual([path1, path2, path3].sort());
       expect(sut.getByPath(path1)).toStrictEqual(expectedInfo1);
@@ -110,7 +104,7 @@ describe('FileIndexer', () => {
     });
 
 
-    it('should index both id and path with files with metetadata.id', async () => {
+    it('should index file id for files with metetadata.id', async () => {
       const path = unique('path');
       const id = unique('id');
       const metadata = { id: id };
@@ -119,9 +113,8 @@ describe('FileIndexer', () => {
 
       sut.index(path);
 
-      expect(sut.ids()).toStrictEqual([id]);
       expect(sut.paths()).toStrictEqual([path]);
-      expect(sut.getById(id)).toStrictEqual(expectedInfo);
+      expect(sut.getById(id)).toStrictEqual([expectedInfo]);
       expect(sut.getByPath(path)).toStrictEqual(expectedInfo);
       expect(extractMetadata.mock.calls.length).toBe(1);
       expect(extractMetadata.mock.calls[0][0]).toBe(path);
@@ -132,7 +125,6 @@ describe('FileIndexer', () => {
       const path = unique('any path');
       sut.index(path);
 
-      expect(sut.ids()).toStrictEqual([]);
       expect(sut.paths()).toStrictEqual([path]);
       expect(sut.getByPath(path)).toStrictEqual({ path });
     });
@@ -160,7 +152,7 @@ describe('FileIndexer', () => {
         unique('file3')
       ];
 
-      glob.sync.mockImplementation(() => paths);
+      syncMock.mockImplementation(() => paths);
 
       await expect(sut.indexLocation('any/location/meta/is/mocked', '**/*'))
         .resolves
@@ -179,7 +171,7 @@ describe('FileIndexer', () => {
         unique('file4'),
       ];
 
-      glob.sync
+      syncMock
         .mockImplementationOnce(() => paths1)
         .mockImplementationOnce(() => paths2);
 
@@ -220,12 +212,12 @@ describe('FileIndexer', () => {
   describe('getById()', () => {
 
     it('should return undefined if no files indexed', () => {
-      expect(sut.getById(unique('name'))).toBeUndefined();
+      expect(sut.getById(unique('name'))).toStrictEqual([]);
     });
 
     it('should return undefined for not indexed file', () => {
       sut.index(unique('something'));
-      expect(sut.getById(unique('somethingElse'))).toBeUndefined();
+      expect(sut.getById(unique('somethingElse'))).toStrictEqual([]);
     });
 
     it('should return FileInfo for indexed file', () => {
@@ -236,7 +228,7 @@ describe('FileIndexer', () => {
       extractMetadata.mockReturnValue(metadata);
 
       sut.index(path);
-      expect(sut.getById(id)).toStrictEqual({ id, metadata, path });
+      expect(sut.getById(id)).toStrictEqual([{ id, metadata, path }]);
     });
   });
 
@@ -254,7 +246,6 @@ describe('FileIndexer', () => {
       expect(() => sut.delete(unique('some/nonindexed/file'))).not.toThrow();
 
       expect(sut.paths()).toStrictEqual(paths);
-      expect(sut.ids()).toStrictEqual([]);
     });
 
     it('should delete indexed entry in both id and path', () => {
@@ -268,7 +259,6 @@ describe('FileIndexer', () => {
       sut.delete(paths[1]);
 
       expect(sut.paths()).toStrictEqual([paths[0], paths[2]]);
-      expect(sut.ids()).toStrictEqual(['id1', 'id3']);
 
     });
 
@@ -283,8 +273,6 @@ describe('FileIndexer', () => {
       paths.forEach(path => sut.delete(path));
 
       expect(sut.paths()).toStrictEqual([]);
-      expect(sut.ids()).toStrictEqual([]);
-
     });
   });
 
@@ -334,7 +322,6 @@ describe('FileIndexer', () => {
   });
 
   function expectIsEmpty() {
-    expect(sut.ids()).toStrictEqual([]);
     expect(sut.paths()).toStrictEqual([]);
   }
 });

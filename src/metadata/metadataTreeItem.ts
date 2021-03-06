@@ -18,5 +18,11 @@ export class MetadataTreeItem extends vscode.TreeItem {
         this.label += ':';
         this.tooltip = displayValue;
     }
+
+    this.command = {
+      'command': 'revealLine',
+      'title': 'Reveal Meta',
+      'arguments': [{'lineNumber': 0}]
+    };
   }
 }

@@ -4,12 +4,13 @@ import * as path from 'path';
 import { CompileFileCommand } from './compileFileCommand';
 import { Config } from '../config';
 import { IObservable } from '../utils';
+import { FileIndexer } from '.';
 
 
 export class CompileTocCommand extends CompileFileCommand {
 
-  constructor(config: IObservable<Config>) {
-    super(config);
+  constructor(config: IObservable<Config>, indexer: FileIndexer) {
+    super(config, indexer);
   }
 
   protected makeToc(inputs: Array<string>, errors: Array<string>)

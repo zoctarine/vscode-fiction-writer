@@ -4,14 +4,18 @@ import * as path from 'path';
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPath } from './utils';
+import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedDoc, isSupportedPath } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
+import { ProjectFilesTreeDataProvider } from './smartRename/intex';
+import { workspace } from './test/unit/__mocks__/vscode';
 
 let currentConfig: Config;
 
 export function activate(context: vscode.ExtensionContext) {
+  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', true);
+
   const fileIndexer = new FileIndexer();
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
@@ -24,15 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
   const dialogueBehaviour = new EnhancedEditDialogueBehaviour(configService);
 
   const behaviour = () => currentConfig.isDialogueEnabled ? dialogueBehaviour : enhancedBehaviour;
-  const compileFileCommand = new CompileFileCommand(configService);
-  const compileAllCommand = new CompileAllCommand(configService);
-  const compileTocCommand = new CompileTocCommand(configService);
+  const compileFileCommand = new CompileFileCommand(configService, fileIndexer);
+  const compileAllCommand = new CompileAllCommand(configService, fileIndexer);
+  const compileTocCommand = new CompileTocCommand(configService, fileIndexer);
 
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
+  const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
 
   const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
+  const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
   const statTree = vscode.window.createTreeView('fw-statistics', { treeDataProvider: docStatisticProvider });
   const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
 
@@ -47,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
     watcher,
     statTree,
     freqTree,
+    projectTree,
     metadataTree,
     metadataDecoration,
     statusBar,
@@ -126,11 +133,33 @@ export function activate(context: vscode.ExtensionContext) {
         metadataProvider.refresh();
       }
       metadataDecoration.fire([e]);
+    }),
+
+    vscode.workspace.onDidOpenTextDocument(e => {
+      if (!isSupportedDoc(e)) return;
+
+      fileIndexer.index(e.uri.fsPath);
+    }),
+
+    vscode.workspace.onDidCloseTextDocument(e => {
+      if (!isSupportedDoc(e)) return;
+
+      // if not from an open workspace, then remove from indexes
+      if (!vscode.workspace.getWorkspaceFolder(e.uri)){
+        fileIndexer.delete(e.uri.fsPath);
+      }
     })
   );
 
   updateIsSupportedEditor(vscode.window.activeTextEditor);
   fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
+  vscode.workspace.workspaceFolders?.forEach(f => {
+    fileIndexer.indexLocation(f.uri.fsPath, '**/*.md');
+  });
+  vscode.workspace.onDidChangeWorkspaceFolders(c => {
+    c.added?.forEach(f=> fileIndexer.indexLocation(f.uri.fsPath, '**/**.md'));
+    c.removed?.forEach(f=> fileIndexer.removeLocation(f.uri.fsPath, '**/**.md'));
+  });
   metadataProvider.refresh();
   docStatisticProvider.refresh();
   showAgreeWithChanges(configService);

@@ -1,43 +1,26 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { FileIndexer } from '.';
 import { Config } from '../config';
 import { IObservable, ReservedNames } from '../utils';
 import { CompileFileCommand } from './compileFileCommand';
 
 export class CompileAllCommand extends CompileFileCommand {
 
-  constructor(config: IObservable<Config>) {
-    super(config);
-  }
-
-  getFiles(dirPath: string, recursive: boolean) {
-    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-
-    const files = entries
-      .filter(file => !file.isDirectory() && file.name.endsWith('.md') && !ReservedNames.includes(file.name))
-      .map(file => ({ ...file, name: file.name, dir: dirPath }));
-
-    if (recursive) {
-      const folders = entries.filter(folder => folder.isDirectory() && !ReservedNames.includes(folder.name));
-
-      for (const folder of folders) {
-        files.push(...this.getFiles(path.join(dirPath, folder.name), true));
-      }
-    }
-
-    return files;
+  constructor(config: IObservable<Config>, fileIndex: FileIndexer) {
+    super(config, fileIndex);
   }
 
   protected async convertAndOpen(editor: vscode.TextEditor, inputs: Array<string>, format?: string) {
     try {
       const doc = editor.document;
       const docPath = path.parse(path.resolve(doc.fileName));
-      let files = this.getFiles(docPath.dir, true);
+      let files = this.fileIndex.getState().map(m => m.path);
 
       const quickPick = vscode.window.createQuickPick();
       (quickPick as any).sortByLabel = false;
-      quickPick.items = files.map(f => ({ label: path.relative(docPath.dir, path.join(f.dir, f.name)) }));
+      quickPick.items = files.map(f => ({ label: path.relative(docPath.dir, f) }));
       quickPick.title = 'Select files to be included in output.';
       quickPick.canSelectMany = true;
       quickPick.onDidHide(() => quickPick.dispose());
