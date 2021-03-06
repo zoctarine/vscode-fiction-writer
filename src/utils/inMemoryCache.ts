@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { IDisposable } from '.';
 
 
@@ -45,6 +44,7 @@ export class InMemoryCache<T> implements IDisposable {
   }
 
   public clear() { this.cache?.clear(); }
+  
   public dispose() {
     this.clear();
     this.cache = undefined;

@@ -44,6 +44,7 @@ export interface Config extends ContextConfig {
   compileShowFormatPicker?: boolean,
   compileShowSaveDialogue?: boolean,
   compileSkipCommentsFromToc?: boolean
+  compileShowsErrorInOutputFile?:boolean,
   compileTocFilename: string,
 
   viewFileTags?: { [key: string]: string }

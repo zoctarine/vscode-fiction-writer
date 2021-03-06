@@ -173,6 +173,13 @@
       ],
       "word-frequency-explorer": [
         {
+          "id": "fw-projectFiles",
+          "name": "Project files",
+          "icon": "eye",
+          "contextualTitle": "Files",
+          "when": "isDevelopmentMode"
+        },
+        {
           "id": "fw-wordFrequencies",
           "name": "Word Frequencies",
           "icon": "$(eye)",
@@ -325,6 +332,12 @@
           "scope": "application",
           "default": true,
           "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
+        },
+        "markdown-fiction-writer.export.showsErrorInOutputFile": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "description": "Shows errors in compiled document."
         },
         "markdown-fiction-writer.export.outputFormat.default": {
           "type": "string",

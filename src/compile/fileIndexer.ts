@@ -1,14 +1,13 @@
-import { glob } from "glob";
+import * as glob from 'glob';
 import * as path from 'path';
 import { extractMetadata, IFileInfo, KnownMeta } from "../metadata";
-import { IDisposable, InMemoryCache } from "../utils";
+import { IDisposable, InMemoryCache, Observable } from "../utils";
 
-export class FileIndexer implements IDisposable {
+export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable {
   private fileInfos: InMemoryCache<IFileInfo>;
-  private fileIds: InMemoryCache<string>;
 
   constructor() {
-    this.fileIds = new InMemoryCache<string>();
+    super();
     this.fileInfos = new InMemoryCache<IFileInfo>();
   }
 
@@ -19,7 +18,8 @@ export class FileIndexer implements IDisposable {
     return new Promise((resolve, reject) => {
       try {
         const matches = glob.sync(p, { nodir: true });
-        matches.forEach(match => this.index(match));
+        matches.forEach(match => this.index(match, false)); // do not want to notify for each file,
+        this.notify();                                      // but only when parsing has finished
         resolve(this.paths());
       } catch (error) {
         reject(error);
@@ -27,54 +27,92 @@ export class FileIndexer implements IDisposable {
     });
   }
 
-  public index(path?: string) : IFileInfo | undefined {
-    if (!path || path === '') return;
+  public removeLocation(baseDir: string, pattern: string): Promise<string[]> {
+    if (!baseDir || !pattern) return Promise.reject('error');
+
+    const p = path.join(baseDir, pattern);
+    return new Promise((resolve, reject) => {
+      try {
+        const matches = glob.sync(p, { nodir: true });
+        matches.forEach(match => this.delete(match, false)); // do not want to notify for each file,
+        this.notify();                                 // but only when parsing has finished
+        resolve(this.paths());
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  public index(filePath?: string, notifyChange: boolean = true): IFileInfo | undefined {
+    if (!filePath || filePath === '') return;
+    filePath = path.normalize(filePath);
     let fileInfo: IFileInfo = {
-      path: path,
+      path: filePath,
     };
 
     try {
-      const meta = extractMetadata(path) as any;
-      if (meta?.id) {
-        this.fileIds.set(meta.id, path);
-      }
+      const meta = extractMetadata(filePath) as any;
       fileInfo.id = meta?.id;
       fileInfo.metadata = meta;
     } catch (err) {
-      console.error(`Could not read [${path}]: ${err}`);
+      console.error(`Could not read [${filePath}]: ${err}`);
     } finally {
-      this.fileInfos.set(path, fileInfo);
+      this.fileInfos.set(filePath, fileInfo);
+      if (notifyChange) this.notify();
     }
     return fileInfo;
   }
-  public getById(id: string): IFileInfo | null | undefined {
-    const path = this.fileIds.get(id);
+  public getById(id: string): IFileInfo[] {
+    const result:IFileInfo[] = [];
 
-    return path
-      ? this.fileInfos.get(path)
-      : undefined;
+    this.fileInfos
+      .getSnapshot()
+      .forEach(f => {
+        if (f && f[1] && f[1].id === id){
+          result.push(f[1]);
+        }
+      });
+
+      return result;
   }
 
-  public getByPath(path: string): IFileInfo | null | undefined { return this.fileInfos.get(path); }
+  public getByPath(filePath: string): IFileInfo | null | undefined { 
+    if (!filePath || filePath === '') return;
+    filePath = path.normalize(filePath);
 
-  public delete(path: string) {
-    const file = this.fileInfos.get(path);
-    if (file) {
+    return this.fileInfos.get(filePath);
+   }
 
-      if (file.id) this.fileIds.remove(file.id);
+  public delete(filePath: string, notify: boolean = true) {
+    if (!filePath || filePath === '') return;
+    filePath = path.normalize(filePath);
 
-      this.fileInfos.remove(path);
-    }
+    this.fileInfos.remove(filePath);
+
+    if (notify) this.notify();
   }
 
   public paths(): string[] { return this.fileInfos.getAllKeys(); }
 
-  public ids(): string[] { return this.fileIds.getAllKeys(); }
-
   public clear() {
-    this.fileIds.clear();
     this.fileInfos.clear();
   }
 
-  dispose() { this.clear(); }
+  dispose() {
+    super.dispose();
+    this.clear();
+  }
+
+  getState(): IFileInfo[] {
+    const allInfo = this.fileInfos.getSnapshot();
+    if (allInfo) {
+      return allInfo.map(s => {
+        if (s[1]) return s[1];
+        return {
+          path: s[0]
+        };
+      });
+    }
+    return [];
+  }
 }
