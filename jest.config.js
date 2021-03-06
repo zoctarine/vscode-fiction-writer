@@ -4,10 +4,10 @@ module.exports = {
   automock: false,
   clearMocks: true,
   preset: "ts-jest",
+  verbose: false,
   testPathIgnorePatterns: ["/node_modules/", "/out/", "/integration/"],
   globals: {
-    "ts-jest": {
-      tsconfig: "tsconfig.json"
-    }
-  }
+    preset: 'ts-jest'
+  },
+  setupFilesAfterEnv: ['./jest.setup.js']
 };

@@ -1,4 +1,3 @@
-import * as assert from 'assert';
 import { extract, parse } from '../../../metadata';
 
 jest.mock('vscode');
@@ -11,7 +10,7 @@ function asName(text?: string): string {
 
 describe('Markdown Metadata Tests', function () {
 
-  describe('#extract()', function () {
+  describe('extract()', function () {
 
     describe('should return metadata if block is starting with --- and ending with --- or ..., like:', function () {
       [
@@ -23,7 +22,7 @@ describe('Markdown Metadata Tests', function () {
       ]
         .forEach(([value, expected]) => {
           it(asName(value), () => {
-            assert.strictEqual(extract(value), expected);
+            expect(extract(value)).toBe(expected);
           });
         });
     });
@@ -52,13 +51,13 @@ describe('Markdown Metadata Tests', function () {
       ]
         .forEach(function (text) {
           it(asName(text), function () {
-            assert.strictEqual(extract(text), '');
+            expect(extract(text)).toBe('');
           });
         });
     });
   });
 
-  describe('#parse()', function () {
+  describe('parse()', function () {
 
     describe('should return object with valid yaml block', () => {
       [
@@ -95,7 +94,7 @@ describe('Markdown Metadata Tests', function () {
         }
       ].forEach(testValue => {
         it(asName(testValue.text), () => {
-          assert.deepStrictEqual(parse(testValue.text), testValue.expected);
+          expect(parse(testValue.text)).toStrictEqual(testValue.expected);
         });
       });
     });
@@ -108,7 +107,7 @@ describe('Markdown Metadata Tests', function () {
         'unformated: yaml: block\ntitle: test'
       ].forEach(value => {
         it(value, () => {
-          assert.strictEqual(parse(''), undefined);
+          expect(parse('')).toBeUndefined();
         });
       });
     });

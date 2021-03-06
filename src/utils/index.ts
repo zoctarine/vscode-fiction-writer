@@ -4,6 +4,8 @@ export * from './constants';
 export * from './disposables';
 export * as StringUtils from './strings';
 export * from './observables';
+export * from './inMemoryCache';
+
 /**
  * Checks that the editor is valid editor for this extension
  * @param editor Usually the active text editor
@@ -25,7 +27,7 @@ export function isInActiveEditor(uri: Uri | undefined): boolean {
   return uri && editor.document.uri.fsPath === uri.fsPath;
 }
 
-export function isSupportedPathAsync(uri: Uri | undefined): boolean {
+export function isSupportedPath(uri: Uri | undefined): boolean {
   if (!uri) return false;
 
   return uri.fsPath.endsWith('.md');

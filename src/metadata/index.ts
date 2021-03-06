@@ -1,4 +1,5 @@
 import * as yaml from 'js-yaml';
+import * as fs from 'fs';
 export * from './metadataFileCache';
 export * from './metadataTreeDataProvider';
 export * from './metadataDecorationProvider';
@@ -22,6 +23,7 @@ export function parse(yamlText: string | undefined) {
 }
 
 export interface KnownMeta {
+  id: string | undefined,
   description: string[] | string | undefined,
   summary: string[] | string | undefined,
   tag: string[] | string | undefined,
@@ -32,15 +34,18 @@ export interface KnownMeta {
  * Extracts metadata object from a document
  * @param text the text from which to extract metadata from
  */
-export function extractMetadata(text: string): string | object | number | undefined | null {
+export function extractMetadata(filePath: string): string | object | number | undefined | null {
   try {
-    const metadataBlock = extract(text);
-    let value = parse(metadataBlock);
-    if (value === null || value === undefined) return undefined;
-
-    return  value;
+    if (fs.existsSync(filePath)) {
+      const text = fs.readFileSync(filePath, 'utf8');
+      const metadataBlock = extract(text);
+      let value = parse(metadataBlock);
+      if (value === null || value === undefined) return undefined;
+      return value;
+     }
   } catch {
-      return undefined;
+    //TODO Log some error
   }
+  return  undefined;
 }
 
