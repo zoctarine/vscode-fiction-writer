@@ -1,18 +1,21 @@
 import * as vscode from 'vscode';
-import { ConfigService, Config, ContextService } from './config';
-import { CompileAllCommand, CompileFileCommand, CompileTocCommand } from './compile';
-import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPathAsync } from './utils';
-import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import * as path from 'path';
+
+import { ConfigService, Config, ContextService } from './config';
+import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
+import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
+import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedPath } from './utils';
+import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
+
 let currentConfig: Config;
 
 export function activate(context: vscode.ExtensionContext) {
+  const fileIndexer = new FileIndexer();
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
-  const cache = new MetadataFileCache(configService);
+  const cache = new MetadataFileCache(fileIndexer, configService);
 
   currentConfig = configService.getState();
 
@@ -35,6 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
 
+
   // TODO: disable this if metadata disabled
   const watcher = vscode.workspace.createFileSystemWatcher('**/*.md', false, false, false);
   const cmd = Constants.Commands;
@@ -46,6 +50,8 @@ export function activate(context: vscode.ExtensionContext) {
     metadataTree,
     metadataDecoration,
     statusBar,
+    fileIndexer,
+
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
     new CustomFormattingProvider(configService),
@@ -87,26 +93,44 @@ export function activate(context: vscode.ExtensionContext) {
     }),
 
     vscode.workspace.onDidSaveTextDocument(async (e) => {
+      if (!e?.uri) return;
+      if (!isSupportedPath(e.uri)) return;
+
+      fileIndexer.index(e.uri.fsPath);
+
       if (isInActiveEditor(e?.uri)) {
         docStatisticProvider.refresh();
       }
     }),
 
+    watcher.onDidCreate(e => {
+      if (!e) return;
+      if (!isSupportedPath(e)) return;
+
+      fileIndexer.index(e.fsPath);
+    }),
+
+    watcher.onDidDelete(e => {
+      if (!e) return;
+      if (!isSupportedPath(e)) return;
+
+      fileIndexer.delete(e.fsPath);
+    }),
+
+
     watcher.onDidChange(async e => {
-      if (await isSupportedPathAsync(e)) {
-        cache
-          .refresh(e)
-          .then(() => {
-            if (isInActiveEditor(e)) {
-              metadataProvider.refresh();
-            }
-            metadataDecoration.fire([e]);
-          });
+      if (!isSupportedPath(e)) return;
+
+      fileIndexer.index(e.fsPath);
+      if (isInActiveEditor(e)) {
+        metadataProvider.refresh();
       }
+      metadataDecoration.fire([e]);
     })
   );
 
   updateIsSupportedEditor(vscode.window.activeTextEditor);
+  fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
   metadataProvider.refresh();
   docStatisticProvider.refresh();
   showAgreeWithChanges(configService);
@@ -257,7 +281,7 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
 
     if (option === 'OK, Continue') {
       configService.setFlag('isAgreeTypewriterMode');
-    } else if (option === 'ReadMore'){
+    } else if (option === 'ReadMore') {
       vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
     } else {
       return;
