@@ -7,6 +7,7 @@ import { IObservable } from '../utils';
 import { FileIndexer } from '.';
 
 
+
 export class CompileTocCommand extends CompileFileCommand {
 
   constructor(config: IObservable<Config>, indexer: FileIndexer) {

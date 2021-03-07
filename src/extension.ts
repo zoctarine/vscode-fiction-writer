@@ -148,6 +148,7 @@ export function activate(context: vscode.ExtensionContext) {
       if (!vscode.workspace.getWorkspaceFolder(e.uri)){
         fileIndexer.delete(e.uri.fsPath);
       }
+      metadataDecoration.fire([e.uri]);
     })
   );
 
