@@ -1,6 +1,6 @@
 All notable changes to this project will be documented in this file.
 
-## 0.0.40 - alpha40
+## 0.0.42 - alpha42
 
 **Added**
 
@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
     - `markdown-fiction-writer.export.include.enabled`
     - `markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces`
     - `markdown-fiction-writer.export.include.showsErrorInOutputFile`
+
+### Fixed
+
+- Fix some typos in documentation
+- Fix some configuration key descriptions
+- Fix `debug` flag that was showing file cache debug view
 
 ## 0.0.35 - alpha30
 
