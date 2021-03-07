@@ -6,7 +6,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.35",
+  "version": "0.0.42",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -34,7 +34,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "contributes": {
     "colors": [
       {
@@ -819,7 +819,11 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+
+    "vscode:prepublish": "webpack --mode production",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "test-compile": "tsc -p ./",
     "run": "\"d:\\Microsoft VS Code\\Code.exe\" --extensionDevelopmentPath=\"e:\\Stuff\\fiction-writer\\vscode-fiction-writer\"",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
@@ -845,9 +849,12 @@
     "jest": "^26.6.3",
     "mocha": "^8.1.3",
     "ts-jest": "^26.5.2",
+    "ts-loader": "^8.0.17",
     "typescript": "^4.1.2",
     "vsce": "^1.85.0",
-    "vscode-test": "^1.4.1"
+    "vscode-test": "^1.4.1",
+    "webpack": "^5.24.3",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
     "js-yaml": "^4.0.0",
