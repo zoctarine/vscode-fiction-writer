@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#0030-alpha30" class="md-skip">
+        <a href="#0040-alpha40" class="md-skip">
           Skip to content
         </a>
       
@@ -456,8 +456,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#0030-alpha30" class="md-nav__link">
-    0.0.30 - alpha30
+  <a href="#0040-alpha40" class="md-nav__link">
+    0.0.40 - alpha40
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0035-alpha30" class="md-nav__link">
+    0.0.35 - alpha30
   </a>
   
 </li>
@@ -589,8 +596,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#0030-alpha30" class="md-nav__link">
-    0.0.30 - alpha30
+  <a href="#0040-alpha40" class="md-nav__link">
+    0.0.40 - alpha40
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0035-alpha30" class="md-nav__link">
+    0.0.35 - alpha30
   </a>
   
 </li>
@@ -674,13 +688,30 @@
                   <h1>Changelog</h1>
                 
                 <p>All notable changes to this project will be documented in this file.</p>
-<h4 id="0030-alpha30">0.0.30 - alpha30<a class="headerlink" href="#0030-alpha30" title="Permanent link">&para;</a></h4>
+<h4 id="0040-alpha40">0.0.40 - alpha40<a class="headerlink" href="#0040-alpha40" title="Permanent link">&para;</a></h4>
+<p><strong>Added</strong></p>
+<ul>
+<li>Metadata: <a href="../metadata/#known-metadata">recognize the <code>id</code> top level metadata field</a></li>
+<li>Export: <a href="../export/#including-other-documents">possibility to disable <em>include files</em> syntax</a></li>
+<li>Export: <a href="../export/#include-errors">possibility to add <em>include file</em> errors in the exported document</a></li>
+<li>Export: files can be included either by <a href="../export/#include-by-aboslute-or-relative-path">filename</a>, or by <a href="../export/#include-by-metadata-id"><code>metadata.id</code></a> value</li>
+<li>Export: <a href="../export/#resolve-document-id">can  now search for included files in all opened documents/workspaces</a></li>
+<li>
+<p><strong>Settings</strong>:</p>
+<ul>
+<li><code>markdown-fiction-writer.export.include.enabled</code></li>
+<li><code>markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces</code></li>
+<li><code>markdown-fiction-writer.export.include.showsErrorInOutputFile</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="0035-alpha30">0.0.35 - alpha30<a class="headerlink" href="#0035-alpha30" title="Permanent link">&para;</a></h4>
 <p><strong>Added</strong></p>
 <ul>
 <li>Metadata: now supports yaml markdown metadata support</li>
 <li>Metadata: new metadata tree view under explorer</li>
 <li>Metadata: file colors, badges are resolved using keywords</li>
-<li>Metadata: easy array parsing (add arrays without <code>[]</code>)</li>
+<li>Metadata: easy array parsing (add arrays without <code>[]</code>) for known categories</li>
 <li>
 <p><strong>Settings</strong>:</p>
 <ul>

@@ -344,6 +344,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#known-metadata" class="md-nav__link">
+    Known Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-metadata-view" class="md-nav__link">
     The Metadata View
   </a>
@@ -609,6 +616,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#known-metadata" class="md-nav__link">
+    Known Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-metadata-view" class="md-nav__link">
     The Metadata View
   </a>
@@ -740,6 +754,20 @@
 <span class="nt">tags</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">red</span><span class="p p-Indicator">,</span> <span class="nv">green</span><span class="p p-Indicator">,</span> <span class="nv">blue</span><span class="p p-Indicator">]</span>
 <span class="nn">---</span>
 </code></pre></div></li>
+</ul>
+<h3 id="known-metadata">Known Metadata<a class="headerlink" href="#known-metadata" title="Permanent link">&para;</a></h3>
+<p>You can add any metadata category or keyword, but some categories are recognized (and used) by <strong>Fiction Writer</strong>:</p>
+<ul>
+<li>
+<p><code>id</code> category: used to uniquely identify a file during <a href="../export/#include-by-metadata-id">include/export process</a>. You can either specify a file by path/filename or by this metadata <code>id</code> property.</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myFile</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">My file contents...</span>
+</code></pre></div>
+<p>More information <a href="../export/#include-by-metadata-id">here</a>.</p>
+</li>
 </ul>
 <h3 id="the-metadata-view">The Metadata View<a class="headerlink" href="#the-metadata-view" title="Permanent link">&para;</a></h3>
 <p>For all known documents (in this case, markdown) that contain <code>yaml</code> metadata, the <strong>Metadata View</strong> will be enabled in the <strong>Explorer</strong>.</p>

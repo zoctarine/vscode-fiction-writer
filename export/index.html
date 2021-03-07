@@ -336,6 +336,47 @@
     Including other documents
   </a>
   
+    <nav class="md-nav" aria-label="Including other documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-by-aboslute-or-relative-path" class="md-nav__link">
+    Include by aboslute or relative path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-by-metadata-id" class="md-nav__link">
+    Include by metadata id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolve-document-id" class="md-nav__link">
+    Resolve document id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-errors" class="md-nav__link">
+    Include errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-toc-document" class="md-nav__link">
+    The toc document
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -592,6 +633,47 @@
     Including other documents
   </a>
   
+    <nav class="md-nav" aria-label="Including other documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-by-aboslute-or-relative-path" class="md-nav__link">
+    Include by aboslute or relative path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-by-metadata-id" class="md-nav__link">
+    Include by metadata id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolve-document-id" class="md-nav__link">
+    Resolve document id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-errors" class="md-nav__link">
+    Include errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-toc-document" class="md-nav__link">
+    The toc document
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -735,17 +817,77 @@ warranty, not even for merchantability or fitness for a particular purpose.
 </li>
 </ul>
 <h3 id="including-other-documents">Including other documents<a class="headerlink" href="#including-other-documents" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Export &gt; Include: Enabled</summary><ul>
+<li>Key: <code>markdown-fiction-writer.export.include.enabled</code></li>
+<li>Enables the include file functionality</li>
+<li>Default: <code>enabled</code></li>
+</ul>
+</details>
 <p>This extension adds support for combining multiple markdown documents into one.</p>
-<p>You can use the following syntax</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">your_file.md</span><span class="p p-Indicator">}</span>
+<p>You can use the following syntax <code>{file_to_include.md}</code> the the contents of <code>file_to_include.md</code> will be added in the exported document.</p>
+<p>Specifying included files can be done in multiple ways.</p>
+<h4 id="include-by-aboslute-or-relative-path">Include by aboslute or relative path<a class="headerlink" href="#include-by-aboslute-or-relative-path" title="Permanent link">&para;</a></h4>
+<p>A valid path to the file:</p>
+<ul>
+<li>
+<p>like a relative path</p>
+<p><div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">my_file.md</span><span class="p p-Indicator">}</span>
 </code></pre></div>
-<p>from the markdown document you want to export, and this extension will include the contents of <code>your_file.md</code> in the exported document.</p>
+or
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">relative/path/to/my_file.md</span><span class="p p-Indicator">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>or an absolute path</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">c</span><span class="p p-Indicator">:</span><span class="nv">\MyBook\Chapter1\my_file.md</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+</li>
+</ul>
+<h4 id="include-by-metadata-id">Include by metadata <code>id</code><a class="headerlink" href="#include-by-metadata-id" title="Permanent link">&para;</a></h4>
+<div class="admonition info">
+<p class="admonition-title">This is the recommended way to include files, as it does not depend on the filename</p>
+</div>
+<p>If the document has a metadata block with <code>id</code> top level field, this can be used in the include file syntax <code>{}</code></p>
+<p>For example, if <code>my_file.md</code> has the following contents:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prologue</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">Prologue begins here...</span>
+</code></pre></div>
+<p>You can include it in another file like this:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Prologue</span>
+
+<span class="p p-Indicator">{</span><span class="nv">prologue</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<h4 id="resolve-document-id">Resolve document <code>id</code><a class="headerlink" href="#resolve-document-id" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Export &gt; Include: Search Document Ids in All Opened Files And Workspaces</summary><ul>
+<li>Key: <code>markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces</code></li>
+<li>Default: <code>disabled</code></li>
+</ul>
+</details>
+<p>if you opt to include a file by <code>id</code>, and not by relative or absolute path, you have the option to search for that <code>id</code> only in the document workspace folder, or in all opened documents or worskpaces in Visual Studio Code.</p>
+<p>By default, this option is <code>disabled</code></p>
+<h4 id="include-errors">Include errors<a class="headerlink" href="#include-errors" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Export &gt; Include: Show Errors in Output File</summary><ul>
+<li>Key: <code>markdown-fiction-writer.export.include.showsErrorInOutputFile</code></li>
+<li>Adds errors to the compiled document.</li>
+<li>Default: <code>enabled</code></li>
+</ul>
+</details>
+<p>If, during the export process, some errors occured, they will be shown in a warning message before the actual export takes place.</p>
+<p><img alt="Error01" src="../img/export_errors_01.jpg" /></p>
+<p>You can choose to continue (with errors) or cancel the operation.</p>
+<p>By default, include errors are visible in the exported document in <strong>Error</strong> paragraphs, like this:</p>
+<p><img alt="Error02" src="../img/export_errors_02.jpg" /></p>
+<p>Disable this option if you want to never see errors in exported document.</p>
+<h4 id="the-toc-document">The <code>toc</code> document<a class="headerlink" href="#the-toc-document" title="Permanent link">&para;</a></h4>
 <p>A common practice is to have just one TOC document, where you include all other documents.</p>
 <p>A simple <code>toc.md</code> document can look like this:</p>
-<p><div class="highlight"><pre><span></span><code><span class="o">{</span>chapter01.md<span class="o">}</span>
-<span class="o">{</span>chapter02.md<span class="o">}</span>
-<span class="o">{</span>chapter03.md<span class="o">}</span>
-<span class="o">{</span>chapter04.md<span class="o">}</span>
+<p><div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">chapter01.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter02.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter03.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter04.md</span><span class="p p-Indicator">}</span>
 </code></pre></div>
 This will include all 4 referenced files.</p>
 <p>Of course a TOC document can contain any additional markdown syntax:</p>
@@ -767,8 +909,7 @@ Some opening words
 
 This is the end.
 </code></pre></div>
-<p>If <code>{chapter01.md}</code> does not exist, you will get a warning message, but the exporting will still continue with the other documents.</p>
-<p>The path to included file needs to be relative to the document they are reference from.</p>
+<p>If <code>{chapter01.md}</code> does not exist, you will get a warning message, but the exporting can still continue with the other documents.</p>
 <p>For example, the <code>toc.md</code> from the following directory:
 <div class="highlight"><pre><span></span><code>.
 ├─ toc.md
