@@ -5,12 +5,12 @@ import { exec, execSync } from 'child_process';
 import { Config } from '../config';
 import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx } from '../utils';
 import { TextEditor } from 'vscode';
-import {FileIndexer} from './fileIndexer';
+import { FileIndexer } from './fileIndexer';
 
 export class CompileFileCommand extends Observer<Config> {
   protected item: StatusBarItem;
 
-  constructor(config: IObservable<Config>) {
+  constructor(config: IObservable<Config>, protected fileIndex: FileIndexer) {
     super(config);
 
     this.item = window.createStatusBarItem(StatusBarAlignment.Left, 0);
@@ -78,7 +78,13 @@ export class CompileFileCommand extends Observer<Config> {
 
       if (compiled.success) { this.load(compiled.text, compiled.includePath, buffer, [], errors); }
 
-      if (errors.length > 0) { window.showErrorMessage(errors.join('; ')); }
+      if (errors.length > 0) {
+        const result = await window.showErrorMessage(
+          'Generating output files encountered some errors: ' + errors.join('; '),
+          'Continue with Errors',
+          'Cancel');
+        if (result === 'Cancel') return;
+      }
 
       if (buffer.length === 0) { return; }
 
@@ -162,27 +168,58 @@ export class CompileFileCommand extends Observer<Config> {
 
   private load(text: string, rootPath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>): boolean {
     if (!buffer) { buffer = []; }
-
     const lines = text.split(/\n/);
     let insideMeta = false;
     for (let line of lines) {
+      const lastErrorCount = errors.length;
+
       let trimmedLine = line.trim();
 
       if (trimmedLine.startsWith('//') && this.state.compileSkipCommentsFromToc) {
         // comment skipped
       } else {
         let includedFiles = trimmedLine.match(RegEx.MARKDOWN_INCLUDE_FILE);
-        if (!insideMeta && includedFiles && includedFiles.length > 0) {
+        if (this.state.compileIncludeIsEnabled && !insideMeta && includedFiles && includedFiles.length > 0) {
           includedFiles.forEach(match => {
             match = match.replace(RegEx.MARKDOWN_INCLUDE_FILE_BOUNDARIES, '').trim();
-            let includedPath = path.isAbsolute(match)
-              ? match
+            let includedPath = match;
+
+            try {
+              let paths = this.fileIndex.getById(match);
+              if (!this.state.compileSearchDocumentIdsInAllOpened) {
+                const fileWorkspace = workspace.getWorkspaceFolder(Uri.file(rootPath))?.uri.fsPath;
+                if (fileWorkspace) {
+                  paths = paths.filter(p => p?.path.startsWith(fileWorkspace));
+                }
+              }
+              if (paths && paths.length > 0) {
+                includedPath = paths[0].path;
+                if (paths.length > 1) {
+                  errors.push(`Multiple files having id: '${match}'. None included. Conflicts: ${paths.map(p => p.path).join('; ')}`);
+                  return;
+                }
+              }
+            } catch {
+              // log error
+            }
+
+            includedPath = path.isAbsolute(includedPath)
+              ? includedPath
               : path.join(rootPath, match);
             this.loadFile(includedPath, buffer, opened, errors);
           });
         } else {
           buffer.push(line);
         }
+      }
+
+      const newErrorCount = errors.length;
+      const errorDelta = newErrorCount - lastErrorCount;
+      if (errorDelta > 0 && this.state.compileShowsErrorInOutputFile) {
+        buffer.push('**ERRORS**:\n');
+        buffer.push('- `' + line + '`\n');
+        errors.slice(lastErrorCount).forEach(e => buffer.push('- `' + e + '`\n'));
+        buffer.push('\n');
       }
     }
 
@@ -199,6 +236,7 @@ export class CompileFileCommand extends Observer<Config> {
         opened.push(filePath);
         const docPath = path.parse(filePath);
         const text = fs.readFileSync(filePath, 'UTF-8');
+        buffer.push('');  // add empty line before include
         this.load(text, docPath.dir, buffer, opened, errors);
       } else {
         errors.push(`Could not export file: ${filePath}. File is missing.`);

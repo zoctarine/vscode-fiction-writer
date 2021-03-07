@@ -1,11 +1,12 @@
-import { WithDisposables } from './disposables';
+import { IDisposable, WithDisposables } from './disposables';
 
 export interface IObserver<T extends object> {
 	// Receive update from observable.
-	update(observable: IObservable<T>): void;
+	update(): void;
 }
 
 export interface IObservable<T extends object> {
+
   // Attach an observer to the subject.
   attach(observer: IObserver<T>): void;
 
@@ -42,17 +43,18 @@ export abstract class Observer<T extends {}>  extends WithDisposables  implement
 }
 
 
-export abstract class Observable<T extends object> implements IObservable<T>{
-
-  private observers: Array<Observer<T>> = [];
-
-  attach(observer: Observer<T>) {
+export abstract class Observable<T extends object> implements IObservable<T>, IDisposable{
+  private observers: Array<IObserver<T>> = [];
+  
+  abstract getState(): T;
+  
+  attach(observer: IObserver<T>) {
       if (!this.observers.includes(observer)) {
           this.observers.push(observer);
       }
   }
 
-  detach(observer: Observer<T>){
+  detach(observer: IObserver<T>){
       const observerIndex = this.observers.indexOf(observer);
       if (observerIndex !== -1) {
           this.observers.splice(observerIndex, 1);
@@ -63,5 +65,8 @@ export abstract class Observable<T extends object> implements IObservable<T>{
       this.observers.forEach(o => o.update());
   }
 
-  abstract getState(): T;
+
+  dispose() {
+    this.observers = [];
+  }
 }
