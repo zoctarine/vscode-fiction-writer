@@ -57,7 +57,10 @@ export class ConfigService extends Observable<Config> {
       compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)  === Constants.Compile.SaveDialogue.ALWAYS,
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
-
+      compileShowsErrorInOutputFile:  this.read<boolean>(exporting, 'include.showsErrorInOutputFile', true),
+      compileIncludeIsEnabled:  this.read<boolean>(exporting, 'include.enabled', true),
+      compileSearchDocumentIdsInAllOpened:  this.read<boolean>(exporting, 'include.searchDocumentIdsInAllOpenFilesAndWorkspaces', false),
+      
       // FORMATTING
 
       formattingIsEnabled: this.read<boolean>(formatting, 'enabled', true),
@@ -84,7 +87,8 @@ export class ConfigService extends Observable<Config> {
       isDialogueEnabled: isDialogueEnabled,
       dialgoueIndent: '',
 
-      // Metadata
+      // METADATA
+      
       metaKeywordColors: new Map<string, ThemeColor>(),
       metaKeywordShowInFileExplorer: this.read<boolean>(metadata, 'keywords.colorsInFileExplorer', true),
       metaKeywordShowInMetadataView: this.read<boolean>(metadata, 'keywords.colorsInMetadataView', true),
