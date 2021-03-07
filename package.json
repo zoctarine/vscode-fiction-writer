@@ -339,6 +339,12 @@
           "default": true,
           "description": "Shows errors in compiled document."
         },
+        "markdown-fiction-writer.export.searchDocumentIdsInAllOpenFilesAndWorkspaces": {
+          "type": "boolean",
+          "scope": "application",
+          "default": false,
+          "markdownDescription": "When including files, search `{DOCUMENT_ID}` in all opened files and workspace folders. If `disabled`, it only searches in the workspace folder that the document belongs to."
+        },
         "markdown-fiction-writer.export.outputFormat.default": {
           "type": "string",
           "scope": "application",
