@@ -28,7 +28,7 @@ export class CompileFileCommand extends Observer<Config> {
     this.item.show();
     await this.convertAndOpen(editor, [editor.document.fileName], undefined, format);
   }
-  
+
   protected makeToc(inputs: Array<string>, errors: Array<string>)
     : { includePath: string, text: string, success: boolean } {
     try {
@@ -62,13 +62,13 @@ export class CompileFileCommand extends Observer<Config> {
 
       if (compiled.success) { this.load(compiled.text, compiled.includePath, buffer, [], errors); }
 
-      if (errors.length > 0) { 
+      if (errors.length > 0) {
         const result = await window.showErrorMessage(
-          'Generating output files encountered some errors: ' + errors.join('; '), 
-          'Continue with Errors', 
+          'Generating output files encountered some errors: ' + errors.join('; '),
+          'Continue with Errors',
           'Cancel');
         if (result === 'Cancel') return;
-       }
+      }
 
       if (buffer.length === 0) { return; }
 
@@ -167,12 +167,18 @@ export class CompileFileCommand extends Observer<Config> {
           includedFiles.forEach(match => {
             match = match.replace(RegEx.MARKDOWN_INCLUDE_FILE_BOUNDARIES, '').trim();
             let includedPath = match;
-            
+
             try {
-              const paths = this.fileIndex.getById(match);
-              if (paths && paths.length > 0){
+              let paths = this.fileIndex.getById(match);
+              if (!this.state.compileSearchDocumentIdsInAllOpened) {
+                const fileWorkspace = workspace.getWorkspaceFolder(Uri.file(rootPath))?.uri.fsPath;
+                if (fileWorkspace) {
+                  paths = paths.filter(p => p?.path.startsWith(fileWorkspace));
+                }
+              }
+              if (paths && paths.length > 0) {
                 includedPath = paths[0].path;
-                if (paths.length > 1){
+                if (paths.length > 1) {
                   errors.push(`Multiple files having id: '${match}'. None included. Conflicts: ${paths.map(p => p.path).join('; ')}`);
                   return;
                 }
@@ -193,7 +199,7 @@ export class CompileFileCommand extends Observer<Config> {
 
       const newErrorCount = errors.length;
       const errorDelta = newErrorCount - lastErrorCount;
-      if (errorDelta > 0 && this.state.compileShowsErrorInOutputFile){
+      if (errorDelta > 0 && this.state.compileShowsErrorInOutputFile) {
         buffer.push('**ERRORS**:\n');
         buffer.push('- `' + line + '`\n');
         errors.slice(lastErrorCount).forEach(e => buffer.push('- `' + e + '`\n'));
@@ -214,6 +220,7 @@ export class CompileFileCommand extends Observer<Config> {
         opened.push(filePath);
         const docPath = path.parse(filePath);
         const text = fs.readFileSync(filePath, 'UTF-8');
+        buffer.push('');  // add empty line before include
         this.load(text, docPath.dir, buffer, opened, errors);
       } else {
         errors.push(`Could not export file: ${filePath}. File is missing.`);

@@ -58,7 +58,8 @@ export class ConfigService extends Observable<Config> {
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
       compileShowsErrorInOutputFile:  this.read<boolean>(exporting, 'showsErrorInOutputFile', true),
-
+      compileSearchDocumentIdsInAllOpened:  this.read<boolean>(exporting, 'searchDocumentIdsInAllOpenFilesAndWorkspaces', false),
+      
       // FORMATTING
 
       formattingIsEnabled: this.read<boolean>(formatting, 'enabled', true),
