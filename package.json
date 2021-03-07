@@ -333,13 +333,19 @@
           "default": true,
           "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
         },
-        "markdown-fiction-writer.export.showsErrorInOutputFile": {
+        "markdown-fiction-writer.export.include.showsErrorInOutputFile": {
           "type": "boolean",
           "scope": "application",
           "default": true,
           "description": "Shows errors in compiled document."
         },
-        "markdown-fiction-writer.export.searchDocumentIdsInAllOpenFilesAndWorkspaces": {
+        "markdown-fiction-writer.export.include.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "If `enabled`, the `{DOCUMENT_ID}` or `{document/file/path/filename.md}` syntax can be used to include on `.md` file into another file"
+        },
+        "markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces": {
           "type": "boolean",
           "scope": "application",
           "default": false,

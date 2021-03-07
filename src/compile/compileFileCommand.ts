@@ -163,7 +163,7 @@ export class CompileFileCommand extends Observer<Config> {
         // comment skipped
       } else {
         let includedFiles = trimmedLine.match(RegEx.MARKDOWN_INCLUDE_FILE);
-        if (!insideMeta && includedFiles && includedFiles.length > 0) {
+        if (this.state.compileIncludeIsEnabled && !insideMeta && includedFiles && includedFiles.length > 0) {
           includedFiles.forEach(match => {
             match = match.replace(RegEx.MARKDOWN_INCLUDE_FILE_BOUNDARIES, '').trim();
             let includedPath = match;

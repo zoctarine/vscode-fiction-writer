@@ -57,8 +57,9 @@ export class ConfigService extends Observable<Config> {
       compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)  === Constants.Compile.SaveDialogue.ALWAYS,
       compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
       compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
-      compileShowsErrorInOutputFile:  this.read<boolean>(exporting, 'showsErrorInOutputFile', true),
-      compileSearchDocumentIdsInAllOpened:  this.read<boolean>(exporting, 'searchDocumentIdsInAllOpenFilesAndWorkspaces', false),
+      compileShowsErrorInOutputFile:  this.read<boolean>(exporting, 'include.showsErrorInOutputFile', true),
+      compileIncludeIsEnabled:  this.read<boolean>(exporting, 'include.enabled', true),
+      compileSearchDocumentIdsInAllOpened:  this.read<boolean>(exporting, 'include.searchDocumentIdsInAllOpenFilesAndWorkspaces', false),
       
       // FORMATTING
 
