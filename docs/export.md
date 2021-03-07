@@ -83,21 +83,99 @@ Read more about the following extensions here: [Non Pandc Extensions](https://pa
 
 # Including other documents
 
+??? setting "Export > Include: Enabled"
+    - Key: `markdown-fiction-writer.export.include.enabled`
+    - Enables the include file functionality
+    - Default: `enabled`
+
 This extension adds support for combining multiple markdown documents into one.
 
-You can use the following syntax
+You can use the following syntax `{file_to_include.md}` the the contents of `file_to_include.md` will be added in the exported document.
+
+Specifying included files can be done in multiple ways.
+
+## Include by aboslute or relative path
+
+A valid path to the file:
+
+- like a relative path
+
+    ```yaml
+    {my_file.md}
+    ```
+    or
+    ```yaml
+    {relative/path/to/my_file.md}
+    ```
+
+- or an absolute path
+
+    ```yaml
+    {c:\MyBook\Chapter1\my_file.md}
+    ```
+
+## Include by metadata `id`
+
+!!! info "This is the recommended way to include files, as it does not depend on the filename"
+
+If the document has a metadata block with `id` top level field, this can be used in the include file syntax `{}`
+
+For example, if `my_file.md` has the following contents:
 
 ```yaml
-{your_file.md}
-``` 
+---
+id: prologue
+---
 
-from the markdown document you want to export, and this extension will include the contents of `your_file.md` in the exported document.
+Prologue begins here...
+```
+
+You can include it in another file like this:
+
+```yaml
+# Prologue
+
+{prologue}
+```
+
+
+## Resolve document `id`
+
+??? setting "Export > Include: Search Document Ids in All Opened Files And Workspaces"
+    - Key: `markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces`
+    - Default: `disabled`
+
+if you opt to include a file by `id`, and not by relative or absolute path, you have the option to search for that `id` only in the document workspace folder, or in all opened documents or worskpaces in Visual Studio Code.
+
+By default, this option is `disabled`
+
+
+## Include errors
+
+??? setting "Export > Include: Show Errors in Output File"
+    - Key: `markdown-fiction-writer.export.include.showsErrorInOutputFile`
+    - Adds errors to the compiled document.
+    - Default: `enabled`
+
+If, during the export process, some errors occured, they will be shown in a warning message before the actual export takes place.
+
+![Error01](img/export_errors_01.jpg)
+
+You can choose to continue (with errors) or cancel the operation.
+
+By default, include errors are visible in the exported document in **Error** paragraphs, like this:
+
+![Error02](img/export_errors_02.jpg)
+
+Disable this option if you want to never see errors in exported document.
+
+## The `toc` document
 
 A common practice is to have just one TOC document, where you include all other documents.
 
 A simple `toc.md` document can look like this:
 
-```bash
+```yaml
 {chapter01.md}
 {chapter02.md}
 {chapter03.md}
@@ -128,9 +206,7 @@ Some opening words
 This is the end.
 ```
 
-If `{chapter01.md}` does not exist, you will get a warning message, but the exporting will still continue with the other documents.
-
-The path to included file needs to be relative to the document they are reference from.
+If `{chapter01.md}` does not exist, you will get a warning message, but the exporting can still continue with the other documents.
 
 For example, the `toc.md` from the following directory:
 ```
@@ -161,7 +237,6 @@ could look like:
 
 {epilogue.md}
 ```
-
 
 
 # Commands

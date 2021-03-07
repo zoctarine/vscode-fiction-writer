@@ -1,13 +1,28 @@
 All notable changes to this project will be documented in this file.
 
-## 0.0.30 - alpha30
+## 0.0.40 - alpha40
+
+**Added**
+
+- Metadata: [recognize the `id` top level metadata field](metadata.md#known-metadata)
+- Export: [possibility to disable _include files_ syntax](export.md#including-other-documents)
+- Export: [possibility to add _include file_ errors in the exported document](export.md#include-errors)
+- Export: files can be included either by [filename](export.md#include-by-aboslute-or-relative-path), or by [`metadata.id`](export.md#include-by-metadata-id) value
+- Export: [can  now search for included files in all opened documents/workspaces](export.md#resolve-document-id)
+- **Settings**:
+  
+    - `markdown-fiction-writer.export.include.enabled`
+    - `markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces`
+    - `markdown-fiction-writer.export.include.showsErrorInOutputFile`
+
+## 0.0.35 - alpha30
 
 **Added**
 
 - Metadata: now supports yaml markdown metadata support
 - Metadata: new metadata tree view under explorer
 - Metadata: file colors, badges are resolved using keywords
-- Metadata: easy array parsing (add arrays without `[]`)
+- Metadata: easy array parsing (add arrays without `[]`) for known categories
 - **Settings**:
 
     - `markdown-fiction-writer.metadata.enabled`

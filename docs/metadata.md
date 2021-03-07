@@ -55,6 +55,21 @@ In the context of metadata, this extension uses the following wording:
   ---
   ```
 
+# Known Metadata
+
+You can add any metadata category or keyword, but some categories are recognized (and used) by **Fiction Writer**:
+
+- `id` category: used to uniquely identify a file during [include/export process](export.md#include-by-metadata-id). You can either specify a file by path/filename or by this metadata `id` property.
+
+    ```yaml
+    ---
+    id: myFile
+    ---
+
+    My file contents...
+    ```
+
+    More information [here](export.md#include-by-metadata-id).
 
 # The Metadata View
 
