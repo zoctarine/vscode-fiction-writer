@@ -9,7 +9,6 @@ import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTr
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
 import { ProjectFilesTreeDataProvider } from './smartRename/intex';
-import { workspace } from './test/unit/__mocks__/vscode';
 
 let currentConfig: Config;
 
