@@ -197,11 +197,11 @@
     },
     "viewsWelcome": [
       {
-        "view": "wordFrequencies",
+        "view": "fw-wordFrequencies",
         "contents": "Press refresh button to compute word-gram frequencies for current file.\n[Refresh](command:fiction-writer.extension.wordFrequency.refresh)"
       },
       {
-        "view": "statistics",
+        "view": "fw-statistics",
         "contents": "Press refresh button to compute statistics for current file.\n[Refresh](command:fiction-writer.extension.statistics.refresh)"
       }
     ],
@@ -209,12 +209,12 @@
       "view/item/context": [
         {
           "command": "fiction-writer.extension.wordFrequency.next.down",
-          "when": "view == wordFrequencies && viewItem == wordStat",
+          "when": "view == fw-wordFrequencies && viewItem == wordStat",
           "group": "inline"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.next.up",
-          "when": "view == wordFrequencies && viewItem == wordStat",
+          "when": "view == fw-wordFrequencies && viewItem == wordStat",
           "group": "inline"
         }
       ],
@@ -231,13 +231,25 @@
         },
         {
           "command": "fiction-writer.extension.statistics.refresh",
-          "when": "view == statistics",
+          "when": "view == fw-statistics",
           "group": "navigation"
         },
         {
           "command": "fiction-writer.extension.metadata.refresh",
           "when": "view == fw-metadata",
           "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "fiction-writer.extension.moveFileUp",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+        },
+        {
+          "command": "fiction-writer.extension.moveFileDown",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
         }
       ]
     },
@@ -654,6 +666,20 @@
       }
     },
     "commands": [
+      {
+        "command": "fiction-writer.extension.moveFileUp",
+        "title": "Move file up",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(refresh)",
+        "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.moveFileDown",
+        "title": "Move file up",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(refresh)",
+        "when": "false"
+      },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
         "title": "Set Current theme as Enhanced Zen Mode theme",

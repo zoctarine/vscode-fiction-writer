@@ -8,12 +8,12 @@ import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSup
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
-import { ProjectFilesTreeDataProvider } from './smartRename/intex';
+import { ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
 
 export function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', true);
+  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', false);
 
   const fileIndexer = new FileIndexer();
   const storageManager = new ContextService(context.globalState);
@@ -220,6 +220,7 @@ async function toggleZenWritingMode(configService: ConfigService) {
 
 
 async function showAgreeWithChanges(configService: ConfigService) {
+  return;
   let version = 'latest version';
   let change = '0034-alpha34';
   try {
