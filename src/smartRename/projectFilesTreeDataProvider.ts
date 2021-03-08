@@ -1,28 +1,29 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { FileIndexer } from '../compile';
 import { Config } from '../config';
 import { IFileInfo } from '../metadata';
 import { Constants, getActiveEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
 
 class FileTreeItem extends vscode.TreeItem {
-  children: FileTreeItem[]|undefined;
+  children: FileTreeItem[] | undefined;
 
   constructor(public path: string, label: string, children?: FileTreeItem[]) {
     super(
-        label,
-        !children || children.length === 0 ? vscode.TreeItemCollapsibleState.None :
-                                 vscode.TreeItemCollapsibleState.Expanded);
+      label,
+      !children || children.length === 0 ? vscode.TreeItemCollapsibleState.None :
+        vscode.TreeItemCollapsibleState.Expanded);
     this.children = children;
     this.command = {
       title: 'On Click',
       command: 'vscode.open',
-      arguments: [ vscode.Uri.file(this.path) ]
+      arguments: [vscode.Uri.file(this.path)]
     };
   }
 }
 
-export class ProjectFilesTreeDataProvider 
-  extends Observer<Config> 
+export class ProjectFilesTreeDataProvider
+  extends Observer<Config>
   implements vscode.TreeDataProvider<FileTreeItem>, IObserver<IFileInfo> {
 
   constructor(configService: IObservable<Config>, private fileIndex: FileIndexer) {
@@ -30,7 +31,6 @@ export class ProjectFilesTreeDataProvider
     this.fileIndex.attach(this);
   }
 
-  
   getTreeItem(element: FileTreeItem): FileTreeItem {
     return element;
   }
@@ -41,9 +41,15 @@ export class ProjectFilesTreeDataProvider
     }
 
     const elements = this.fileIndex.getState()
-      .map(f => new FileTreeItem(f.path, f.path, f.id ? [
-        new FileTreeItem(f.path, f.id)
-      ] : []));
+      .map(f => {
+        const parsed = f.id ?? path.basename(f.path);
+        const item = new FileTreeItem(f.path, parsed, f.id ? [
+          new FileTreeItem(f.path, f.id)
+        ] : []);
+        item.description = f.path;
+
+        return item;
+      });
 
     return Promise.resolve(elements);
   }
