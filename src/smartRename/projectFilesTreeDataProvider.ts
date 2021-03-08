@@ -4,6 +4,7 @@ import { FileIndexer } from '../compile';
 import { Config } from '../config';
 import { IFileInfo } from '../metadata';
 import { Constants, getActiveEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
+import { getFileTree } from '.';
 
 class FileTreeItem extends vscode.TreeItem {
   children: FileTreeItem[] | undefined;
@@ -35,21 +36,34 @@ export class ProjectFilesTreeDataProvider
     return element;
   }
 
+  makeTree(name: string, path: string, children: FileTreeItem[]):FileTreeItem {
+    const info = this.fileIndex.getByPath(path);
+    const item = new FileTreeItem(path, name, children);
+    if (info){
+      item.description = info.id;
+    }
+    return item;
+  }
+
   getChildren(element?: FileTreeItem): Thenable<FileTreeItem[]> {
     if (element) {
       return Promise.resolve(element.children ?? []);
     }
 
-    const elements = this.fileIndex.getState()
-      .map(f => {
-        const parsed = f.id ?? path.basename(f.path);
-        const item = new FileTreeItem(f.path, parsed, f.id ? [
-          new FileTreeItem(f.path, f.id)
-        ] : []);
-        item.description = f.path;
+    const indexes = this.fileIndex.getState();
+    const elements = getFileTree( 
+      indexes.map(f => f.path), 
+      (name, path, children:FileTreeItem[])=> this.makeTree(name, path, children) );
 
-        return item;
-      });
+      // .map(f => {
+      //   const parsed = f.id ?? path.basename(f.path);
+      //   const item = new FileTreeItem(f.path, parsed, f.id ? [
+      //     new FileTreeItem(f.path, f.id)
+      //   ] : []);
+      //   item.description = f.path;
+
+      //   return item;
+      // });
 
     return Promise.resolve(elements);
   }
