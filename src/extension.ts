@@ -13,7 +13,7 @@ import { ProjectFilesTreeDataProvider } from './smartRename';
 let currentConfig: Config;
 
 export function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', false);
+  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', true);
 
   const fileIndexer = new FileIndexer();
   const storageManager = new ContextService(context.globalState);
@@ -220,9 +220,8 @@ async function toggleZenWritingMode(configService: ConfigService) {
 
 
 async function showAgreeWithChanges(configService: ConfigService) {
-  return;
   let version = 'latest version';
-  let change = '0034-alpha34';
+  let change = '0043-alpha43';
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
     const alphaVersion: string[] = version.split('.');
