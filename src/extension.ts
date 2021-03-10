@@ -1,14 +1,16 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, isInActiveEditor, isSupported, isSupportedDoc, isSupportedPath } from './utils';
+import { Constants, ContentType, DialogueMarkerMappings, getEditorContentType, getUriContentType, isFictionOrMetadataUri, isInActiveFictionEditor,  isInActiveMetadataEditor } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
+import { fileGroup, MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
 import { ProjectFilesTreeDataProvider } from './smartRename';
+import { fstat } from 'fs';
 
 let currentConfig: Config;
 
@@ -45,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   // TODO: disable this if metadata disabled
-  const watcher = vscode.workspace.createFileSystemWatcher('**/*.md', false, false, false);
+  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{md,yml}', false, false, false);
   const cmd = Constants.Commands;
   context.subscriptions.push(
     cache,
@@ -92,62 +94,117 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
       updateIsSupportedEditor(e);
-      if (!isInActiveEditor(e?.document?.uri)) return;
+      const docUri = e?.document?.uri;
 
-      await metadataProvider.refresh();
-      docStatisticProvider.refresh();
-    }),
-
-    vscode.workspace.onDidSaveTextDocument(async (e) => {
-      if (!e?.uri) return;
-      if (!isSupportedPath(e.uri)) return;
-
-      fileIndexer.index(e.uri.fsPath);
-
-      if (isInActiveEditor(e?.uri)) {
+      if (isInActiveFictionEditor(docUri)) {
         docStatisticProvider.refresh();
+      };
+
+      if (isInActiveMetadataEditor(docUri)) {
+        await metadataProvider.refresh();
       }
     }),
 
     watcher.onDidCreate(e => {
       if (!e) return;
-      if (!isSupportedPath(e)) return;
+      if (!isFictionOrMetadataUri(e)) return;
 
       fileIndexer.index(e.fsPath);
+
+      if (isInActiveMetadataEditor(e)) {
+        metadataProvider.refresh();
+      }
+      metadataDecoration.fire([e]);
     }),
 
     watcher.onDidDelete(e => {
       if (!e) return;
-      if (!isSupportedPath(e)) return;
+      if (!isFictionOrMetadataUri(e)) return;
 
       fileIndexer.delete(e.fsPath);
+
+      if (isInActiveMetadataEditor(e)) {
+        metadataProvider.refresh();
+      }
+      metadataDecoration.fire([e]);
     }),
 
 
     watcher.onDidChange(async e => {
-      if (!isSupportedPath(e)) return;
+      if (!isFictionOrMetadataUri(e)) return;
 
       fileIndexer.index(e.fsPath);
-      if (isInActiveEditor(e)) {
+
+      if (isInActiveFictionEditor(e)) {
+        docStatisticProvider.refresh();
+      }
+
+      if (isInActiveMetadataEditor(e)) {
         metadataProvider.refresh();
       }
       metadataDecoration.fire([e]);
     }),
 
     vscode.workspace.onDidOpenTextDocument(e => {
-      if (!isSupportedDoc(e)) return;
+      if (!isFictionOrMetadataUri(e?.uri)) return;
 
       fileIndexer.index(e.uri.fsPath);
     }),
 
     vscode.workspace.onDidCloseTextDocument(e => {
-      if (!isSupportedDoc(e)) return;
+      if (!isFictionOrMetadataUri(e?.uri)) return;
 
       // if not from an open workspace, then remove from indexes
-      if (!vscode.workspace.getWorkspaceFolder(e.uri)){
+      if (!vscode.workspace.getWorkspaceFolder(e.uri)) {
         fileIndexer.delete(e.uri.fsPath);
       }
       metadataDecoration.fire([e.uri]);
+    }),
+
+    vscode.workspace.onWillRenameFiles(e => {
+
+      e.files.forEach(f => {
+        if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
+          const oldGroup = fileGroup(f.oldUri.fsPath);
+          const newGroup = fileGroup(f.newUri.fsPath);
+
+          const oldContent = getUriContentType(f.oldUri);
+          const newContent = getUriContentType(f.newUri);
+          // If it weas a fiction rename, then rename the metadata file
+          if (oldContent === ContentType.Fiction && newContent === ContentType.Fiction) {
+            if (fs.existsSync(oldGroup.meta)) {
+              const options = ['Yes, only this time', 'Yes, never ask again', 'No'];
+              vscode.window.showInformationMessage('A metadata file with the same name was found on disk. Do you want to rename it as well?', ...options)
+                .then(result => {
+                  if (result !== options[2]) {
+                    fs.renameSync(oldGroup.meta, newGroup.meta);
+                  };
+
+                  if (result === options[1]) {
+                    //
+                  }
+                });
+            }
+          }
+
+          // If it weas a metadata rename, then rename the fiction file
+          else if (oldContent === ContentType.Metadata && newContent === ContentType.Metadata) {
+            if (fs.existsSync(oldGroup.path)) {
+              const options = ['Yes, only this time', 'Yes, never ask again', 'No'];
+              vscode.window.showInformationMessage('A markdown file with the same name was found on disk. Do you want to rename it as well?', ...options)
+                .then(result => {
+                  if (result !== options[2]) {
+                    fs.renameSync(oldGroup.path, newGroup.path);
+                  };
+
+                  if (result === options[1]) {
+                    //
+                  }
+                });
+            }
+          }
+        }
+      });
     })
   );
 
@@ -157,8 +214,8 @@ export function activate(context: vscode.ExtensionContext) {
     fileIndexer.indexLocation(f.uri.fsPath, '**/*.md');
   });
   vscode.workspace.onDidChangeWorkspaceFolders(c => {
-    c.added?.forEach(f=> fileIndexer.indexLocation(f.uri.fsPath, '**/**.md'));
-    c.removed?.forEach(f=> fileIndexer.removeLocation(f.uri.fsPath, '**/**.md'));
+    c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, '**/**.md'));
+    c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, '**/**.md'));
   });
   metadataProvider.refresh();
   docStatisticProvider.refresh();
@@ -167,7 +224,8 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function updateIsSupportedEditor(editor: vscode.TextEditor | undefined) {
-  vscode.commands.executeCommand('setContext', 'isSupportedEditor', isSupported(editor));
+  vscode.commands.executeCommand('setContext', 'isSupportedEditor', getEditorContentType(editor) === ContentType.Fiction);
+  vscode.commands.executeCommand('setContext', 'isSupportedMetadata', isFictionOrMetadataUri(editor?.document?.uri));
 }
 
 function exitZenWritingMode(configurationService: ConfigService) {
@@ -375,3 +433,4 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
+

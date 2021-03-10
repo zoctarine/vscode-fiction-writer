@@ -11,7 +11,8 @@
     "editor.cursorSurroundingLines": 2,
     "[markdown]": {
       "editor.tabSize": 2,
-      "editor.wrappingIndent": "same"
+      "editor.wrappingIndent": "same",
+      "editor.cursorSurroundingLines": 2
     },
     "jestTestExplorer.flattenExplorer": true,
     "jestTestExplorer.logpanel": true,

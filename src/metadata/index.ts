@@ -1,5 +1,7 @@
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
+import * as path from 'path';
+import { pathToFileURL } from 'url';
 export * from './metadataFileCache';
 export * from './metadataTreeDataProvider';
 export * from './metadataDecorationProvider';
@@ -30,20 +32,38 @@ export interface KnownMeta {
   tags: string[] | string | undefined;
 };
 
+export function fileGroup(filePath: string): {path: string, meta: string}{
+  const parsed = path.parse(filePath);
+  return {
+    path: path.join(parsed.dir, parsed.name + '.md'),
+    meta: path.join(parsed.dir, parsed.name + '.yml')
+  };
+}
+
 /**
  * Extracts metadata object from a document
  * @param text the text from which to extract metadata from
  */
 export function extractMetadata(filePath: string): string | object | number | undefined | null {
   try {
-    if (fs.existsSync(filePath)) {
-      const text = fs.readFileSync(filePath, 'utf8');
+    // search for separate file metadata
+    const group = fileGroup(filePath);
+
+    if (fs.existsSync(group.meta)){
+      const metadataBlock = fs.readFileSync(group.meta, 'utf8');
+      let value = parse(metadataBlock);
+      if (value === null || value === undefined) return undefined;
+      return value;
+    }
+    // search for inline metadata
+    if (fs.existsSync(group.path)) {
+      const text = fs.readFileSync(group.path, 'utf8');
       const metadataBlock = extract(text);
       let value = parse(metadataBlock);
       if (value === null || value === undefined) return undefined;
       return value;
      }
-  } catch {
+  } catch (error) {
     //TODO Log some error
   }
   return  undefined;
