@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { Config, IKvp } from '../config';
-import { IObservable, isSupportedPath, KnownColor, Observer } from '../utils';
-import { KnownMeta, MetadataFileCache } from './index';
+import { ContentType, getUriContentType, IObservable, KnownColor, Observer } from '../utils';
+import { fileGroup, KnownMeta, MetadataFileCache } from './index';
 
 
 export class MetadataFileDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
@@ -26,8 +26,10 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   readonly onDidChangeFileDecorations: vscode.Event<vscode.Uri[]> = this._onDidChangeDecorations.event;
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
-    if (!isSupportedPath(uri))
+
+    if (getUriContentType(uri) !== ContentType.Fiction) {
       return Promise.reject();
+    }
 
     return new Promise((resolve, reject) => {
       const useColors = this.state.metaKeywordShowInFileExplorer;
@@ -116,7 +118,9 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   }
 
   fire(uri: vscode.Uri[]) {
-    this._onDidChangeDecorations.fire(uri);
+    const uris = uri.map(u => vscode.Uri.file(fileGroup(u.fsPath).path));
+
+    this._onDidChangeDecorations.fire(uris);
   }
 
   protected onStateChange(newState: Config) {

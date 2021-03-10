@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getActiveEditor } from '../utils';
+import { getActiveFictionEditor } from '../utils';
 import { WordStatTreeItem } from './wordStatTreeItem';
 
 class TextSelector {
@@ -35,7 +35,7 @@ class TextSelector {
   }
 
   private find(selection: WordStatTreeItem[], findAction: (text: string, search: string) => number) {
-    const editor = getActiveEditor();
+    const editor = getActiveFictionEditor();
     if (!editor) return;
     if (!selection || selection.length === 0) return;
 

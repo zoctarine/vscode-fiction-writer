@@ -3,7 +3,7 @@ import * as path from 'path';
 import { FileIndexer } from '../compile';
 import { Config } from '../config';
 import { IFileInfo } from '../metadata';
-import { Constants, getActiveEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
+import { Constants, getActiveFictionEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
 import { getFileTree } from '.';
 
 class FileTreeItem extends vscode.TreeItem {
@@ -51,8 +51,8 @@ export class ProjectFilesTreeDataProvider
     }
 
     const indexes = this.fileIndex.getState();
-    const elements = getFileTree( 
-      indexes.map(f => f.path), 
+    const elements = getFileTree(
+      indexes.map(f => f.path),
       (name, path, children:FileTreeItem[])=> this.makeTree(name, path, children) );
 
       // .map(f => {

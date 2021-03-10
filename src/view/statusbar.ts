@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { IObservable, Observer, Constants, getActiveEditor } from '../utils';
+import { IObservable, Observer, Constants, getActiveFictionEditor } from '../utils';
 import { Config } from '../config';
 
 export class StatusBarObserver extends Observer<Config>{
@@ -118,7 +118,7 @@ export class StatusBarObserver extends Observer<Config>{
 
   showHide() {
 
-    if (getActiveEditor() && this.state.viewStatusBarEnabled) {
+    if (getActiveFictionEditor() && this.state.viewStatusBarEnabled) {
       this.buttons.forEach(b => b.show());
     } else {
       this.buttons.forEach(b => b.hide());
@@ -140,7 +140,7 @@ export class StatusBarObserver extends Observer<Config>{
   }
 
   updateWritingModeToggle() {
-    this.writingModeToggleButton.text = this.state.isZenMode 
+    this.writingModeToggleButton.text = this.state.isZenMode
       ? `$(discard)`
       : `$(zap)`
   }

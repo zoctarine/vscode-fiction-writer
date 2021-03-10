@@ -1,6 +1,6 @@
 import { commands, Position, Selection, window, workspace, WorkspaceEdit } from 'vscode';
 import { Config } from '../config';
-import { IObservable, getActiveEditor, StringUtils } from '../utils';
+import { IObservable, getActiveFictionEditor, StringUtils } from '../utils';
 import { EnhancedEditBehaviour } from "./enhancedEditBehaviour";
 
 export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
@@ -9,7 +9,7 @@ export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
     }
 
     protected onNewLine() {
-        let editor = getActiveEditor();
+        let editor = getActiveFictionEditor();
         if (!editor) return;
 
         let selection: Selection = editor.selection;
@@ -45,7 +45,7 @@ export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
     }
 
     protected onNewParagraph() {
-        const editor = getActiveEditor();
+        const editor = getActiveFictionEditor();
         if (!editor) return;
 
         let selection: Selection = editor.selection;
@@ -81,7 +81,7 @@ export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
         });
     }
     onTabKey() {
-        const editor = getActiveEditor();
+        const editor = getActiveFictionEditor();
         if (!editor) return;
 
         let selection: Selection = editor.selection;
@@ -114,7 +114,7 @@ export class EnhancedEditDialogueBehaviour extends EnhancedEditBehaviour {
         return super.onTabKey();
     }
     onBackspaceKey(): any {
-        const editor = getActiveEditor();
+        const editor = getActiveFictionEditor();
         if (!editor) return;
 
         let cursorPos: Position = editor.selection.active;

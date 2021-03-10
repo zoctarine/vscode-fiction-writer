@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { IObservable, Observer } from '../utils';
 import { Config, IKvp } from '../config';
 import { FileIndexer } from '../compile';
+import { fileGroup } from '.';
 
 export interface IFileInfo {
   path: string,
@@ -10,15 +11,17 @@ export interface IFileInfo {
 }
 
 export class MetadataFileCache extends Observer<Config> {
-  ;
+
   constructor(private fileIndex: FileIndexer, configService: IObservable<Config>) {
     super(configService);
+    this.fileIndex.attach(this);
   }
 
   public get(path?: vscode.Uri): IFileInfo | undefined {
     if (!path) return undefined;
+    const group = fileGroup(path.fsPath);
 
-    const info = this.fileIndex.getByPath(path.fsPath);
+    const info = this.fileIndex.getByPath(group.path);
 
     return info
       ? this.prepareMeta(info)
