@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { Config, IKvp } from '../config';
-import { ContentType, getUriContentType, IObservable, KnownColor, Observer } from '../utils';
-import { fileGroup, KnownMeta, MetadataFileCache } from './index';
+import { fileManager } from '../smartRename';
+import { IObservable, Observer, SupportedContent } from '../utils';
+import { fileGroup, MetadataFileCache } from './index';
 
 
 export class MetadataFileDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
@@ -27,7 +28,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
 
-    if (getUriContentType(uri) !== ContentType.Fiction) {
+    if (!fileManager.getPathContentType(uri?.fsPath).has(SupportedContent.Fiction)) {
       return Promise.reject();
     }
 

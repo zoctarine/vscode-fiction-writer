@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { IObservable, Observer, Constants, getActiveFictionEditor } from '../utils';
+import { IObservable, Observer, Constants, getActiveEditor, SupportedContent } from '../utils';
 import { Config } from '../config';
 
 export class StatusBarObserver extends Observer<Config>{
@@ -118,7 +118,7 @@ export class StatusBarObserver extends Observer<Config>{
 
   showHide() {
 
-    if (getActiveFictionEditor() && this.state.viewStatusBarEnabled) {
+    if (getActiveEditor(SupportedContent.Fiction) && this.state.viewStatusBarEnabled) {
       this.buttons.forEach(b => b.show());
     } else {
       this.buttons.forEach(b => b.hide());
