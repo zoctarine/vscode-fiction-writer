@@ -22,6 +22,11 @@ export const Constants = {
     THREEDASH_NOSP: '---Hello, (three dashes, no space)',
     AUTO_REPLACE: '-- '
   },
+  RenameRelated: {
+    NEVER: 'Never',
+    ALWAYS: 'Always',
+    ASK: 'Ask Every Time'
+  },
   Format: {
     BACKUP_DIR: '_bk',
     ParagraphBreaks: {
@@ -53,7 +58,9 @@ export const Constants = {
     METADATA_REFRESH: 'fiction-writer.extension.metadata.refresh',
     TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleWritingMode',
     EXIT_ZEN_MODE: 'fiction-writer.extension.exitWritingMode',
-    SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme'
+    SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme',
+    MOVE_FILE_UP: 'fiction-writer.extension.moveFileUp',
+    MOVE_FILE_DOWN: 'fiction-writer.extension.moveFileDown'
   },
 
   KnownLabels: [

@@ -52,20 +52,10 @@ export class ProjectFilesTreeDataProvider
 
     const indexes = this.fileIndex.getState();
     const elements = getFileTree(
-      indexes.map(f => f.path),
+      indexes.map(f => f.key),
       (name, path, children:FileTreeItem[])=> this.makeTree(name, path, children) );
 
-      // .map(f => {
-      //   const parsed = f.id ?? path.basename(f.path);
-      //   const item = new FileTreeItem(f.path, parsed, f.id ? [
-      //     new FileTreeItem(f.path, f.id)
-      //   ] : []);
-      //   item.description = f.path;
-
-      //   return item;
-      // });
-
-    return Promise.resolve(elements);
+      return Promise.resolve(elements);
   }
 
   private _onDidChangeTreeData: vscode.EventEmitter<FileTreeItem | undefined | null | void> = new vscode.EventEmitter<FileTreeItem | undefined | null | void>();

@@ -210,17 +210,17 @@
         {
           "command": "fiction-writer.extension.moveToTrash",
           "group": "navigation",
-          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileUp",
           "group": "inline",
-          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileDown",
           "group": "inline",
-          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.next.down",
@@ -259,12 +259,12 @@
         {
           "command": "fiction-writer.extension.moveFileUp",
           "group": "1_modification",
-          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "false && config.markdown-fiction-writer.smartEdit.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileDown",
           "group": "1_modification",
-          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "false && config.markdown-fiction-writer.smartEdit.enabled"
         }
       ]
     },
@@ -287,6 +287,18 @@
           "scope": "application",
           "default": true,
           "markdownDescription": "If enabled, allows ordering of files based on number prefix."
+        },
+        "markdown-fiction-writer.smartEdit.renameRelatedFiles": {
+          "type": "string",
+          "scope": "application",
+          "default": "Ask Every Time",
+          "enum": ["Never", "Always", "Ask Every Time"],
+          "markdownEnumDescriptions": [
+              "Disables the rename related feature.",
+              "Will always rename/move `.yml` and `.md` files with same name, together.",
+              "For each rename/move operation, Will ask if `.yml` and `.md` files with same name are found on disk."
+          ],
+          "markdownDescription": "If `enabled`, renames/moves related (`.yml` and `.md`) files together."
         },
         "markdown-fiction-writer.edit.disableKeybindings": {
           "type": "boolean",
@@ -703,7 +715,7 @@
       },
       {
         "command": "fiction-writer.extension.moveFileDown",
-        "title": "Move file up",
+        "title": "Move file down",
         "category": "Markdown Fiction Writer",
         "icon": "$(arrow-down)",
         "when": "false"

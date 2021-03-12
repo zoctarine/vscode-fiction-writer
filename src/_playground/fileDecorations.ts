@@ -5,7 +5,6 @@ import * as path from 'path';
 
 import { Observer, IObservable } from '../utils';
 import { Config } from '../config';
-import { fileGroup } from '../metadata';
 
 export class FileTagDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
   private decorations: { [key: string]: vscode.FileDecoration };

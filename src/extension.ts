@@ -8,7 +8,7 @@ import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingP
 import { Constants, DialogueMarkerMappings, getContentType, isInActiveEditor, SupportedContent } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { fileGroup, MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
+import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
 import { fileManager, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
 
 
-  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{md,yml}', false, false, false);
+  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{[mM][dD],[yY][mM][lL]}', false, false, false);
   const cmd = Constants.Commands;
   context.subscriptions.push(
     cache,
@@ -88,6 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
+    vscode.commands.registerCommand(cmd.MOVE_FILE_UP, (e) => { fileManager.smartRename(e.fsPath);}),
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
       updateIsSupportedEditor(e);
@@ -160,70 +161,55 @@ export function activate(context: vscode.ExtensionContext) {
     }),
 
     vscode.workspace.onWillRenameFiles(e => {
+      if (!currentConfig.smartEditEnabled) return;
 
       e.files.forEach(f => {
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
 
           fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, (from: string, to: string) => {
+            if (currentConfig.smartEditRenameRelated === Constants.RenameRelated.NEVER) {
+              return Promise.resolve(false);
+            }
+            if (currentConfig.smartEditRenameRelated === Constants.RenameRelated.ALWAYS) {
+              return Promise.resolve(true);
+            }
             return new Promise((resolve, reject) => {
-              const options = ['Yes, only this time', 'Yes, never ask again', 'No'];
+              const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 
-              return vscode.window.showInformationMessage(`A file with same name was found on disk . Do you want to also rename ${from}?`, ...options)
+              return vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename/move ${from}?`, ...options)
                 .then(answer => {
-                  if (answer === options[0]){
-                    return resolve(true);
+                  const doRename = answer === options[0] || answer === options[2];
+                  const saveAnswer = answer === options[2] || answer === options[3];
+
+                  if (saveAnswer) {
+                    vscode.workspace
+                      .getConfiguration('markdown-fiction-writer.smartEdit')
+                      .update(
+                        'renameRelatedFiles',
+                        doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
+                        vscode.ConfigurationTarget.Global);
                   }
-                  return resolve(false);
+
+                  return resolve(doRename);
                 });
             });
           });
-
-          // If it weas a fiction rename, then rename the metadata file
-          // if (oldContent.has(SupportedContent.Fiction) && newContent.has(SupportedContent.Fiction)) {
-          //   if (fs.existsSync(oldGroup.meta)) {
-          //     const options = ['Yes, only this time', 'Yes, never ask again', 'No'];
-          //     vscode.window.showInformationMessage('A metadata file with the same name was found on disk. Do you want to rename it as well?', ...options)
-          //       .then(result => {
-          //         if (result !== options[2]) {
-          //           fs.renameSync(oldGroup.meta, newGroup.meta);
-          //         };
-
-          //         if (result === options[1]) {
-          //           //
-          //         }
-          //       });
-          //   }
-          // }
-
-          // // If it weas a metadata rename, then rename the fiction file
-          // else if (oldContent.has(SupportedContent.Metadata) && newContent.has(SupportedContent.Metadata)) {
-          //   if (fs.existsSync(oldGroup.path)) {
-          //     const options = ['Yes, only this time', 'Yes, never ask again', 'No'];
-          //     vscode.window.showInformationMessage('A markdown file with the same name was found on disk. Do you want to rename it as well?', ...options)
-          //       .then(result => {
-          //         if (result !== options[2]) {
-          //           fs.renameSync(oldGroup.path, newGroup.path);
-          //         };
-
-          //         if (result === options[1]) {
-          //           //
-          //         }
-          //       });
-          //   }
-          // }
         }
       });
     })
   );
 
+  const globPattern = '**/*.{[mM][dD],[yY][mM][lL]}';
+
   updateIsSupportedEditor(vscode.window.activeTextEditor);
   fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
   vscode.workspace.workspaceFolders?.forEach(f => {
-    fileIndexer.indexLocation(f.uri.fsPath, '**/*.md');
+    fileIndexer.indexLocation(f.uri.fsPath, globPattern);
   });
+
   vscode.workspace.onDidChangeWorkspaceFolders(c => {
-    c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, '**/**.md'));
-    c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, '**/**.md'));
+    c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, globPattern));
+    c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, globPattern));
   });
   metadataProvider.refresh();
   docStatisticProvider.refresh();

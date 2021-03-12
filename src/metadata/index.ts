@@ -2,6 +2,8 @@ import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
 import { pathToFileURL } from 'url';
+import { fileManager, IFileGroup } from '../smartRename';
+import { SupportedContent } from '../utils';
 export * from './metadataFileCache';
 export * from './metadataTreeDataProvider';
 export * from './metadataDecorationProvider';
@@ -25,47 +27,67 @@ export function parse(yamlText: string | undefined) {
 }
 
 export interface KnownMeta {
-  id: string | undefined,
-  description: string[] | string | undefined,
-  summary: string[] | string | undefined,
-  tag: string[] | string | undefined,
+  id: string | undefined;
+  description: string[] | string | undefined;
+  summary: string[] | string | undefined;
+  tag: string[] | string | undefined;
   tags: string[] | string | undefined;
 };
 
-export function fileGroup(filePath: string): {path: string, meta: string}{
-  const parsed = path.parse(filePath);
-  return {
-    path: path.join(parsed.dir, parsed.name + '.md'),
-    meta: path.join(parsed.dir, parsed.name + '.yml')
-  };
+export enum MetaLocation {
+  Unknown,
+  Internal,
+  External
+}
+
+export interface IMetadata {
+  location?: string;
+  type: MetaLocation;
+  value?: any
 }
 
 /**
- * Extracts metadata object from a document
+ * Extracts metadata object from a document group
  * @param text the text from which to extract metadata from
  */
-export function extractMetadata(filePath: string): string | object | number | undefined | null {
+export function extractMetadata(group: IFileGroup): IMetadata {
   try {
-    // search for separate file metadata
-    const group = fileGroup(filePath);
-
-    if (fs.existsSync(group.meta)){
-      const metadataBlock = fs.readFileSync(group.meta, 'utf8');
-      let value = parse(metadataBlock);
-      if (value === null || value === undefined) return undefined;
-      return value;
-    }
     // search for inline metadata
-    if (fs.existsSync(group.path)) {
-      const text = fs.readFileSync(group.path, 'utf8');
+    const actualFile = group.getPath(SupportedContent.Fiction);
+    if (actualFile && fs.existsSync(actualFile)) {
+      const text = fs.readFileSync(actualFile, 'utf8');
       const metadataBlock = extract(text);
       let value = parse(metadataBlock);
-      if (value === null || value === undefined) return undefined;
-      return value;
-     }
+      if (value) {
+        return {
+          location: actualFile,
+          type: MetaLocation.Internal,
+          value: value
+        };
+      }
+    }
+
+    // if no inline meta is found, search in external file
+    const externalMeta = group.getPath(SupportedContent.Metadata);
+    if (externalMeta && fs.existsSync(externalMeta)) {
+      const metadataBlock = fs.readFileSync(externalMeta, 'utf8');
+      let value = parse(metadataBlock);
+
+      if (value) {
+        return {
+          location: externalMeta,
+          type: MetaLocation.External,
+          value: value
+        };
+      }
+    }
+
+
   } catch (error) {
     //TODO Log some error
   }
-  return  undefined;
+  return {
+    type: MetaLocation.Unknown
+  };
 }
 

@@ -9,17 +9,32 @@ const fictionExtension = '.md';
 const metadataExtension = '.yml';
 
 export interface IFileGroup {
-  path: string,
-  content: SupportedContent,
-  other: Map<SupportedContent, string>
+  path: string;
+  content: SupportedContent;
+  other: Map<SupportedContent, string>;
+  getPath(forContent: SupportedContent): string | undefined;
+}
+
+class FileGroup implements IFileGroup {
+  constructor(
+    public path: string,
+    public content: SupportedContent,
+    public other: Map<SupportedContent, string>) {  }
+
+  getPath(forContent: SupportedContent): string | undefined {
+    if (this.content === forContent) return this.path;
+
+    return this.other.get(forContent);
+  }
+
 }
 
 export class FileManager {
 
   public getGroup(fsPath: string): IFileGroup {
 
-    const otherFiles = new Map<SupportedContent, string>();
     fsPath = path.normalize(fsPath);
+    const otherFiles = new Map<SupportedContent, string>();
     const contentType = this.getPathContentType(fsPath, true);
 
     const parsed = path.parse(fsPath);
@@ -41,11 +56,11 @@ export class FileManager {
       }
     };
 
-    return {
-      path: fsPath,
-      content: contentType.supports,
-      other: otherFiles
-    };
+    return new FileGroup(
+      fsPath,
+      contentType.supports,
+      otherFiles
+    );
   }
 
 
@@ -68,9 +83,9 @@ export class FileManager {
 
   public batchRename(
     oldName: string,
-    newName: string, 
+    newName: string,
     question:(from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)){
-    
+
     const oldContent = this.getPathContentType(oldName, true);
     const newContent = this.getPathContentType(newName, true);
     if (oldContent.supports !== newContent.supports) return;
@@ -90,7 +105,18 @@ export class FileManager {
           });
       });
     }
+  }
 
+  public moveUp(fsPath: string){
+    // get folder of file
+    // if all files are prepared for rename, then increment
+    // if not, then ask to fix and then rename
+  }
+
+  public smartRename(fsPath: string){
+    const parsed = path.parse(fsPath);
+    const allFiles = glob.sync(path.join(parsed.dir, '*.[mM][dD]'), {nodir: true});
+    //TODO: Implement functioinality
   }
 }
 
