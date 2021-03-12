@@ -1,6 +1,6 @@
 import { Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer, Constants, getActiveEditor, IDisposable } from '../utils';
+import { IObservable, Observer, Constants, getActiveEditor, IDisposable, SupportedContent } from '../utils';
 
 export class DialogueAutoCorrectObserver extends Observer<Config> implements IDisposable {
   constructor(observable: IObservable<Config>) {
@@ -26,7 +26,7 @@ export class DialogueAutoCorrectObserver extends Observer<Config> implements IDi
     if (!event?.contentChanges?.length) return;
     if (event.contentChanges[0].text !== ' ') return;
 
-    const editor = getActiveEditor();
+    const editor = getActiveEditor(SupportedContent.Fiction);
     if (!editor) return;
 
     let cursorPos: Position = editor.selection.active;

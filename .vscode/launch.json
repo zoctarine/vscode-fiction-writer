@@ -13,7 +13,7 @@
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
-				"${workspaceFolder}/out/**/*.js"
+				"${workspaceFolder}/dist/**/*.js"
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		},
@@ -38,13 +38,13 @@
 			"runtimeExecutable": "${execPath}",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/out/test/integration/index",
+				"--extensionTestsPath=${workspaceFolder}/dist/test/integration/index",
 				"--disable-extensions"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [
-				"${workspaceFolder}/out/test/integration/**/*.js"
+				"${workspaceFolder}/dist/test/integration/**/*.js"
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		}

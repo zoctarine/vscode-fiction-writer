@@ -11,12 +11,13 @@
     "editor.cursorSurroundingLines": 2,
     "[markdown]": {
       "editor.tabSize": 2,
-      "editor.wrappingIndent": "same"
+      "editor.wrappingIndent": "same",
+      "editor.cursorSurroundingLines": 2
     },
     "jestTestExplorer.flattenExplorer": true,
     "jestTestExplorer.logpanel": true,
-    "testExplorer.codeLens": false,
     "testExplorer.sort": "byLabelWithSuitesFirst",
     "editor.tabCompletion": "onlySnippets",
-    "jestTestExplorer.debugOutput": "integratedTerminal"
+    "jestTestExplorer.debugOutput": "integratedTerminal",
+    "testExplorer.addToEditorContextMenu": true
 }

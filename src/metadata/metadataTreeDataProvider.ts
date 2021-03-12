@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Config } from '../config';
-import { Constants, getActiveEditor, IObservable, KnownColor, Observer } from '../utils';
+import { Constants, getActiveEditor, IObservable, KnownColor, Observer, SupportedContent } from '../utils';
 import { IFileInfo, MetadataFileCache } from './metadataFileCache';
 import { MetadataTreeItem } from "./metadataTreeItem";
 
@@ -125,7 +125,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   refresh(): Promise<IFileInfo | undefined> {
 
     return new Promise((resolve, reject) => {
-      this.document = getActiveEditor()?.document;
+      this.document = getActiveEditor(SupportedContent.Metadata)?.document;
       const meta = this.cache.get(this.document?.uri);
       if (meta) {
         this.metadata = meta;

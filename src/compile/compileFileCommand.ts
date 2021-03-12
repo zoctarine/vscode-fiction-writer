@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
 import { Config } from '../config';
-import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx } from '../utils';
+import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx, SupportedContent } from '../utils';
 import { TextEditor } from 'vscode';
 import { FileIndexer } from './fileIndexer';
 
@@ -18,7 +18,7 @@ export class CompileFileCommand extends Observer<Config> {
   }
 
   public async execute() {
-    const editor = getActiveEditor();
+    const editor = getActiveEditor(SupportedContent.Fiction);
     if (!editor) return;
 
     let format = undefined;
@@ -44,7 +44,7 @@ export class CompileFileCommand extends Observer<Config> {
   //
   //   return fi.index(index + '**/**.md');
   // }
-  
+
   protected makeToc(inputs: Array<string>, errors: Array<string>)
     : { includePath: string, text: string, success: boolean } {
     try {

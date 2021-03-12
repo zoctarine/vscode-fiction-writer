@@ -6,7 +6,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -168,7 +168,7 @@
           "name": "Metadata",
           "icon": "$(eye)",
           "contextualTitle": "Metadata",
-          "when": "isSupportedEditor && config.markdown-fiction-writer.metadata.enabled"
+          "when": "isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
         }
       ],
       "word-frequency-explorer": [
@@ -197,24 +197,39 @@
     },
     "viewsWelcome": [
       {
-        "view": "wordFrequencies",
+        "view": "fw-wordFrequencies",
         "contents": "Press refresh button to compute word-gram frequencies for current file.\n[Refresh](command:fiction-writer.extension.wordFrequency.refresh)"
       },
       {
-        "view": "statistics",
+        "view": "fw-statistics",
         "contents": "Press refresh button to compute statistics for current file.\n[Refresh](command:fiction-writer.extension.statistics.refresh)"
       }
     ],
     "menus": {
       "view/item/context": [
         {
+          "command": "fiction-writer.extension.moveToTrash",
+          "group": "navigation",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+        },
+        {
+          "command": "fiction-writer.extension.moveFileUp",
+          "group": "inline",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+        },
+        {
+          "command": "fiction-writer.extension.moveFileDown",
+          "group": "inline",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+        },
+        {
           "command": "fiction-writer.extension.wordFrequency.next.down",
-          "when": "view == wordFrequencies && viewItem == wordStat",
+          "when": "view == fw-wordFrequencies && viewItem == wordStat",
           "group": "inline"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.next.up",
-          "when": "view == wordFrequencies && viewItem == wordStat",
+          "when": "view == fw-wordFrequencies && viewItem == wordStat",
           "group": "inline"
         }
       ],
@@ -231,13 +246,25 @@
         },
         {
           "command": "fiction-writer.extension.statistics.refresh",
-          "when": "view == statistics",
+          "when": "view == fw-statistics",
           "group": "navigation"
         },
         {
           "command": "fiction-writer.extension.metadata.refresh",
           "when": "view == fw-metadata",
           "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "fiction-writer.extension.moveFileUp",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
+        },
+        {
+          "command": "fiction-writer.extension.moveFileDown",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartEdit.enabled"
         }
       ]
     },
@@ -255,6 +282,12 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
+        "markdown-fiction-writer.smartEdit.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "If enabled, allows ordering of files based on number prefix."
+        },
         "markdown-fiction-writer.edit.disableKeybindings": {
           "type": "boolean",
           "scope": "application",
@@ -655,6 +688,27 @@
     },
     "commands": [
       {
+        "command": "fiction-writer.extension.moveToTrash",
+        "title": "Move to trash",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(trash)",
+        "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.moveFileUp",
+        "title": "Move file up",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(arrow-up)",
+        "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.moveFileDown",
+        "title": "Move file up",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(arrow-down)",
+        "when": "false"
+      },
+      {
         "command": "fiction-writer.extension.setWritingModeTheme",
         "title": "Set Current theme as Enhanced Zen Mode theme",
         "category": "Markdown Fiction Writer"
@@ -819,7 +873,6 @@
     ]
   },
   "scripts": {
-
     "vscode:prepublish": "webpack --mode production",
     "webpack": "webpack --mode development",
     "webpack-dev": "webpack --mode development --watch",
@@ -839,7 +892,7 @@
     "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.20",
     "@types/js-yaml": "^4.0.0",
-    "@types/mocha": "^8.0.4",
+    "@types/mocha": "^8.2.1",
     "@types/node": "^12.11.7",
     "@types/vscode": "^1.52.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
@@ -847,8 +900,8 @@
     "eslint": "^7.15.0",
     "glob": "^7.1.6",
     "jest": "^26.6.3",
-    "mocha": "^8.1.3",
-    "ts-jest": "^26.5.2",
+    "mocha": "^8.3.1",
+    "ts-jest": "^26.5.3",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.2",
     "vsce": "^1.85.0",

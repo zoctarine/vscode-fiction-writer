@@ -1,4 +1,4 @@
-import { TextDocument, TextEditor, window, workspace, Uri, FileType } from 'vscode';
+import { TextDocument, TextEditor, window, Uri } from 'vscode';
 
 export * from './constants';
 export * from './disposables';
@@ -6,40 +6,74 @@ export * as StringUtils from './strings';
 export * from './observables';
 export * from './inMemoryCache';
 
+export enum SupportedContent {
+  Unknown = 0,  	   // 000 -- the bitshift is unnecessary
+  Fiction = 1 << 0,  // 001
+  Metadata = 1 << 1, // 010
+}
+
+export class ContentType {
+
+  constructor(public supports: SupportedContent = SupportedContent.Unknown) {
+  }
+
+  isKnown(): boolean {
+    return this.supports !== SupportedContent.Unknown;
+  }
+
+  has(content: SupportedContent): boolean {
+    if (content === SupportedContent.Unknown) {
+      return this.supports === content;
+    }
+
+    return (this.supports & content) === content;
+  }
+
+  add(content: SupportedContent) {
+    this.supports |= content;
+  }
+
+  clear() {
+    this.supports = SupportedContent.Unknown;
+  }
+}
+
+
 /**
  * Checks that the editor is valid editor for this extension
  * @param editor Usually the active text editor
  */
-export function isSupported(editor?: TextEditor) {
-	return isSupportedDoc(editor?.document);
+export function getContentType(document?: TextDocument): ContentType {
+  const result = new ContentType();
+  if (document === undefined || document === null) return result;
+
+  if (document.languageId === 'yaml' || document.languageId === 'markdown') {
+    result.add(SupportedContent.Metadata);
+  }
+
+  if (document.languageId === 'markdown') {
+    result.add(SupportedContent.Fiction);
+  }
+
+  return result;
 }
 
-export function isSupportedDoc(document?: TextDocument){
-	return document !== undefined && document !== null && document.languageId === 'markdown';
-}
-
-export function isInActiveEditor(uri: Uri | undefined): boolean {
+export function isInActiveEditor(uri: Uri | undefined, supportedContent: SupportedContent): boolean {
   if (!uri) return false;
 
-  const editor = getActiveEditor();
+  const editor = getActiveEditor(supportedContent);
   if (!editor?.document) return false;
 
   return uri && editor.document.uri.fsPath === uri.fsPath;
 }
 
-export function isSupportedPath(uri: Uri | undefined): boolean {
-  if (!uri) return false;
-
-  return uri.fsPath.endsWith('.md');
-}
-
 /**
  * Returns the active text editor. If the editor is not valid, or supported, it returns undefined.
  */
-export function getActiveEditor(): TextEditor | undefined {
-	const editor = window.activeTextEditor;
+export function getActiveEditor(supportedContent: SupportedContent): TextEditor | undefined {
+  const editor = window.activeTextEditor;
 
-	return isSupported(editor)
-		? editor
-		: undefined;
+  return getContentType(editor?.document).has(supportedContent)
+    ? editor
+    : undefined;
 }

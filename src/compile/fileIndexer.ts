@@ -1,7 +1,8 @@
 import * as glob from 'glob';
 import * as path from 'path';
-import { extractMetadata, IFileInfo, KnownMeta } from "../metadata";
-import { IDisposable, InMemoryCache, Observable } from "../utils";
+import { extractMetadata, fileGroup, IFileInfo, KnownMeta } from "../metadata";
+import { fileManager } from '../smartRename';
+import { ContentType, IDisposable, InMemoryCache,  Observable } from "../utils";
 
 export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable {
   private fileInfos: InMemoryCache<IFileInfo>;
@@ -43,9 +44,21 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     });
   }
 
+  private getKey(filePath: string): string {
+    if (!filePath) return '';
+    const contentType = fileManager.getPathContentType(filePath);
+    if (contentType.isKnown()) {
+      filePath = path.normalize(filePath);
+      return fileGroup(filePath).path;
+    }
+
+    return filePath;
+  }
+
   public index(filePath?: string, notifyChange: boolean = true): IFileInfo | undefined {
     if (!filePath || filePath === '') return;
-    filePath = path.normalize(filePath);
+    filePath = this.getKey(filePath);
+
     let fileInfo: IFileInfo = {
       path: filePath,
     };
@@ -63,29 +76,29 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     return fileInfo;
   }
   public getById(id: string): IFileInfo[] {
-    const result:IFileInfo[] = [];
+    const result: IFileInfo[] = [];
 
     this.fileInfos
       .getSnapshot()
       .forEach(f => {
-        if (f && f[1] && f[1].id === id){
+        if (f && f[1] && f[1].id === id) {
           result.push(f[1]);
         }
       });
 
-      return result;
+    return result;
   }
 
-  public getByPath(filePath: string): IFileInfo | null | undefined { 
+  public getByPath(filePath: string): IFileInfo | null | undefined {
     if (!filePath || filePath === '') return;
-    filePath = path.normalize(filePath);
+    filePath = this.getKey(filePath);
 
     return this.fileInfos.get(filePath);
-   }
+  }
 
   public delete(filePath: string, notify: boolean = true) {
     if (!filePath || filePath === '') return;
-    filePath = path.normalize(filePath);
+    filePath = this.getKey(filePath);
 
     this.fileInfos.remove(filePath);
 

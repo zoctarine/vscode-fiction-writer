@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import { Observer, IObservable } from '../utils';
 import { Config } from '../config';
+import { fileGroup } from '../metadata';
 
 export class FileTagDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
   private decorations: { [key: string]: vscode.FileDecoration };
@@ -61,8 +62,10 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
   readonly onDidChangeFileDecorations: Event<Uri[]> = this._onDidChangeDecorations.event;
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
+
+    if (!uri.fsPath.endsWith('.md')) {return Promise.reject(); }
+
     return new Promise((resolve, reject) => {
-      if (!uri.fsPath.endsWith('.md')) reject();
       try {
         let buffer = '';
         let rs = fs.createReadStream(uri.fsPath, { encoding: 'utf8', highWaterMark: 256 });
