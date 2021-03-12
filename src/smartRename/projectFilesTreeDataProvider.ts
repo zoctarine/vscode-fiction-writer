@@ -3,7 +3,7 @@ import * as path from 'path';
 import { FileIndexer } from '../compile';
 import { Config } from '../config';
 import { IFileInfo } from '../metadata';
-import { Constants, getActiveFictionEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
+import { Constants, getActiveEditor, IObservable, IObserver, KnownColor, Observer } from '../utils';
 import { getFileTree } from '.';
 
 class FileTreeItem extends vscode.TreeItem {

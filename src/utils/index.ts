@@ -1,4 +1,4 @@
-import { TextDocument, TextEditor, window, workspace, Uri, FileType } from 'vscode';
+import { TextDocument, TextEditor, window, Uri } from 'vscode';
 
 export * from './constants';
 export * from './disposables';
@@ -6,90 +6,74 @@ export * as StringUtils from './strings';
 export * from './observables';
 export * from './inMemoryCache';
 
-export enum ContentType {
-	Unknown = 0,
-	Fiction = 1,
-	Metadata = 2,
+export enum SupportedContent {
+  Unknown = 0,  	   // 000 -- the bitshift is unnecessary
+  Fiction = 1 << 0,  // 001
+  Metadata = 1 << 1, // 010
+}
+
+export class ContentType {
+
+  constructor(public supports: SupportedContent = SupportedContent.Unknown) {
   }
+
+  isKnown(): boolean {
+    return this.supports !== SupportedContent.Unknown;
+  }
+
+  has(content: SupportedContent): boolean {
+    if (content === SupportedContent.Unknown) {
+      return this.supports === content;
+    }
+
+    return (this.supports & content) === content;
+  }
+
+  add(content: SupportedContent) {
+    this.supports |= content;
+  }
+
+  clear() {
+    this.supports = SupportedContent.Unknown;
+  }
+}
+
 
 /**
  * Checks that the editor is valid editor for this extension
  * @param editor Usually the active text editor
  */
-export function isFictionDocument(document?: TextDocument){
-	return document !== undefined && document !== null && document.languageId === 'markdown';
+export function getContentType(document?: TextDocument): ContentType {
+  const result = new ContentType();
+  if (document === undefined || document === null) return result;
+
+  if (document.languageId === 'yaml' || document.languageId === 'markdown') {
+    result.add(SupportedContent.Metadata);
+  }
+
+  if (document.languageId === 'markdown') {
+    result.add(SupportedContent.Fiction);
+  }
+
+  return result;
 }
 
-export function isMetadataDocument(document?: TextDocument){
-	return document !== undefined && document !== null && document.languageId === 'yaml';
-}
-
-export function isInActiveFictionEditor(uri: Uri | undefined): boolean {
+export function isInActiveEditor(uri: Uri | undefined, supportedContent: SupportedContent): boolean {
   if (!uri) return false;
 
-  const editor = getActiveFictionEditor();
+  const editor = getActiveEditor(supportedContent);
   if (!editor?.document) return false;
 
   return uri && editor.document.uri.fsPath === uri.fsPath;
 }
 
-export function isInActiveMetadataEditor(uri: Uri | undefined): boolean {
-	if (!uri) return false;
-	if (isInActiveFictionEditor(uri)) return true;
-
-	const editor = getActiveMetadataEditor();
-	if (!editor?.document) return false;
-
-	return uri && editor.document.uri.fsPath === uri.fsPath;
-  }
-
-
- export function getEditorContentType(editor?: TextEditor) {
-	return getDocumentContentType(editor?.document);
-}
-
-export function getDocumentContentType(document?: TextDocument){
-	return getUriContentType(document?.uri);
-}
-
-export function getUriContentType(uri?: Uri) : ContentType{
-	return getPathContentType(uri?.fsPath);
-}
-
-export function getPathContentType(path?: string) : ContentType {
-	if (!path) return ContentType.Unknown;
-
-	if (path.toLowerCase().endsWith('.md')) return ContentType.Fiction;
-	if (path.toLowerCase().endsWith('.yml')) return ContentType.Metadata;
-
-	return ContentType.Unknown;
-}
-
 /**
  * Returns the active text editor. If the editor is not valid, or supported, it returns undefined.
  */
-export function getActiveFictionEditor(): TextEditor | undefined {
-	const editor = window.activeTextEditor;
+export function getActiveEditor(supportedContent: SupportedContent): TextEditor | undefined {
+  const editor = window.activeTextEditor;
 
-	return getEditorContentType(editor) === ContentType.Fiction
-		? editor
-		: undefined;
-}
-
-/**
- * Returns the active text editor. If the editor is not valid, or supported, it returns undefined.
- */
- export function getActiveMetadataEditor(): TextEditor | undefined {
-	const editor = window.activeTextEditor;
-	const editorContent = getEditorContentType(editor);
-
-	return editorContent === ContentType.Fiction || editorContent === ContentType.Metadata
-		? editor
-		: undefined;
-}
-
-export function isFictionOrMetadataUri(uri?: Uri) {
-	const contentType = getUriContentType(uri);
-
-	return contentType === ContentType.Fiction || contentType === ContentType.Metadata;
+  return getContentType(editor?.document).has(supportedContent)
+    ? editor
+    : undefined;
 }

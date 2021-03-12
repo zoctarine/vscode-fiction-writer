@@ -1,7 +1,8 @@
 import * as glob from 'glob';
 import * as path from 'path';
 import { extractMetadata, fileGroup, IFileInfo, KnownMeta } from "../metadata";
-import { ContentType, getPathContentType, IDisposable, InMemoryCache, isFictionOrMetadataUri, Observable } from "../utils";
+import { fileManager } from '../smartRename';
+import { ContentType, IDisposable, InMemoryCache,  Observable } from "../utils";
 
 export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable {
   private fileInfos: InMemoryCache<IFileInfo>;
@@ -45,8 +46,8 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
 
   private getKey(filePath: string): string {
     if (!filePath) return '';
-    const contentType = getPathContentType(filePath);
-    if (contentType === ContentType.Fiction || contentType === ContentType.Metadata) {
+    const contentType = fileManager.getPathContentType(filePath);
+    if (contentType.isKnown()) {
       filePath = path.normalize(filePath);
       return fileGroup(filePath).path;
     }

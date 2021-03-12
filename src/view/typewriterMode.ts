@@ -1,6 +1,6 @@
 import { workspace } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer, getActiveFictionEditor } from '../utils';
+import { IObservable, Observer, getActiveEditor, SupportedContent } from '../utils';
 
 export class TypewriterModeObserver extends Observer<Config>{
 
@@ -15,7 +15,7 @@ export class TypewriterModeObserver extends Observer<Config>{
   }
 
   updateCursorSurroundingLines() {
-    const editor = getActiveFictionEditor();
+    const editor = getActiveEditor(SupportedContent.Fiction);;
     if (!editor) return;
 
     let maxHeight = 0;
