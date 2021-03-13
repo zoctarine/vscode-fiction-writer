@@ -34,16 +34,15 @@ export function activate(context: vscode.ExtensionContext) {
 
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
-  const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
   const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
-
+  
+  const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
   const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
   const statTree = vscode.window.createTreeView('fw-statistics', { treeDataProvider: docStatisticProvider });
   const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
-
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
-
+  metadataProvider.tree = metadataTree;
 
   const watcher = vscode.workspace.createFileSystemWatcher('**/*.{[mM][dD],[yY][mM][lL]}', false, false, false);
   const cmd = Constants.Commands;

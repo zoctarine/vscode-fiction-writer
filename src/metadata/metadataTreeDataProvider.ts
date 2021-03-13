@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { Config } from '../config';
 import { Constants, getActiveEditor, IObservable, KnownColor, Observer, SupportedContent } from '../utils';
 import { IFileInfo, MetadataFileCache } from './metadataFileCache';
@@ -8,6 +9,7 @@ import { MetadataTreeItem } from "./metadataTreeItem";
 export class MarkdownMetadataTreeDataProvider extends Observer<Config> implements vscode.TreeDataProvider<MetadataTreeItem> {
   private document: vscode.TextDocument | undefined;
   private fileInfo: IFileInfo | undefined;
+  public tree: vscode.TreeView<MetadataTreeItem> | undefined;
 
   constructor(configService: IObservable<Config>, private cache: MetadataFileCache) {
     super(configService);
@@ -21,6 +23,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     if (!this.document || !this.fileInfo) {
       return Promise.resolve([]);
     }
+
     const elements = element
       ? this.parseObjectTree(element.value, element)
       : this.parseObjectTree(this.fileInfo?.metadata?.value);
@@ -31,16 +34,19 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     elements.forEach(item => {
       let icon: string | undefined = undefined;
       const metaLocation = this.fileInfo?.metadata?.location;
-      if (metaLocation)
-      item.command = {
-        title: 'Open Meta',
-        command: 'vscode.open',
-        arguments: [
+      if (metaLocation) {
+        item.command = {
+          title: 'Open Meta',
+          command: 'vscode.open',
+          arguments: [
             vscode.Uri.file(metaLocation),
-             {
-              selection: new vscode.Range(new vscode.Position(0,0), new vscode.Position(0,0))
+            {
+              selection: new vscode.Range(
+                new vscode.Position(0, 0),
+                new vscode.Position(0, 0))
             }
-        ]
+          ]
+        };
       };
 
       let label = showLabels || item.parent
@@ -54,7 +60,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
       if (label && this.state.metaCategoryIconsEnabled) {
         icon = this.state.metaCategories.get(label) ?? 'debug-stackframe-dot';
         if (icon) {
-        const keyword = showLabels ? item.description?.toString()?.toLowerCase() : item.label.toLowerCase();
+          const keyword = showLabels ? item.description?.toString()?.toLowerCase() : item.label?.toLowerCase();
           let color = keyword
             ? useColors && this.state.metaKeywordColors.get(keyword)
             : undefined;
@@ -139,7 +145,22 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     return new Promise((resolve, reject) => {
       this.document = getActiveEditor(SupportedContent.Metadata)?.document;
       const meta = this.cache.get(this.document?.uri);
+
       if (meta) {
+        if (this.tree) {
+          try {
+            const values = meta.metadata?.value;
+            this.tree.description = values?.id ?? path.parse(meta.key)?.name;
+            this.tree.message = '';
+            if (values) {
+              if (this.state.metaSummaryCategoryName && this.state.metaSummaryCategoryName.trim() !== '') {
+                this.tree.message = values[this.state.metaSummaryCategoryName.trim()];
+              };
+            }
+          } catch (error) {
+            //TODO: Log error
+          }
+        }
         this.fileInfo = meta;
         this._onDidChangeTreeData.fire();
         resolve(this.fileInfo);

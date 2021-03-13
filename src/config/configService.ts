@@ -106,6 +106,7 @@ export class ConfigService extends Observable<Config> {
     config.metaCategories = new Map<string, string>();
     config.metaCategoryIconsEnabled = this.read<boolean>(metadata, 'categories.showIcons', true) && config.metaEnabled;
     config.metaCategoryNamesEnabled = this.read<boolean>(metadata, 'categories.showNames', true) && config.metaEnabled;
+    config.metaSummaryCategoryName = this.read<string>(metadata, 'summaryCategoryName', 'summary');
 
     config.metaEasyLists = this.read<string>(metadata, 'easyLists', ',');
     config.metaDefaultCategory = this.read<string>(metadata, 'defaultCategory', 'tags');
