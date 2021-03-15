@@ -168,8 +168,14 @@
           "name": "Metadata",
           "icon": "$(eye)",
           "contextualTitle": "Metadata",
-          "when": "isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
-        }
+          "when": "fw:isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
+        },
+        {
+					"id": "fw-notes",
+					"name": "Notes",
+					"type": "webview",
+          "when": "fw:isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
+				}
       ],
       "word-frequency-explorer": [
         {
@@ -184,14 +190,14 @@
           "name": "Word Frequencies",
           "icon": "$(eye)",
           "contextualTitle": "Word n-Gram Frequencies",
-          "when": "isSupportedEditor"
+          "when": "fw:isSupportedEditor"
         },
         {
           "id": "fw-statistics",
           "name": "Statistics",
           "icon": "$(eye)",
           "contextualTitle": "Document statistics",
-          "when": "isSupportedEditor"
+          "when": "fw:isSupportedEditor"
         }
       ]
     },
@@ -234,6 +240,31 @@
         }
       ],
       "view/title": [
+        {
+					"command": "fiction-writer.extension.notes.open",
+					"group": "navigation",
+					"when": "fw:hasOpenedNote && view == fw-notes"
+				},
+        {
+					"command": "fiction-writer.extension.notes.new",
+					"group": "navigation",
+					"when": "!fw:hasOpenedNote && view == fw-notes"
+				},
+        {
+					"command": "fiction-writer.extension.notes.save",
+					"group": "navigation",
+					"when": "fw:hasOpenedNote && view == fw-notes"
+				},
+        {
+					"command": "fiction-writer.extension.notes.pinOn",
+					"group": "navigation",
+					"when": "fw:hasOpenedNote && !fw:isNotePinned && view == fw-notes"
+				},
+        {
+					"command": "fiction-writer.extension.notes.pinOff",
+					"group": "navigation",
+					"when": "fw:hasOpenedNote && fw:isNotePinned && view == fw-notes"
+				},
         {
           "command": "fiction-writer.extension.wordFrequency.refresh",
           "when": "view == fw-wordFrequencies",
@@ -705,6 +736,41 @@
       }
     },
     "commands": [
+      {
+				"command": "fiction-writer.extension.notes.new",
+        "category": "Markdown Fiction Writer",
+				"title": "Create New Notes File",
+        "icon": "$(new-file)",
+        "when": "false"
+			},
+      {
+				"command": "fiction-writer.extension.notes.open",
+        "category": "Markdown Fiction Writer",
+				"title": "Open Notes File",
+        "icon": "$(go-to-file)",
+        "when": "false"
+			},
+      {
+				"command": "fiction-writer.extension.notes.save",
+        "category": "Markdown Fiction Writer",
+				"title": "Save Notes",
+        "icon": "$(save)",
+        "when": "false"
+			},
+      {
+				"command": "fiction-writer.extension.notes.pinOn",
+        "category": "Markdown Fiction Writer",
+				"title": "Pin ON",
+        "icon": "$(pin)",
+        "when": "false"
+			},
+      {
+				"command": "fiction-writer.extension.notes.pinOff",
+        "category": "Markdown Fiction Writer",
+				"title": "Pin OFF",
+        "icon": "$(pinned)",
+        "when": "false"
+			},
       {
         "command": "fiction-writer.extension.moveToTrash",
         "title": "Move to trash",

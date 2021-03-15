@@ -10,6 +10,11 @@ export interface IFileInfo {
   path?: string,
   id?: string,
   metadata?: IMetadata,
+  notes?: INotes
+}
+
+export interface INotes {
+  path?: string
 }
 
 export class MetadataFileCache extends Observer<Config> {

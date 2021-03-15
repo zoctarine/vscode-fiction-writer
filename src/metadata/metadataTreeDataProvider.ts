@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { Config } from '../config';
-import { Constants, getActiveEditor, IObservable, KnownColor, Observer, SupportedContent } from '../utils';
+import { getActiveEditor, IObservable, Observer, SupportedContent } from '../utils';
 import { IFileInfo, MetadataFileCache } from './metadataFileCache';
 import { MetadataTreeItem } from "./metadataTreeItem";
 

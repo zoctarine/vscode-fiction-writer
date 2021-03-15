@@ -57,12 +57,15 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     let fileInfo: IFileInfo = { key };
 
     try {
-      // search for separate file metadata
       const group = fileManager.getGroup(filePath);
       const meta = extractMetadata(group);
+      const notes =  group.getPath(SupportedContent.Notes);
+
       fileInfo.id = meta?.value?.id;
       fileInfo.path = group.getPath(SupportedContent.Fiction);
       fileInfo.metadata = meta;
+      fileInfo.notes = notes ? {path: notes} : undefined;
+
     } catch (err) {
       console.error(`Could not read [${filePath}]: ${err}`);
     } finally {
@@ -86,7 +89,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     return result;
   }
 
-  public getByPath(filePath: string): IFileInfo | null | undefined {
+  public getByPath(filePath?: string): IFileInfo | null | undefined {
     if (!filePath || filePath === '') return;
     const key = this.getKey(filePath);
 

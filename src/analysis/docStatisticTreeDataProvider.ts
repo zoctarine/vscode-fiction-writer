@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { RegEx } from '../utils';
+import { getActiveEditor, RegEx, SupportedContent } from '../utils';
 import { WordStatTreeItem } from './wordStatTreeItem';
 
 const count = (text:string, pattern:RegExp) => {
@@ -46,7 +46,7 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
   readonly onDidChangeTreeData: vscode.Event<WordStatTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   refresh(): void {
-    this.document = vscode.window.activeTextEditor?.document;
+    this.document = getActiveEditor(SupportedContent.Fiction)?.document;
     this._onDidChangeTreeData.fire();
   }
 

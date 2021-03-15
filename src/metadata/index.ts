@@ -4,10 +4,12 @@ import * as path from 'path';
 import { pathToFileURL } from 'url';
 import { fileManager, IFileGroup } from '../smartRename';
 import { SupportedContent } from '../utils';
+
 export * from './metadataFileCache';
 export * from './metadataTreeDataProvider';
 export * from './metadataDecorationProvider';
 export * from './metadataTreeItem';
+export * from './metadataNotesProvider';
 
 export function extract(text: string) {
   const exp = /(?:^---[\n\r]+)(.*?)(?:---|\.\.\.)/sgu;

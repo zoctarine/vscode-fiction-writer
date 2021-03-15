@@ -60,7 +60,12 @@ export const Constants = {
     EXIT_ZEN_MODE: 'fiction-writer.extension.exitWritingMode',
     SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme',
     MOVE_FILE_UP: 'fiction-writer.extension.moveFileUp',
-    MOVE_FILE_DOWN: 'fiction-writer.extension.moveFileDown'
+    MOVE_FILE_DOWN: 'fiction-writer.extension.moveFileDown',
+    SAVE_NOTES: 'fiction-writer.extension.notes.save',
+    OPEN_NOTES: 'fiction-writer.extension.notes.open',
+    NEW_NOTES: 'fiction-writer.extension.notes.new',
+    PIN_NOTE: 'fiction-writer.extension.notes.pinOn',
+    UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff'
   },
 
   KnownLabels: [

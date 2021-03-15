@@ -5,10 +5,10 @@ import * as fs from 'fs';
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, getContentType, isInActiveEditor, SupportedContent } from './utils';
+import { Constants, DialogueMarkerMappings, getActiveEditor, getContentType, isInActiveEditor, SupportedContent } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider } from './metadata';
+import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider } from './metadata';
 import { fileManager, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
@@ -35,7 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
-  
+  const notesProvider = new MetadataNotesProvider(context.extensionUri, fileIndexer);
+
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
   const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
@@ -43,8 +44,11 @@ export function activate(context: vscode.ExtensionContext) {
   const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
   metadataProvider.tree = metadataTree;
+  const notesWebView = vscode.window.registerWebviewViewProvider(MetadataNotesProvider.viewType, notesProvider, {
+    webviewOptions: { retainContextWhenHidden: true }
+  });
 
-  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{[mM][dD],[yY][mM][lL]}', false, false, false);
+  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}', false, false, false);
   const cmd = Constants.Commands;
   context.subscriptions.push(
     cache,
@@ -56,6 +60,8 @@ export function activate(context: vscode.ExtensionContext) {
     metadataDecoration,
     statusBar,
     fileIndexer,
+    notesWebView,
+
 
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
@@ -87,7 +93,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
-    vscode.commands.registerCommand(cmd.MOVE_FILE_UP, (e) => { fileManager.smartRename(e.fsPath);}),
+    vscode.commands.registerCommand(cmd.UNPIN_NOTE, () => { if (notesProvider.unPin()) toggleIsNotePinned(false); }),
+    vscode.commands.registerCommand(cmd.PIN_NOTE, () => { if (notesProvider.pin()) toggleIsNotePinned(true); }),
+    vscode.commands.registerCommand(cmd.SAVE_NOTES, (e) => { notesProvider.saveNotes(); }),
+    vscode.commands.registerCommand(cmd.NEW_NOTES, (e) => { notesProvider.newNotes(); }),
+    vscode.commands.registerCommand(cmd.OPEN_NOTES, (e) => { notesProvider.openNotes(); }),
+
+    vscode.commands.registerCommand(cmd.MOVE_FILE_UP, (e) => { fileManager.smartRename(e.fsPath); }),
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
       updateIsSupportedEditor(e);
@@ -96,10 +108,16 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (isInActiveEditor(docUri, SupportedContent.Fiction)) {
         docStatisticProvider.refresh();
+        notesProvider.loadDocument(e?.document?.uri?.fsPath);
+      };
+
+      if (isInActiveEditor(docUri, SupportedContent.Notes)) {
+        notesProvider.loadDocument(e?.document?.uri?.fsPath);
       };
 
       if (isInActiveEditor(docUri, SupportedContent.Metadata)) {
         await metadataProvider.refresh();
+        notesProvider.loadDocument(e?.document?.uri?.fsPath);
       }
     }),
 
@@ -112,6 +130,9 @@ export function activate(context: vscode.ExtensionContext) {
       if (isInActiveEditor(e, SupportedContent.Metadata)) {
         metadataProvider.refresh();
       }
+
+      notesProvider.refresh();
+
       metadataDecoration.fire([e]);
     }),
 
@@ -119,6 +140,7 @@ export function activate(context: vscode.ExtensionContext) {
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
+      // TODO: delete notes or meta before deleting fiction
       fileIndexer.delete(e.fsPath);
 
       if (isInActiveEditor(e, SupportedContent.Metadata)) {
@@ -136,6 +158,10 @@ export function activate(context: vscode.ExtensionContext) {
       if (isInActiveEditor(e, SupportedContent.Fiction)) {
         docStatisticProvider.refresh();
       }
+
+      if (isInActiveEditor(e, SupportedContent.Notes)) {
+        notesProvider.loadDocument(e?.fsPath);
+      };
 
       if (isInActiveEditor(e, SupportedContent.Metadata)) {
         metadataProvider.refresh();
@@ -198,7 +224,7 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  const globPattern = '**/*.{[mM][dD],[yY][mM][lL]}';
+  const globPattern = '**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}';
 
   updateIsSupportedEditor(vscode.window.activeTextEditor);
   fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
@@ -212,6 +238,8 @@ export function activate(context: vscode.ExtensionContext) {
   });
   metadataProvider.refresh();
   docStatisticProvider.refresh();
+  notesProvider.refresh();
+  notesProvider.loadDocument(getActiveEditor(SupportedContent.Notes)?.document?.uri?.fsPath);
   showAgreeWithChanges(configService);
   exitZenWritingMode(configService);
 }
@@ -219,8 +247,12 @@ export function activate(context: vscode.ExtensionContext) {
 function updateIsSupportedEditor(editor: vscode.TextEditor | undefined) {
   const contentType = getContentType(editor?.document);
 
-  vscode.commands.executeCommand('setContext', 'isSupportedEditor', contentType.has(SupportedContent.Fiction));
-  vscode.commands.executeCommand('setContext', 'isSupportedMetadata', contentType.has(SupportedContent.Metadata));
+  vscode.commands.executeCommand('setContext', 'fw:isSupportedEditor', contentType.has(SupportedContent.Fiction));
+  vscode.commands.executeCommand('setContext', 'fw:isSupportedMetadata', contentType.has(SupportedContent.Metadata) || contentType.has(SupportedContent.Notes));
+}
+
+function toggleIsNotePinned(isPineed: boolean) {
+  vscode.commands.executeCommand('setContext', 'fw:isNotePinned', isPineed);
 }
 
 function exitZenWritingMode(configurationService: ConfigService) {
