@@ -10,7 +10,8 @@ Quick overview:
 
 - **(4)**: Assigned keyword colors: `done` has the color green, visible as icon color in **Metadata** and as file color in **Explorer**. The `04 - A door is opened.md` has the tag `rev1` that has the yellow color.
 
-??? setting "`config.markdown-fiction-writer.metadata.enabled`"
+??? setting "Metadata: Enabled"
+    - Key: `config.markdown-fiction-writer.metadata.enabled`
     - Enables/disables all metadata related features described in this section.
     - Default: `enabled`
 
@@ -75,7 +76,7 @@ You can add any metadata category or keyword, but some categories are recognized
 
 For all known documents (in this case, markdown) that contain `yaml` metadata, the **Metadata View** will be enabled in the **Explorer**.
 
-The view parses known metadata, and displays it as a tree. 
+The view parses known metadata, and displays it as a tree.
 
 It optionally can include icons, or colors.
 
@@ -85,7 +86,8 @@ It optionally can include icons, or colors.
 
 ## Easy Lists
 
-??? setting "markdown-fiction-writer.metadata.easyLists"
+??? setting "Metadata: Easy Lists"
+    - Key: `markdown-fiction-writer.metadata.easyLists`
     Under **Metadata: Easy Lists**, you can configure if you want to split metadata values by a specific character.
 
     The default value is comma (`,`), that means each comma separated item will be treated as a list item.
@@ -132,8 +134,9 @@ if the separator is `,`. The separator is configurable under **Metadata: Easy Li
 
 ## Default categories
 
-??? setting "markdown-fiction-writer.metadata.defaultCategory"
-    Under **Metadata: Default Category**, you can configure the default category you want uncategorized items to be assigned to. To disable this feature, just leave the default category name empty.
+??? setting "Metadata: Default Category"
+    - Key: `markdown-fiction-writer.metadata.defaultCategory`
+    - You can configure the default category you want uncategorized items to be assigned to. To disable this feature, just leave the default category name empty.
 
 If you quickly want to categorize a document, you can write only the _keyword_ or _keywords_ between the metadata block markers, like so:
 
@@ -172,8 +175,9 @@ status: draft
 
 # Icons
 
-!!! setting "`markdown-fiction-writer.metadata.categories.icons`"
-    Predefined category icons, with the possiblity to add any number of new ones.
+!!! setting "Metadata > Categories: Icons"
+    - Key: `markdown-fiction-writer.metadata.categories.icons`
+    - Predefined category icons, with the possiblity to add any number of new ones.
 
 Sets icons for categories in the **Metadata View**.
 
@@ -194,26 +198,67 @@ All categories from this list, are treated as _known categories_. This means, th
 
 You can completely disable icons, by unchecking **Metadata > Category: Show Icons**
 
-!!! setting "`markdown-fiction-writer.metadata.categories.showIcons`"
-    Shows category icons in the **Metadata** view. Disable this if you do not want to view any icons.
-    Default value: `enabled`
-
+!!! setting "Metadata > Categories: Show Icons"
+    - Key: `markdown-fiction-writer.metadata.categories.showIcons`
+    - Shows category icons in the **Metadata** view. Disable this if you do not want to view any icons.
+    - Default value: `enabled`
 
 If you want, you can also hide category labels (only for 1^st^ level/root categories) by unchecking **Metadata > Category: Show Names**
 
-!!! setting "`markdown-fiction-writer.metadata.categories.showNames`"
-    Default value: `enabled`
+??? setting "Metadata > Category: Show Names"
+    - Key: `markdown-fiction-writer.metadata.categories.showNames`
+    - Default value: `enabled`
 
 # File Explorer Badges
 
-!!! setting "`markdown-fiction-writer.metadata.keywords.badges`"
-    *coming soon*
+Visual studio code File Explorer has the possibility of showing 1-2 character badges near a document.
+Of course, multiple extensions already contribute to this functionality, but you can also make **Fiction Writer** add additional badges based on metadata keywords.
 
-!!! setting "`markdown-fiction-writer.metadata.keywords.badgeCategory`"
-    *coming soon*
+A mapping between metadata keywords and the displayed badge can be set in **Fiction Writer** settings.
 
-!!! setting "`markdown-fiction-writer.metadata.keywords.badgesInFileExplorer`"
-    *coming soon*
+??? setting "Metadata > Keywords: Badges"
+    - Key: `markdown-fiction-writer.metadata.keywords.badges`
+
+![Badge Mapping](img/meta_badge_01.jpg)
+
+To define a badge following this steps:
+
+- **Step 1:** Define a new mapping in Settings, under **Metadata: Keyword: Badges**. Example `rev2` is `R2`
+- **Step 2:** Add metadata to your document. Example: `tag: rev2`
+- **Step 3:** Inspect **Explorer**. You should see `R2` badge for your document.
+
+!!! note "Note"
+    When resolving kewyord/badge mappings, only the **first match** will be used. So, if you have defined multiple keyword mappings, only one can be shown in file explorer.
+
+    For example, if you define the following metadata block and have mappings: `done`->`OK` and `rev`->`R1`:
+    ```yaml
+    ---
+    tag: rev1
+    state : done
+    ---
+    ```
+    `rev1`->`R1` will be used, as `rev1` is the first match found.
+
+
+??? setting "Metadata > Keywords: Badge Category"
+    - Key: `markdown-fiction-writer.metadata.keywords.badgeCategory`
+    - Default value: empty
+
+By default, all metadata keywords are considered when searching for badge mappings. If you want to restrict the search for only one category, you can specify a 1^st^ level category name under **Metadata > Keywords: Badge Categosry** and only that will be considered.
+
+Considering the above example, where we have mappings between: `done`->`OK` and `rev`->`R1`:
+```yaml
+---
+tag: rev1
+state : done
+---
+```
+if, the **Metadata > Keywords: Badge Category** is set to `state`, then `done`->`OK` will be used, as `done` is the first match found under the `state` category.
+
+
+??? setting "Metadata > Keywords: Badges in File Explorer"
+    - Key: `markdown-fiction-writer.metadata.keywords.badgesInFileExplorer`
+    - Default value: `enabled`
 
 # Keywords and Colors
 
