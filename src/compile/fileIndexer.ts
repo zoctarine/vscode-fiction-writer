@@ -1,8 +1,8 @@
 import * as glob from 'glob';
 import * as path from 'path';
-import { extractMetadata, fileGroup, IFileInfo, KnownMeta } from "../metadata";
+import { extractMetadata, IFileInfo, KnownMeta } from "../metadata";
 import { fileManager } from '../smartRename';
-import { ContentType, IDisposable, InMemoryCache,  Observable } from "../utils";
+import { ContentType, IDisposable, InMemoryCache, Observable, SupportedContent } from "../utils";
 
 export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable {
   private fileInfos: InMemoryCache<IFileInfo>;
@@ -36,7 +36,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
       try {
         const matches = glob.sync(p, { nodir: true });
         matches.forEach(match => this.delete(match, false)); // do not want to notify for each file,
-        this.notify();                                 // but only when parsing has finished
+        this.notify();                                       // but only when parsing has finished
         resolve(this.paths());
       } catch (error) {
         reject(error);
@@ -46,35 +46,35 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
 
   private getKey(filePath: string): string {
     if (!filePath) return '';
-    const contentType = fileManager.getPathContentType(filePath);
-    if (contentType.isKnown()) {
-      filePath = path.normalize(filePath);
-      return fileGroup(filePath).path;
-    }
-
-    return filePath;
+    const parsed = path.parse(path.normalize(filePath));
+    return path.join(parsed.dir, parsed.name);
   }
 
   public index(filePath?: string, notifyChange: boolean = true): IFileInfo | undefined {
     if (!filePath || filePath === '') return;
-    filePath = this.getKey(filePath);
+    const key = this.getKey(filePath);
 
-    let fileInfo: IFileInfo = {
-      path: filePath,
-    };
+    let fileInfo: IFileInfo = { key };
 
     try {
-      const meta = extractMetadata(filePath) as any;
-      fileInfo.id = meta?.id;
+      const group = fileManager.getGroup(filePath);
+      const meta = extractMetadata(group);
+      const notes =  group.getPath(SupportedContent.Notes);
+
+      fileInfo.id = meta?.value?.id;
+      fileInfo.path = group.getPath(SupportedContent.Fiction);
       fileInfo.metadata = meta;
+      fileInfo.notes = notes ? {path: notes} : undefined;
+
     } catch (err) {
       console.error(`Could not read [${filePath}]: ${err}`);
     } finally {
-      this.fileInfos.set(filePath, fileInfo);
+      this.fileInfos.set(key, fileInfo);
       if (notifyChange) this.notify();
     }
     return fileInfo;
   }
+
   public getById(id: string): IFileInfo[] {
     const result: IFileInfo[] = [];
 
@@ -89,18 +89,18 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     return result;
   }
 
-  public getByPath(filePath: string): IFileInfo | null | undefined {
+  public getByPath(filePath?: string): IFileInfo | null | undefined {
     if (!filePath || filePath === '') return;
-    filePath = this.getKey(filePath);
+    const key = this.getKey(filePath);
 
-    return this.fileInfos.get(filePath);
+    return this.fileInfos.get(key);
   }
 
   public delete(filePath: string, notify: boolean = true) {
     if (!filePath || filePath === '') return;
-    filePath = this.getKey(filePath);
+    const key = this.getKey(filePath);
 
-    this.fileInfos.remove(filePath);
+    this.fileInfos.remove(key);
 
     if (notify) this.notify();
   }
@@ -122,7 +122,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
       return allInfo.map(s => {
         if (s[1]) return s[1];
         return {
-          path: s[0]
+          key: s[0]
         };
       });
     }

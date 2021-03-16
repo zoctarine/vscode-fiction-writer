@@ -1,6 +1,6 @@
 import { Observable, Constants, DialogueMarkerMappings, OutputFormats, KnownColor } from '../utils';
 import { ConfigurationChangeEvent, ThemeColor, ThemeIcon, workspace, WorkspaceConfiguration } from 'vscode';
-import { Config, ContextConfig, IKvp } from './interfaces';
+import { Config, IContextConfig, IKvp } from './interfaces';
 import { ContextService } from './contextService';
 
 export class ConfigService extends Observable<Config> {
@@ -30,82 +30,91 @@ export class ConfigService extends Observable<Config> {
     const view = workspace.getConfiguration('markdown-fiction-writer.view');
     const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
+    const smartEdit = workspace.getConfiguration('markdown-fiction-writer.smartEdit');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
-    let config: Config = {
-      // event responsible
-      changeEvent: event,
+    let config : Config = new Config();
 
-      // configuration keys
-      keybindingsDisabled: this.read<boolean>(editing, 'disableKeybindings', false),
-      inverseEnter: this.read<string>(editing, 'easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER)
-        === Constants.Paragraph.NEW_ON_ENTER,
-      dialoguePrefix,
-      dialogueMarkerAutoReplace: this.read<boolean>(editDialogue, 'markerAutoReplace', true),
-      dialogueMarkerAutoDetect: false,
-      dialogueIndentAutoDetect: this.read<boolean>(editDialogue, 'sentenceIndentAutoDetect', true),
-      dialgoueIndentLength: this.read<number>(editDialogue, 'sentenceIndentAutoDetect', 0),
+    // event responsible for changing the configuration
+    config.changeEvent = event;
 
-      // EXPORT 
+    // configuration keys
+    config.keybindingsDisabled = this.read<boolean>(editing, 'disableKeybindings', false);
+    config.inverseEnter = this.read<string>(editing, 'easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER)
+      === Constants.Paragraph.NEW_ON_ENTER;
+    config.dialoguePrefix = dialoguePrefix;
+    config.dialogueMarkerAutoReplace = this.read<boolean>(editDialogue, 'markerAutoReplace', true);
+    config.dialogueMarkerAutoDetect = false;
+    config.dialogueIndentAutoDetect = this.read<boolean>(editDialogue, 'sentenceIndentAutoDetect', true);
+    config.dialgoueIndentLength = this.read<number>(editDialogue, 'sentenceIndentAutoDetect', 0);
 
-      compileTemplateFile: this.read<string>(exporting, 'outputTemplate.file', ''),
-      compileUseTemplateFile: this.read<boolean>(exporting, 'outputTemplate.enabled', false),
-      compileOutputFormat: this.read<string>(exporting, 'outputFormat.default', OutputFormats['odt']),
-      compileShowFormatPicker: this.read<boolean>(exporting, 'outputFormat.alwaysShowFormatPicker', true),
-      compileEmDash: this.read<boolean>(exporting, 'smartDeshes', true),
-      compileShowSaveDialogue: this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS)  === Constants.Compile.SaveDialogue.ALWAYS,
-      compileSkipCommentsFromToc: this.read<boolean>(exporting, 'skipCommentsFromToc', true),
-      compileTocFilename: this.read<string>(exporting, 'tocFilename', 'toc.md'),
-      compileShowsErrorInOutputFile:  this.read<boolean>(exporting, 'include.showsErrorInOutputFile', true),
-      compileIncludeIsEnabled:  this.read<boolean>(exporting, 'include.enabled', true),
-      compileSearchDocumentIdsInAllOpened:  this.read<boolean>(exporting, 'include.searchDocumentIdsInAllOpenFilesAndWorkspaces', false),
-      
-      // FORMATTING
+    // EXPORT
 
-      formattingIsEnabled: this.read<boolean>(formatting, 'enabled', true),
-      formattingFixMismatchDialogueMarkers: this.read<boolean>(formatting, 'fixMismatchDialogueMarkers', true),
-      formattingFixDialogueIndents: this.read<boolean>(formatting, 'fixDialogueIndents', true),
-      formattingFixParagraphSpacing: this.read<boolean>(formatting, 'fixParagraphSpacing', true),
-      formattingFixParagraphBreaks: this.read<string>(formatting, 'fixParagraphBreaks', Constants.Format.ParagraphBreaks.NONE),
-      formattingRemoveExtraSpaces: this.read<boolean>(formatting, 'removeExtraSpaces', true),
-      formattingRemoveExtraLines: this.read<boolean>(formatting, 'removeExtraLines', true),
-      formattingRemoveTrailingSpaces: this.read<boolean>(formatting, 'removeTrailingSpaces', true),
+    config.compileTemplateFile = this.read<string>(exporting, 'outputTemplate.file', '');
+    config.compileUseTemplateFile = this.read<boolean>(exporting, 'outputTemplate.enabled', false);
+    config.compileOutputFormat = this.read<string>(exporting, 'outputFormat.default', OutputFormats['odt']);
+    config.compileShowFormatPicker = this.read<boolean>(exporting, 'outputFormat.alwaysShowFormatPicker', true);
+    config.compileEmDash = this.read<boolean>(exporting, 'smartDeshes', true);
+    config.compileShowSaveDialogue = this.read<string>(exporting, 'showSaveDialogue', Constants.Compile.SaveDialogue.ALWAYS) === Constants.Compile.SaveDialogue.ALWAYS;
+    config.compileSkipCommentsFromToc = this.read<boolean>(exporting, 'skipCommentsFromToc', true);
+    config.compileTocFilename = this.read<string>(exporting, 'tocFilename', 'toc.md');
+    config.compileShowsErrorInOutputFile = this.read<boolean>(exporting, 'include.showsErrorInOutputFile', true);
+    config.compileIncludeIsEnabled = this.read<boolean>(exporting, 'include.enabled', true);
+    config.compileSearchDocumentIdsInAllOpened = this.read<boolean>(exporting, 'include.searchDocumentIdsInAllOpenFilesAndWorkspaces', false);
 
-      viewFileTags: this.read<{ [key: string]: string }>(view, 'fileTags.definitions', {}),
-      viewDialogueHighlight: this.read<boolean>(view, 'highlight.textBetweenQuotes', false),
-      viewDialogueHighlightMarkers: this.read<boolean>(view, 'highlight.dialogueMarkers', true),
-      viewFadeMetadata: this.read<boolean>(view, 'fadeMetadata', true),
-      viewZenModeEnabled: this.read<boolean>(view, 'writingMode.enabled', false),
-      viewZenModeTheme: this.read<string>(view, 'writingMode.theme', ''),
-      viewZenModeFontSize: this.read<number>(view, 'writingMode.fontSize', 0),
-      wrapIndent: this.read<number>(view, 'wordWrapIndent', 0),
+    // FORMATTING
 
-      foldSentences: this.read<boolean>(view, 'foldParagraphLines', true),
-      viewStatusBarEnabled: this.read<boolean>(view, 'statusBar.enabled', true),
+    config.formattingIsEnabled = this.read<boolean>(formatting, 'enabled', true);
+    config.formattingFixMismatchDialogueMarkers = this.read<boolean>(formatting, 'fixMismatchDialogueMarkers', true);
+    config.formattingFixDialogueIndents = this.read<boolean>(formatting, 'fixDialogueIndents', true);
+    config.formattingFixParagraphSpacing = this.read<boolean>(formatting, 'fixParagraphSpacing', true);
+    config.formattingFixParagraphBreaks = this.read<string>(formatting, 'fixParagraphBreaks', Constants.Format.ParagraphBreaks.NONE);
+    config.formattingRemoveExtraSpaces = this.read<boolean>(formatting, 'removeExtraSpaces', true);
+    config.formattingRemoveExtraLines = this.read<boolean>(formatting, 'removeExtraLines', true);
+    config.formattingRemoveTrailingSpaces = this.read<boolean>(formatting, 'removeTrailingSpaces', true);
 
-      isDialogueEnabled: isDialogueEnabled,
-      dialgoueIndent: '',
+    config.viewFileTags = this.read<{ [key: string]: string }>(view, 'fileTags.definitions', {});
+    config.viewDialogueHighlight = this.read<boolean>(view, 'highlight.textBetweenQuotes', false);
+    config.viewDialogueHighlightMarkers = this.read<boolean>(view, 'highlight.dialogueMarkers', true);
+    config.viewFadeMetadata = this.read<boolean>(view, 'fadeMetadata', true);
+    config.viewZenModeEnabled = this.read<boolean>(view, 'writingMode.enabled', false);
+    config.viewZenModeTheme = this.read<string>(view, 'writingMode.theme', '');
+    config.viewZenModeFontSize = this.read<number>(view, 'writingMode.fontSize', 0);
+    config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
-      // METADATA
-      
-      metaKeywordColors: new Map<string, ThemeColor>(),
-      metaKeywordShowInFileExplorer: this.read<boolean>(metadata, 'keywords.colorsInFileExplorer', true),
-      metaKeywordShowInMetadataView: this.read<boolean>(metadata, 'keywords.colorsInMetadataView', true),
-      
-      metaCategories: new Map<string, string>(),
-      metaCategoryIconsEnabled: this.read<boolean>(metadata, 'categories.showIcons', true),
-      metaCategoryNamesEnabled: this.read<boolean>(metadata, 'categories.showNames', true),
-      
-      metaEnabled: this.read<boolean>(metadata, 'enabled', true),
-      metaEasyLists: this.read<string>(metadata, 'easyLists', ','),
-      metaDefaultCategory: this.read<string>(metadata, 'defaultCategory', 'tags'),
-      metaKeywordBadgeCategory: this.read<string>(metadata, 'keywords.badgesCategory', 'tags'),
-      metaKeywordColorCategory: this.read<string>(metadata, 'keywords.colorsCategory', 'tags'),
-      metaFileBadges: new Map<string, string>(),
-      metaKeywordsShowBadges: this.read<boolean>(metadata, 'keywords.badgesInFileExplorer', true),
-    };
-    
+    config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
+    config.viewStatusBarEnabled = this.read<boolean>(view, 'statusBar.enabled', true);
+
+    config.isDialogueEnabled = isDialogueEnabled;
+    config.dialgoueIndent = '';
+
+
+    // SMART EDIT
+
+    config.smartEditEnabled = this.read<boolean>(smartEdit, 'enabled', false);
+    config.smartEditRenameRelated = this.read<string>(smartEdit, 'renameRelatedFiles', Constants.RenameRelated.ASK);
+
+    // METADATA
+
+    config.metaEnabled = this.read<boolean>(metadata, 'enabled', true);
+
+    config.metaKeywordColors = new Map<string, ThemeColor>();
+    config.metaKeywordShowInFileExplorer = this.read<boolean>(metadata, 'keywords.colorsInFileExplorer', true) && config.metaEnabled;
+    config.metaKeywordShowInMetadataView = this.read<boolean>(metadata, 'keywords.colorsInMetadataView', true) && config.metaEnabled;
+
+    config.metaCategories = new Map<string, string>();
+    config.metaCategoryIconsEnabled = this.read<boolean>(metadata, 'categories.showIcons', true) && config.metaEnabled;
+    config.metaCategoryNamesEnabled = this.read<boolean>(metadata, 'categories.showNames', true) && config.metaEnabled;
+    config.metaSummaryCategoryName = this.read<string>(metadata, 'summaryCategoryName', 'summary');
+
+    config.metaEasyLists = this.read<string>(metadata, 'easyLists', ',');
+    config.metaDefaultCategory = this.read<string>(metadata, 'defaultCategory', 'tags');
+    config.metaKeywordBadgeCategory = this.read<string>(metadata, 'keywords.badgesCategory', 'tags');
+    config.metaKeywordColorCategory = this.read<string>(metadata, 'keywords.colorsCategory', 'tags');
+    config.metaFileBadges = new Map<string, string>();
+    config.metaKeywordsShowBadges = this.read<boolean>(metadata, 'keywords.badgesInFileExplorer', true) && config.metaEnabled;
+
     const metaKeywordColors = this.read<IKvp<KnownColor>>(
       metadata,
       'keywords.colors',
@@ -126,7 +135,7 @@ export class ConfigService extends Observable<Config> {
 
     for (const [key, val] of Object.entries(metaFileBadges)) {
       if (val) {
-        config.metaFileBadges.set(key.toLowerCase(), val.substring(0,2));
+        config.metaFileBadges.set(key.toLowerCase(), val.substring(0, 2));
       }
     };
 
@@ -160,7 +169,7 @@ export class ConfigService extends Observable<Config> {
     };
 
     // TODO: Move some settings to extension settings.
-    let localSettings = this.localSettings.getValue<ContextConfig>('config', {});
+    let localSettings = this.localSettings.getValue<IContextConfig>('config', {});
     this.config = { ...config, ...localSettings };
     // Notify observers
     this.notify();
@@ -171,9 +180,9 @@ export class ConfigService extends Observable<Config> {
 
     this.config[key] = value;
 
-    let localConfig = this.localSettings.getValue<ContextConfig>('config', {});
+    let localConfig = this.localSettings.getValue<IContextConfig>('config', {});
     localConfig[key] = value;
-    this.localSettings.setValue<ContextConfig>('config', localConfig);
+    this.localSettings.setValue<IContextConfig>('config', localConfig);
 
     this.notify();
   }

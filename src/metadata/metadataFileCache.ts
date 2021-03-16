@@ -1,13 +1,20 @@
 import * as vscode from 'vscode';
-import { IObservable, Observer } from '../utils';
+import { IObservable, Observer, SupportedContent } from '../utils';
 import { Config, IKvp } from '../config';
 import { FileIndexer } from '../compile';
-import { fileGroup } from '.';
+import { fileManager } from '../smartRename';
+import { IMetadata } from '.';
 
 export interface IFileInfo {
-  path: string,
+  key: string,
+  path?: string,
   id?: string,
-  metadata?: any
+  metadata?: IMetadata,
+  notes?: INotes
+}
+
+export interface INotes {
+  path?: string
 }
 
 export class MetadataFileCache extends Observer<Config> {
@@ -21,11 +28,12 @@ export class MetadataFileCache extends Observer<Config> {
     if (!path) return undefined;
     const group = fileGroup(path.fsPath);
 
-    const info = this.fileIndex.getByPath(group.path);
+    const info = this.fileIndex.getByPath(path.fsPath);
+    if (info?.metadata?.value){
+      info.metadata.value = this.prepareMeta(info?.metadata?.value);
+    }
 
-    return info
-      ? this.prepareMeta(info)
-      : undefined;
+    return info ?? undefined;
   }
 
 

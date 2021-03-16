@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { QuickPickItem } from 'vscode';
 import { FileIndexer } from '.';
 import { Config } from '../config';
 import { IObservable, ReservedNames } from '../utils';
@@ -16,11 +17,15 @@ export class CompileAllCommand extends CompileFileCommand {
     try {
       const doc = editor.document;
       const docPath = path.parse(path.resolve(doc.fileName));
-      let files = this.fileIndex.getState().map(m => m.path);
+      let files = this.fileIndex.getState().filter(m => m.path !== undefined).map(m => m.path);
 
       const quickPick = vscode.window.createQuickPick();
       (quickPick as any).sortByLabel = false;
-      quickPick.items = files.map(f => ({ label: path.relative(docPath.dir, f) }));
+      const items:QuickPickItem[] = [];
+      files.forEach(f => {
+        if (f) items.push({ label: path.relative(docPath.dir, f)});
+      });
+      quickPick.items = items;
       quickPick.title = 'Select files to be included in output.';
       quickPick.canSelectMany = true;
       quickPick.onDidHide(() => quickPick.dispose());

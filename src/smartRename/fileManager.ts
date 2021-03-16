@@ -7,45 +7,64 @@ import { ContentType, SupportedContent } from '../utils';
 
 const fictionExtension = '.md';
 const metadataExtension = '.yml';
+const notesExtension = '.txt';
+
+const fictionPattern = '.[mM][dD]';
+const metadataPattern = '.[yY][mM][lL]';
+const notesPattern = '.[tT][xX][tT]';
+
+const knownPatterns = new Map<SupportedContent, string>([
+  [SupportedContent.Fiction, fictionPattern],
+  [SupportedContent.Metadata, metadataPattern],
+  [SupportedContent.Notes, notesPattern]
+]);
 
 export interface IFileGroup {
-  path: string,
-  content: SupportedContent,
-  other: Map<SupportedContent, string>
+  path: string;
+  content: SupportedContent;
+  other: Map<SupportedContent, string>;
+  getPath(forContent: SupportedContent): string | undefined;
+}
+
+class FileGroup implements IFileGroup {
+  constructor(
+    public path: string,
+    public content: SupportedContent,
+    public other: Map<SupportedContent, string>) { }
+
+  getPath(forContent: SupportedContent): string | undefined {
+    if (this.content === forContent) return this.path;
+
+    return this.other.get(forContent);
+  }
+
 }
 
 export class FileManager {
 
   public getGroup(fsPath: string): IFileGroup {
 
-    const otherFiles = new Map<SupportedContent, string>();
     fsPath = path.normalize(fsPath);
+    const otherFiles = new Map<SupportedContent, string>();
     const contentType = this.getPathContentType(fsPath, true);
 
     const parsed = path.parse(fsPath);
-    let pattern: string = '';
-    let matchType: SupportedContent = SupportedContent.Unknown;
 
-    if (contentType.has(SupportedContent.Fiction)){
-      pattern = '.[yY][mM][lL]';
-      matchType = SupportedContent.Metadata;
-    } else if (contentType.has(SupportedContent.Metadata)){
-      pattern = '.[mM][dD]';
-      matchType = SupportedContent.Fiction;
-    }
-
-    if (matchType !== SupportedContent.Unknown) {
-      const matches = glob.sync(path.join(parsed.dir, `${parsed.name}${pattern}`));
-      if (matches.length > 0) {
-        otherFiles.set(matchType, matches[0]); // get only first match
-      }
+    if (contentType.isKnown()) {
+      knownPatterns.forEach((pattern, type) => {
+        if (contentType.has(type)) return;
+        const matches = glob.sync(path.join(parsed.dir, `${parsed.name}${pattern}`));
+        if (matches.length > 0) {
+          otherFiles.set(type, matches[0]); // get only first match
+        }
+      });
     };
 
-    return {
-      path: fsPath,
-      content: contentType.supports,
-      other: otherFiles
-    };
+    return new FileGroup(
+      fsPath,
+      contentType.supports,
+      otherFiles
+    );
   }
 
 
@@ -53,14 +72,20 @@ export class FileManager {
     const result = new ContentType();
     if (!path) return result;
 
-    if (path.toLowerCase().endsWith(fictionExtension)) {
+    const standardPath = path.toLowerCase();
+
+    if (standardPath.endsWith(fictionExtension)) {
       result.add(SupportedContent.Fiction);
 
       if (!strict) result.add(SupportedContent.Metadata);
     }
 
-    if (path.toLowerCase().endsWith(metadataExtension)) {
+    if (standardPath.endsWith(metadataExtension)) {
       result.add(SupportedContent.Metadata);
+    }
+
+    if (standardPath.endsWith(notesExtension)) {
+      result.add(SupportedContent.Notes);
     }
 
     return result;
@@ -68,29 +93,40 @@ export class FileManager {
 
   public batchRename(
     oldName: string,
-    newName: string, 
-    question:(from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)){
-    
+    newName: string,
+    question: (from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)) {
+
     const oldContent = this.getPathContentType(oldName, true);
     const newContent = this.getPathContentType(newName, true);
     if (oldContent.supports !== newContent.supports) return;
 
     const fileGroup = this.getGroup(oldName);
 
-    if (fileGroup.other.size > 0){
+    if (fileGroup.other.size > 0) {
       const parsed = path.parse(newName);
       const newPart = path.join(parsed.dir, parsed.name);
 
-      fileGroup.other.forEach((oldName: string, key:SupportedContent) => {
+      fileGroup.other.forEach((oldName: string, key: SupportedContent) => {
         const oldExt = path.parse(oldName).ext;
         const newName = `${newPart}${oldExt}`;
 
-        question(oldName, newName).then((shouldRename: boolean) =>{
-            if(shouldRename) fs.renameSync(oldName, newName);
-          });
+        question(oldName, newName).then((shouldRename: boolean) => {
+          if (shouldRename) fs.renameSync(oldName, newName);
+        });
       });
     }
+  }
 
+  public moveUp(fsPath: string) {
+    // get folder of file
+    // if all files are prepared for rename, then increment
+    // if not, then ask to fix and then rename
+  }
+
+  public smartRename(fsPath: string) {
+    const parsed = path.parse(fsPath);
+    const allFiles = glob.sync(path.join(parsed.dir, '*.[mM][dD]'), { nodir: true });
+    //TODO: Implement functioinality
   }
 }
 

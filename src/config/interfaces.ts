@@ -5,21 +5,25 @@ export interface IKvp<T> {
   [key:string]: T
 }
 
-export interface ContextConfig {
+export interface IContextConfig {
   [key: string]: ConfigurationChangeEvent| string | number | boolean | undefined | IKvp<string> | Map<string, ThemeColor> | Map<string, ThemeColor>;
-  
+
   isZenMode?: boolean;
   isTypewriterMode?: boolean;
 }
-export interface Config extends ContextConfig {
-  changeEvent?: ConfigurationChangeEvent,
+export class Config implements IContextConfig {
+  [key: string]: string | number | boolean | ConfigurationChangeEvent | IKvp<string> | Map<string, ThemeColor> | undefined;
+  isZenMode?: boolean | undefined;
+  isTypewriterMode?: boolean | undefined;
 
-  dialoguePrefix: string;
-  dialgoueIndent: string;
-  dialgoueIndentLength: number;
+  changeEvent?: ConfigurationChangeEvent;
+
+  dialoguePrefix!: string;
+  dialgoueIndent!: string;
+  dialgoueIndentLength!: number;
   dialogueMarkerAutoReplace?: boolean;
-  wrapIndent: number;
-  keybindingsDisabled?: boolean,
+  wrapIndent!: number;
+  keybindingsDisabled?: boolean;
   dialogueIndentAutoDetect?: boolean;
   dialogueMarkerAutoDetect?: boolean;
   viewDialogueHighlight?: boolean;
@@ -35,21 +39,21 @@ export interface Config extends ContextConfig {
   formattingFixParagraphBreaks?: string;
   formattingRemoveExtraSpaces?: boolean;
   formattingRemoveExtraLines?: boolean;
-  formattingRemoveTrailingSpaces?: boolean,
+  formattingRemoveTrailingSpaces?: boolean;
 
-  compileTemplateFile: string,
-  compileOutputFormat: string,
-  compileUseTemplateFile?: boolean,
-  compileEmDash?: boolean,
-  compileShowFormatPicker?: boolean,
-  compileShowSaveDialogue?: boolean,
-  compileSkipCommentsFromToc?: boolean
-  compileShowsErrorInOutputFile?:boolean,
-  compileSearchDocumentIdsInAllOpened?:boolean,
-  compileIncludeIsEnabled?: boolean,
-  compileTocFilename: string,
+  compileTemplateFile!: string;
+  compileOutputFormat!: string;
+  compileUseTemplateFile?: boolean;
+  compileEmDash?: boolean;
+  compileShowFormatPicker?: boolean;
+  compileShowSaveDialogue?: boolean;
+  compileSkipCommentsFromToc?: boolean;
+  compileShowsErrorInOutputFile?:boolean;
+  compileSearchDocumentIdsInAllOpened?:boolean;
+  compileIncludeIsEnabled?: boolean;
+  compileTocFilename!: string;
 
-  viewFileTags?: { [key: string]: string }
+  viewFileTags?: { [key: string]: string };
   viewZenModeEnabled?: boolean;
   viewZenModeFontSize?: number;
   viewZenModeTheme?: string;
@@ -57,16 +61,20 @@ export interface Config extends ContextConfig {
   viewFadeMetadata?: boolean;
 
   metaEnabled?: boolean;
-  metaEasyLists: string;
+  metaEasyLists!: string;
   metaDefaultCategory?: string;
-  metaKeywordColors: Map<string, ThemeColor>;
-  metaKeywordColorCategory: string;
+  metaKeywordColors!: Map<string, ThemeColor>;
+  metaKeywordColorCategory!: string;
   metaKeywordShowInFileExplorer?: boolean;
   metaKeywordShowInMetadataView?: boolean;
-  metaFileBadges: Map<string, string>;
-  metaKeywordsShowBadges?: boolean,
-  metaCategories: Map<string, string>;
+  metaFileBadges!: Map<string, string>;
+  metaKeywordsShowBadges?: boolean;
+  metaCategories!: Map<string, string>;
   metaCategoryIconsEnabled?: boolean;
   metaCategoryNamesEnabled?: boolean;
-  metaKeywordBadgeCategory: string;
+  metaKeywordBadgeCategory!: string;
+  metaSummaryCategoryName!: string;
+
+  smartEditEnabled?:boolean;
+  smartEditRenameRelated!: string;
 }

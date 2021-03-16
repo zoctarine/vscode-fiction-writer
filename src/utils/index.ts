@@ -7,9 +7,10 @@ export * from './observables';
 export * from './inMemoryCache';
 
 export enum SupportedContent {
-  Unknown = 0,  	   // 000 -- the bitshift is unnecessary
-  Fiction = 1 << 0,  // 001
+  Unknown  = 0,  	   // 000 -- the bitshift is unnecessary
+  Fiction  = 1 << 0, // 001
   Metadata = 1 << 1, // 010
+  Notes    = 1 << 2, // 100
 }
 
 export class ContentType {
@@ -47,12 +48,17 @@ export function getContentType(document?: TextDocument): ContentType {
   const result = new ContentType();
   if (document === undefined || document === null) return result;
 
-  if (document.languageId === 'yaml' || document.languageId === 'markdown') {
+  if (document.languageId === 'plaintext') {
+    result.add(SupportedContent.Notes);
+  }
+
+  if (document.languageId === 'yaml') {
     result.add(SupportedContent.Metadata);
   }
 
   if (document.languageId === 'markdown') {
     result.add(SupportedContent.Fiction);
+    result.add(SupportedContent.Metadata);
   }
 
   return result;

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { Config, IKvp } from '../config';
 import { fileManager } from '../smartRename';
 import { IObservable, Observer, SupportedContent } from '../utils';
-import { fileGroup, MetadataFileCache } from './index';
+import { MetadataFileCache } from './index';
 
 
 export class MetadataFileDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
@@ -37,7 +37,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
       const useBadges = this.state.metaKeywordsShowBadges;
       const meta = this.cache.get(uri);
 
-      const metadata = meta?.metadata as IKvp<string | string[]>;
+      const metadata = meta?.metadata?.value as IKvp<string | string[]>;
       let badge: string | undefined;
       let color: vscode.ThemeColor | undefined;
 
@@ -119,9 +119,12 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   }
 
   fire(uri: vscode.Uri[]) {
-    const uris = uri.map(u => vscode.Uri.file(fileGroup(u.fsPath).path));
+    const uris = uri
+      .map(u => this.cache.get(u)?.path)
+      .filter((u): u is string => u !== undefined)
+      .map(u=>vscode.Uri.file(u));
 
-    this._onDidChangeDecorations.fire(uris);
+      this._onDidChangeDecorations.fire(uris);
   }
 
   protected onStateChange(newState: Config) {
