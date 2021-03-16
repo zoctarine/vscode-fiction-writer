@@ -26,7 +26,6 @@ export class MetadataFileCache extends Observer<Config> {
 
   public get(path?: vscode.Uri): IFileInfo | undefined {
     if (!path) return undefined;
-    const group = fileGroup(path.fsPath);
 
     const info = this.fileIndex.getByPath(path.fsPath);
     if (info?.metadata?.value){
