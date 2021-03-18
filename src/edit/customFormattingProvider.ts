@@ -28,12 +28,12 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
   backupOriginal(document: TextDocument) {
     try {
       const parsed = path.parse(document.fileName);
-      const outputDir = path.join(parsed.dir, Constants.Format.BACKUP_DIR);
-      const outputFile = path.join(outputDir, `${parsed.name}_${Date.now()}.${parsed.ext}`);
-
+      const outputDir = path.join(parsed.dir, Constants.WorkDir, Constants.Format.BACKUP_DIR);
+      
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir);
+        fs.mkdirSync(outputDir, {recursive: true});
       }
+      const outputFile = path.join(outputDir, `${parsed.name}_${Date.now()}${parsed.ext}.tmp`);
       fs.writeFileSync(outputFile, document.getText());
     } catch (error) {
       window.showErrorMessage(`Could not create backup of: ${document.fileName}. ${error}`);
@@ -43,11 +43,14 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
   async provideDocumentFormattingEdits(document: TextDocument): Promise<TextEdit[]> {
     var result = await window.showInformationMessage(
       'This is an experimental feature. ' +
-       'Would you like to backup the current file before continuing?', 
-       'Yes', 'No');
-
-    if (result === 'Yes') 
+      'Would you like to backup the current file before continuing?',
+      'Yes', 'No', 'Cancel');
+    
+    if (result === 'Yes'){
       this.backupOriginal(document);
+    } else if(result === 'Cancel'){
+      return Promise.resolve([]);
+    }
 
     const formatting: Array<TextEdit> = [];
     let textLines = 0;
@@ -56,12 +59,25 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
     let isSectionStart = false;
     let isFirstDialogueLine = false;
     let isInsideParagraph = false;
+    let isInsideMeta = false;
     let prevLine: TextLine | undefined = undefined;
 
     for (let i = 0; i < document.lineCount; i++) {
-      const wasSectionStart = isSectionStart;
+
       const line = document.lineAt(i);
       let lineText = line.text;
+      // ignore metadata blocks when formatting
+      if (RegEx.METADATA_MARKER_START.test(lineText) && !isInsideMeta) {
+        isInsideMeta = true;
+      } else if (RegEx.METADATA_MARKER_END.test(lineText) && isInsideMeta) {
+        isSectionStart = false;
+        isInsideMeta = false;
+      } else if (isInsideMeta) {
+        textLines = 0;
+        continue;        
+      }
+
+      const wasSectionStart = isSectionStart;
 
       // Count consecutive text lines
       if (line.isEmptyOrWhitespace) {
@@ -109,12 +125,12 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
       // Replace all starting line indents with dialogue indent
       if (this.state.formattingFixDialogueIndents &&
         isDialogueParagraph && !isFirstDialogueLine) {
-        lineText = lineText.replace(RegEx.ANY_OR_NONE_LINE_INDENT, this.state.dialgoueIndent)
+        lineText = lineText.replace(RegEx.ANY_OR_NONE_LINE_INDENT, this.state.dialgoueIndent);
       };
 
       // Replace two or more occurances of space characters with one space
       if (this.state.formattingRemoveExtraSpaces)
-        lineText = lineText.replace(RegEx.TWO_OR_MORE_SPACES_IN_MIDDLE, ' ')
+        lineText = lineText.replace(RegEx.TWO_OR_MORE_SPACES_IN_MIDDLE, ' ');
 
       switch (this.state.formattingFixParagraphBreaks) {
 
@@ -128,7 +144,7 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
           // Split in sentences
           // TODO: Refactor sentence splitting
           const lines = lineText.replace(RegEx.SENTENCE_SEPARATORS, '$1\n').split('\n');
-          
+
           if (lines.length > 0) {
             formatting.push(TextEdit.replace(line.range, lines[0]));
             for (let i = 1; i < lines.length; i++) {
@@ -142,7 +158,7 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
           if (isInsideParagraph && !firstLinesHandled) {
             if (prevLine) formatting.push(TextEdit.insert(prevLine.range.end, '\n'));
           }
-          if (lineText != line.text) formatting.push(TextEdit.replace(line.range, lineText))
+          if (lineText !== line.text) formatting.push(TextEdit.replace(line.range, lineText));
           break;
 
         case Constants.Format.ParagraphBreaks.SOFT_BREAK_SAME_PARAGRAPH:
@@ -152,15 +168,15 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
               prevLine.rangeIncludingLineBreak,
               prevLine.text.replace('\n', ''))
             );
-            lineText = ' ' + lineText.replace(RegEx.ANY_LINE_INDENT, '')
+            lineText = ' ' + lineText.replace(RegEx.ANY_LINE_INDENT, '');
 
           }
-          if (lineText != line.text) formatting.push(TextEdit.replace(line.range, lineText))
+          if (lineText !== line.text) formatting.push(TextEdit.replace(line.range, lineText));
 
           break;
 
         default:
-          if (lineText != line.text) formatting.push(TextEdit.replace(line.range, lineText))
+          if (lineText !== line.text) formatting.push(TextEdit.replace(line.range, lineText));
       }
 
       prevLine = line;

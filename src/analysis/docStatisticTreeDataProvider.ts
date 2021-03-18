@@ -22,7 +22,8 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
     if (element) {
       return Promise.resolve([]);
     } else {
-      const text =  this.document.getText();
+      const rawText = this.document.getText();
+      const text = rawText.replace(RegEx.METADATA_BLOCK, '');
       const wordCount = count(text, RegEx.WHOLE_WORD);
       const charCount = count(text, RegEx.ANY_CHARACTER_ESCEPT_NEWLINE);
       const charCountNoSpaces = count(text, RegEx.ANY_CHARACTER_EXCEPT_WHITESPACE);

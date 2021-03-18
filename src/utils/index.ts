@@ -48,8 +48,12 @@ export class ContentType {
 export function getContentType(document?: TextDocument): ContentType {
   const result = new ContentType();
   if (document === undefined || document === null) return result;
+  
+  // Skip backup files, no matter what language they have
+  const name = document.fileName.toLowerCase();
+  if (name.endsWith('.tmp')) return result;
 
-  if (document.languageId === 'plaintext') {
+  if (name.endsWith('.txt')) {
     result.add(SupportedContent.Notes);
   }
 

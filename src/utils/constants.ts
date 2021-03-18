@@ -123,7 +123,7 @@ export const RegEx = {
 
   KNOWN_DIALOGUE_MARKERS: /^(\-\-{1,2} {0,1}|— {0,1})/,
 
-  START_OF_MARKDOWN_SECTION: /^[#|\*|{]{1,}/,
+  START_OF_MARKDOWN_SECTION: /^(#|\*|{---){1,}/,
 
   ANY_OR_NONE_LINE_INDENT: /^\s*/,
 
@@ -139,7 +139,11 @@ export const RegEx = {
 
   NEWLINE: /\r?\n/g,
 
-  METADATA_MARKER: /^(---|\.\.\.)&/g
+  METADATA_MARKER_START: /^---[ \t]*$/,
+
+  METADATA_MARKER_END: /^(---|\.\.\.)[ \t]*$/,
+  
+  METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm
 };
 
 

@@ -17,8 +17,10 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
     }
 
     if (element) {
+      const rawText = this.document.getText();
+      const text = rawText.replace(RegEx.METADATA_BLOCK, '');
       return Promise.resolve(
-        this.getFrequencies(this.document.getText(), element.count)
+        this.getFrequencies(text, element.count)
       );
     } else {
       return Promise.resolve([

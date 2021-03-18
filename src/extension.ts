@@ -115,7 +115,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     watcher.onDidCreate(async e => {
       if (!isWatcherEnabled) return;
-      logger.info('OnDidCreate: ' + e?.fsPath);
+      logger.debug('OnDidCreate: ' + e?.fsPath);
 
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
@@ -129,7 +129,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     watcher.onDidDelete(async e => {
       if (!isWatcherEnabled) return;
-      logger.info('OnDidDelete: ' + e?.fsPath);
+      logger.debug('OnDidDelete: ' + e?.fsPath);
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
@@ -146,7 +146,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
     watcher.onDidChange(async e => {
       if (!isWatcherEnabled) return;
-      logger.info('OnDidChange: ' + e?.fsPath);
+      logger.debug('OnDidChange: ' + e?.fsPath);
 
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
       fileIndexer.index(e.fsPath);
@@ -158,7 +158,7 @@ export async function activate(context: vscode.ExtensionContext) {
     }),
 
     vscode.workspace.onDidOpenTextDocument(e => {
-      logger.info('onDidOpenTextDocument: ' + e?.uri.fsPath);
+      logger.debug('onDidOpenTextDocument: ' + e?.uri.fsPath);
 
       if (!getContentType(e).isKnown()) return;
 
@@ -181,7 +181,7 @@ export async function activate(context: vscode.ExtensionContext) {
       if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) return;
 
       for (const f of e.files)  {
-        logger.info('OnDidRename: ' + f.oldUri.fsPath);
+        logger.debug('OnDidRename: ' + f.oldUri.fsPath);
 
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
           const isMove = !fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath);
@@ -217,17 +217,15 @@ export async function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  const globPattern = '**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}';
-
   updateContextValues(vscode.window.activeTextEditor);
   fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
   vscode.workspace.workspaceFolders?.forEach(f => {
-    fileIndexer.indexLocation(f.uri.fsPath, globPattern);
+    fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern);
   });
 
   vscode.workspace.onDidChangeWorkspaceFolders(c => {
-    c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, globPattern));
-    c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, globPattern));
+    c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern));
+    c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, knownFileTypes.all.pattern));
   });
   await metadataProvider.refresh();
   await notesProvider.refresh();

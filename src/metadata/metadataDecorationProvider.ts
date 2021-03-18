@@ -30,11 +30,9 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
     const contentType = fileManager.getPathContentType(uri?.fsPath, true);
 
-    if (contentType.has(SupportedContent.Metadata)) {
-      return Promise.resolve(new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor('tab.inactiveForeground')));
-    }
-
-    if (contentType.has(SupportedContent.Notes)) {
+    if (contentType.has(SupportedContent.Metadata) ||
+       contentType.has(SupportedContent.Notes) ||
+       uri?.fsPath.toLowerCase().endsWith('.tmp')) {
       return Promise.resolve(new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor('tab.inactiveForeground')));
     }
     
