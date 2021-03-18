@@ -6,16 +6,18 @@ import { FileIndexer } from '../compile';
 import { getActiveEditor } from '../utils';
 
 export class MetadataNotesProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = 'fw-notes';
   private _currentDocumentPath?: string;
   private _view?: vscode.WebviewView;
   private _noteText = '';
+  private _buffer = '';
   private _fileInfo: IFileInfo | undefined | null;
   private _pinned: boolean = false;
+  private _isDisposed?: boolean;
 
   constructor(
     private readonly _extensionUri: vscode.Uri,
-    private readonly _fileIndex: FileIndexer
+    private readonly _fileIndex: FileIndexer,
+    private _disposables: vscode.Disposable[]
   ) { }
 
   public resolveWebviewView(
@@ -31,43 +33,62 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider {
       ]
     };
 
-    webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(data => {
-      switch (data.type) {
-
-        case 'saveNotes':
-          {
-            if (this._fileInfo?.notes?.path){
-              fs.writeFileSync(this._fileInfo.notes.path, data.value);
-            }
-          }
-      }
-    });
 
     this._view = webviewView;
-  }
 
+    this.reloadWebView();
+
+    this._view.webview?.onDidReceiveMessage(data => {
+      switch (data.type) {
+
+        case 'saveNotes': this.save(data.value); break;
+        case 'changed':
+          this._buffer = data.value;
+          this.setTitle('NOTES*');
+          break;
+      }
+    }, {}, this._disposables);
+
+    this._isDisposed = false;
+    this._view.onDidDispose(() => { 
+      this._isDisposed = true;
+    });
+  }
+  private setTitle(title: string) {
+    try {
+      if (!this._isDisposed && this._view) {
+        this._view.title = title;
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
   public newNotes() {
-    if (this._fileInfo){
+    if (this._fileInfo) {
       const newNotePath = this._fileInfo.key + '.txt';
       fs.writeFileSync(newNotePath, 'YOUR NOTES HERE');
     }
   }
 
   public openNotes() {
-    if (this._fileInfo?.notes?.path){
+    if (this._fileInfo?.notes?.path) {
       vscode.commands.executeCommand('vscode.open', vscode.Uri.file(this._fileInfo.notes.path));
     }
   }
 
   public saveNotes() {
-    if (this._view) {
-      this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
-
+    if (!this._isDisposed && this._view?.webview) {
       // Post a message to webview to ask for notes (will respond with 'saveNotes' message)
-      this._view.webview.postMessage({ type: 'submitNotes' });
+      this._view.webview?.postMessage({ type: 'submitNotes' });
     }
+  }
+
+  private save(content: string) {
+    if (this._fileInfo?.notes?.path) {
+      this._buffer = content;
+      this._noteText = content;
+      fs.writeFileSync(this._fileInfo.notes.path, content);
+    };
   }
 
   public pin(): boolean {
@@ -96,28 +117,30 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider {
     return false;
   }
 
-  public refresh() {
-    this.loadDocument(vscode.window.activeTextEditor?.document?.uri.fsPath);
+  public async refresh() {
+    await this.loadDocument(vscode.window.activeTextEditor?.document?.uri.fsPath);
   }
 
-  public loadDocument(documentPath?: string) {
+  public async loadDocument(documentPath?: string) {
     if (this._pinned && this._currentDocumentPath !== documentPath) return;
-    
-    vscode.window.showWarningMessage('There are unsaved changes to your notes file. Do you want to save them now?', 'Yes', 'No')
-    .then(result => {
-      
-      this._currentDocumentPath = documentPath;
-      this._fileInfo = this._fileIndex.getByPath(documentPath);
-      
-      vscode.commands.executeCommand('setContext', 'fw:hasOpenedNote', this._fileInfo?.notes?.path);
-      
-      this.reloadWebView();
-    })
+    if (this._buffer !== this._noteText) {
+      const answer = await vscode.window.showInformationMessage(
+        `Do you want to save changes to your notes file?[${this._buffer}][${this._noteText}]`, 'Yes', 'No');
+      if (answer === 'Yes') {
+        this.save(this._buffer);
+      }
+    }
+    //save notes
+    this._currentDocumentPath = documentPath;
+    this._fileInfo = this._fileIndex.getByPath(documentPath);
+    this.setTitle('NOTES');
+    vscode.commands.executeCommand('setContext', 'fw:hasOpenedNote', this._fileInfo?.notes?.path);
+    vscode.commands.executeCommand('setContext', 'fw:showNotes', this._fileInfo !== undefined);
+
+    this.reloadWebView();
   }
 
   private reloadWebView() {
-    if (!this._fileInfo) return;
-
     const notePath = this._fileInfo?.notes?.path;
 
     this._noteText = '';
@@ -129,13 +152,21 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider {
       }
     }
 
-    if (this._view) {
+    if (!this._isDisposed && this._view?.webview) {
       if (this._pinned) this._view.description = title;
       this._view.webview.html = this._getHtmlForWebview(this._view.webview);
     }
+
+    this._buffer = this._noteText;
+  }
+
+  private _hasView() {
+    return !this._isDisposed || this._view?.webview;
   }
 
   private _getHtmlForWebview(webview: vscode.Webview) {
+    if (!webview) return '';
+
     // Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js'));
 
@@ -159,7 +190,7 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider {
 				<link href="${styleResetUri}" rel="stylesheet">
 				<link href="${styleVSCodeUri}" rel="stylesheet">
 				<link href="${styleMainUri}" rel="stylesheet">
-				
+
 				<title>Notes</title>
 			</head>
 			<body>

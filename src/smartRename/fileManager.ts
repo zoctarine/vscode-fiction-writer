@@ -3,27 +3,42 @@ import * as glob from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { ContentType, SupportedContent } from '../utils';
+import { Constants, ContentType, logger, SupportedContent } from '../utils';
 
-const fictionExtension = '.md';
-const metadataExtension = '.yml';
-const notesExtension = '.txt';
+export const knownFileTypes = {
+  fiction: {
+    extension: '.md',
+    pattern: '.[mM][dD]',
+  },
+  metadata: {
+    extension: '.yml',
+    pattern: '.[yY][mM][lL]',
+    optionalSubdir: Constants.WorkDir
+  },
+  notes: {
+    extension: '.txt',
+    pattern: '.[tT][xX][tT]',
+    optionalSubdir: Constants.WorkDir
+  },
+  all: {
+    pattern: '**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}'
+  }
+};
 
-const fictionPattern = '.[mM][dD]';
-const metadataPattern = '.[yY][mM][lL]';
-const notesPattern = '.[tT][xX][tT]';
-
-const knownPatterns = new Map<SupportedContent, string>([
-  [SupportedContent.Fiction, fictionPattern],
-  [SupportedContent.Metadata, metadataPattern],
-  [SupportedContent.Notes, notesPattern]
-]);
+const knownPatterns: {type: SupportedContent, pattern:string, subdir: string}[] = [
+  { type: SupportedContent.Fiction, pattern: knownFileTypes.fiction.pattern, subdir: ''},
+  { type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: ''},
+  { type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: knownFileTypes.metadata.optionalSubdir},
+  { type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: ''},
+  { type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: knownFileTypes.notes.optionalSubdir},
+];
 
 export interface IFileGroup {
   path: string;
   content: SupportedContent;
   other: Map<SupportedContent, string>;
   getPath(forContent: SupportedContent): string | undefined;
+  getAll(): string[];
 }
 
 class FileGroup implements IFileGroup {
@@ -38,24 +53,84 @@ class FileGroup implements IFileGroup {
     return this.other.get(forContent);
   }
 
+  getAll(): string[] {
+    const result: string[] = [];
+
+    result.push(this.path);
+    this.other.forEach((path) => result.push(path));
+
+    return result;
+  }
+
 }
 
 export class FileManager {
 
+  moveToFolder(fsPath?: string) {
+    if (!fsPath) return;
+    if (!this.getPathContentType(fsPath).isKnown()) return;
+
+    {
+      try {
+        const oldFile = fsPath;
+        const parsed = path.parse(oldFile);
+        const dirPath = path.join(parsed.dir, Constants.WorkDir);
+        const newFile = path.join(dirPath, parsed.base);
+
+        if (!fs.existsSync(dirPath)){
+          fs.mkdirSync(dirPath);
+        }
+        fs.renameSync(oldFile, newFile);
+      } catch (error) {
+        vscode.window.showErrorMessage(`Could not move '${fsPath}' to resources folder.`);
+      }
+    };
+
+  }
+
+  public normalize(fsPath: string): string {
+    return  path.normalize(fsPath).replace(/\\/g, '/');
+  }
+
+  public getRoot(fsPath: string) : string {
+    fsPath = path.normalize(fsPath);
+    const contentType = this.getPathContentType(fsPath, true);
+    const parsed = path.parse(fsPath);
+    let dir = parsed.dir;
+    if (!contentType.has(SupportedContent.Fiction)){
+      // if is not main document, then try to get main document
+      const p = path.parse(dir);
+      if (p.base === Constants.WorkDir){
+        dir = p.dir;
+      }
+    }
+    return this.normalize(path.join(dir, parsed.name));
+  }
+
   public getGroup(fsPath: string): IFileGroup {
 
-    fsPath = path.normalize(fsPath);
+    fsPath = this.normalize(fsPath);
     const otherFiles = new Map<SupportedContent, string>();
     const contentType = this.getPathContentType(fsPath, true);
-
     const parsed = path.parse(fsPath);
+    let dir = parsed.dir;
+    if (!contentType.has(SupportedContent.Fiction)){
+      // if is not main document, then try to get main document
+      const p = path.parse(dir);
+      if (p.base === Constants.WorkDir){
+        dir = p.dir;
+      }
+    }
 
     if (contentType.isKnown()) {
-      knownPatterns.forEach((pattern, type) => {
-        if (contentType.has(type)) return;
-        const matches = glob.sync(path.join(parsed.dir, `${parsed.name}${pattern}`));
+      knownPatterns.forEach((search) => {
+
+        if (contentType.has(search.type)) return;
+        if (otherFiles.has(search.type)) return;
+
+        const matches = glob.sync(path.join(dir, search.subdir, `${parsed.name}${search.pattern}`));
         if (matches.length > 0) {
-          otherFiles.set(type, matches[0]); // get only first match
+          otherFiles.set(search.type, matches[0]); // get only first match
         }
       });
     };
@@ -74,24 +149,28 @@ export class FileManager {
 
     const standardPath = path.toLowerCase();
 
-    if (standardPath.endsWith(fictionExtension)) {
+    if (standardPath.endsWith(knownFileTypes.fiction.extension)) {
       result.add(SupportedContent.Fiction);
 
       if (!strict) result.add(SupportedContent.Metadata);
     }
 
-    if (standardPath.endsWith(metadataExtension)) {
+    if (standardPath.endsWith(knownFileTypes.metadata.extension)) {
       result.add(SupportedContent.Metadata);
     }
 
-    if (standardPath.endsWith(notesExtension)) {
+    if (standardPath.endsWith(knownFileTypes.notes.extension)) {
       result.add(SupportedContent.Notes);
     }
 
     return result;
   }
 
-  public batchRename(
+  public areInSameLocation(path1: string, path2: string): boolean {
+    return path.parse(path1).dir === path.parse(path2).dir;
+  }
+
+  public async batchRename(
     oldName: string,
     newName: string,
     question: (from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)) {
@@ -104,16 +183,17 @@ export class FileManager {
 
     if (fileGroup.other.size > 0) {
       const parsed = path.parse(newName);
-      const newPart = path.join(parsed.dir, parsed.name);
+      const newPart = path.join(parsed.dir, Constants.WorkDir, parsed.name);
 
-      fileGroup.other.forEach((oldName: string, key: SupportedContent) => {
+      for (const oldName of fileGroup.other.values()) {
         const oldExt = path.parse(oldName).ext;
+
         const newName = `${newPart}${oldExt}`;
 
-        question(oldName, newName).then((shouldRename: boolean) => {
-          if (shouldRename) fs.renameSync(oldName, newName);
-        });
-      });
+        const shouldRename = await question(oldName, newName);
+        if (shouldRename) fs.renameSync(oldName, newName);
+        logger.info('renamed: ' + oldName);
+      };
     }
   }
 

@@ -1,20 +1,19 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
 
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
 import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, getActiveEditor, getContentType, isInActiveEditor, SupportedContent } from './utils';
+import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger, SupportedContent } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider } from './metadata';
-import { fileManager, ProjectFilesTreeDataProvider } from './smartRename';
+import { fileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
+let isWatcherEnabled = true;
 
-export function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', true);
+export async function activate(context: vscode.ExtensionContext) {
+  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', isDebugMode);
 
   const fileIndexer = new FileIndexer();
   const storageManager = new ContextService(context.globalState);
@@ -35,20 +34,20 @@ export function activate(context: vscode.ExtensionContext) {
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
-  const notesProvider = new MetadataNotesProvider(context.extensionUri, fileIndexer);
+  const notesProvider = new MetadataNotesProvider(context.extensionUri, fileIndexer, context.subscriptions);
 
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
   const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
   const statTree = vscode.window.createTreeView('fw-statistics', { treeDataProvider: docStatisticProvider });
   const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
-  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
-  metadataProvider.tree = metadataTree;
-  const notesWebView = vscode.window.registerWebviewViewProvider(MetadataNotesProvider.viewType, notesProvider, {
+  const notesWebView = vscode.window.registerWebviewViewProvider('fw-notes', notesProvider, {
     webviewOptions: { retainContextWhenHidden: true }
   });
-
-  const watcher = vscode.workspace.createFileSystemWatcher('**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}', false, false, false);
+  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
+  metadataProvider.tree = metadataTree;
+  isWatcherEnabled = true;
+  const watcher = vscode.workspace.createFileSystemWatcher(knownFileTypes.all.pattern, false, false, false);
   const cmd = Constants.Commands;
   context.subscriptions.push(
     cache,
@@ -90,89 +89,80 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => { wordFrequencyProvider.clear(); }),
     vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => { docStatisticProvider.refresh(); }),
     vscode.commands.registerCommand(cmd.METADATA_REFRESH, () => { metadataProvider.refresh(); }),
-    vscode.commands.registerCommand(cmd.TOGGLE_ZEN_MODE, () => toggleZenWritingMode(configService)),
-    vscode.commands.registerCommand(cmd.EXIT_ZEN_MODE, () => exitZenWritingMode(configService)),
+    vscode.commands.registerCommand(cmd.METADATA_OPEN, () => { metadataProvider.open(); }),
+    vscode.commands.registerCommand(cmd.METADATA_TOGGLE_SUMMARY, () => { toggleMetadataSummary(); }),
+    vscode.commands.registerCommand(cmd.TOGGLE_WRITING_MODE, () => toggleWritingMode(configService)),
+    vscode.commands.registerCommand(cmd.EXIT_WRITING_MODE, () => exitWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
     vscode.commands.registerCommand(cmd.UNPIN_NOTE, () => { if (notesProvider.unPin()) toggleIsNotePinned(false); }),
     vscode.commands.registerCommand(cmd.PIN_NOTE, () => { if (notesProvider.pin()) toggleIsNotePinned(true); }),
-    vscode.commands.registerCommand(cmd.SAVE_NOTES, (e) => { notesProvider.saveNotes(); }),
-    vscode.commands.registerCommand(cmd.NEW_NOTES, (e) => { notesProvider.newNotes(); }),
-    vscode.commands.registerCommand(cmd.OPEN_NOTES, (e) => { notesProvider.openNotes(); }),
-
-    vscode.commands.registerCommand(cmd.MOVE_FILE_UP, (e) => { fileManager.smartRename(e.fsPath); }),
+    vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
+    vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
+    vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
+    vscode.commands.registerCommand(cmd.MOVE_TO_RESOURCES, (e:vscode.Uri) => { fileManager.moveToFolder(e?.fsPath); }),
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
-      updateIsSupportedEditor(e);
+      // TODO: This check is  necessary as sometimes, when switching documents,
+      //       you first get an undefined event, followed by the correct event
+      if (!e) return;
+
+      updateContextValues(e);
       statusBar.showHide();
-      const docUri = e?.document?.uri;
-
-      if (isInActiveEditor(docUri, SupportedContent.Fiction)) {
-        docStatisticProvider.refresh();
-        notesProvider.loadDocument(e?.document?.uri?.fsPath);
-      };
-
-      if (isInActiveEditor(docUri, SupportedContent.Notes)) {
-        notesProvider.loadDocument(e?.document?.uri?.fsPath);
-      };
-
-      if (isInActiveEditor(docUri, SupportedContent.Metadata)) {
-        await metadataProvider.refresh();
-        notesProvider.loadDocument(e?.document?.uri?.fsPath);
-      }
+      docStatisticProvider.refresh();
+      await metadataProvider.refresh();
+      await notesProvider.refresh();
     }),
 
-    watcher.onDidCreate(e => {
+    watcher.onDidCreate(async e => {
+      if (!isWatcherEnabled) return;
+      logger.info('OnDidCreate: ' + e?.fsPath);
+
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
       fileIndexer.index(e.fsPath);
 
-      if (isInActiveEditor(e, SupportedContent.Metadata)) {
-        metadataProvider.refresh();
-      }
-
-      notesProvider.refresh();
-
+      await metadataProvider.refresh();
+      await notesProvider.refresh();
       metadataDecoration.fire([e]);
     }),
 
-    watcher.onDidDelete(e => {
+    watcher.onDidDelete(async e => {
+      if (!isWatcherEnabled) return;
+      logger.info('OnDidDelete: ' + e?.fsPath);
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
-      // TODO: delete notes or meta before deleting fiction
       fileIndexer.delete(e.fsPath);
 
-      if (isInActiveEditor(e, SupportedContent.Metadata)) {
-        metadataProvider.refresh();
-      }
+      //TODO: only index what changed
+      fileIndexer.index(e.fsPath);
+
+      await metadataProvider.refresh();
+      await notesProvider.refresh();
       metadataDecoration.fire([e]);
     }),
 
 
     watcher.onDidChange(async e => {
-      if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
+      if (!isWatcherEnabled) return;
+      logger.info('OnDidChange: ' + e?.fsPath);
 
+      if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
       fileIndexer.index(e.fsPath);
 
-      if (isInActiveEditor(e, SupportedContent.Fiction)) {
-        docStatisticProvider.refresh();
-      }
-
-      if (isInActiveEditor(e, SupportedContent.Notes)) {
-        notesProvider.loadDocument(e?.fsPath);
-      };
-
-      if (isInActiveEditor(e, SupportedContent.Metadata)) {
-        metadataProvider.refresh();
-      }
+      docStatisticProvider.refresh();
+      await notesProvider.refresh();
+      await metadataProvider.refresh();
       metadataDecoration.fire([e]);
     }),
 
     vscode.workspace.onDidOpenTextDocument(e => {
+      logger.info('onDidOpenTextDocument: ' + e?.uri.fsPath);
+
       if (!getContentType(e).isKnown()) return;
 
-      fileIndexer.index(e.uri.fsPath);
+      fileIndexer.index(e.uri.fsPath, { skipIndexedLocations: true });
     }),
 
     vscode.workspace.onDidCloseTextDocument(e => {
@@ -185,48 +175,51 @@ export function activate(context: vscode.ExtensionContext) {
       metadataDecoration.fire([e.uri]);
     }),
 
-    vscode.workspace.onWillRenameFiles(e => {
-      if (!currentConfig.smartEditEnabled) return;
+    vscode.workspace.onDidRenameFiles(async e =>  {
 
-      e.files.forEach(f => {
+      if (!currentConfig.smartRenameEnabled) return;
+      if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) return;
+
+      for (const f of e.files)  {
+        logger.info('OnDidRename: ' + f.oldUri.fsPath);
+
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
+          const isMove = !fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath);
+          if (isMove) return;
 
-          fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, (from: string, to: string) => {
-            if (currentConfig.smartEditRenameRelated === Constants.RenameRelated.NEVER) {
-              return Promise.resolve(false);
+          await fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, async (from: string, to: string) => {
+
+            if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) {
+              return false;
             }
-            if (currentConfig.smartEditRenameRelated === Constants.RenameRelated.ALWAYS) {
-              return Promise.resolve(true);
+            if (currentConfig.smartRenameRelated === Constants.RenameRelated.ALWAYS) {
+              return false;
             }
-            return new Promise((resolve, reject) => {
-              const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
+            const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 
-              return vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename/move ${from}?`, ...options)
-                .then(answer => {
-                  const doRename = answer === options[0] || answer === options[2];
-                  const saveAnswer = answer === options[2] || answer === options[3];
+            const answer =  await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename/move ${from}?`, ...options);
+            const doRename = answer === options[0] || answer === options[2];
+            const saveAnswer = answer === options[2] || answer === options[3];
 
-                  if (saveAnswer) {
-                    vscode.workspace
-                      .getConfiguration('markdown-fiction-writer.smartEdit')
-                      .update(
-                        'renameRelatedFiles',
-                        doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
-                        vscode.ConfigurationTarget.Global);
-                  }
+            if (saveAnswer) {
+              vscode.workspace
+                .getConfiguration('markdown-fiction-writer.smartRename')
+                .update(
+                  'renameRelatedFiles',
+                  doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
+                  vscode.ConfigurationTarget.Global);
+            }
 
-                  return resolve(doRename);
-                });
-            });
+              return doRename;
           });
         }
-      });
+      };
     })
   );
 
   const globPattern = '**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}';
 
-  updateIsSupportedEditor(vscode.window.activeTextEditor);
+  updateContextValues(vscode.window.activeTextEditor);
   fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
   vscode.workspace.workspaceFolders?.forEach(f => {
     fileIndexer.indexLocation(f.uri.fsPath, globPattern);
@@ -236,26 +229,25 @@ export function activate(context: vscode.ExtensionContext) {
     c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, globPattern));
     c.removed?.forEach(f => fileIndexer.removeLocation(f.uri.fsPath, globPattern));
   });
-  metadataProvider.refresh();
+  await metadataProvider.refresh();
+  await notesProvider.refresh();
   docStatisticProvider.refresh();
-  notesProvider.refresh();
-  notesProvider.loadDocument(getActiveEditor(SupportedContent.Notes)?.document?.uri?.fsPath);
   showAgreeWithChanges(configService);
-  exitZenWritingMode(configService);
+  exitWritingMode(configService);
 }
 
-function updateIsSupportedEditor(editor: vscode.TextEditor | undefined) {
+function updateContextValues(editor: vscode.TextEditor | undefined) {
   const contentType = getContentType(editor?.document);
 
+  vscode.commands.executeCommand('setContext', 'fw:isSupportedMetadata', contentType.isKnown());
   vscode.commands.executeCommand('setContext', 'fw:isSupportedEditor', contentType.has(SupportedContent.Fiction));
-  vscode.commands.executeCommand('setContext', 'fw:isSupportedMetadata', contentType.has(SupportedContent.Metadata) || contentType.has(SupportedContent.Notes));
 }
 
 function toggleIsNotePinned(isPineed: boolean) {
   vscode.commands.executeCommand('setContext', 'fw:isNotePinned', isPineed);
 }
 
-function exitZenWritingMode(configurationService: ConfigService) {
+function exitWritingMode(configurationService: ConfigService) {
   if (configurationService.getState().isZenMode) {
     configurationService.restore('workbench', 'colorTheme');
     configurationService.restore('editor', 'fontSize');
@@ -263,7 +255,7 @@ function exitZenWritingMode(configurationService: ConfigService) {
   }
 }
 
-function enterZenWritingMode(configurationService: ConfigService) {
+function enterWritingMode(configurationService: ConfigService) {
   const changeThemeTo = configurationService.getState().viewZenModeTheme;
   const changeFontTo = configurationService.getState().viewZenModeFontSize;
 
@@ -279,11 +271,11 @@ function enterZenWritingMode(configurationService: ConfigService) {
   configurationService.setLocal('isZenMode', true);
 }
 
-async function toggleZenWritingMode(configService: ConfigService) {
+async function toggleWritingMode(configService: ConfigService) {
   if (!configService.getFlag('isAgreeZenMode')) {
     const option = await vscode.window.showWarningMessage(
-      'Enhanced ZenMode overrides some editor settings.\n\n' +
-      'It can be that some settings would need to be restored manually. Make sure  you turn ZenMode off before deactivating/uninstalling this extension.',
+      'Writing overrides some editor settings.\n\n' +
+      'It can be that some settings would need to be restored manually. Make sure  you turn WritingMode off before deactivating/uninstalling this extension.',
       'OK, Continue', 'Cancel', 'Read More');
 
     if (option === 'OK, Continue') {
@@ -296,9 +288,9 @@ async function toggleZenWritingMode(configService: ConfigService) {
   }
 
   if (configService.getState().isZenMode) {
-    exitZenWritingMode(configService);
+    exitWritingMode(configService);
   } else {
-    enterZenWritingMode(configService);
+    enterWritingMode(configService);
   }
 }
 
@@ -334,16 +326,7 @@ async function showAgreeWithChanges(configService: ConfigService) {
 function setFullscreenTheme(configurationService: ConfigService) {
   const theme = configurationService.backup('workbench', 'colorTheme');
   vscode.workspace.getConfiguration('markdown-fiction-writer.view.writingMode').update('theme', theme, vscode.ConfigurationTarget.Global);
-  vscode.window.showInformationMessage(`Zen Writing Mode theme set to: ${theme}`);
-}
-
-function getCurrentFile(): string {
-  const currentFile = vscode.window.activeTextEditor?.document.fileName;
-  if (currentFile) {
-    const parsed = path.parse(currentFile);
-    return parsed.base;
-  }
-  return '';
+  vscode.window.showInformationMessage(`Writing Mode theme set to: ${theme}`);
 }
 
 function compileCommand() {
@@ -383,6 +366,12 @@ function toggleParagraphCommand() {
   } else {
     config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER, vscode.ConfigurationTarget.Global);
   }
+}
+
+function toggleMetadataSummary(){
+  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
+  let enabled = config.get<boolean>('summaryEnabled');
+  config.update('summaryEnabled', !enabled, vscode.ConfigurationTarget.Global);
 }
 
 async function toggleTypewriterModeCommand(configService: ConfigService) {

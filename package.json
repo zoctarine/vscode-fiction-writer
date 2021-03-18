@@ -56,6 +56,15 @@
         }
       },
       {
+        "id": "fictionwriter.lightred",
+        "description": "Light Red Color",
+        "defaults": {
+          "dark": "#e06c75",
+          "light": "#e06c75",
+          "highContrast": "#FF0000"
+        }
+      },
+      {
         "id": "fictionwriter.lime",
         "description": "Lime Color",
         "defaults": {
@@ -171,11 +180,11 @@
           "when": "fw:isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
         },
         {
-					"id": "fw-notes",
-					"name": "Notes",
-					"type": "webview",
-          "when": "fw:isSupportedMetadata && config.markdown-fiction-writer.metadata.enabled"
-				}
+          "id": "fw-notes",
+          "name": "Notes",
+          "type": "webview",
+          "when": "fw:showNotes && config.markdown-fiction-writer.notes.enabled"
+        }
       ],
       "word-frequency-explorer": [
         {
@@ -216,17 +225,17 @@
         {
           "command": "fiction-writer.extension.moveToTrash",
           "group": "navigation",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileUp",
           "group": "inline",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileDown",
           "group": "inline",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
         },
         {
           "command": "fiction-writer.extension.wordFrequency.next.down",
@@ -241,30 +250,30 @@
       ],
       "view/title": [
         {
-					"command": "fiction-writer.extension.notes.open",
-					"group": "navigation",
-					"when": "fw:hasOpenedNote && view == fw-notes"
-				},
+          "command": "fiction-writer.extension.notes.open",
+          "group": "navigation",
+          "when": "fw:hasOpenedNote && view == fw-notes"
+        },
         {
-					"command": "fiction-writer.extension.notes.new",
-					"group": "navigation",
-					"when": "!fw:hasOpenedNote && view == fw-notes"
-				},
+          "command": "fiction-writer.extension.notes.new",
+          "group": "navigation",
+          "when": "!fw:hasOpenedNote && view == fw-notes"
+        },
         {
-					"command": "fiction-writer.extension.notes.save",
-					"group": "navigation",
-					"when": "fw:hasOpenedNote && view == fw-notes"
-				},
+          "command": "fiction-writer.extension.notes.save",
+          "group": "navigation",
+          "when": "fw:hasOpenedNote && view == fw-notes"
+        },
         {
-					"command": "fiction-writer.extension.notes.pinOn",
-					"group": "navigation",
-					"when": "fw:hasOpenedNote && !fw:isNotePinned && view == fw-notes"
-				},
+          "command": "fiction-writer.extension.notes.pinOn",
+          "group": "navigation",
+          "when": "fw:hasOpenedNote && !fw:isNotePinned && view == fw-notes"
+        },
         {
-					"command": "fiction-writer.extension.notes.pinOff",
-					"group": "navigation",
-					"when": "fw:hasOpenedNote && fw:isNotePinned && view == fw-notes"
-				},
+          "command": "fiction-writer.extension.notes.pinOff",
+          "group": "navigation",
+          "when": "fw:hasOpenedNote && fw:isNotePinned && view == fw-notes"
+        },
         {
           "command": "fiction-writer.extension.wordFrequency.refresh",
           "when": "view == fw-wordFrequencies",
@@ -284,18 +293,71 @@
           "command": "fiction-writer.extension.metadata.refresh",
           "when": "view == fw-metadata",
           "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.enableSummary",
+          "when": "view == fw-metadata",
+          "group": "navigation"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.openFile",
+          "when": "view == fw-metadata",
+          "group": "navigation"
         }
       ],
       "explorer/context": [
         {
+          "command": "fiction-writer.extension.moveToResources",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /^((?![\\\\|/]\\.fic\\b).)*$/gm"
+        },
+        {
           "command": "fiction-writer.extension.moveFileUp",
           "group": "1_modification",
-          "when": "false && config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "false && config.markdown-fiction-writer.smartRename.enabled"
         },
         {
           "command": "fiction-writer.extension.moveFileDown",
           "group": "1_modification",
-          "when": "false && config.markdown-fiction-writer.smartEdit.enabled"
+          "when": "false && config.markdown-fiction-writer.smartRename.enabled"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "fiction-writer.extension.moveToResources",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.notes.open",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.notes.save",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.notes.new",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.notes.pinOn",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.notes.pinOff",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.enableSummary",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.openFile",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.metadata.refresh",
+          "when": "false"
         }
       ]
     },
@@ -313,21 +375,25 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
-        "markdown-fiction-writer.smartEdit.enabled": {
+        "markdown-fiction-writer.smartRename.enabled": {
           "type": "boolean",
           "scope": "application",
           "default": true,
           "markdownDescription": "If enabled, allows ordering of files based on number prefix."
         },
-        "markdown-fiction-writer.smartEdit.renameRelatedFiles": {
+        "markdown-fiction-writer.smartRename.renameRelatedFiles": {
           "type": "string",
           "scope": "application",
           "default": "Ask Every Time",
-          "enum": ["Never", "Always", "Ask Every Time"],
+          "enum": [
+            "Never",
+            "Always",
+            "Ask Every Time"
+          ],
           "markdownEnumDescriptions": [
-              "Disables the rename related feature.",
-              "Will always rename/move `.yml` and `.md` files with same name, together.",
-              "For each rename/move operation, Will ask if `.yml` and `.md` files with same name are found on disk."
+            "Disables the rename related feature.",
+            "Will always rename/move `.yml` and `.md` files with same name, together.",
+            "For each rename/move operation, Will ask if `.yml` and `.md` files with same name are found on disk."
           ],
           "markdownDescription": "If `enabled`, renames/moves related (`.yml` and `.md`) files together."
         },
@@ -579,6 +645,7 @@
           "default": {
             "blue": "blue",
             "red": "red",
+            "lightred": "lightred",
             "green": "green",
             "orange": "orange",
             "amber": "amber",
@@ -602,6 +669,7 @@
               "default color",
               "blue",
               "red",
+              "lightred",
               "green",
               "orange",
               "amber",
@@ -667,11 +735,11 @@
           "default": ",",
           "markdownDescription": "Metadata values separated by this string, will be treated as list items.\n\nEnter the list item separator character below _(or leave it empty to disable this feature)_:\n\n_**Example:** `item1, item2, item three` will be equivalent to `[item1, item2, item three]` if the separator is comma (`,`)._\n\n"
         },
-        "markdown-fiction-writer.metadata.summaryCategoryName": {
-          "type": "string",
+        "markdown-fiction-writer.metadata.categories.summaryEnabled": {
+          "type": "boolean",
           "scope": "application",
-          "default": "summary",
-          "markdownDescription": "The name of the category that will serve as short summary. This will be displayed in **Explorer** document tooltip and as the first thing in the **Metadata View**.\n\n> **Note:** Leave empty if you want to disable this feature"
+          "default": true,
+          "markdownDescription": "If `enabled`, it will show the contents of the `summary` 1st level category in the _message_ section of the  **Metadata View**, and not in the tree itself.\n\n To use it, simply define a metadata block:\n\n`---`\n\n**`summary: The document summary`**\n\n`---`"
         },
         "markdown-fiction-writer.metadata.enabled": {
           "type": "boolean",
@@ -679,7 +747,7 @@
           "default": true,
           "markdownDescription": "It enables metadata reltated features. If `disabled` then **all** metadata related featueres will be disabled (parsing, metadata view, colors, etc...).\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/metadata/)"
         },
-        "markdown-fiction-writer.metadata.defaultCategory": {
+        "markdown-fiction-writer.metadata.categories.default": {
           "type": "string",
           "scope": "application",
           "default": "tags",
@@ -732,45 +800,53 @@
           "scope": "application",
           "default": true,
           "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
+        },
+        "markdown-fiction-writer.notes.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files."
         }
       }
     },
     "commands": [
       {
-				"command": "fiction-writer.extension.notes.new",
+        "command": "fiction-writer.extension.moveToResources",
         "category": "Markdown Fiction Writer",
-				"title": "Create New Notes File",
-        "icon": "$(new-file)",
-        "when": "false"
-			},
+        "title": "Move to resource folder"
+      },
       {
-				"command": "fiction-writer.extension.notes.open",
+        "command": "fiction-writer.extension.notes.new",
         "category": "Markdown Fiction Writer",
-				"title": "Open Notes File",
-        "icon": "$(go-to-file)",
-        "when": "false"
-			},
+        "title": "Create New Notes File",
+        "icon": "$(new-file)"
+      },
       {
-				"command": "fiction-writer.extension.notes.save",
+        "command": "fiction-writer.extension.notes.open",
         "category": "Markdown Fiction Writer",
-				"title": "Save Notes",
-        "icon": "$(save)",
-        "when": "false"
-			},
+        "title": "Open Notes File",
+        "icon": "$(go-to-file)"
+      },
       {
-				"command": "fiction-writer.extension.notes.pinOn",
+        "command": "fiction-writer.extension.notes.save",
         "category": "Markdown Fiction Writer",
-				"title": "Pin ON",
+        "title": "Save Notes",
+        "icon": "$(save)"
+      },
+      {
+        "command": "fiction-writer.extension.notes.pinOn",
+        "category": "Markdown Fiction Writer",
+        "title": "Pin ON",
         "icon": "$(pin)",
         "when": "false"
-			},
+      },
       {
-				"command": "fiction-writer.extension.notes.pinOff",
+        "command": "fiction-writer.extension.notes.pinOff",
         "category": "Markdown Fiction Writer",
-				"title": "Pin OFF",
+        "title": "Pin OFF",
         "icon": "$(pinned)",
         "when": "false"
-			},
+      },
       {
         "command": "fiction-writer.extension.moveToTrash",
         "title": "Move to trash",
@@ -865,8 +941,19 @@
         "command": "fiction-writer.extension.metadata.refresh",
         "title": "Refresh Metadata",
         "icon": "$(refresh)",
-        "category": "Markdown Fiction Writer",
-        "when": "false"
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.metadata.openFile",
+        "title": "Open File Containing Metadata",
+        "icon": "$(go-to-file)",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.metadata.enableSummary",
+        "title": "Enable/Disable Summary",
+        "icon": "$(note)",
+        "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.wordFrequency.clear",

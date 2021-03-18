@@ -29,6 +29,9 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
       const estWordCount = Math.ceil(charCount / 6);
       const estLines = Math.ceil(estWordCount / 10);
       const estPages = Math.ceil(estLines / 24);
+      const estReadTime = wordCount / 200;
+      const estReadTimeMin = Math.floor(estReadTime);
+      const estReadTimeSec = Math.round(60 * (estReadTime - estReadTimeMin));
 
       const asString = (n:number) => `${n}`;
       return Promise.resolve([
@@ -38,6 +41,7 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
         new WordStatTreeItem(asString(estPages),'Est. Pages', 4, 'At 24 lines per page', new vscode.ThemeIcon('files')),
         new WordStatTreeItem(asString(estLines),'Est. Lines', 4, 'At 10 words per line', new vscode.ThemeIcon('word-wrap')),
         new WordStatTreeItem(asString(estWordCount),'Est. Word Count', 4, 'At 6 characters per word', new vscode.ThemeIcon('zap')),
+        new WordStatTreeItem(`${estReadTimeMin} min, ${estReadTimeSec} sec`,'Est. Reading Time', 4, 'At 200 wpm', new vscode.ThemeIcon('eye')),
       ]);
     }
   }

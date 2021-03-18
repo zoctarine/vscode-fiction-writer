@@ -1,7 +1,6 @@
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
-import { pathToFileURL } from 'url';
 import { fileManager, IFileGroup } from '../smartRename';
 import { SupportedContent } from '../utils';
 

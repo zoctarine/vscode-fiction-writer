@@ -96,7 +96,7 @@ export class StatusBarObserver extends Observer<Config>{
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.writingModeToggleButton.command = Constants.Commands.TOGGLE_ZEN_MODE;
+    this.writingModeToggleButton.command = Constants.Commands.TOGGLE_WRITING_MODE;
     this.writingModeToggleButton.tooltip = 'Toggle Writing Mode';
     this.updateWritingModeToggle();
 

@@ -4,9 +4,11 @@ import { Config } from '../config';
 import { getActiveEditor, IObservable, Observer, SupportedContent } from '../utils';
 import { IFileInfo, MetadataFileCache } from './metadataFileCache';
 import { MetadataTreeItem } from "./metadataTreeItem";
+import { config } from 'process';
 
 
 export class MarkdownMetadataTreeDataProvider extends Observer<Config> implements vscode.TreeDataProvider<MetadataTreeItem> {
+
   private document: vscode.TextDocument | undefined;
   private fileInfo: IFileInfo | undefined;
   public tree: vscode.TreeView<MetadataTreeItem> | undefined;
@@ -24,30 +26,19 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
       return Promise.resolve([]);
     }
 
-    const elements = element
+    let elements = element
       ? this.parseObjectTree(element.value, element)
       : this.parseObjectTree(this.fileInfo?.metadata?.value);
 
+    // Hide the 1st level `summary` category if it is shown as message
+    if (this.state.metaSummaryCategoryEnabled){
+      elements = elements.filter(e => e.key !== 'summary');
+    }
     const useColors = this.state.metaKeywordShowInMetadataView;
     const showLabels = this.state.metaCategoryNamesEnabled ?? false;
 
     elements.forEach(item => {
       let icon: string | undefined = undefined;
-      const metaLocation = this.fileInfo?.metadata?.location;
-      if (metaLocation) {
-        item.command = {
-          title: 'Open Meta',
-          command: 'vscode.open',
-          arguments: [
-            vscode.Uri.file(metaLocation),
-            {
-              selection: new vscode.Range(
-                new vscode.Position(0, 0),
-                new vscode.Position(0, 0))
-            }
-          ]
-        };
-      };
 
       let label = showLabels || item.parent
         ? item.parent?.key.toLowerCase()
@@ -71,6 +62,20 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     });
 
     return Promise.resolve(elements);
+  }
+
+  open() {
+    const metaLocation = this.fileInfo?.metadata?.location;
+    if (metaLocation) {
+      vscode.commands.executeCommand('vscode.open',
+        vscode.Uri.file(metaLocation),
+        {
+          selection: new vscode.Range(
+            new vscode.Position(0, 0),
+            new vscode.Position(0, 0))
+        }
+      );
+    };
   }
 
   private isArray(object: any): boolean { return Array.isArray(object); }
@@ -143,30 +148,27 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   refresh(): Promise<IFileInfo | undefined> {
 
     return new Promise((resolve, reject) => {
-      this.document = getActiveEditor(SupportedContent.Metadata)?.document;
+      this.document = vscode.window.activeTextEditor?.document;
       const meta = this.cache.get(this.document?.uri);
-
       if (meta) {
         if (this.tree) {
           try {
             const values = meta.metadata?.value;
-            this.tree.description = values?.id ?? path.parse(meta.key)?.name;
             this.tree.message = '';
             if (values) {
-              if (this.state.metaSummaryCategoryName && this.state.metaSummaryCategoryName.trim() !== '') {
-                this.tree.message = values[this.state.metaSummaryCategoryName.trim()];
+              if (this.state.metaSummaryCategoryEnabled) {
+                this.tree.message = meta.summary;
               };
             }
           } catch (error) {
             //TODO: Log error
           }
         }
-        this.fileInfo = meta;
-        this._onDidChangeTreeData.fire();
-        resolve(this.fileInfo);
-      } else {
-        reject();
       }
+
+      this.fileInfo = meta;
+      this._onDidChangeTreeData.fire();
+      return resolve(this.fileInfo);
     });
   }
 

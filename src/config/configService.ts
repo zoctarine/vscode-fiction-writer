@@ -30,7 +30,7 @@ export class ConfigService extends Observable<Config> {
     const view = workspace.getConfiguration('markdown-fiction-writer.view');
     const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
-    const smartEdit = workspace.getConfiguration('markdown-fiction-writer.smartEdit');
+    const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
@@ -92,8 +92,8 @@ export class ConfigService extends Observable<Config> {
 
     // SMART EDIT
 
-    config.smartEditEnabled = this.read<boolean>(smartEdit, 'enabled', false);
-    config.smartEditRenameRelated = this.read<string>(smartEdit, 'renameRelatedFiles', Constants.RenameRelated.ASK);
+    config.smartRenameEnabled = this.read<boolean>(smartRename, 'enabled', false);
+    config.smartRenameRelated = this.read<string>(smartRename, 'renameRelatedFiles', Constants.RenameRelated.ASK);
 
     // METADATA
 
@@ -106,10 +106,10 @@ export class ConfigService extends Observable<Config> {
     config.metaCategories = new Map<string, string>();
     config.metaCategoryIconsEnabled = this.read<boolean>(metadata, 'categories.showIcons', true) && config.metaEnabled;
     config.metaCategoryNamesEnabled = this.read<boolean>(metadata, 'categories.showNames', true) && config.metaEnabled;
-    config.metaSummaryCategoryName = this.read<string>(metadata, 'summaryCategoryName', 'summary');
+    config.metaSummaryCategoryEnabled = this.read<boolean>(metadata, 'categories.summaryEnabled', true) && config.metaEnabled;
 
+    config.metaDefaultCategory = this.read<string>(metadata, 'categories.default', 'tags');
     config.metaEasyLists = this.read<string>(metadata, 'easyLists', ',');
-    config.metaDefaultCategory = this.read<string>(metadata, 'defaultCategory', 'tags');
     config.metaKeywordBadgeCategory = this.read<string>(metadata, 'keywords.badgesCategory', 'tags');
     config.metaKeywordColorCategory = this.read<string>(metadata, 'keywords.colorsCategory', 'tags');
     config.metaFileBadges = new Map<string, string>();

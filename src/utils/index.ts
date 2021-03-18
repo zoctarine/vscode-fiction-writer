@@ -5,6 +5,7 @@ export * from './disposables';
 export * as StringUtils from './strings';
 export * from './observables';
 export * from './inMemoryCache';
+export * from './logger';
 
 export enum SupportedContent {
   Unknown  = 0,  	   // 000 -- the bitshift is unnecessary

@@ -56,8 +56,10 @@ export const Constants = {
     WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
     DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh',
     METADATA_REFRESH: 'fiction-writer.extension.metadata.refresh',
-    TOGGLE_ZEN_MODE: 'fiction-writer.extension.toggleWritingMode',
-    EXIT_ZEN_MODE: 'fiction-writer.extension.exitWritingMode',
+    METADATA_OPEN: 'fiction-writer.extension.metadata.openFile',
+    METADATA_TOGGLE_SUMMARY: 'fiction-writer.extension.metadata.enableSummary',
+    TOGGLE_WRITING_MODE: 'fiction-writer.extension.toggleWritingMode',
+    EXIT_WRITING_MODE: 'fiction-writer.extension.exitWritingMode',
     SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme',
     MOVE_FILE_UP: 'fiction-writer.extension.moveFileUp',
     MOVE_FILE_DOWN: 'fiction-writer.extension.moveFileDown',
@@ -65,7 +67,8 @@ export const Constants = {
     OPEN_NOTES: 'fiction-writer.extension.notes.open',
     NEW_NOTES: 'fiction-writer.extension.notes.new',
     PIN_NOTE: 'fiction-writer.extension.notes.pinOn',
-    UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff'
+    UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff',
+    MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources'
   },
 
   KnownLabels: [

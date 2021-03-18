@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
-import { IObservable, Observer, SupportedContent } from '../utils';
+import { Constants, IObservable, Observer, RegEx, SupportedContent } from '../utils';
 import { Config, IKvp } from '../config';
 import { FileIndexer } from '../compile';
-import { fileManager } from '../smartRename';
 import { IMetadata } from '.';
 
 export interface IFileInfo {
   key: string,
   path?: string,
   id?: string,
+  summary?: string,
   metadata?: IMetadata,
   notes?: INotes
 }
@@ -28,7 +28,7 @@ export class MetadataFileCache extends Observer<Config> {
     if (!path) return undefined;
 
     const info = this.fileIndex.getByPath(path.fsPath);
-    if (info?.metadata?.value){
+    if (info?.metadata?.value) {
       info.metadata.value = this.prepareMeta(info?.metadata?.value);
     }
 
@@ -59,7 +59,10 @@ export class MetadataFileCache extends Observer<Config> {
 
       for (const [key, val] of Object.entries(meta)) {
         const val = newMeta[key];
-        if (this.state.metaEasyLists && this.state.metaEasyLists.length > 0 && cats.includes(key.toLowerCase()) && typeof (val) === 'string') {
+        if (this.state.metaEasyLists && this.state.metaEasyLists.length > 0 &&
+          cats.includes(key.toLowerCase()) &&
+          typeof (val) === 'string' &&
+          !RegEx.NEWLINE.test(val)) {
           const tags = val.split(this.state.metaEasyLists).map(t => t.trim()).filter(m => m);
           newMeta[key] = tags.length > 1 ? tags : tags[0];
         }

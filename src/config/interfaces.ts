@@ -73,8 +73,8 @@ export class Config implements IContextConfig {
   metaCategoryIconsEnabled?: boolean;
   metaCategoryNamesEnabled?: boolean;
   metaKeywordBadgeCategory!: string;
-  metaSummaryCategoryName!: string;
+  metaSummaryCategoryEnabled?: boolean;
 
-  smartEditEnabled?:boolean;
-  smartEditRenameRelated!: string;
+  smartRenameEnabled?:boolean;
+  smartRenameRelated!: string;
 }
