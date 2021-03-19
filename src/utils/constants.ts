@@ -68,7 +68,8 @@ export const Constants = {
     NEW_NOTES: 'fiction-writer.extension.notes.new',
     PIN_NOTE: 'fiction-writer.extension.notes.pinOn',
     UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff',
-    MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources'
+    MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources',
+    REINDEX: 'fiction-writer.extension.reindex'
   },
 
   KnownLabels: [
@@ -142,7 +143,7 @@ export const RegEx = {
   METADATA_MARKER_START: /^---[ \t]*$/,
 
   METADATA_MARKER_END: /^(---|\.\.\.)[ \t]*$/,
-  
+
   METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm
 };
 

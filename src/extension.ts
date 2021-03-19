@@ -100,6 +100,12 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
     vscode.commands.registerCommand(cmd.MOVE_TO_RESOURCES, (e:vscode.Uri) => { fileManager.moveToFolder(e?.fsPath); }),
+    vscode.commands.registerCommand(cmd.REINDEX, async () => {
+      fileIndexer.clear();
+      indexAllOpened(fileIndexer);
+      await metadataProvider.refresh();
+      await notesProvider.refresh();
+    }),
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
       // TODO: This check is  necessary as sometimes, when switching documents,
@@ -143,7 +149,6 @@ export async function activate(context: vscode.ExtensionContext) {
       metadataDecoration.fire([e]);
     }),
 
-
     watcher.onDidChange(async e => {
       if (!isWatcherEnabled) return;
       logger.debug('OnDidChange: ' + e?.fsPath);
@@ -185,7 +190,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
           const isMove = !fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath);
-          if (isMove) return;
+          // Renaming of folders does not trigger file watcher (known limitation of workspace watcher that can change in the future)
+          //if (isMove) return;
 
           await fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, async (from: string, to: string) => {
 
@@ -218,10 +224,8 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   updateContextValues(vscode.window.activeTextEditor);
-  fileIndexer.index(vscode.window.activeTextEditor?.document.uri.fsPath);
-  vscode.workspace.workspaceFolders?.forEach(f => {
-    fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern);
-  });
+
+  indexAllOpened(fileIndexer);
 
   vscode.workspace.onDidChangeWorkspaceFolders(c => {
     c.added?.forEach(f => fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern));
@@ -232,6 +236,18 @@ export async function activate(context: vscode.ExtensionContext) {
   docStatisticProvider.refresh();
   showAgreeWithChanges(configService);
   exitWritingMode(configService);
+}
+
+function indexAllOpened(fileIndexer: FileIndexer){
+  vscode.workspace.workspaceFolders?.forEach(f => {
+    fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern);
+  });
+
+  vscode.workspace.textDocuments?.forEach(d => {
+    fileIndexer.index(d.uri.fsPath, {skipIndexedLocations: true, skipNotify: true});
+  });
+
+  fileIndexer.notify();
 }
 
 function updateContextValues(editor: vscode.TextEditor | undefined) {

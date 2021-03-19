@@ -124,6 +124,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
 
   public clear() {
     this.fileInfos.clear();
+    this.notify();
   }
 
   dispose() {

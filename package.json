@@ -348,6 +348,18 @@
           "when": "false"
         },
         {
+          "command": "fiction-writer.extension.moveFileUp",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.moveFileDown",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.moveToTrash",
+          "when": "false"
+        },
+        {
           "command": "fiction-writer.extension.metadata.enableSummary",
           "when": "false"
         },
@@ -357,6 +369,27 @@
         },
         {
           "command": "fiction-writer.extension.metadata.refresh",
+          "when": "false"
+        },
+
+        {
+          "command": "fiction-writer.extension.wordFrequency.refresh",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.statistics.refresh",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.clear",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.up",
+          "when": "false"
+        },
+        {
+          "command": "fiction-writer.extension.wordFrequency.next.down",
           "when": "false"
         }
       ]
@@ -811,6 +844,11 @@
     },
     "commands": [
       {
+        "command": "fiction-writer.extension.reindex",
+        "category": "Markdown Fiction Writer",
+        "title": "ReIndex Files"
+      },
+      {
         "command": "fiction-writer.extension.moveToResources",
         "category": "Markdown Fiction Writer",
         "title": "Move to resource folder"
@@ -858,15 +896,13 @@
         "command": "fiction-writer.extension.moveFileUp",
         "title": "Move file up",
         "category": "Markdown Fiction Writer",
-        "icon": "$(arrow-up)",
-        "when": "false"
+        "icon": "$(arrow-up)"
       },
       {
         "command": "fiction-writer.extension.moveFileDown",
         "title": "Move file down",
         "category": "Markdown Fiction Writer",
-        "icon": "$(arrow-down)",
-        "when": "false"
+        "icon": "$(arrow-down)"
       },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
