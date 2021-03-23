@@ -2,7 +2,7 @@ import { IDisposable, WithDisposables } from './disposables';
 
 export interface IObserver<T extends object> {
 	// Receive update from observable.
-	update(): void;
+	update(...args: any[]): void;
 }
 
 export interface IObservable<T extends object> {
@@ -14,7 +14,7 @@ export interface IObservable<T extends object> {
   detach(observer: IObserver<T>): void;
 
   // Notify all observers about an event.
-  notify(): void;
+  notify(...args: any[]): void;
 
   getState() : T;
 }
@@ -61,8 +61,8 @@ export abstract class Observable<T extends object> implements IObservable<T>, ID
       }
   }
 
-  notify() {
-      this.observers.forEach(o => o.update());
+  notify(...args: any[]) {
+      this.observers.forEach(o => o.update(...args));
   }
 
 

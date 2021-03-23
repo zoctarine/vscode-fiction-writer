@@ -51,44 +51,47 @@ export interface IMetadata {
  * Extracts metadata object from a document group
  * @param text the text from which to extract metadata from
  */
-export function extractMetadata(group: IFileGroup): IMetadata {
-  try {
-    // search for inline metadata
-    const actualFile = group.getPath(SupportedContent.Fiction);
-    if (actualFile && fs.existsSync(actualFile)) {
-      const text = fs.readFileSync(actualFile, 'utf8');
-      const metadataBlock = extract(text);
-      let value = parse(metadataBlock);
-      if (value) {
-        return {
-          location: actualFile,
-          type: MetaLocation.Internal,
-          value: value
-        };
+export class MetadataService {
+  public extractMetadata(group: IFileGroup): IMetadata {
+    try {
+      // search for inline metadata
+      const actualFile = group.getPath(SupportedContent.Fiction);
+      if (actualFile && fs.existsSync(actualFile)) {
+        const text = fs.readFileSync(actualFile, 'utf8');
+        const metadataBlock = extract(text);
+        let value = parse(metadataBlock);
+        if (value) {
+          return {
+            location: actualFile,
+            type: MetaLocation.Internal,
+            value: value
+          };
+        }
       }
-    }
 
-    // if no inline meta is found, search in external file
-    const externalMeta = group.getPath(SupportedContent.Metadata);
-    if (externalMeta && fs.existsSync(externalMeta)) {
-      const metadataBlock = fs.readFileSync(externalMeta, 'utf8');
-      let value = parse(metadataBlock);
+      // if no inline meta is found, search in external file
+      const externalMeta = group.getPath(SupportedContent.Metadata);
+      if (externalMeta && fs.existsSync(externalMeta)) {
+        const metadataBlock = fs.readFileSync(externalMeta, 'utf8');
+        let value = parse(metadataBlock);
 
-      if (value) {
-        return {
-          location: externalMeta,
-          type: MetaLocation.External,
-          value: value
-        };
+        if (value) {
+          return {
+            location: externalMeta,
+            type: MetaLocation.External,
+            value: value
+          };
+        }
       }
+
+
+    } catch (error) {
+      //TODO Log some error
     }
-
-
-  } catch (error) {
-    //TODO Log some error
+    return {
+      type: MetaLocation.Unknown
+    };
   }
-  return {
-    type: MetaLocation.Unknown
-  };
 }
 
+export const metaService = new MetadataService();

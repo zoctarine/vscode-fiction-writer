@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { IFileInfo } from '.';
 import { FileIndexer } from '../compile';
-import { getActiveEditor } from '../utils';
+import { getActiveEditor, IObserver, logger } from '../utils';
 
-export class MetadataNotesProvider implements vscode.WebviewViewProvider {
+export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObserver<IFileInfo[]> {
   private _currentDocumentPath?: string;
   private _view?: vscode.WebviewView;
   private _noteText = '';
@@ -18,7 +18,13 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider {
     private readonly _extensionUri: vscode.Uri,
     private readonly _fileIndex: FileIndexer,
     private _disposables: vscode.Disposable[]
-  ) { }
+  ) { 
+    _fileIndex.attach(this);
+  }
+
+  update(...args: any[]): void {
+
+  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,

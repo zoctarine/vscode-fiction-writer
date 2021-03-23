@@ -11,60 +11,62 @@ export const knownFileTypes = {
     pattern: '.[mM][dD]',
   },
   metadata: {
-    extension: '.yml',
-    pattern: '.[yY][mM][lL]',
+    extension: '.md.yml',
+    pattern: '.[mM][dD].[yY][mM][lL]',
     optionalSubdir: Constants.WorkDir
   },
   notes: {
-    extension: '.txt',
-    pattern: '.[tT][xX][tT]',
+    extension: '.md.txt',
+    pattern: '.[mM][dD].[tT][xX][tT]',
     optionalSubdir: Constants.WorkDir
   },
   all: {
-    pattern: '**/*.{[mM][dD],[yY][mM][lL],[tT][xX][tT]}'
+    pattern: '**/*.{[mM][dD],[mM][dD].[yY][mM][lL],[mM][dD].[tT][xX][tT]}'
   }
 };
 
 const knownPatterns: {type: SupportedContent, pattern:string, subdir: string}[] = [
   { type: SupportedContent.Fiction, pattern: knownFileTypes.fiction.pattern, subdir: ''},
   { type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: ''},
-  { type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: knownFileTypes.metadata.optionalSubdir},
   { type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: ''},
-  { type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: knownFileTypes.notes.optionalSubdir},
+  // TODO: Support .fic subdirectory: 
+  //{ type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: knownFileTypes.metadata.optionalSubdir},
+  //{ type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: knownFileTypes.notes.optionalSubdir},
 ];
 
 export interface IFileGroup {
-  path: string;
-  content: SupportedContent;
-  other: Map<SupportedContent, string>;
+  files: Map<SupportedContent, string>;
   getPath(forContent: SupportedContent): string | undefined;
   getAll(): string[];
 }
 
+
+
 class FileGroup implements IFileGroup {
-  constructor(
-    public path: string,
-    public content: SupportedContent,
-    public other: Map<SupportedContent, string>) { }
+  public files: Map<SupportedContent, string>
+
+  constructor(files?: Map<SupportedContent, string>) { 
+    if (!files)
+      this.files = new Map<SupportedContent, string>();
+    else
+      this.files = files;
+  }
 
   getPath(forContent: SupportedContent): string | undefined {
-    if (this.content === forContent) return this.path;
-
-    return this.other.get(forContent);
+    return this.files.get(forContent);
   }
 
   getAll(): string[] {
     const result: string[] = [];
-
-    result.push(this.path);
-    this.other.forEach((path) => result.push(path));
-
+    this.files.forEach((path) => result.push(path));
     return result;
   }
-
 }
 
+
+
 export class FileManager {
+
 
   moveToFolder(fsPath?: string) {
     if (!fsPath) return;
@@ -92,54 +94,47 @@ export class FileManager {
     return  path.normalize(fsPath).replace(/\\/g, '/');
   }
 
-  public getRoot(fsPath: string) : string {
+  public getRoot(fsPath: string) : string | undefined {
+    if (!path) return undefined;
+
     fsPath = path.normalize(fsPath);
-    const contentType = this.getPathContentType(fsPath, true);
-    const parsed = path.parse(fsPath);
-    let dir = parsed.dir;
-    if (!contentType.has(SupportedContent.Fiction)){
-      // if is not main document, then try to get main document
-      const p = path.parse(dir);
-      if (p.base === Constants.WorkDir){
-        dir = p.dir;
-      }
-    }
-    return this.normalize(path.join(dir, parsed.name));
+    const contentType = this.getPathContentType(fsPath);
+    if (!contentType.isKnown()) return undefined;
+
+    // get main .md path
+    return fsPath.replace(/(\.yml|\.txt)*$/gi, '')
   }
+
 
   public getGroup(fsPath: string): IFileGroup {
 
     fsPath = this.normalize(fsPath);
-    const otherFiles = new Map<SupportedContent, string>();
     const contentType = this.getPathContentType(fsPath, true);
-    const parsed = path.parse(fsPath);
-    let dir = parsed.dir;
-    if (!contentType.has(SupportedContent.Fiction)){
-      // if is not main document, then try to get main document
-      const p = path.parse(dir);
-      if (p.base === Constants.WorkDir){
-        dir = p.dir;
-      }
+    if (!contentType.isKnown()) return new FileGroup();
+    const rootPath = this.getRoot(fsPath);
+    if (!rootPath) return new FileGroup();
+
+    const files = new Map<SupportedContent, string>();
+    
+    if (fs.existsSync(fsPath)) {
+      files.set(contentType.supports, fsPath);
     }
 
-    if (contentType.isKnown()) {
-      knownPatterns.forEach((search) => {
+    const parsed = path.parse(rootPath);
+    const name = parsed.name;
 
-        if (contentType.has(search.type)) return;
-        if (otherFiles.has(search.type)) return;
+    knownPatterns.forEach((search) => {
 
-        const matches = glob.sync(path.join(dir, search.subdir, `${parsed.name}${search.pattern}`));
-        if (matches.length > 0) {
-          otherFiles.set(search.type, matches[0]); // get only first match
-        }
-      });
-    };
+      if (contentType.has(search.type)) return;
+      if (files.has(search.type)) return;
 
-    return new FileGroup(
-      fsPath,
-      contentType.supports,
-      otherFiles
-    );
+      const matches = glob.sync(path.join(parsed.dir, search.subdir, `${name}${search.pattern}`));
+      if (matches && matches.length > 0) {
+        files.set(search.type, matches[0]); // get only first match
+      }
+    });
+
+    return new FileGroup(files);
   }
 
 
@@ -181,11 +176,12 @@ export class FileManager {
 
     const fileGroup = this.getGroup(oldName);
 
-    if (fileGroup.other.size > 0) {
+    if (fileGroup.files.size > 0) {
       const parsed = path.parse(newName);
-      const newPart = path.join(parsed.dir, Constants.WorkDir, parsed.name);
+      const neP = parsed.base.replace(/(.*)(?=\.md)$/gi, parsed.name);
+      const newPart = path.join(parsed.dir, neP);
 
-      for (const oldName of fileGroup.other.values()) {
+      for (const oldName of fileGroup.files.values()) {
         const oldExt = path.parse(oldName).ext;
 
         const newName = `${newPart}${oldExt}`;
@@ -197,17 +193,6 @@ export class FileManager {
     }
   }
 
-  public moveUp(fsPath: string) {
-    // get folder of file
-    // if all files are prepared for rename, then increment
-    // if not, then ask to fix and then rename
-  }
-
-  public smartRename(fsPath: string) {
-    const parsed = path.parse(fsPath);
-    const allFiles = glob.sync(path.join(parsed.dir, '*.[mM][dD]'), { nodir: true });
-    //TODO: Implement functioinality
-  }
 }
 
 export const fileManager = new FileManager();

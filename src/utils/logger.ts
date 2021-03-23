@@ -26,6 +26,8 @@ class Logger implements ILogger {
 
   private log(prefix: string, message: string) {
     if (!this.channel) this.channel = window.createOutputChannel('Markdown Fiction Writer');
+    if (!this.channel) return;  // If channel coulnd not be crated, just ignore it
+
     const date = new Date().toISOString().replace('T', ' ').slice(0, -5);
 
     if (isDebugMode) {

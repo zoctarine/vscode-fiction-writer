@@ -13,7 +13,8 @@ export const workspace = {
   };
 
 export const window = {
-	activeTextEditor: {}
+	activeTextEditor: {},
+	createOutputChannel: jest.fn()
 };
 
 export class TreeItem {

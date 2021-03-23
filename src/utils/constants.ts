@@ -69,6 +69,7 @@ export const Constants = {
     PIN_NOTE: 'fiction-writer.extension.notes.pinOn',
     UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff',
     MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources',
+    RENAME_SIMILAR: 'fiction-writer.extension.renameGroup',
     REINDEX: 'fiction-writer.extension.reindex'
   },
 

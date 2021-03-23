@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
@@ -6,7 +7,7 @@ import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingP
 import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger, SupportedContent } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider } from './metadata';
+import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, metaService } from './metadata';
 import { fileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
@@ -15,7 +16,7 @@ let isWatcherEnabled = true;
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('setContext', 'isDevelopmentMode', isDebugMode);
 
-  const fileIndexer = new FileIndexer();
+  const fileIndexer = new FileIndexer(metaService);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
   const cache = new MetadataFileCache(fileIndexer, configService);
@@ -99,6 +100,21 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => { 
+      const oldName = e?.fsPath;
+     if (!fileManager.getPathContentType(oldName).isKnown()) return;
+      const currentName = fileManager.getRoot(oldName);
+      const parsed = path.parse(oldName);
+
+      vscode.window
+        .showInputBox({value:currentName})
+        .then(fileName => {
+          if (!fileName) return;
+          
+          const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
+          if (fileName) fileManager.batchRename(oldName, newName); 
+        });
+    }),
     vscode.commands.registerCommand(cmd.MOVE_TO_RESOURCES, (e:vscode.Uri) => { fileManager.moveToFolder(e?.fsPath); }),
     vscode.commands.registerCommand(cmd.REINDEX, async () => {
       fileIndexer.clear();
@@ -107,6 +123,7 @@ export async function activate(context: vscode.ExtensionContext) {
       await notesProvider.refresh();
     }),
 
+  
     vscode.window.onDidChangeActiveTextEditor(async e => {
       // TODO: This check is  necessary as sometimes, when switching documents,
       //       you first get an undefined event, followed by the correct event
@@ -126,11 +143,14 @@ export async function activate(context: vscode.ExtensionContext) {
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
-      fileIndexer.index(e.fsPath);
+      const result = fileIndexer.index(e.fsPath);
 
-      await metadataProvider.refresh();
+      const pathsToRefresh = [e];
+      if (result?.path){
+        pathsToRefresh.push(vscode.Uri.file(result.path));
+      }
+      metadataDecoration.fire(pathsToRefresh);
       await notesProvider.refresh();
-      metadataDecoration.fire([e]);
     }),
 
     watcher.onDidDelete(async e => {
@@ -142,11 +162,15 @@ export async function activate(context: vscode.ExtensionContext) {
       fileIndexer.delete(e.fsPath);
 
       //TODO: only index what changed
-      fileIndexer.index(e.fsPath);
+      const result = fileIndexer.index(e.fsPath);
 
       await metadataProvider.refresh();
       await notesProvider.refresh();
-      metadataDecoration.fire([e]);
+      const pathsToRefresh = [e];
+      if (result?.path){
+        pathsToRefresh.push(vscode.Uri.file(result.path));
+      }
+      metadataDecoration.fire(pathsToRefresh);
     }),
 
     watcher.onDidChange(async e => {
@@ -154,18 +178,23 @@ export async function activate(context: vscode.ExtensionContext) {
       logger.debug('OnDidChange: ' + e?.fsPath);
 
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
-      fileIndexer.index(e.fsPath);
+      const result = fileIndexer.index(e.fsPath);
 
       docStatisticProvider.refresh();
       await notesProvider.refresh();
       await metadataProvider.refresh();
-      metadataDecoration.fire([e]);
+
+      const pathsToRefresh = [e];
+      if (result?.path){
+        pathsToRefresh.push(vscode.Uri.file(result.path));
+      }
+      metadataDecoration.fire(pathsToRefresh);
     }),
 
     vscode.workspace.onDidOpenTextDocument(e => {
-      logger.debug('onDidOpenTextDocument: ' + e?.uri.fsPath);
-
       if (!getContentType(e).isKnown()) return;
+
+      logger.debug('onDidOpenTextDocument: ' + e?.uri.fsPath);
 
       fileIndexer.index(e.uri.fsPath, { skipIndexedLocations: true });
     }),
@@ -187,12 +216,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
       for (const f of e.files)  {
         logger.debug('OnDidRename: ' + f.oldUri.fsPath);
-
+        
+        // only trigger for fiction files
+        if (!fileManager.getPathContentType(f.oldUri.fsPath).has(SupportedContent.Fiction)) return;
+        
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
-          const isMove = !fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath);
-          // Renaming of folders does not trigger file watcher (known limitation of workspace watcher that can change in the future)
-          //if (isMove) return;
-
+        
+          // do not want to interfere with move operations
+          // Note: renaming of folders does not trigger file watcher (known limitation of workspace watcher that can change in the future)
+          if (!fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath)) return;
+        
           await fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, async (from: string, to: string) => {
 
             if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) {
@@ -203,7 +236,7 @@ export async function activate(context: vscode.ExtensionContext) {
             }
             const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 
-            const answer =  await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename/move ${from}?`, ...options);
+            const answer =  await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename ${from}?`, ...options);
             const doRename = answer === options[0] || answer === options[2];
             const saveAnswer = answer === options[2] || answer === options[3];
 

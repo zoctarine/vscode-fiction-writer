@@ -307,9 +307,14 @@
       ],
       "explorer/context": [
         {
+          "command": "fiction-writer.extension.renameGroup",
+          "group": "1_modification",
+          "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+        },
+        {
           "command": "fiction-writer.extension.moveToResources",
           "group": "1_modification",
-          "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /^((?![\\\\|/]\\.fic\\b).)*$/gm"
+          "when": "false && config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /^((?![\\\\|/]\\.fic\\b).)*$/gm"
         },
         {
           "command": "fiction-writer.extension.moveFileUp",
@@ -323,6 +328,10 @@
         }
       ],
       "commandPalette": [
+        {
+          "command": "fiction-writer.extension.renameGroup",
+          "when": "false"
+        },
         {
           "command": "fiction-writer.extension.moveToResources",
           "when": "false"
@@ -847,6 +856,11 @@
         "command": "fiction-writer.extension.reindex",
         "category": "Markdown Fiction Writer",
         "title": "ReIndex Files"
+      },
+      {
+        "command": "fiction-writer.extension.renameGroup",
+        "category": "Markdown Fiction Writer",
+        "title": "Rename related files"
       },
       {
         "command": "fiction-writer.extension.moveToResources",
