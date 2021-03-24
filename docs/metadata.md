@@ -31,7 +31,7 @@ To use metadata blocks with **Fiction Writer**, you need to:
   status: draft
   tags: [red, green, blue]
   ---
-  
+
   It was a cold and starry night...
   ```
 
@@ -72,6 +72,18 @@ You can add any metadata category or keyword, but some categories are recognized
 
     More information [here](export.md#include-by-metadata-id).
 
+- `summary` category: used to show a short description in **Explorer** tooltip and in the **Metadata View** as the first message above metadata tree.
+
+    ```yaml
+    ---
+    summary: Where we find about the summary category.
+    ---
+
+    My file contents...
+    ```
+
+    ![Meta Summary](img/meta_summary_01.gif)
+
 # The Metadata View
 
 For all known documents (in this case, markdown) that contain `yaml` metadata, the **Metadata View** will be enabled in the **Explorer**.
@@ -91,7 +103,7 @@ It optionally can include icons, or colors.
     Under **Metadata: Easy Lists**, you can configure if you want to split metadata values by a specific character.
 
     The default value is comma (`,`), that means each comma separated item will be treated as a list item.
-    
+
     To `disable` this setting, just leave the **Metadata: Easy Lists** value blank.
 
 Although lists (arrays) in yaml are defined like:
@@ -127,7 +139,7 @@ if the separator is `,`. The separator is configurable under **Metadata: Easy Li
 
 !!! note
     This is only if the category is a _known category_, meaning: the category is added to the [Category icons](#icons) list, explained below.
-  
+
 !!! danger "Spaces are not trimmed"
     If this feature does not behave as expected, make sure that the separator value does not include unwanted spaces. Especially at the beginning or end.
 
@@ -273,3 +285,35 @@ if, the **Metadata > Keywords: Badge Category** is set to `state`, then `done`->
 
 !!! setting "`markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`"
     *coming soon*
+
+# External Metadata
+
+**Fiction Writer** supports reading file metadata from a separate `.yml` file.
+
+Matching between a fiction (`.md`) file and the (`.yml`) file is done by the same naming convention used for all related files:
+
+_Related File must have the same name of the `.md` file (including the extension) + the specific file extension (in this case `.yml`. They also need to be in the same location_
+
+
+=== "Recognized related metadata files"
+
+    ``` md
+    .
+    ├─ chapter01.md
+    └─ chapter01.md.yml
+
+    ```
+
+=== "Not Recognized metadata files"
+
+    ``` md
+    .
+    ├─ chapter01.md
+    ├─ chapter01.yml        // missing .md
+    ├─ chapter1.md.yml      // missing 01
+    └─ chapter01.md.yaml    // yaml instead of yml
+    ```
+
+
+!!! note "Note"
+    The order in which metadata is resolved is this: first look in the `.md` file. If no metadata block is present, then search for external `.yml` file in same directory.

@@ -15,6 +15,7 @@ Compute statistics like:
   - word count (At 6 characters per word)
   - lines (At 10 words per line)
   - pages (At 24 lines per page)
+  - reading speed (at 200 wpm)
 
 
 Press the refresh button to compute statistics for the current open file.
