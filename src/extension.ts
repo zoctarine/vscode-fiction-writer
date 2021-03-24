@@ -100,7 +100,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
-    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => { 
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => {
       const oldName = e?.fsPath;
      if (!fileManager.getPathContentType(oldName).isKnown()) return;
       const rootName = fileManager.getRoot(oldName);
@@ -112,12 +112,11 @@ export async function activate(context: vscode.ExtensionContext) {
         .showInputBox({value:parsed.name})
         .then(fileName => {
           if (!fileName) return;
-          
+
           const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
-          if (fileName) fileManager.batchRename(rootName, newName); 
+          if (fileName) fileManager.batchRename(rootName, newName);
         });
     }),
-    vscode.commands.registerCommand(cmd.MOVE_TO_RESOURCES, (e:vscode.Uri) => { fileManager.moveToFolder(e?.fsPath); }),
     vscode.commands.registerCommand(cmd.REINDEX, async () => {
       fileIndexer.clear();
       indexAllOpened(fileIndexer);
@@ -125,7 +124,7 @@ export async function activate(context: vscode.ExtensionContext) {
       await notesProvider.refresh();
     }),
 
-  
+
     vscode.window.onDidChangeActiveTextEditor(async e => {
       // TODO: This check is  necessary as sometimes, when switching documents,
       //       you first get an undefined event, followed by the correct event
@@ -218,16 +217,16 @@ export async function activate(context: vscode.ExtensionContext) {
 
       for (const f of e.files)  {
         logger.debug('OnDidRename: ' + f.oldUri.fsPath);
-        
+
         // only trigger for fiction files
         if (!fileManager.getPathContentType(f.oldUri.fsPath).has(SupportedContent.Fiction)) return;
-        
+
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
-        
+
           // do not want to interfere with move operations
           // Note: renaming of folders does not trigger file watcher (known limitation of workspace watcher that can change in the future)
           if (!fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath)) return;
-        
+
           await fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, async (from: string, to: string) => {
 
             if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) {

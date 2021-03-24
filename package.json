@@ -223,21 +223,6 @@
     "menus": {
       "view/item/context": [
         {
-          "command": "fiction-writer.extension.moveToTrash",
-          "group": "navigation",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileUp",
-          "group": "inline",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileDown",
-          "group": "inline",
-          "when": "view == fw-projectFiles && config.markdown-fiction-writer.smartRename.enabled"
-        },
-        {
           "command": "fiction-writer.extension.wordFrequency.next.down",
           "when": "view == fw-wordFrequencies && viewItem == wordStat",
           "group": "inline"
@@ -310,30 +295,11 @@
           "command": "fiction-writer.extension.renameGroup",
           "group": "1_modification",
           "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
-        },
-        {
-          "command": "fiction-writer.extension.moveToResources",
-          "group": "1_modification",
-          "when": "false && config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /^((?![\\\\|/]\\.fic\\b).)*$/gm"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileUp",
-          "group": "1_modification",
-          "when": "false && config.markdown-fiction-writer.smartRename.enabled"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileDown",
-          "group": "1_modification",
-          "when": "false && config.markdown-fiction-writer.smartRename.enabled"
         }
       ],
       "commandPalette": [
         {
           "command": "fiction-writer.extension.renameGroup",
-          "when": "false"
-        },
-        {
-          "command": "fiction-writer.extension.moveToResources",
           "when": "false"
         },
         {
@@ -354,18 +320,6 @@
         },
         {
           "command": "fiction-writer.extension.notes.pinOff",
-          "when": "false"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileUp",
-          "when": "false"
-        },
-        {
-          "command": "fiction-writer.extension.moveFileDown",
-          "when": "false"
-        },
-        {
-          "command": "fiction-writer.extension.moveToTrash",
           "when": "false"
         },
         {
@@ -863,11 +817,6 @@
         "title": "Rename related files"
       },
       {
-        "command": "fiction-writer.extension.moveToResources",
-        "category": "Markdown Fiction Writer",
-        "title": "Move to resource folder"
-      },
-      {
         "command": "fiction-writer.extension.notes.new",
         "category": "Markdown Fiction Writer",
         "title": "Create New Notes File",
@@ -898,25 +847,6 @@
         "title": "Pin OFF",
         "icon": "$(pinned)",
         "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.moveToTrash",
-        "title": "Move to trash",
-        "category": "Markdown Fiction Writer",
-        "icon": "$(trash)",
-        "when": "false"
-      },
-      {
-        "command": "fiction-writer.extension.moveFileUp",
-        "title": "Move file up",
-        "category": "Markdown Fiction Writer",
-        "icon": "$(arrow-up)"
-      },
-      {
-        "command": "fiction-writer.extension.moveFileDown",
-        "title": "Move file down",
-        "category": "Markdown Fiction Writer",
-        "icon": "$(arrow-down)"
       },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
