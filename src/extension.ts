@@ -103,16 +103,18 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => { 
       const oldName = e?.fsPath;
      if (!fileManager.getPathContentType(oldName).isKnown()) return;
-      const currentName = fileManager.getRoot(oldName);
-      const parsed = path.parse(oldName);
+      const rootName = fileManager.getRoot(oldName);
+      if (!rootName) return;
+
+      const parsed = path.parse(rootName);
 
       vscode.window
-        .showInputBox({value:currentName})
+        .showInputBox({value:parsed.name})
         .then(fileName => {
           if (!fileName) return;
           
           const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
-          if (fileName) fileManager.batchRename(oldName, newName); 
+          if (fileName) fileManager.batchRename(rootName, newName); 
         });
     }),
     vscode.commands.registerCommand(cmd.MOVE_TO_RESOURCES, (e:vscode.Uri) => { fileManager.moveToFolder(e?.fsPath); }),
@@ -232,7 +234,7 @@ export async function activate(context: vscode.ExtensionContext) {
               return false;
             }
             if (currentConfig.smartRenameRelated === Constants.RenameRelated.ALWAYS) {
-              return false;
+              return true;
             }
             const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 

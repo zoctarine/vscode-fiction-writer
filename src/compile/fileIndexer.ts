@@ -28,7 +28,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
           matches.forEach(match => this.index(match, { skipNotify: true, skipIndexedLocations: true }));
           this.notify(matches);
         }
-        resolve(this.paths());
+        resolve(this.keys());
       } catch (error) {
         reject(error);
       }
@@ -44,7 +44,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
         const matches = glob.sync(p, { nodir: true });
         matches.forEach(match => this.delete(match, false)); // do not want to notify for each file,
         this.notify(matches);                                // but only when parsing has finished
-        resolve(this.paths());
+        resolve(this.keys());
       } catch (error) {
         reject(error);
       }
@@ -127,7 +127,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     if (notify) this.notify([filePath]);
   }
 
-  public paths(): string[] { return this.fileInfos.getAllKeys(); }
+  public keys(): string[] { return this.fileInfos.getAllKeys(); }
 
   public clear() {
     this.fileInfos.clear();

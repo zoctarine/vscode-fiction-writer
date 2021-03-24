@@ -22,6 +22,9 @@ export const knownFileTypes = {
   },
   all: {
     pattern: '**/*.{[mM][dD],[mM][dD].[yY][mM][lL],[mM][dD].[tT][xX][tT]}'
+  },
+  related: {
+    pattern: '.{[yY][mM][lL],[tT][xX][tT]}'
   }
 };
 
@@ -38,18 +41,23 @@ export interface IFileGroup {
   files: Map<SupportedContent, string>;
   getPath(forContent: SupportedContent): string | undefined;
   getAll(): string[];
+  isEmpty(): boolean;
 }
 
 
 
 class FileGroup implements IFileGroup {
-  public files: Map<SupportedContent, string>
+  public static readonly EMPTY: IFileGroup = new FileGroup(); 
+  public files: Map<SupportedContent, string>;
 
   constructor(files?: Map<SupportedContent, string>) { 
     if (!files)
       this.files = new Map<SupportedContent, string>();
     else
       this.files = files;
+  }
+  isEmpty(): boolean {
+    return this.files.size === 0;
   }
 
   getPath(forContent: SupportedContent): string | undefined {
@@ -102,36 +110,28 @@ export class FileManager {
     if (!contentType.isKnown()) return undefined;
 
     // get main .md path
-    return fsPath.replace(/(\.yml|\.txt)*$/gi, '')
+    return fsPath.replace(/(\.yml|\.txt)*$/gi, '');
   }
 
 
-  public getGroup(fsPath: string): IFileGroup {
-
-    fsPath = this.normalize(fsPath);
+  public getGroup(fsPath: string): IFileGroup{
     const contentType = this.getPathContentType(fsPath, true);
-    if (!contentType.isKnown()) return new FileGroup();
+    if (!contentType.isKnown()) return FileGroup.EMPTY;
+    
     const rootPath = this.getRoot(fsPath);
-    if (!rootPath) return new FileGroup();
+    if (!rootPath) return FileGroup.EMPTY;
 
     const files = new Map<SupportedContent, string>();
-    
-    if (fs.existsSync(fsPath)) {
-      files.set(contentType.supports, fsPath);
+    if (fs.existsSync(rootPath)) {
+      files.set(SupportedContent.Fiction, rootPath);
     }
 
-    const parsed = path.parse(rootPath);
-    const name = parsed.name;
+    const matches = glob.sync(`${rootPath}${knownFileTypes.related.pattern}`);
 
-    knownPatterns.forEach((search) => {
-
-      if (contentType.has(search.type)) return;
-      if (files.has(search.type)) return;
-
-      const matches = glob.sync(path.join(parsed.dir, search.subdir, `${name}${search.pattern}`));
-      if (matches && matches.length > 0) {
-        files.set(search.type, matches[0]); // get only first match
-      }
+    matches.forEach((match) => {
+      const foundContentType = this.getPathContentType(match, true); // get only first match
+      if (files.has(foundContentType.supports)) return;
+      files.set(foundContentType.supports, match); 
     });
 
     return new FileGroup(files);
@@ -181,14 +181,18 @@ export class FileManager {
       const neP = parsed.base.replace(/(.*)(?=\.md)$/gi, parsed.name);
       const newPart = path.join(parsed.dir, neP);
 
-      for (const oldName of fileGroup.files.values()) {
+      for (let [type, oldName] of fileGroup.files.entries()) {
         const oldExt = path.parse(oldName).ext;
 
-        const newName = `${newPart}${oldExt}`;
+        const newName = type === SupportedContent.Fiction 
+        ? newPart
+        : `${newPart}${oldExt}`;
 
         const shouldRename = await question(oldName, newName);
-        if (shouldRename) fs.renameSync(oldName, newName);
-        logger.info('renamed: ' + oldName);
+        if (shouldRename) {
+          fs.renameSync(oldName, newName);
+          logger.info(`renamed: ${oldName} to ${newName}`);
+        }
       };
     }
   }

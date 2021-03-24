@@ -4,6 +4,7 @@ import { SupportedContent } from '../../../utils';
 import * as path from 'path';
 
 const glob = require('glob');
+const fs = require('fs');
 
 jest.mock('glob', () => ({sync: jest.fn()}));
 jest.mock('fs', () => ({existsSync: jest.fn().mockReturnValue(true)}));
@@ -15,6 +16,7 @@ describe('FileManager', () => {
   beforeEach(() => {
     sut = new FileManager();
     glob.sync.mockReset();
+    fs.existsSync.mockImplementation(() => true);
   });
 
   describe('getRoot()', () =>{
@@ -31,27 +33,27 @@ describe('FileManager', () => {
     ])('should return empty for: %s', unsupportedPath => {
       const result = sut.getRoot(unsupportedPath);
       expect(result).toBeUndefined();
-    })
+    });
 
     each([
       { path: 'fileName.md', expected: 'fileName.md'},
       { path: 'fileName.MD', expected: 'fileName.MD'},
       { path: 'filename.MD.txt', expected: 'filename.MD'},
       { path: 'filename.md.yml', expected: 'filename.md'},
-      { path: 'some/path/filename.md', expected: 'some/path/filename.md'},
-      { path: 'some/path/filename.md.txt', expected: 'some/path/filename.md'},
-      { path: 'some/path/filename.md.TXT', expected: 'some/path/filename.md'},
-      { path: 'some/path/filename.md.yml', expected: 'some/path/filename.md'},
-      { path: 'some/path/filename.md.YMl', expected: 'some/path/filename.md'},
-      { path: 'c:\\some\\path\\filename.md', expected: 'c:\\some\\path\\filename.md'},
-      { path: 'c:\\some\\path\\filename.md.txt', expected: 'c:\\some\\path\\filename.md'},
-      { path: 'c:\\some\\path\\filename.md.TXT', expected: 'c:\\some\\path\\filename.md'},
-      { path: 'c:\\some\\path\\filename.md.yml', expected: 'c:\\some\\path\\filename.md'},
-      { path: 'c:\\some\\path\\filename.md.YMl', expected: 'c:\\some\\path\\filename.md'},
+      { path: 'some/path/filename.md', expected: path.normalize('some/path/filename.md')},
+      { path: 'some/path/filename.md.txt', expected:  path.normalize('some/path/filename.md')},
+      { path: 'some/path/filename.md.TXT', expected:  path.normalize('some/path/filename.md')},
+      { path: 'some/path/filename.md.yml', expected:  path.normalize('some/path/filename.md')},
+      { path: 'some/path/filename.md.YMl', expected:  path.normalize('some/path/filename.md')},
+      { path: 'c:\\some\\path\\filename.md', expected: path.normalize('c:\\some\\path\\filename.md')},
+      { path: 'c:\\some\\path\\filename.md.txt', expected: path.normalize('c:\\some\\path\\filename.md')},
+      { path: 'c:\\some\\path\\filename.md.TXT', expected: path.normalize('c:\\some\\path\\filename.md')},
+      { path: 'c:\\some\\path\\filename.md.yml', expected: path.normalize('c:\\some\\path\\filename.md')},
+      { path: 'c:\\some\\path\\filename.md.YMl', expected: path.normalize('c:\\some\\path\\filename.md')},
     ])('should return .md filename for: %s.path', ({path, expected}) => {
       const result = sut.getRoot(path);
       expect(result).toBe(expected);
-    })
+    });
   });
 
   describe('getPathContentType()', () => {
@@ -133,28 +135,27 @@ describe('FileManager', () => {
       {fsPath: path.join('some', 'file', 'n.md.yml'), fiction: path.join('some', 'file', 'n.md')}
     ])('should get existing fiction file for meta file: %s.fsPath', ({fsPath, fiction}) => {
 
-      glob.sync.mockImplementationOnce(() => [fiction]);
+      glob.sync.mockImplementationOnce(() => [fiction, fsPath]);
 
       const group = sut.getGroup(fsPath); 
       
       expect([...group.files.entries()]).toStrictEqual([
-        [SupportedContent.Metadata, fsPath],
-        [SupportedContent.Fiction, fiction]
+        [SupportedContent.Fiction, fiction],
+        [SupportedContent.Metadata, fsPath]
       ]);
     });
 
     each([
       {fsPath: path.join('some', 'file', 'n.MD.yml'), expContent: SupportedContent.Metadata },
       {fsPath: path.join('some', 'file', 'n.md'), expContent: SupportedContent.Fiction }
-    ])('should return only the found file type, if no other match is found: %s.fsPath', ({fsPath, expContent}) => {
+    ])('should return empty if no .md file found: %s.fsPath', ({fsPath, expContent}) => {
 
+      fs.existsSync.mockImplementation(() => false);
       glob.sync.mockImplementationOnce(() => []);
 
       const group = sut.getGroup(fsPath); 
       
-      expect([...group.files.entries()]).toStrictEqual([
-        [expContent, fsPath]
-      ]);
+      expect(group.isEmpty()).toBeTruthy();
     });
   });
 });
