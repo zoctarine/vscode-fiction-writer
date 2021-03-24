@@ -1,5 +1,7 @@
 .vscode/**
 .vscode-test/**
+.idea/**
+.github/**
 out/test/**
 src/**
 .gitignore
@@ -15,4 +17,5 @@ out/
 src/
 tsconfig.json
 webpack.config.js
-
+jest.config.js
+jest.setup.js
