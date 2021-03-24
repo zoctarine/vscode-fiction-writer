@@ -7,14 +7,14 @@ import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingP
 import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger, SupportedContent } from './utils';
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver } from './view';
-import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, metaService } from './metadata';
+import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, MetaLocation, metaService } from './metadata';
 import { fileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
 let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
-  vscode.commands.executeCommand('setContext', 'isDevelopmentMode', isDebugMode);
+  vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
 
   const fileIndexer = new FileIndexer(metaService);
   const storageManager = new ContextService(context.globalState);
@@ -35,8 +35,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
-  const notesProvider = new MetadataNotesProvider(context.extensionUri, fileIndexer, context.subscriptions);
-
+  const notesProvider = new MetadataNotesProvider(configService, context.extensionUri, fileIndexer, context.subscriptions);
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
   const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
   const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
@@ -46,6 +45,8 @@ export async function activate(context: vscode.ExtensionContext) {
     webviewOptions: { retainContextWhenHidden: true }
   });
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
+  wordFrequencyProvider.tree = freqTree;
+  docStatisticProvider.tree = statTree;
   metadataProvider.tree = metadataTree;
   isWatcherEnabled = true;
   const watcher = vscode.workspace.createFileSystemWatcher(knownFileTypes.all.pattern, false, false, false);
@@ -62,12 +63,15 @@ export async function activate(context: vscode.ExtensionContext) {
     fileIndexer,
     notesWebView,
 
-
     new FoldingObserver(configService),
     new TypewriterModeObserver(configService),
     new CustomFormattingProvider(configService),
     new DialogueAutoCorrectObserver(configService),
     new TextDecorations(configService),
+
+    statTree.onDidChangeVisibility(e => {
+      if (e.visible) docStatisticProvider.refresh();
+    }),
 
     vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configService)),
 
@@ -87,6 +91,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, (e) => { WordStatTreeItemSelector.prev([e]); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, (e) => { WordStatTreeItemSelector.next([e]); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => { wordFrequencyProvider.refresh(); }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_OPEN, () => { wordFrequencyProvider.open(); }),
     vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => { wordFrequencyProvider.clear(); }),
     vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => { docStatisticProvider.refresh(); }),
     vscode.commands.registerCommand(cmd.METADATA_REFRESH, () => { metadataProvider.refresh(); }),
@@ -103,25 +108,33 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => {
       const oldName = e?.fsPath;
      if (!fileManager.getPathContentType(oldName).isKnown()) return;
-      const rootName = fileManager.getRoot(oldName);
+
+     const rootName = fileManager.getRoot(oldName);
       if (!rootName) return;
 
       const parsed = path.parse(rootName);
-
       vscode.window
         .showInputBox({value:parsed.name})
         .then(fileName => {
           if (!fileName) return;
-
           const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
           if (fileName) fileManager.batchRename(rootName, newName);
         });
     }),
-    vscode.commands.registerCommand(cmd.REINDEX, async () => {
+    vscode.commands.registerCommand(cmd.DEV_SHOW_INDEXES, async () => {
+      fileIndexer.getState().forEach((val) => {
+        
+        if (val.path) logger.push('- main: ' + val.path);
+        if (val.metadata?.location) logger.push('- meta: ' + val.metadata?.location);
+        if (val.notes?.path) logger.push('- note: ' + val.notes?.path);
+        logger.info(val.key);
+      });
+    }),
+    vscode.commands.registerCommand(cmd.DEV_REINDEX, async () => {
       fileIndexer.clear();
       indexAllOpened(fileIndexer);
-      await metadataProvider.refresh();
-      await notesProvider.refresh();
+      await metadataProvider.refresh(true);
+      await notesProvider.refresh(true);
     }),
 
 
@@ -144,14 +157,16 @@ export async function activate(context: vscode.ExtensionContext) {
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
 
-      const result = fileIndexer.index(e.fsPath);
+      await notesProvider.refresh();
 
+      const result = fileIndexer.index(e.fsPath);
       const pathsToRefresh = [e];
       if (result?.path){
         pathsToRefresh.push(vscode.Uri.file(result.path));
       }
-      metadataDecoration.fire(pathsToRefresh);
       await notesProvider.refresh();
+      await metadataProvider.refresh();
+      metadataDecoration.fire(pathsToRefresh);
     }),
 
     watcher.onDidDelete(async e => {
@@ -159,12 +174,11 @@ export async function activate(context: vscode.ExtensionContext) {
       logger.debug('OnDidDelete: ' + e?.fsPath);
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
-
-      fileIndexer.delete(e.fsPath);
-
+      
       //TODO: only index what changed
+      fileIndexer.delete(e.fsPath);
       const result = fileIndexer.index(e.fsPath);
-
+      
       await metadataProvider.refresh();
       await notesProvider.refresh();
       const pathsToRefresh = [e];
@@ -177,13 +191,14 @@ export async function activate(context: vscode.ExtensionContext) {
     watcher.onDidChange(async e => {
       if (!isWatcherEnabled) return;
       logger.debug('OnDidChange: ' + e?.fsPath);
+      const contentType = fileManager.getPathContentType(e?.fsPath);
 
-      if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
-      const result = fileIndexer.index(e.fsPath);
-
+      if (!contentType.isKnown()) return;
       docStatisticProvider.refresh();
-      await notesProvider.refresh();
-      await metadataProvider.refresh();
+
+      const result = fileIndexer.index(e.fsPath);
+      await metadataProvider.refresh(contentType.has(SupportedContent.Metadata));
+      await notesProvider.refresh(contentType.has(SupportedContent.Notes));
 
       const pathsToRefresh = [e];
       if (result?.path){

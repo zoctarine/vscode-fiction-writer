@@ -1,19 +1,16 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { Config } from '../config';
-import { getActiveEditor, IObservable, Observer, SupportedContent } from '../utils';
+import { IObservable, Observer } from '../utils';
 import { IFileInfo, MetadataFileCache } from './metadataFileCache';
 import { MetadataTreeItem } from "./metadataTreeItem";
-import { config } from 'process';
-
 
 export class MarkdownMetadataTreeDataProvider extends Observer<Config> implements vscode.TreeDataProvider<MetadataTreeItem> {
 
-  private document: vscode.TextDocument | undefined;
-  private fileInfo: IFileInfo | undefined;
+  private _document: vscode.TextDocument | undefined;
+  private _fileInfo: IFileInfo | undefined;
   public tree: vscode.TreeView<MetadataTreeItem> | undefined;
 
-  constructor(configService: IObservable<Config>, private cache: MetadataFileCache) {
+  constructor(configService: IObservable<Config>, private _cache: MetadataFileCache) {
     super(configService);
   }
 
@@ -22,13 +19,13 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   }
 
   getChildren(element?: MetadataTreeItem): Thenable<MetadataTreeItem[]> {
-    if (!this.document || !this.fileInfo) {
+    if (!this._document || !this._fileInfo) {
       return Promise.resolve([]);
     }
 
     let elements = element
-      ? this.parseObjectTree(element.value, element)
-      : this.parseObjectTree(this.fileInfo?.metadata?.value);
+      ? this._parseObjectTree(element.value, element)
+      : this._parseObjectTree(this._fileInfo?.metadata?.value);
 
     // Hide the 1st level `summary` category if it is shown as message
     if (this.state.metaSummaryCategoryEnabled){
@@ -65,7 +62,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   }
 
   open() {
-    const metaLocation = this.fileInfo?.metadata?.location;
+    const metaLocation = this._fileInfo?.metadata?.location;
     if (metaLocation) {
       vscode.commands.executeCommand('vscode.open',
         vscode.Uri.file(metaLocation),
@@ -78,10 +75,10 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     };
   }
 
-  private isArray(object: any): boolean { return Array.isArray(object); }
-  private isObject(object: any): boolean { return typeof object === 'object' && object !== null; }
+  private _isArray(object: any): boolean { return Array.isArray(object); }
+  private _isObject(object: any): boolean { return typeof object === 'object' && object !== null; }
 
-  private parseObjectTree(object: any, parent?: MetadataTreeItem): MetadataTreeItem[] {
+  private _parseObjectTree(object: any, parent?: MetadataTreeItem): MetadataTreeItem[] {
     if (object === undefined || object === null)
       return [];
     const showLabels = this.state.metaCategoryNamesEnabled ?? false;
@@ -90,7 +87,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
       const r: any[] = [];
 
       object.map((value) => {
-        const result = this.parseObjectTree(value, parent);
+        const result = this._parseObjectTree(value, parent);
         r.push(...result);
       });
       return r;
@@ -99,7 +96,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
     if (typeof object === 'object' && object !== null) {
       const props = Object.getOwnPropertyNames(object);
       if (!showLabels && props.length === 1) {
-        return this.parseObjectTree(object[props[0]], new MetadataTreeItem(props[0], '', ''));
+        return this._parseObjectTree(object[props[0]], new MetadataTreeItem(props[0], '', ''));
       }
 
       return props
@@ -145,11 +142,14 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
   private _onDidChangeTreeData: vscode.EventEmitter<MetadataTreeItem | undefined | null | void> = new vscode.EventEmitter<MetadataTreeItem | undefined | null | void>();
   readonly onDidChangeTreeData: vscode.Event<MetadataTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
-  refresh(): Promise<IFileInfo | undefined> {
+  refresh(forced?:boolean): Promise<IFileInfo | undefined> {
+    this._document = vscode.window.activeTextEditor?.document;
+    const meta = this._cache.get(this._document?.uri);
 
+    if (!forced && this._fileInfo?.metadata?.location === meta?.metadata?.location)
+      return Promise.resolve(this._fileInfo);
+      
     return new Promise((resolve, reject) => {
-      this.document = vscode.window.activeTextEditor?.document;
-      const meta = this.cache.get(this.document?.uri);
       if (meta) {
         if (this.tree) {
           try {
@@ -166,14 +166,14 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
         }
       }
 
-      this.fileInfo = meta;
+      this._fileInfo = meta;
       this._onDidChangeTreeData.fire();
-      return resolve(this.fileInfo);
+      return resolve(this._fileInfo);
     });
   }
 
   clear(): void {
-    this.document = undefined;
+    this._document = undefined;
     this._onDidChangeTreeData.fire();
   }
 

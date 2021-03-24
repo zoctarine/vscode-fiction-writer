@@ -3,13 +3,13 @@ import { getActiveEditor, SupportedContent } from '../utils';
 import { WordStatTreeItem } from './wordStatTreeItem';
 
 class TextSelector {
-  private lastSearch: string = '';
-  private lastIndex = 0;
+  private _lastSearch: string = '';
+  private _lastIndex = 0;
 
   next(selection: WordStatTreeItem[]) {
     try {
-      this.find(selection, (text, search) => {
-        let index = text.indexOf(search, this.lastIndex + 1);
+      this._find(selection, (text, search) => {
+        let index = text.indexOf(search, this._lastIndex + 1);
         if (index === -1) {
           return text.indexOf(search);
         }
@@ -22,8 +22,8 @@ class TextSelector {
 
   prev(selection: WordStatTreeItem[]) {
     try {
-      this.find(selection, (text, search) => {
-        let index = text.lastIndexOf(search, this.lastIndex - 1);
+      this._find(selection, (text, search) => {
+        let index = text.lastIndexOf(search, this._lastIndex - 1);
         if (index === -1) {
           return text.lastIndexOf(search);
         }
@@ -34,7 +34,7 @@ class TextSelector {
     }
   }
 
-  private find(selection: WordStatTreeItem[], findAction: (text: string, search: string) => number) {
+  private _find(selection: WordStatTreeItem[], findAction: (text: string, search: string) => number) {
     const editor = getActiveEditor(SupportedContent.Fiction);
     if (!editor) return;
     if (!selection || selection.length === 0) return;
@@ -42,15 +42,15 @@ class TextSelector {
     const search = selection[0].label;
     const text = editor.document.getText();
 
-    if (search !== this.lastSearch) {
-      this.lastIndex = 0;
+    if (search !== this._lastSearch) {
+      this._lastIndex = 0;
     }
 
     const index = findAction(text.toLocaleLowerCase(), search.toLocaleLowerCase());
 
     this.selectText(editor, index, search.length);
-    this.lastIndex = index;
-    this.lastSearch = search;
+    this._lastIndex = index;
+    this._lastSearch = search;
   }
 
 

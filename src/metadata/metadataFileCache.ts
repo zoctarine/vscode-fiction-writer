@@ -19,24 +19,27 @@ export interface INotes {
 
 export class MetadataFileCache extends Observer<Config> {
 
-  constructor(private fileIndex: FileIndexer, configService: IObservable<Config>) {
+  constructor(private _fileIndex: FileIndexer, configService: IObservable<Config>) {
     super(configService);
-    this.fileIndex.attach(this);
+    this._fileIndex.attach(this);
   }
 
   public get(path?: vscode.Uri): IFileInfo | undefined {
     if (!path) return undefined;
 
-    const info = this.fileIndex.getByPath(path.fsPath);
+    const info = this._fileIndex.getByPath(path.fsPath);
     if (info?.metadata?.value) {
-      info.metadata.value = this.prepareMeta(info?.metadata?.value);
+      info.metadata.value = this._prepareMeta(info?.metadata?.value);
     }
 
     return info ?? undefined;
   }
 
+  public getAllKeys(): string[] {
+    return this._fileIndex.keys();
+  }
 
-  private prepareMeta(meta: any): any {
+  private _prepareMeta(meta: any): any {
     try {
       // if is not a truthy value, return it
       if (!meta) return meta;
@@ -71,9 +74,5 @@ export class MetadataFileCache extends Observer<Config> {
     } catch {
       return meta;
     }
-  }
-
-  public getAllKeys(): string[] {
-    return this.fileIndex.keys();
   }
 }

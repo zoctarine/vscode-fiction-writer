@@ -54,6 +54,7 @@ export const Constants = {
     WORDFREQ_FIND_NEXT: 'fiction-writer.extension.wordFrequency.next.down',
     WORDFREQ_REFRESH: 'fiction-writer.extension.wordFrequency.refresh',
     WORDFREQ_CLEAR: 'fiction-writer.extension.wordFrequency.clear',
+    WORDFREQ_OPEN: 'fiction-writer.extension.wordFrequency.open',
     DOCSTAT_REFRESH: 'fiction-writer.extension.statistics.refresh',
     METADATA_REFRESH: 'fiction-writer.extension.metadata.refresh',
     METADATA_OPEN: 'fiction-writer.extension.metadata.openFile',
@@ -70,7 +71,8 @@ export const Constants = {
     UNPIN_NOTE: 'fiction-writer.extension.notes.pinOff',
     MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources',
     RENAME_SIMILAR: 'fiction-writer.extension.renameGroup',
-    REINDEX: 'fiction-writer.extension.reindex'
+    DEV_SHOW_INDEXES: 'fiction-writer.extension.showIndexes',
+    DEV_REINDEX: 'fiction-writer.extension.reindex'
   },
 
   KnownLabels: [

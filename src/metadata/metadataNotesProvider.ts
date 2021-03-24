@@ -3,9 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { IFileInfo } from '.';
 import { FileIndexer } from '../compile';
-import { getActiveEditor, IObserver, logger } from '../utils';
+import { IObservable, IObserver, Observer } from '../utils';
+import { Config } from '../config';
 
-export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObserver<IFileInfo[]> {
+export class MetadataNotesProvider extends Observer<Config> implements vscode.WebviewViewProvider, IObserver<IFileInfo[]> {
   private _currentDocumentPath?: string;
   private _view?: vscode.WebviewView;
   private _noteText = '';
@@ -15,22 +16,27 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObser
   private _isDisposed?: boolean;
 
   constructor(
+    configService: IObservable<Config>,
     private readonly _extensionUri: vscode.Uri,
     private readonly _fileIndex: FileIndexer,
     private _disposables: vscode.Disposable[]
   ) { 
+    super(configService);
     _fileIndex.attach(this);
   }
 
   update(...args: any[]): void {
-
+    super.update();
   }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
     context: vscode.WebviewViewResolveContext,
     _token: vscode.CancellationToken,
-  ) {
+    ) {
+
+    this._isDisposed = false;
+    
     webviewView.webview.options = {
       // Allow scripts in the webview
       enableScripts: true,
@@ -42,25 +48,25 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObser
 
     this._view = webviewView;
 
-    this.reloadWebView();
+    this._reloadWebView();
 
     this._view.webview?.onDidReceiveMessage(data => {
       switch (data.type) {
 
-        case 'saveNotes': this.save(data.value); break;
+        case 'saveNotes': this._save(data.value); break;
         case 'changed':
           this._buffer = data.value;
-          this.setTitle('NOTES*');
+          this._setTitle('NOTES*');
           break;
-      }
-    }, {}, this._disposables);
-
-    this._isDisposed = false;
+        }
+      }, {}, this._disposables);
+      
     this._view.onDidDispose(() => { 
       this._isDisposed = true;
     });
   }
-  private setTitle(title: string) {
+
+  private _setTitle(title: string) {
     try {
       if (!this._isDisposed && this._view) {
         this._view.title = title;
@@ -70,9 +76,9 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObser
     }
   }
   public newNotes() {
-    if (this._fileInfo) {
-      const newNotePath = this._fileInfo.key + '.txt';
-      fs.writeFileSync(newNotePath, 'YOUR NOTES HERE');
+    if (this._fileInfo?.path) {
+      const newNotePath = this._fileInfo.path + '.txt';
+      fs.writeFileSync(newNotePath, this.state.notesDefaultText);
     }
   }
 
@@ -87,14 +93,6 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObser
       // Post a message to webview to ask for notes (will respond with 'saveNotes' message)
       this._view.webview?.postMessage({ type: 'submitNotes' });
     }
-  }
-
-  private save(content: string) {
-    if (this._fileInfo?.notes?.path) {
-      this._buffer = content;
-      this._noteText = content;
-      fs.writeFileSync(this._fileInfo.notes.path, content);
-    };
   }
 
   public pin(): boolean {
@@ -123,38 +121,48 @@ export class MetadataNotesProvider implements vscode.WebviewViewProvider, IObser
     return false;
   }
 
-  public async refresh() {
-    await this.loadDocument(vscode.window.activeTextEditor?.document?.uri.fsPath);
+  public async refresh(forced?: boolean) {
+    await this._loadDocument(vscode.window.activeTextEditor?.document?.uri.fsPath, forced);
   }
 
-  public async loadDocument(documentPath?: string) {
-    if (this._pinned && this._currentDocumentPath !== documentPath) return;
+  private async _loadDocument(documentPath?: string, forced?: boolean) {
+    this._fileInfo = this._fileIndex.getByPath(documentPath);
+    if (!forced && this._fileInfo?.notes?.path === this._currentDocumentPath) return;
+
+    if (this._pinned && (!forced || this._fileInfo?.notes?.path !== this._currentDocumentPath)) return;
+
     if (this._buffer !== this._noteText) {
       const answer = await vscode.window.showInformationMessage(
-        `Do you want to save changes to your notes file?[${this._buffer}][${this._noteText}]`, 'Yes', 'No');
+        `The notes view has unsaved changes. Do you want to overwrite ${this._currentDocumentPath} notes file?`, 'Yes', 'No');
       if (answer === 'Yes') {
-        this.save(this._buffer);
+        this._save(this._buffer);
       }
     }
     //save notes
-    this._currentDocumentPath = documentPath;
-    this._fileInfo = this._fileIndex.getByPath(documentPath);
-    this.setTitle('NOTES');
-    vscode.commands.executeCommand('setContext', 'fw:hasOpenedNote', this._fileInfo?.notes?.path);
+    this._currentDocumentPath = this._fileInfo?.notes?.path;
+    this._setTitle('NOTES');
+    vscode.commands.executeCommand('setContext', 'fw:hasOpenedNote', this._currentDocumentPath);
     vscode.commands.executeCommand('setContext', 'fw:showNotes', this._fileInfo !== undefined);
 
-    this.reloadWebView();
+    this._reloadWebView();
+  }
+  
+  private _save(content: string) {
+    if (this._currentDocumentPath) {
+      this._buffer = content;
+      this._noteText = content;
+      fs.writeFileSync(this._currentDocumentPath, content);
+    };
   }
 
-  private reloadWebView() {
-    const notePath = this._fileInfo?.notes?.path;
-
+  private _reloadWebView() {
+    
     this._noteText = '';
     let title = '';
-    if (notePath) {
-      if (fs.existsSync(notePath)) {
-        title = path.parse(notePath).name;
-        this._noteText = fs.readFileSync(notePath, 'utf8');
+    if (this._currentDocumentPath) {
+      if (fs.existsSync(this._currentDocumentPath)) {
+        title = path.parse(this._currentDocumentPath).name;
+        this._noteText = fs.readFileSync(this._currentDocumentPath, 'utf8');
       }
     }
 

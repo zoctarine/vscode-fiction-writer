@@ -4,19 +4,19 @@ import { Config, IContextConfig, IKvp } from './interfaces';
 import { ContextService } from './contextService';
 
 export class ConfigService extends Observable<Config> {
-  private config?: Config;
+  private _config?: Config;
 
-  constructor(private localSettings: ContextService) {
+  constructor(private _localSettings: ContextService) {
     super();
     this.reload();
   }
 
   getState(): Config {
-    if (!this.config) {
+    if (!this._config) {
       throw new Error('Configuration is not set!');
     }
 
-    return { ...this.config };
+    return { ...this._config };
   }
 
   read<T>(config: WorkspaceConfiguration, key: string, fallback: T): T {
@@ -31,6 +31,7 @@ export class ConfigService extends Observable<Config> {
     const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
     const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
+    const notes = workspace.getConfiguration('markdown-fiction-writer.notes');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
@@ -89,6 +90,10 @@ export class ConfigService extends Observable<Config> {
     config.isDialogueEnabled = isDialogueEnabled;
     config.dialgoueIndent = '';
 
+    // NOTES
+
+    config.notesEnabled = this.read<boolean>(notes, 'enabled', true);
+    config.notesDefaultText = this.read<string[]>(notes, 'defaultText', ['YOUR NOTES HERE']).join('\n');
 
     // SMART EDIT
 
@@ -169,34 +174,34 @@ export class ConfigService extends Observable<Config> {
     };
 
     // TODO: Move some settings to extension settings.
-    let localSettings = this.localSettings.getValue<IContextConfig>('config', {});
-    this.config = { ...config, ...localSettings };
+    let localSettings = this._localSettings.getValue<IContextConfig>('config', {});
+    this._config = { ...config, ...localSettings };
     // Notify observers
     this.notify();
   }
 
   setLocal<T extends string | number | boolean | undefined | { [key: string]: string }>(key: string, value: T) {
-    if (!this.config) { return; }
+    if (!this._config) { return; }
 
-    this.config[key] = value;
+    this._config[key] = value;
 
-    let localConfig = this.localSettings.getValue<IContextConfig>('config', {});
+    let localConfig = this._localSettings.getValue<IContextConfig>('config', {});
     localConfig[key] = value;
-    this.localSettings.setValue<IContextConfig>('config', localConfig);
+    this._localSettings.setValue<IContextConfig>('config', localConfig);
 
     this.notify();
   }
 
   getFlag(key: string): boolean {
-    return this.localSettings.getValue<boolean>(key, false);
+    return this._localSettings.getValue<boolean>(key, false);
   }
 
-  setFlag(key: string) { this.localSettings.setValue<boolean>(key, true); }
-  usetFlag(key: string) { this.localSettings.setValue<boolean>(key, false); }
+  setFlag(key: string) { this._localSettings.setValue<boolean>(key, true); }
+  usetFlag(key: string) { this._localSettings.setValue<boolean>(key, false); }
 
   backup(config: string, key: string): any {
     const value = workspace.getConfiguration(config).get(key);
-    this.localSettings.setValue(
+    this._localSettings.setValue(
       `${config}.${key}`,
       value
     );
@@ -205,7 +210,7 @@ export class ConfigService extends Observable<Config> {
   }
 
   restore(config: string, key: string) {
-    const storedValue = this.localSettings.getValue(
+    const storedValue = this._localSettings.getValue(
       `${config}.${key}`,
       undefined);
 

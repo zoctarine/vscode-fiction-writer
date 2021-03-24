@@ -1,26 +1,35 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import { Constants, RegEx } from '../utils';
 import { WordStatTreeItem } from './wordStatTreeItem';
 
 
 export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<WordStatTreeItem> {
-  private document: vscode.TextDocument | undefined;
+  private _document: vscode.TextDocument | undefined;
+  public tree: vscode.TreeView<WordStatTreeItem> | undefined;
+
   constructor() { }
+
+  public open() {
+    if (this._document) {
+      vscode.commands.executeCommand('vscode.open', this._document.uri);
+    }
+  }
 
   getTreeItem(element: WordStatTreeItem): vscode.TreeItem {
     return element;
   }
 
   getChildren(element?: WordStatTreeItem): Thenable<WordStatTreeItem[]> {
-    if (!this.document) {
+    if (!this._document) {
       return Promise.resolve([]);
     }
 
     if (element) {
-      const rawText = this.document.getText();
+      const rawText = this._document.getText();
       const text = rawText.replace(RegEx.METADATA_BLOCK, '');
       return Promise.resolve(
-        this.getFrequencies(text, element.count)
+        this._getFrequencies(text, element.count)
       );
     } else {
       return Promise.resolve([
@@ -33,7 +42,7 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
     }
   }
 
-  private getWords(text: string): string[] {
+  private _getWords(text: string): string[] {
     const result: string[] = [];
     [...text.matchAll(RegEx.WORDS_AND_SEPARATORS)]
       .forEach(matches => result.push(...matches.slice(1).filter(s => s !== '')));
@@ -41,9 +50,9 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
     return result;
   }
 
-  private countWords(text: string, windowSize: number): Map<string, number> {
+  private _countWords(text: string, windowSize: number): Map<string, number> {
     const freq = new Map<string, number>();
-    const words = this.getWords(text);
+    const words = this._getWords(text);
 
     const addWord = (word: string) => {
       word = word.toLowerCase();
@@ -62,11 +71,11 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
   }
 
 
-  private getFrequencies(text: string, count: number): WordStatTreeItem[] {
+  private _getFrequencies(text: string, count: number): WordStatTreeItem[] {
     const result: WordStatTreeItem[] = [];
     const icon = vscode.ThemeIcon.File;
 
-    const wf = this.countWords(text, count).forEach((value: number, key: string) => {
+    const wf = this._countWords(text, count).forEach((value: number, key: string) => {
       result.push(new WordStatTreeItem(
         key,
         `${value}`,
@@ -85,12 +94,20 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
   readonly onDidChangeTreeData: vscode.Event<WordStatTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   refresh(): void {
-    this.document = vscode.window.activeTextEditor?.document;
+    this._document = vscode.window.activeTextEditor?.document;
+    if (this.tree) {
+      this.tree.description = this._document?.fileName
+        ? path.parse(this._document.uri.fsPath).base
+        : '';
+    }
     this._onDidChangeTreeData.fire();
   }
 
   clear(): void {
-    this.document = undefined;
+    if (this.tree) {
+      this.tree.description = '';
+    }
+    this._document = undefined;
     this._onDidChangeTreeData.fire();
   }
 }

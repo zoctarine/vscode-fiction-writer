@@ -192,21 +192,19 @@
           "name": "Project files",
           "icon": "eye",
           "contextualTitle": "Files",
-          "when": "isDevelopmentMode"
+          "when": "fw:isDevelopmentMode"
         },
         {
           "id": "fw-wordFrequencies",
           "name": "Word Frequencies",
           "icon": "$(eye)",
-          "contextualTitle": "Word n-Gram Frequencies",
-          "when": "fw:isSupportedEditor"
+          "contextualTitle": "Word n-Gram Frequencies"
         },
         {
           "id": "fw-statistics",
           "name": "Statistics",
           "icon": "$(eye)",
-          "contextualTitle": "Document statistics",
-          "when": "fw:isSupportedEditor"
+          "contextualTitle": "Document statistics"
         }
       ]
     },
@@ -270,6 +268,11 @@
           "group": "navigation"
         },
         {
+          "command": "fiction-writer.extension.wordFrequency.open",
+          "when": "view == fw-wordFrequencies",
+          "group": "navigation"
+        },
+        {
           "command": "fiction-writer.extension.statistics.refresh",
           "when": "view == fw-statistics",
           "group": "navigation"
@@ -298,6 +301,14 @@
         }
       ],
       "commandPalette": [
+        {
+          "command": "fiction-writer.extension.showIndexes",
+          "when": "fw:isDevelopmentMode"
+        },
+        {
+          "command": "fiction-writer.extension.reindex",
+          "when": "fw:isDevelopmentMode"
+        },
         {
           "command": "fiction-writer.extension.renameGroup",
           "when": "false"
@@ -334,7 +345,10 @@
           "command": "fiction-writer.extension.metadata.refresh",
           "when": "false"
         },
-
+        {
+          "command": "fiction-writer.extension.wordFrequency.open",
+          "when": "false"
+        },
         {
           "command": "fiction-writer.extension.wordFrequency.refresh",
           "when": "false"
@@ -802,14 +816,28 @@
           "scope": "application",
           "default": true,
           "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files."
+        },
+        "markdown-fiction-writer.notes.defaultText": {
+          "type": "array",
+          "scope": "application",
+          "default": ["Your Notes Here"],
+          "items": {
+            "type":"string"
+          },
+          "markdownDescription": "The default text for all new note files.\n\nAdd each line as a new _item_."
         }
       }
     },
     "commands": [
       {
+        "command": "fiction-writer.extension.showIndexes",
+        "category": "Markdown Fiction Writer",
+        "title": "Developer: Show Indexes"
+      },
+      {
         "command": "fiction-writer.extension.reindex",
         "category": "Markdown Fiction Writer",
-        "title": "ReIndex Files"
+        "title": "Developer: Reindex"
       },
       {
         "command": "fiction-writer.extension.renameGroup",
@@ -909,6 +937,12 @@
         "icon": "$(refresh)",
         "category": "Markdown Fiction Writer",
         "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.wordFrequency.open",
+        "category": "Markdown Fiction Writer",
+        "title": "Open Computed Document",
+        "icon": "$(go-to-file)"
       },
       {
         "command": "fiction-writer.extension.statistics.refresh",

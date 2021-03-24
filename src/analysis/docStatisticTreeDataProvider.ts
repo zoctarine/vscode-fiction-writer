@@ -7,7 +7,9 @@ const count = (text:string, pattern:RegExp) => {
 };
 
 export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<WordStatTreeItem> {
-  private document: vscode.TextDocument | undefined;
+  private _document: vscode.TextDocument | undefined;
+  public tree: vscode.TreeView<WordStatTreeItem> | undefined;
+
   constructor() { }
 
   getTreeItem(element: WordStatTreeItem): vscode.TreeItem {
@@ -15,14 +17,14 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
   }
 
   getChildren(element?: WordStatTreeItem): Thenable<WordStatTreeItem[]> {
-    if (!this.document) {
+    if (!this._document) {
       return Promise.resolve([]);
     }
 
     if (element) {
       return Promise.resolve([]);
     } else {
-      const rawText = this.document.getText();
+      const rawText = this._document.getText();
       const text = rawText.replace(RegEx.METADATA_BLOCK, '');
       const wordCount = count(text, RegEx.WHOLE_WORD);
       const charCount = count(text, RegEx.ANY_CHARACTER_ESCEPT_NEWLINE);
@@ -51,12 +53,14 @@ export class DocStatisticTreeDataProvider implements vscode.TreeDataProvider<Wor
   readonly onDidChangeTreeData: vscode.Event<WordStatTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
 
   refresh(): void {
-    this.document = getActiveEditor(SupportedContent.Fiction)?.document;
+    if (!this.tree?.visible) return;
+    
+    this._document = vscode.window.activeTextEditor?.document;
     this._onDidChangeTreeData.fire();
   }
 
   clear(): void {
-    this.document = undefined;
+    this._document = undefined;
     this._onDidChangeTreeData.fire();
   }
 }
