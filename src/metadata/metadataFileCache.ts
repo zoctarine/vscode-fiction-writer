@@ -74,6 +74,6 @@ export class MetadataFileCache extends Observer<Config> {
   }
 
   public getAllKeys(): string[] {
-    return this.fileIndex.paths();
+    return this.fileIndex.keys();
   }
 }
