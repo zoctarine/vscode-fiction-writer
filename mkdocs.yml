@@ -37,6 +37,7 @@ nav:
      - Formatting: format.md
      - Exporting: export.md
      - Metadata: metadata.md
+     - Notes: notes.md
      - View: view.md
      - Text Statistics: stats.md
   - Configuration:

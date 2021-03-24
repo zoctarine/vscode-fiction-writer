@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - **Settings**:
 
     - `markdown-fiction-writer.notes.enabled`
+    - `mardkwon-fiction-writer.notes.defaultText`
     - `markdown-fiction-writer.smartRename.enabled`
     - `markdown-fiction-writer.smartRename.renameRelatedFiles`
 
@@ -26,11 +27,13 @@ All notable changes to this project will be documented in this file.
 - `_bk` folder now created under `.fic` folder
 - Setting `markdown-fiction-writer.metadata.defaultCategory` becomes `markdown-fiction-writer.metadata.categories.default`
 - Selecting an item in **Metadata View** does not immediately open file. The file can now be opened from the Open File icon in the view title bar
+- Document Statistics: can be computed for any document, not only for `.md` files
 
 **Fixes**
 - Fix markdown formatting now skips inline metadata blocks
 - Fix document statistics and repetitions skips metada block
 - Hide unecessary commands from Command Pallete
+- Fix a performance issue when Document Statistics was loading even if view was not visible.
 
 
 ## 0.0.42 - alpha42
