@@ -1,10 +1,10 @@
 # Typewriter Mode
 
-`[TBD]`
+*documentation coming soon...*
 
 # Writing Mode
 
-`[TBD]`
+*documentation coming soon...*
 
 # Fold Paragraph lines
 
@@ -25,7 +25,7 @@ Folding works for dialogue indents as well, if writing dialgoues with dialogue m
 
 # Word Wrap Indent
 
-[tbd]
+*documentation coming soon...*
 
 # Status Bar
 
