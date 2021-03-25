@@ -9,6 +9,17 @@ export interface ILogger {
   push(message: string): ILogger;
 }
 
+class DoNothingLogger implements ILogger {
+  info(message: string): void {
+  }
+  error(message: string): void {
+  }
+  debug(message: string): void {
+  }
+  push(message: string): ILogger {
+    return this;
+  }
+}
 class Logger implements ILogger {
   private channel: OutputChannel | undefined;
   private buffer: string[];
@@ -26,7 +37,7 @@ class Logger implements ILogger {
 
   private log(prefix: string, message: string) {
     if (!this.channel) this.channel = window.createOutputChannel('Markdown Fiction Writer');
-    if (!this.channel) return;  // If channel coulnd not be crated, just ignore it
+    if (!this.channel) return;  // If channel couln'd not be crated, just ignore it
 
     const date = new Date().toISOString().replace('T', ' ').slice(0, -5);
 
@@ -42,4 +53,4 @@ class Logger implements ILogger {
   }
 }
 
-export const logger = new Logger();
+export const logger = new DoNothingLogger();  // TODO: Replace with real logger once it is ready

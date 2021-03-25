@@ -1,4 +1,4 @@
-import { StatusBarAlignment, StatusBarItem, Uri, window, workspace } from 'vscode';
+import { StatusBarAlignment, StatusBarItem, Uri, window, workspace, env } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
@@ -28,7 +28,7 @@ export class CompileFileCommand extends Observer<Config> {
     this.item.show();
     await this.convertAndOpen(editor, [editor.document.fileName], undefined, format);
   }
- 
+
   protected makeToc(inputs: Array<string>, errors: Array<string>)
     : { includePath: string, text: string, success: boolean } {
     try {
@@ -114,22 +114,11 @@ export class CompileFileCommand extends Observer<Config> {
         execSync(`pandoc -f ${inputFormat} -t ${outputFormat} -s ${input} -o "${output}" ${template}`);
         const selection = await window.showInformationMessage(`Successfully compiled to '${outputFormat}':`, output);
         if (selection === output) {
-          const cmd = `"${output.replace('"', '\\"')}"`;
-          switch (process.platform) {
-            case 'win32':
-              exec(cmd);
-              break;
-            case 'darwin':
-              exec(`\`open ${cmd}; exit\``);
-              break;
-            case 'linux':
-              exec(`\`xdg-open ${cmd}; exit\``);
-              break;
-            default:
-              window.showWarningMessage("Unknown platform!");
-              break;
+          try {
+            env.openExternal(Uri.file(output));
+          } catch (error) {
+            window.showErrorMessage('Could not open file in external application.')
           }
-
         }
       }
       catch (error) {
@@ -177,7 +166,7 @@ export class CompileFileCommand extends Observer<Config> {
                 }
               }
               if (paths && paths.length > 0) {
-                if (paths[0].path){
+                if (paths[0].path) {
                   includedPath = paths[0].path;
                 } else {
                   errors.push(`Missing document ${match}.`);
