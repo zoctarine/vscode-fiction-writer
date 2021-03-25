@@ -4,11 +4,11 @@
 
 ![LOGO](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/main/resources/fiction-writer-icon.png)
 
-A [vscode](https://code.visualstudio.com) extension for writing fiction using [markdown](https://daringfireball.net/projects/markdown/).
+A [vscode](https://code.visualstudio.com) extension for writers. 
 
-Some tools I wrote for helping with writing fiction (novels/short stories) using markdown.
+Some tools I wrote for writing, organizing and exporting fiction (short stories, novels) using [markdown](https://daringfireball.net/projects/markdown/).
 
-> ⚠ **Warning:** This extension is in early development (concept) phase. Use only for testing purposes.
+> ⚠ **Warning:** This extension is in development (concept) phase. Use only for testing purposes.
 
 ## Features
 
@@ -46,7 +46,7 @@ This is a quick overview of the main features. Please read the [Full Documentati
 
 - **Use metadata to categorize text**
   
-  - Parse yaml metadata
+  - Parse yaml metadata (either in document or as external `.md.yml.` file)
 
     ![](https://zoctarine.github.io/vscode-fiction-writer/img/meta_view_02.jpg)
 
@@ -70,13 +70,22 @@ This is a quick overview of the main features. Please read the [Full Documentati
     ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/stats_01.gif)
 
 - **Text formatting**
+
   - cleaning up spaces
   - fixing dialogue lines, indents
   - fixing paragraph spaces (add/remove empty lines)
   - remove trailing spaces
   - [more details](https://zoctarine.github.io/vscode-fiction-writer/format/)
 
-- View
+- **Take Quick Notes**
+
+  - take short notes and associate them with markdown (`.md`) files.
+
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/notes_01.gif)
+
+  - [more details](https://zoctarine.github.io/vscode-fiction-writer/notes/)
+
+- **View**
   
   - fold paragraph lines
 
