@@ -7,6 +7,18 @@
 
 **Fiction Writer** supports showing/editing/saving of quick notes files from a `.txt` document.
 
+![Notes view](img/notes_01.jpg)
+
+- **(1)**: The `.md` and `.md.txt` file group.
+
+- **(2)**: The **Notes** View for editing text notes.
+
+- **(3)**: Open current file in Text Editor
+
+- **(4)**: Pin current notes file (not changed when switching open document)
+
+- **(5)**: Save changes to notes file
+
 These files are intendend to keep short notes (thus the plain text `.txt` format) about specific `.md` files.
 
 Matching between a fiction (`.md`) file and the (`.txt`) file is done by the same naming convention used for all related files:

@@ -15,7 +15,6 @@ All notable changes to this project will be documented in this file.
 - Smart Rename: when renaming a file, can rename all related files (with same name)
 - Statistics: [added reading speed estimation calculated at ~200 wpm](stats.md#get-writing-statistics)
 - General: Optimizes file indexing, to reduce disk read calls
-- Commands: add _Reset file indexes_ command, that clears/reindexes opened files
 - **Settings**:
 
     - `markdown-fiction-writer.notes.enabled`
