@@ -499,13 +499,10 @@
                   <h1>Settings</h1>
                 
                 <p>This extension has the following settings:</p>
-<div class="admonition danger">
-<p class="admonition-title">This page is for an older version. Updated coming soon</p>
-</div>
 <table>
 <thead>
 <tr>
-<th align="left">Setting</th>
+<th align="left">Setting (prefixed by <code>markdown-fiction-writer.</code>)</th>
 <th align="center">Default</th>
 <th align="left">Description</th>
 </tr>
@@ -514,7 +511,7 @@
 <tr>
 <td align="left"><code>edit.disableKeybindings</code></td>
 <td align="center">false</td>
-<td align="left">Disable editor keybindings added by this extension (<code>enter</code>, <code>shift+enter</code>, <code>delete</code>, <code>backspace</code>, <code>tab</code>). <strong>Note:</strong> If <code>disabled</code>, some of the settings will not work.</td>
+<td align="left">Disable editor keybindings added by this extension (<code>enter</code>, <code>shift+enter</code>, <code>delete</code>, <code>backspace</code>, <code>tab</code>).  <strong>Note:</strong> If <code>disabled</code>, some of the settings will not work.    <a href="https://zoctarine.github.io/vscode-fiction-writer/edit/">Open Online Documentation</a></td>
 </tr>
 <tr>
 <td align="left"><code>edit.easyParagraphCreation</code></td>
@@ -539,27 +536,42 @@
 <tr>
 <td align="left"><code>editDialogue.sentenceIndentAutoDetect</code></td>
 <td align="center">true</td>
-<td align="left">Sets the line indent from the same dialogue paragraph equal with the selected <code>markdown-fiction-writer.editDialogue.marker</code>.</td>
+<td align="left">Sets the line indent from the same dialogue paragraph equal with the selected <code>#editDialogue.marker#</code>.</td>
 </tr>
 <tr>
-<td align="left"><code>view.wordWrapIndent</code></td>
-<td align="center">0</td>
-<td align="left">The hanging indent of wrapped lines. <strong>Warning:</strong> Only works if <code>editor.wordWrap</code> is enabled, and might change the <code>editor.tabSize</code> setting for <code>markdown</code>._</td>
-</tr>
-<tr>
-<td align="left"><code>view.foldParagraphLines</code></td>
+<td align="left"><code>export.include.enabled</code></td>
 <td align="center">true</td>
-<td align="left">undefined</td>
+<td align="left">If <code>enabled</code>, the <code>{DOCUMENT_ID}</code> or <code>{document/file/path/filename.md}</code> syntax can be used to include on <code>.md</code> file into another file</td>
 </tr>
 <tr>
-<td align="left"><code>export.outputFormat.default</code></td>
-<td align="center">odt</td>
-<td align="left">The output document format. <strong>Important:</strong> This requires having <a href="https://pandoc.org/installing.html">Pandoc</a> installed on your system, and available to be run from commandline.</td>
+<td align="left"><code>export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces</code></td>
+<td align="center">false</td>
+<td align="left">When including files, search <code>{DOCUMENT_ID}</code> in all opened files and workspace folders. If <code>disabled</code>, it only searches in the workspace folder that the document belongs to.</td>
+</tr>
+<tr>
+<td align="left"><code>export.include.showsErrorInOutputFile</code></td>
+<td align="center">true</td>
+<td align="left">Shows errors in compiled document.</td>
 </tr>
 <tr>
 <td align="left"><code>export.outputFormat.alwaysShowFormatPicker</code></td>
 <td align="center">false</td>
-<td align="left">Select the output format each time an export command is run. If set to <code>false</code>, the selected <code>markdown-fiction-writer.export.outputFormat.default</code> will be used.</td>
+<td align="left">Select the output format each time an export command is run.  If set to <code>false</code>, the selected <code>#export.outputFormat.default#</code> will be used.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputFormat.default</code></td>
+<td align="center">odt</td>
+<td align="left">The output document format.  <strong>Important:</strong> This requires having <a href="https://pandoc.org/installing.html">Pandoc</a> installed on your system, and available to be run from commandline.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputTemplate.enabled</code></td>
+<td align="center">false</td>
+<td align="left">If enabled, the template file selected at <code>#export.outputTemplate.file#</code> will be used when exporting to <code>docx</code> or <code>odt</code> formats.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputTemplate.file</code></td>
+<td align="center"></td>
+<td align="left">The output template to be used when exporting to <code>docx</code> or <code>odt</code>.  <strong>Note:</strong> the template file extension must match the output type. It can be an absolut path, or relative to exported document.</td>
 </tr>
 <tr>
 <td align="left"><code>export.showSaveDialogue</code></td>
@@ -567,14 +579,14 @@
 <td align="left">Control when the Save File Dialogue is shown.</td>
 </tr>
 <tr>
-<td align="left"><code>export.outputTemplate.enabled</code></td>
-<td align="center">false</td>
-<td align="left">If enabled, the template file selected at <code>markdown-fiction-writer.export.outputTemplate.file</code> will be used when exporting to <code>docx</code> or <code>odt</code> formats.</td>
+<td align="left"><code>export.skipCodeComments</code></td>
+<td align="center">true</td>
+<td align="left">When parsing <code>.md</code> files, skips lines starting with <code>//</code>.</td>
 </tr>
 <tr>
-<td align="left"><code>export.outputTemplate.file</code></td>
-<td align="center"></td>
-<td align="left">The output template to be used when exporting to <code>docx</code> or <code>odt</code>. <strong>Note:</strong> the template file extension must match the output type. It can be an absolut path, or relative to exported document.</td>
+<td align="left"><code>export.smartDeshes</code></td>
+<td align="center">true</td>
+<td align="left">Converts <code>--</code> to <code>em-dash</code> (—) character in exported output. If not selected, it will default to <code>en-dash</code> (–).  Is PanDoc <code>+old_dashes</code> markdown extension.</td>
 </tr>
 <tr>
 <td align="left"><code>export.tocFilename</code></td>
@@ -582,49 +594,109 @@
 <td align="left">The filename compiled by <strong>Compile TOC command.</strong>.</td>
 </tr>
 <tr>
-<td align="left"><code>export.smartDeshes</code></td>
-<td align="center">true</td>
-<td align="left">Converts <code>--</code> to <code>em-dash</code> (—) character in exported output. If not selected, it will default to <code>en-dash</code> (–). Is PanDoc <code>+old_dashes</code> markdown extension.</td>
+<td align="left"><code>metadata.categories.default</code></td>
+<td align="center">tags</td>
+<td align="left">Assigning keywords to this category, if none is specified.  For example, if default category is <code>tags</code>, then the metadata block:  <code>---</code>  <strong><code>draft, ch1</code></strong>  <code>---</code>   is equivalent to:  <code>---</code>  <em><code>tags</code></em><code>:</code><strong><code>draft, ch1</code></strong>  <code>---</code></td>
 </tr>
 <tr>
-<td align="left"><code>export.skipCodeComments</code></td>
+<td align="left"><code>metadata.categories.icons</code></td>
+<td align="center">[object Object]</td>
+<td align="left">Assign for each metadata category (<strong>Item</strong>) a vscode icon (<strong>Value</strong>)  <em><strong>Note:</strong> You can use any icon from <a href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">Product Icon Reference</a>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.showIcons</code></td>
 <td align="center">true</td>
-<td align="left">When parsing <code>.md</code> files, skips lines starting with <code>//</code>.</td>
+<td align="left">Show icons in <strong>Metadata</strong> view.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.showNames</code></td>
+<td align="center">true</td>
+<td align="left">If <code>disabled</code>, it hides category name in <strong>Metadata View</strong> for 1st level categories only.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.summaryEnabled</code></td>
+<td align="center">true</td>
+<td align="left">If <code>enabled</code>, it will show the contents of the <code>summary</code> 1st level category in the <em>message</em> section of the  <strong>Metadata View</strong>, and not in the tree itself.   To use it, simply define a metadata block:  <code>---</code>  <strong><code>summary: The document summary</code></strong>  <code>---</code></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.easyLists</code></td>
+<td align="center">,</td>
+<td align="left">Metadata values separated by this string, will be treated as list items.  Enter the list item separator character below <em>(or leave it empty to disable this feature)</em>:  <em><strong>Example:</strong> <code>item1, item2, item three</code> will be equivalent to <code>[item1, item2, item three]</code> if the separator is comma (<code>,</code>).</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.enabled</code></td>
+<td align="center">true</td>
+<td align="left">It enables metadata reltated features. If <code>disabled</code> then <strong>all</strong> metadata related featueres will be disabled (parsing, metadata view, colors, etc...).  <a href="https://zoctarine.github.io/vscode-fiction-writer/metadata/">Open Online Documentation</a></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badges</code></td>
+<td align="center">[object Object]</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badgesCategory</code></td>
+<td align="center"></td>
+<td align="left">Uses only this category when resolving <strong>Explorer</strong> badges. <em>(leave empty to do a full metadata search)</em>  <em><strong>Note:</strong> the <code>first matched keyword</code> in this category will dictate the badge.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badgesInFileExplorer</code></td>
+<td align="center">true</td>
+<td align="left">Show <a href="#metadata.keywords.badges">Keyword Badges</a> in <strong>Explorer</strong> view.   <em><strong>Note:</strong> Only the first matched keyword will be considered.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colors</code></td>
+<td align="center">[object Object]</td>
+<td align="left">Defines a keyword (<strong>Item</strong>) and associate a color (<strong>Value</strong>) to it. The colors can be visible in <strong>Metadata</strong> view or <strong>Explorer</strong> view.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsCategory</code></td>
+<td align="center"></td>
+<td align="left">Uses only this category when resolving <strong>Explorer</strong> colors. <em>(leave empty to do a full metadata search)</em>  <em><strong>Note:</strong> the <code>first matched keyword</code> in this category will dictate the color.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsInFileExplorer</code></td>
+<td align="center">true</td>
+<td align="left">Use <a href="#metadata.keywords.colors">Keyword Colors</a> in <strong>Explorer</strong> view.   <em><strong>Note:</strong> Only the <code>first matched keyword</code> will be considered</em>  <em><strong>Note:</strong> file colors can be ovewritten by other extensions, so they might not show as expected.</em>  <em><strong>Also:</strong> <code>#explorer.decorations.colors#</code> must be <code>enabled</code>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsInMetadataView</code></td>
+<td align="center">true</td>
+<td align="left">Use <a href="#metadata.keywords.colors">Keyword Colors</a> as icon colors in <strong>Metadata</strong> view.  <em><strong>Note:</strong> if no icon is set/visible, then the color will not be visible.</em></td>
+</tr>
+<tr>
+<td align="left"><code>notes.defaultText</code></td>
+<td align="center">Your Notes Here</td>
+<td align="left">The default text for all new note files.  Add each line as a new <em>item</em>.</td>
+</tr>
+<tr>
+<td align="left"><code>notes.enabled</code></td>
+<td align="center">true</td>
+<td align="left">Enables the notes view, that recognizes (and groups) <code>.txt</code> files together with <code>.md</code> and metadata files.  <a href="https://zoctarine.github.io/vscode-fiction-writer/notes/">Open Online Documentation</a></td>
+</tr>
+<tr>
+<td align="left"><code>smartRename.enabled</code></td>
+<td align="center">true</td>
+<td align="left">If enabled, allows ordering of files based on number prefix.</td>
+</tr>
+<tr>
+<td align="left"><code>smartRename.renameRelatedFiles</code></td>
+<td align="center">Ask Every Time</td>
+<td align="left">If <code>enabled</code>, renames/moves related (<code>.yml</code> and <code>.md</code>) files together.</td>
 </tr>
 <tr>
 <td align="left"><code>textFormatting.enabled</code></td>
 <td align="center">true</td>
-<td align="left">This is feature is <strong>EXPERIMENTAL</strong>. Make sure make a backup before trying it out. If enabled, it formats document using the selected formatters. Formatting is available with <code>Format Document</code> command</td>
-</tr>
-<tr>
-<td align="left"><code>textFormatting.fixMismatchDialogueMarkers</code></td>
-<td align="center">true</td>
-<td align="left">If <code>markdown-fiction-writer.editDialogue.marker</code> is not quotes, replaces mismatched markers with current selected marker.</td>
+<td align="left">This is feature is <strong>EXPERIMENTAL</strong>. Make sure make a backup before trying it out.  If enabled, it formats document using the selected formatters. Formatting is available with <code>Format Document</code> command..  [Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/format/</td>
 </tr>
 <tr>
 <td align="left"><code>textFormatting.fixDialogueIndents</code></td>
 <td align="center">true</td>
-<td align="left">If <code>markdown-fiction-writer.editDialogue.marker</code> is not quotes, and <code>markdown-fiction-writer.editDialogue.sentenceIndent</code> is enabled, reformats dialogue indents to selected dialogue indent.</td>
+<td align="left">If <code>#editDialogue.marker#</code> is not quotes, and <code>#editDialogue.sentenceIndent#</code> is enabled, reformats dialogue indents to selected dialogue indent.</td>
 </tr>
 <tr>
-<td align="left"><code>textFormatting.fixParagraphSpacing</code></td>
+<td align="left"><code>textFormatting.fixMismatchDialogueMarkers</code></td>
 <td align="center">true</td>
-<td align="left">Normalizes space between different paragraph types (header, body, dialogue, ...).</td>
-</tr>
-<tr>
-<td align="left"><code>textFormatting.removeExtraSpaces</code></td>
-<td align="center">true</td>
-<td align="left">Replaces multiple consecutive spaces to one single space. (not from begining or ending of line)</td>
-</tr>
-<tr>
-<td align="left"><code>textFormatting.removeExtraLines</code></td>
-<td align="center">true</td>
-<td align="left">Reduces multiple empty lines (more than two), to a single empty line.</td>
-</tr>
-<tr>
-<td align="left"><code>textFormatting.removeTrailingSpaces</code></td>
-<td align="center">true</td>
-<td align="left">Remove all whitespace characters from line ends.</td>
+<td align="left">If <code>#editDialogue.marker#</code> is not quotes, replaces mismatched markers with current selected marker.</td>
 </tr>
 <tr>
 <td align="left"><code>textFormatting.fixParagraphBreaks</code></td>
@@ -632,29 +704,39 @@
 <td align="left">Controls how paragraph breaks and soft line breaks will be formatted.</td>
 </tr>
 <tr>
-<td align="left"><code>view.writingMode.theme</code></td>
-<td align="center"></td>
-<td align="left">The theme to be used in Writing Mode. <em>(leave empty for no theme switch)</em></td>
-</tr>
-<tr>
-<td align="left"><code>view.writingMode.fontSize</code></td>
-<td align="center">16</td>
-<td align="left">The font size to be used in Writing Mode Mode.</td>
-</tr>
-<tr>
-<td align="left"><code>view.statusBar.enabled</code></td>
+<td align="left"><code>textFormatting.fixParagraphSpacing</code></td>
 <td align="center">true</td>
-<td align="left">If enabled, the custom Fiction Writer status bar will be visible</td>
+<td align="left">Normalizes space between different paragraph types (header, body, dialogue, ...).</td>
 </tr>
 <tr>
-<td align="left"><code>view.fileTags.enabled</code></td>
-<td align="center">false</td>
-<td align="left">If enabled, reads tags from <code>.md</code> files and display corresponding badge in file explorer. Recognizes tags defined under <code>markdown-fiction-writer.view.fileTags.definitions</code></td>
+<td align="left"><code>textFormatting.removeExtraLines</code></td>
+<td align="center">true</td>
+<td align="left">Reduces multiple empty lines (more than two), to a single empty line.</td>
 </tr>
 <tr>
-<td align="left"><code>view.fileTags.definitions</code></td>
-<td align="center">undefined</td>
-<td align="left">Custom file tags. Add the tag (<code>item</code>) on the first line of a .md file, like this: <code>// draft</code>, and you will see the <code>value</code> as a badge in file explorer. <strong>Note:</strong> the badges should be only 1 or 2 characters long (the others will be ignored), and tag names are case sensitive</td>
+<td align="left"><code>textFormatting.removeExtraSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeTrailingSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Remove all whitespace characters from line ends.</td>
+</tr>
+<tr>
+<td align="left"><code>view.fadeMetadata</code></td>
+<td align="center">true</td>
+<td align="left">Fade markdown metadata section by 50%.</td>
+</tr>
+<tr>
+<td align="left"><code>view.foldParagraphLines</code></td>
+<td align="center">true</td>
+<td align="left">Show folding marker for paragraphs with multiple lines. (soft-breaks)</td>
+</tr>
+<tr>
+<td align="left"><code>view.highlight.dialogueMarkers</code></td>
+<td align="center">true</td>
+<td align="left">Highlights the dialogue markers (---, --, — or quote marks symbols).</td>
 </tr>
 <tr>
 <td align="left"><code>view.highlight.textBetweenQuotes</code></td>
@@ -662,9 +744,24 @@
 <td align="left">Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)</td>
 </tr>
 <tr>
-<td align="left"><code>view.highlight.dialogueMarkers</code></td>
+<td align="left"><code>view.statusBar.enabled</code></td>
 <td align="center">true</td>
-<td align="left">Highlights the dialogue markers (---, --, — or quote marks symbols).</td>
+<td align="left">Show the custom Fiction Writer status bar.</td>
+</tr>
+<tr>
+<td align="left"><code>view.wordWrapIndent</code></td>
+<td align="center">0</td>
+<td align="left">The hanging indent of wrapped lines.  <strong>Select:</strong> - <code>0</code> for same indent as first line, - <code>-1</code> for now wrapping indent, - any other value for hanging indent.    <em><strong>Warning:</strong> Only works if <code>#editor.wordWrap#</code> is enabled, and might change the <code>#editor.tabSize#</code> setting for <code>markdown</code>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>view.writingMode.fontSize</code></td>
+<td align="center">16</td>
+<td align="left">The font size to be used in Writing Mode Mode.</td>
+</tr>
+<tr>
+<td align="left"><code>view.writingMode.theme</code></td>
+<td align="center"></td>
+<td align="left">The theme to be used in Writing Mode. <em>(leave empty for no theme switch)</em></td>
 </tr>
 </tbody>
 </table>
