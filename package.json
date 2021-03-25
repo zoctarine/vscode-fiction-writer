@@ -192,7 +192,7 @@
           "name": "Project files",
           "icon": "eye",
           "contextualTitle": "Files",
-          "when": "fw:isDevelopmentMode"
+          "when": "false && fw:isDevelopmentMode"
         },
         {
           "id": "fw-wordFrequencies",
@@ -815,7 +815,7 @@
           "type": "boolean",
           "scope": "application",
           "default": true,
-          "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files."
+          "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files.\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/notes/)"
         },
         "markdown-fiction-writer.notes.defaultText": {
           "type": "array",
@@ -878,17 +878,17 @@
       },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
-        "title": "Set Current theme as Enhanced Zen Mode theme",
+        "title": "Set Current theme as Writing Mode theme",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.exitWritingMode",
-        "title": "Exit Enhanced Zen Mode",
+        "title": "Exit Writing Mode",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.toggleWritingMode",
-        "title": "Toggle Enhanced Zen Mode",
+        "title": "Toggle Writing Mode",
         "category": "Markdown Fiction Writer"
       },
       {

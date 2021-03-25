@@ -91,7 +91,10 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     } catch (err) {
       logger.error(`Could not read [${filePath}]: ${err}`);
     } finally {
-      this.fileInfos.set(key, fileInfo);
+      if (!fileInfo.path)
+        this.fileInfos.remove(key);
+      else
+        this.fileInfos.set(key, fileInfo);
       if (!options.skipNotify) this.notify([filePath]);
     }
     return fileInfo;

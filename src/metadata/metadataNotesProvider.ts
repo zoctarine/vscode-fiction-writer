@@ -6,7 +6,7 @@ import { FileIndexer } from '../compile';
 import { IObservable, IObserver, Observer } from '../utils';
 import { Config } from '../config';
 
-export class MetadataNotesProvider extends Observer<Config> implements vscode.WebviewViewProvider, IObserver<IFileInfo[]> {
+export class MetadataNotesProvider extends Observer<Config> implements vscode.WebviewViewProvider {
   private _currentDocumentPath?: string;
   private _view?: vscode.WebviewView;
   private _noteText = '';
@@ -20,9 +20,8 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
     private readonly _extensionUri: vscode.Uri,
     private readonly _fileIndex: FileIndexer,
     private _disposables: vscode.Disposable[]
-  ) { 
+  ) {
     super(configService);
-    _fileIndex.attach(this);
   }
 
   update(...args: any[]): void {
@@ -36,7 +35,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
     ) {
 
     this._isDisposed = false;
-    
+
     webviewView.webview.options = {
       // Allow scripts in the webview
       enableScripts: true,
@@ -54,14 +53,15 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
       switch (data.type) {
 
         case 'saveNotes': this._save(data.value); break;
+        case 'newNote': this.newNotes(); break;
         case 'changed':
           this._buffer = data.value;
           this._setTitle('NOTES*');
           break;
         }
       }, {}, this._disposables);
-      
-    this._view.onDidDispose(() => { 
+
+    this._view.onDidDispose(() => {
       this._isDisposed = true;
     });
   }
@@ -127,7 +127,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
 
   private async _loadDocument(documentPath?: string, forced?: boolean) {
     this._fileInfo = this._fileIndex.getByPath(documentPath);
-    if (!forced && this._fileInfo?.notes?.path === this._currentDocumentPath) return;
+    if (!forced && this._fileInfo?.notes?.path === this._currentDocumentPath && this._fileInfo?.notes?.path) return;
 
     if (this._pinned && (!forced || this._fileInfo?.notes?.path !== this._currentDocumentPath)) return;
 
@@ -146,7 +146,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
 
     this._reloadWebView();
   }
-  
+
   private _save(content: string) {
     if (this._currentDocumentPath) {
       this._buffer = content;
@@ -156,7 +156,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
   }
 
   private _reloadWebView() {
-    
+
     this._noteText = '';
     let title = '';
     if (this._currentDocumentPath) {
@@ -191,7 +191,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
     // Use a nonce to only allow a specific script to be run.
     const nonce = getNonce();
 
-    return this._fileInfo?.notes?.path ? `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -207,11 +207,19 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
 
 				<title>Notes</title>
 			</head>
-			<body>
-				<textarea id="fw-txt-notes">${this._noteText}</textarea>
+			<body>` +
+      (this._fileInfo?.notes?.path
+        ?	`<textarea id="fw-txt-notes">${this._noteText}</textarea>`
+        : `<div class="welcome-view-content">
+            <p>There are no notes for the current file group.</p>
+            <div class="button-container">
+              <button id="fw-txt-add-note">Add Note</button>
+            </div>
+          </div>`)
+        +`
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
-			</html>` : `<html></html>`;
+			</html>`;
   }
 }
 
