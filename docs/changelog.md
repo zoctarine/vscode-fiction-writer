@@ -3,17 +3,17 @@ All notable changes to this project will be documented in this file.
 ## 0.0.50 - alpha50
 
 **Added**
-- Metadata: support for `summary` category
-- Metadata: support for external `.yml` metadata file
+
+- Metadata: [support for `summary` category](metadata.md#known-metadata)
+- Metadata: [support for external `.yml` metadata file](metadata.md#external-metadata)
 - Metadata: new open file icon on **Metadata View**
 - Metadata: **Explorer** view, various tooltip improvements (id, summary)
 - Metadata: fade-out file decorations for additional files
-- Notes: added support for additional `.txt` file containing short notes
-- Notes: added webview for quickly editing/view-ing document related notes
+- Notes: [added support for additional `.txt` file containing short notes](notes.md#quick-document-notes)
+- Notes: [added webview for quickly editing/view-ing document related notes](notes.md#adding-document-notes)
 - Smart Rename: add _Rename Related_ command to **Explorer** context
 - Smart Rename: when renaming a file, can rename all related files (with same name)
-- Log: add dedicated **Markdown Fiction Writer** Output channel
-- Statistics: added reading speed estimation calculated at ~200 wpm
+- Statistics: [added reading speed estimation calculated at ~200 wpm](stats.md#get-writing-statistics)
 - General: Optimizes file indexing, to reduce disk read calls
 - Commands: add _Reset file indexes_ command, that clears/reindexes opened files
 - **Settings**:
@@ -24,16 +24,20 @@ All notable changes to this project will be documented in this file.
     - `markdown-fiction-writer.smartRename.renameRelatedFiles`
 
 **Changes**
+
 - `_bk` folder now created under `.fic` folder
 - Setting `markdown-fiction-writer.metadata.defaultCategory` becomes `markdown-fiction-writer.metadata.categories.default`
 - Selecting an item in **Metadata View** does not immediately open file. The file can now be opened from the Open File icon in the view title bar
 - Document Statistics: can be computed for any document, not only for `.md` files
+- Hide unecessary commands from Command Pallete
 
 **Fixes**
-- Fix markdown formatting now skips inline metadata blocks
-- Fix document statistics and repetitions skips metada block
-- Hide unecessary commands from Command Pallete
+
+- Fix: markdown formatting now skips inline metadata blocks
+- Fix: document statistics and repetitions now skips metada block
+- Fix a bug on Linux, that prevented opening files in external editor
 - Fix a performance issue when Document Statistics was loading even if view was not visible.
+- Consistent name of _Writing Mode_ everywhere (some places still using the old _Enhanced Zen Mode_ naming)
 
 
 ## 0.0.42 - alpha42

@@ -34,7 +34,7 @@ _Related File must have the same name of the `.md` file (including the extension
 
 # The Notes View
 
-_tbd_
+_[tbd]_
 
 # Adding Document Notes
 
