@@ -741,37 +741,46 @@
                 
                 <p>All notable changes to this project will be documented in this file.</p>
 <h4 id="0050-alpha50">0.0.50 - alpha50<a class="headerlink" href="#0050-alpha50" title="Permanent link">&para;</a></h4>
-<p><strong>Added</strong>
-- Metadata: support for <code>summary</code> category
-- Metadata: support for external <code>.yml</code> metadata file
-- Metadata: new open file icon on <strong>Metadata View</strong>
-- Metadata: <strong>Explorer</strong> view, various tooltip improvements (id, summary)
-- Metadata: fade-out file decorations for additional files
-- Notes: added support for additional <code>.txt</code> file containing short notes
-- Notes: added webview for quickly editing/view-ing document related notes
-- Smart Rename: add <em>Rename Related</em> command to <strong>Explorer</strong> context
-- Smart Rename: when renaming a file, can rename all related files (with same name)
-- Statistics: added reading speed estimation calculated at ~200 wpm
-- General: Optimizes file indexing, to reduce disk read calls
-- Commands: add <em>Reset file indexes</em> command, that clears/reindexes opened files
-- <strong>Settings</strong>:</p>
-<div class="highlight"><pre><span></span><code>- `markdown-fiction-writer.notes.enabled`
-- `mardkwon-fiction-writer.notes.defaultText`
-- `markdown-fiction-writer.smartRename.enabled`
-- `markdown-fiction-writer.smartRename.renameRelatedFiles`
-</code></pre></div>
-<p><strong>Changes</strong>
-- <code>_bk</code> folder now created under <code>.fic</code> folder
-- Setting <code>markdown-fiction-writer.metadata.defaultCategory</code> becomes <code>markdown-fiction-writer.metadata.categories.default</code>
-- Selecting an item in <strong>Metadata View</strong> does not immediately open file. The file can now be opened from the Open File icon in the view title bar
-- Document Statistics: can be computed for any document, not only for <code>.md</code> files</p>
-<p><strong>Fixes</strong>
-- Fix markdown formatting now skips inline metadata blocks
-- Fix document statistics and repetitions skips metada block
-- Fix a bug on Linux, that prevented opening files in external editor
-- Hide unecessary commands from Command Pallete
-- Fix a performance issue when Document Statistics was loading even if view was not visible.
-- Consistent name of <em>Writing Mode</em> everywhere (some places still using the old <em>Enhanced Zen Mode</em> naming)</p>
+<p><strong>Added</strong></p>
+<ul>
+<li>Metadata: support for <code>summary</code> category</li>
+<li>Metadata: support for external <code>.yml</code> metadata file</li>
+<li>Metadata: new open file icon on <strong>Metadata View</strong></li>
+<li>Metadata: <strong>Explorer</strong> view, various tooltip improvements (id, summary)</li>
+<li>Metadata: fade-out file decorations for additional files</li>
+<li>Notes: added support for additional <code>.txt</code> file containing short notes</li>
+<li>Notes: added webview for quickly editing/view-ing document related notes</li>
+<li>Smart Rename: add <em>Rename Related</em> command to <strong>Explorer</strong> context</li>
+<li>Smart Rename: when renaming a file, can rename all related files (with same name)</li>
+<li>Statistics: added reading speed estimation calculated at ~200 wpm</li>
+<li>General: Optimizes file indexing, to reduce disk read calls</li>
+<li>Commands: add <em>Reset file indexes</em> command, that clears/reindexes opened files</li>
+<li>
+<p><strong>Settings</strong>:</p>
+<ul>
+<li><code>markdown-fiction-writer.notes.enabled</code></li>
+<li><code>mardkwon-fiction-writer.notes.defaultText</code></li>
+<li><code>markdown-fiction-writer.smartRename.enabled</code></li>
+<li><code>markdown-fiction-writer.smartRename.renameRelatedFiles</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Changes</strong></p>
+<ul>
+<li><code>_bk</code> folder now created under <code>.fic</code> folder</li>
+<li>Setting <code>markdown-fiction-writer.metadata.defaultCategory</code> becomes <code>markdown-fiction-writer.metadata.categories.default</code></li>
+<li>Selecting an item in <strong>Metadata View</strong> does not immediately open file. The file can now be opened from the Open File icon in the view title bar</li>
+<li>Document Statistics: can be computed for any document, not only for <code>.md</code> files</li>
+</ul>
+<p><strong>Fixes</strong></p>
+<ul>
+<li>Fix markdown formatting now skips inline metadata blocks</li>
+<li>Fix document statistics and repetitions skips metada block</li>
+<li>Fix a bug on Linux, that prevented opening files in external editor</li>
+<li>Hide unecessary commands from Command Pallete</li>
+<li>Fix a performance issue when Document Statistics was loading even if view was not visible.</li>
+<li>Consistent name of <em>Writing Mode</em> everywhere (some places still using the old <em>Enhanced Zen Mode</em> naming)</li>
+</ul>
 <h4 id="0042-alpha42">0.0.42 - alpha42<a class="headerlink" href="#0042-alpha42" title="Permanent link">&para;</a></h4>
 <p><strong>Added</strong></p>
 <ul>
