@@ -412,10 +412,29 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#external-metadata" class="md-nav__link">
+    External Metadata
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Notes
+      </a>
     </li>
   
 
@@ -684,6 +703,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#external-metadata" class="md-nav__link">
+    External Metadata
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -768,6 +794,16 @@
 <span class="l l-Scalar l-Scalar-Plain">My file contents...</span>
 </code></pre></div>
 <p>More information <a href="../export/#include-by-metadata-id">here</a>.</p>
+</li>
+<li>
+<p><code>summary</code> category: used to show a short description in <strong>Explorer</strong> tooltip and in the <strong>Metadata View</strong> as the first message above metadata tree.</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Where we find about the summary category.</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">My file contents...</span>
+</code></pre></div>
+<p><img alt="Meta Summary" src="../img/meta_summary_01.gif" /></p>
 </li>
 </ul>
 <h3 id="the-metadata-view">The Metadata View<a class="headerlink" href="#the-metadata-view" title="Permanent link">&para;</a></h3>
@@ -934,6 +970,29 @@ if, the <strong>Metadata &gt; Keywords: Badge Category</strong> is set to <code>
 <p class="admonition-title"><code>markdown-fiction-writer.metadata.keywords.colorsInFileExplorer</code></p>
 <p><em>coming soon</em></p>
 </div>
+<h3 id="external-metadata">External Metadata<a class="headerlink" href="#external-metadata" title="Permanent link">&para;</a></h3>
+<p><strong>Fiction Writer</strong> supports reading file metadata from a separate <code>.yml</code> file.</p>
+<p>Matching between a fiction (<code>.md</code>) file and the (<code>.yml</code>) file is done by the same naming convention used for all related files:</p>
+<p><em>Related File must have the same name of the <code>.md</code> file (including the extension) + the specific file extension (in this case <code>.yml</code>. They also need to be in the same location</em></p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Recognized related metadata files</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.
+├─ chapter01.md
+└─ chapter01.md.yml
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Not Recognized metadata files</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.
+├─ chapter01.md
+├─ chapter01.yml        // missing .md
+├─ chapter1.md.yml      // missing 01
+└─ chapter01.md.yaml    // yaml instead of yml
+</code></pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The order in which metadata is resolved is this: first look in the <code>.md</code> file. If no metadata block is present, then search for external <code>.yml</code> file in same directory.</p>
+</div>
                 
               
               
@@ -967,13 +1026,13 @@ if, the <strong>Metadata &gt; Keywords: Badge Category</strong> is set to <code>
           </a>
         
         
-          <a href="../view/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../notes/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                View
+                Notes
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
