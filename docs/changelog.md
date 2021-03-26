@@ -54,7 +54,7 @@ All notable changes to this project will be documented in this file.
     - `markdown-fiction-writer.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces`
     - `markdown-fiction-writer.export.include.showsErrorInOutputFile`
 
-### Fixed
+**Fixed**
 
 - Fix some typos in documentation
 - Fix some configuration key descriptions
