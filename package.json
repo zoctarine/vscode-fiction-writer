@@ -878,17 +878,27 @@
       },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
-        "title": "Set Current theme as Writing Mode theme",
+        "title": "Writing Mode > Set Current Theme as Writing Mode theme",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.selectWritingModeFontSize",
+        "title": "Writing Mode > Select Font Size",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.selectWritingModeTheme",
+        "title": "Writing Mode > Select Theme",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.exitWritingMode",
-        "title": "Exit Writing Mode",
+        "title": "Writing Mode > Exit Writing Mode",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.toggleWritingMode",
-        "title": "Toggle Writing Mode",
+        "title": "Writing Mode > Toggle Writing Mode",
         "category": "Markdown Fiction Writer"
       },
       {

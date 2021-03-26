@@ -62,6 +62,8 @@ export const Constants = {
     TOGGLE_WRITING_MODE: 'fiction-writer.extension.toggleWritingMode',
     EXIT_WRITING_MODE: 'fiction-writer.extension.exitWritingMode',
     SET_FULLSCREEN_THEME: 'fiction-writer.extension.setWritingModeTheme',
+    SELECT_FULLSCREEN_THEME: 'fiction-writer.extension.selectWritingModeTheme',
+    SELECT_FULLSCREEN_FONT_SIZE: 'fiction-writer.extension.selectWritingModeFontSize',
     MOVE_FILE_UP: 'fiction-writer.extension.moveFileUp',
     MOVE_FILE_DOWN: 'fiction-writer.extension.moveFileDown',
     SAVE_NOTES: 'fiction-writer.extension.notes.save',

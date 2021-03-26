@@ -100,21 +100,24 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.TOGGLE_WRITING_MODE, () => toggleWritingMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_WRITING_MODE, () => exitWritingMode(configService)),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => setFullscreenTheme(configService)),
+    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_THEME, () => selectFullscreenTheme(configService)),
+    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_FONT_SIZE, () => selectFullscreenFont(configService)),
     vscode.commands.registerCommand(cmd.UNPIN_NOTE, () => { if (notesProvider.unPin()) toggleIsNotePinned(false); }),
     vscode.commands.registerCommand(cmd.PIN_NOTE, () => { if (notesProvider.pin()) toggleIsNotePinned(true); }),
     vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
-    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e:vscode.Uri) => {
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => {
       const oldName = e?.fsPath;
-     if (!fileManager.getPathContentType(oldName).isKnown()) return;
+      if (!fileManager.getPathContentType(oldName).isKnown()) return;
 
-     const rootName = fileManager.getRoot(oldName);
+
+      const rootName = fileManager.getRoot(oldName);
       if (!rootName) return;
 
       const parsed = path.parse(rootName);
       vscode.window
-        .showInputBox({value:parsed.name})
+        .showInputBox({ value: parsed.name })
         .then(fileName => {
           if (!fileName) return;
           const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
@@ -123,7 +126,7 @@ export async function activate(context: vscode.ExtensionContext) {
     }),
     vscode.commands.registerCommand(cmd.DEV_SHOW_INDEXES, async () => {
       fileIndexer.getState().forEach((val) => {
-        
+
         if (val.path) logger.push('- main: ' + val.path);
         if (val.metadata?.location) logger.push('- meta: ' + val.metadata?.location);
         if (val.notes?.path) logger.push('- note: ' + val.notes?.path);
@@ -161,7 +164,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       const result = fileIndexer.index(e.fsPath);
       const pathsToRefresh = [e];
-      if (result?.path){
+      if (result?.path) {
         pathsToRefresh.push(vscode.Uri.file(result.path));
       }
       await notesProvider.refresh();
@@ -174,15 +177,15 @@ export async function activate(context: vscode.ExtensionContext) {
       logger.debug('OnDidDelete: ' + e?.fsPath);
       if (!e) return;
       if (!fileManager.getPathContentType(e?.fsPath).isKnown()) return;
-      
+
       //TODO: only index what changed
       fileIndexer.delete(e.fsPath);
       const result = fileIndexer.index(e.fsPath);
-      
+
       await metadataProvider.refresh();
       await notesProvider.refresh();
       const pathsToRefresh = [e];
-      if (result?.path){
+      if (result?.path) {
         pathsToRefresh.push(vscode.Uri.file(result.path));
       }
       metadataDecoration.fire(pathsToRefresh);
@@ -201,7 +204,7 @@ export async function activate(context: vscode.ExtensionContext) {
       await notesProvider.refresh(contentType.has(SupportedContent.Notes));
 
       const pathsToRefresh = [e];
-      if (result?.path){
+      if (result?.path) {
         pathsToRefresh.push(vscode.Uri.file(result.path));
       }
       metadataDecoration.fire(pathsToRefresh);
@@ -225,12 +228,12 @@ export async function activate(context: vscode.ExtensionContext) {
       metadataDecoration.fire([e.uri]);
     }),
 
-    vscode.workspace.onDidRenameFiles(async e =>  {
+    vscode.workspace.onDidRenameFiles(async e => {
 
       if (!currentConfig.smartRenameEnabled) return;
       if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) return;
 
-      for (const f of e.files)  {
+      for (const f of e.files) {
         logger.debug('OnDidRename: ' + f.oldUri.fsPath);
 
         // only trigger for fiction files
@@ -252,7 +255,7 @@ export async function activate(context: vscode.ExtensionContext) {
             }
             const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 
-            const answer =  await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename ${from}?`, ...options);
+            const answer = await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename ${from}?`, ...options);
             const doRename = answer === options[0] || answer === options[2];
             const saveAnswer = answer === options[2] || answer === options[3];
 
@@ -265,7 +268,7 @@ export async function activate(context: vscode.ExtensionContext) {
                   vscode.ConfigurationTarget.Global);
             }
 
-              return doRename;
+            return doRename;
           });
         }
       };
@@ -287,13 +290,13 @@ export async function activate(context: vscode.ExtensionContext) {
   exitWritingMode(configService);
 }
 
-function indexAllOpened(fileIndexer: FileIndexer){
+function indexAllOpened(fileIndexer: FileIndexer) {
   vscode.workspace.workspaceFolders?.forEach(f => {
     fileIndexer.indexLocation(f.uri.fsPath, knownFileTypes.all.pattern);
   });
 
   vscode.workspace.textDocuments?.forEach(d => {
-    fileIndexer.index(d.uri.fsPath, {skipIndexedLocations: true, skipNotify: true});
+    fileIndexer.index(d.uri.fsPath, { skipIndexedLocations: true, skipNotify: true });
   });
 
   fileIndexer.notify();
@@ -388,8 +391,57 @@ async function showAgreeWithChanges(configService: ConfigService) {
 
 function setFullscreenTheme(configurationService: ConfigService) {
   const theme = configurationService.backup('workbench', 'colorTheme');
-  vscode.workspace.getConfiguration('markdown-fiction-writer.view.writingMode').update('theme', theme, vscode.ConfigurationTarget.Global);
+
+  vscode.workspace
+    .getConfiguration('markdown-fiction-writer.view.writingMode')
+    .update('theme', theme, vscode.ConfigurationTarget.Global);
+
   vscode.window.showInformationMessage(`Writing Mode theme set to: ${theme}`);
+}
+
+function selectFullscreenFont(configurationService: ConfigService) {
+  const currentSizeSetting = configurationService.getState().viewZenModeFontSize;
+
+  vscode.window.showInputBox({
+    prompt: 'Writing Mode font size:',
+    value: currentSizeSetting?.toString()
+  }).then(newSize => {
+    if (!newSize) return;
+
+    vscode.workspace
+      .getConfiguration('markdown-fiction-writer.view.writingMode')
+      .update('fontSize', newSize, vscode.ConfigurationTarget.Global);
+
+    vscode.window
+      .showInformationMessage(`Writing Mode font size set to: ${newSize}`);
+  });
+
+}
+
+function selectFullscreenTheme(configurationService: ConfigService) {
+
+  const themes: string[] = [];
+  vscode.extensions.all.forEach(ext => {
+    const contributesThemes = ext.packageJSON.contributes?.themes;
+
+    if (contributesThemes) {
+      contributesThemes.forEach((theme: { id?: string, label?:string }) => {
+        const id = theme.id ?? theme.label;
+        if (id) themes.push(id);
+      });
+    };
+  });
+
+  vscode.window.showQuickPick(themes)
+    .then(theme => {
+      if (!theme) return;
+
+      vscode.workspace
+        .getConfiguration('markdown-fiction-writer.view.writingMode')
+        .update('theme', theme, vscode.ConfigurationTarget.Global);
+
+      vscode.window.showInformationMessage(`Writing Mode theme set to: ${theme}`);
+    });
 }
 
 function compileCommand() {
@@ -411,14 +463,16 @@ function compileCommand() {
 }
 
 function selectDialogueMode() {
-  vscode.window.showQuickPick(Object.keys(DialogueMarkerMappings), { 'canPickMany': false, 'ignoreFocusOut': false })
-    .then(selection => {
-      if (selection && selection !== 'Cancel') {
-        vscode.workspace
-          .getConfiguration('markdown-fiction-writer.editDialogue')
-          .update('marker', selection, vscode.ConfigurationTarget.Global);
-      }
-    });
+  vscode.window.showQuickPick(
+    Object.keys(DialogueMarkerMappings),
+    { 'canPickMany': false, 'ignoreFocusOut': false }
+  ).then(selection => {
+    if (selection && selection !== 'Cancel') {
+      vscode.workspace
+        .getConfiguration('markdown-fiction-writer.editDialogue')
+        .update('marker', selection, vscode.ConfigurationTarget.Global);
+    }
+  });
 }
 
 function toggleParagraphCommand() {
@@ -431,7 +485,7 @@ function toggleParagraphCommand() {
   }
 }
 
-function toggleMetadataSummary(){
+function toggleMetadataSummary() {
   let config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
   let enabled = config.get<boolean>('summaryEnabled');
   config.update('summaryEnabled', !enabled, vscode.ConfigurationTarget.Global);
