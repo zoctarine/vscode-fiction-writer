@@ -243,7 +243,7 @@ could look like:
 
 ## Compile Current File
 
-`[TBD]`
+*documentation coming soon...*
 
 ## Compile Selected files
 
@@ -251,7 +251,7 @@ Compiles all selected markdown documents (having `.md` extension) from current d
 
 The include order is filename order.
 
-`[TBD]`
+*documentation coming soon...*
 
 ## Compile TOC
 

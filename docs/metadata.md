@@ -275,13 +275,13 @@ if, the **Metadata > Keywords: Badge Category** is set to `state`, then `done`->
 # Keywords and Colors
 
 !!! setting "`markdown-fiction-writer.metadata.keywords.colors`"
-    :construction: *documentation soon*
+   *documentation coming soon...*
 
 !!! setting "`markdown-fiction-writer.metadata.keywords.colorCategory`"
-    :construction: *documentation soon*
+    *documentation coming soon...*
 
 !!! setting "`markdown-fiction-writer.metadata.keywords.colorsInMetadataView`"
-    :construction: *documentation soon*
+    *documentation coming soon...*
 
 !!! setting "`markdown-fiction-writer.metadata.keywords.colorsInFileExplorer`"
     *documentation coming soon...*

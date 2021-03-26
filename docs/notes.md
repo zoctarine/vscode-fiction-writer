@@ -46,7 +46,7 @@ _Related File must have the same name of the `.md` file (including the extension
 
 # The Notes View
 
-_[tbd]_
+*documentation coming soon...*
 
 # Adding Document Notes
 
@@ -72,4 +72,4 @@ Now, when you switch documents, the notes file will not be changed.
 
 # Save Notes
 
-_tbd_
+*documentation coming soon...*

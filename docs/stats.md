@@ -24,7 +24,7 @@ Press the refresh button to compute statistics for the current open file.
 
 # Writer Mode
 
-`[TBD]`
+*documentation coming soon...*
 
 # Status Bar
 
