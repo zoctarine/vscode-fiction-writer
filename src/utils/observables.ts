@@ -23,7 +23,7 @@ export interface IObservable<T extends object> {
 export abstract class Observer<T extends {}>  extends WithDisposables  implements IObserver<T> {
   protected state: T;
 
-  constructor(private observable: IObservable<T>) {
+  constructor(protected observable: IObservable<T>) {
     super();
 
     // attach itslef to the observer

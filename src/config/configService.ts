@@ -24,6 +24,7 @@ export class ConfigService extends Observable<Config> {
   }
 
   reload(event?: ConfigurationChangeEvent) {
+    const writingMode = workspace.getConfiguration('markdown-fiction-writer.writingMode');
     const editing = workspace.getConfiguration('markdown-fiction-writer.edit');
     const editDialogue = workspace.getConfiguration('markdown-fiction-writer.editDialogue');
     const exporting = workspace.getConfiguration('markdown-fiction-writer.export');
@@ -79,9 +80,9 @@ export class ConfigService extends Observable<Config> {
     config.viewDialogueHighlight = this.read<boolean>(view, 'highlight.textBetweenQuotes', false);
     config.viewDialogueHighlightMarkers = this.read<boolean>(view, 'highlight.dialogueMarkers', true);
     config.viewFadeMetadata = this.read<boolean>(view, 'fadeMetadata', true);
-    config.viewZenModeEnabled = this.read<boolean>(view, 'writingMode.enabled', false);
-    config.viewZenModeTheme = this.read<string>(view, 'writingMode.theme', '');
-    config.viewZenModeFontSize = this.read<number>(view, 'writingMode.fontSize', 0);
+    config.viewZenModeTheme = this.read<string>(writingMode, 'theme', '');
+    config.viewZenModeFontSize = this.read<number>(writingMode, 'fontSize', 0);
+    config.viewFocusModeEnabled = this.read<boolean>(view, 'focusMode.enabled', false);
     config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);

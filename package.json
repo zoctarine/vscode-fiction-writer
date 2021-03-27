@@ -485,6 +485,12 @@
           "default": true,
           "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
         },
+        "markdown-fiction-writer.view.focusMode.enabled": {
+          "type": "boolean",
+          "scope": "application",
+          "default": false,
+          "description": "Fades out all text except current text line"
+        },
         "markdown-fiction-writer.export.include.showsErrorInOutputFile": {
           "type": "boolean",
           "scope": "application",
@@ -629,19 +635,19 @@
             "Splits lines into sentences. Each sentence is on a separate line."
           ]
         },
-        "markdown-fiction-writer.view.writingMode.theme": {
+        "markdown-fiction-writer.writingMode.theme": {
           "scope": "application",
           "type": "string",
           "default": "",
           "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
         },
-        "markdown-fiction-writer.view.writingMode.fontSize": {
+        "markdown-fiction-writer.writingMode.fontSize": {
           "scope": "application",
           "type": "number",
           "default": 16,
           "minimum": 5,
           "maximum": 100,
-          "markdownDescription": "The font size to be used in Writing Mode Mode."
+          "markdownDescription": "The font size to be used in Writing Mode."
         },
         "markdown-fiction-writer.view.statusBar.enabled": {
           "scope": "application",
@@ -820,9 +826,11 @@
         "markdown-fiction-writer.notes.defaultText": {
           "type": "array",
           "scope": "application",
-          "default": ["Your Notes Here"],
+          "default": [
+            "Your Notes Here"
+          ],
           "items": {
-            "type":"string"
+            "type": "string"
           },
           "markdownDescription": "The default text for all new note files.\n\nAdd each line as a new _item_."
         }
@@ -878,27 +886,32 @@
       },
       {
         "command": "fiction-writer.extension.setWritingModeTheme",
-        "title": "Writing Mode > Set Current Theme as Writing Mode theme",
+        "title": "Set Current Theme as Writing Mode Theme",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.selectWritingModeFontSize",
-        "title": "Writing Mode > Select Font Size",
+        "title": "Select Writing Mode Font Size",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.selectWritingModeTheme",
-        "title": "Writing Mode > Select Theme",
+        "title": "Select Writing Mode Theme",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.exitWritingMode",
-        "title": "Writing Mode > Exit Writing Mode",
+        "title": "Exit Writing Mode",
+        "category": "Markdown Fiction Writer"
+      },
+      {
+        "command": "fiction-writer.extension.toggleFocusMode",
+        "title": "Toggle Focus Mode",
         "category": "Markdown Fiction Writer"
       },
       {
         "command": "fiction-writer.extension.toggleWritingMode",
-        "title": "Writing Mode > Toggle Writing Mode",
+        "title": "Toggle Writing Mode",
         "category": "Markdown Fiction Writer"
       },
       {
@@ -933,7 +946,7 @@
       },
       {
         "command": "fiction-writer.extension.toggleKeybindings",
-        "title": "Toggle custom keybindings enabled/disabled",
+        "title": "Toggle Keybindings",
         "category": "Markdown Fiction Writer"
       },
       {
@@ -1054,6 +1067,12 @@
         "command": "fiction-writer.extension.toggleWritingMode",
         "key": "shift+f11",
         "mac": "shift+f11",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.toggleWritingAndZenMode",
+        "key": "ctrl+f11",
+        "mac": "cmd+f11",
         "when": "textInputFocus && editorLangId == markdown"
       }
     ],

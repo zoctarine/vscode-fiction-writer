@@ -318,6 +318,7 @@ describe('FileIndexer', () => {
       paths.forEach(p => sut.index(p));
 
       expect(() => sut.delete(unique('some/nonindexed/file'))).not.toThrow();
+      const k = sut.keys();
       expect(sut.keys()).toStrictEqual(paths);
     });
 

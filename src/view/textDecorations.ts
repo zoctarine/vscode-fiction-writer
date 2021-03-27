@@ -2,6 +2,7 @@ import { DecorationRangeBehavior, Range, TextDocument, TextEditor, TextEditorDec
 import * as vscode from 'vscode';
 import { IObservable, Observer } from '../utils';
 import { Config } from '../config';
+import { defaultMaxListeners } from 'events';
 
 const decorationTypes = {
   boldSemiTransparent: window.createTextEditorDecorationType({
@@ -25,18 +26,25 @@ const decorationTypes = {
     'opacity': '0.5',
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed
   }),
+
+  opaque: window.createTextEditorDecorationType({
+    'opacity': '1',
+    'rangeBehavior': DecorationRangeBehavior.OpenOpen
+  }),
 };
 
 export class TextDecorations extends Observer<Config>{
   activeDecorations: Map<TextEditorDecorationType, Range[]> = new Map<TextEditorDecorationType, Range[]>();
   timeout: NodeJS.Timeout | null = null;
   trigger: RegExp;
+  private _lastSelection?: vscode.Position;
 
   decorations = new Map<string, {
     decoration: TextEditorDecorationType | (TextEditorDecorationType | undefined)[],
     pattern: RegExp,
     trigger?: string[],
-    isEnabled: (config: Config) => boolean
+    isEnabled: (config: Config) => boolean,
+    skipIfContainsSelection?:boolean
   }
   >([
     ['dialogueLine', {
@@ -70,7 +78,8 @@ export class TextDecorations extends Observer<Config>{
         decorationTypes.semiTransparent,
         decorationTypes.semiTransparent,
       ],
-      isEnabled: c=> c.viewFadeMetadata === true
+      isEnabled: c=> c.viewFadeMetadata === true,
+      skipIfContainsSelection: true
     }]
   ]);
 
@@ -81,8 +90,17 @@ export class TextDecorations extends Observer<Config>{
     this.trigger = this.loadTrigger();
 
     this.updateDecorations(window.activeTextEditor);
-    this.addDisposable(window.onDidChangeActiveTextEditor(e => this.updateDecorations(e)));
+    this.addDisposable(window.onDidChangeActiveTextEditor(e => { this._lastSelection = undefined; this.updateDecorations(e);} ));
     this.addDisposable(workspace.onDidChangeTextDocument(e => this.textDocumentChanged(e)));
+    this.addDisposable(window.onDidChangeTextEditorSelection(e => this.textSelectionChanged(e)));
+  }
+  
+  textSelectionChanged(e: vscode.TextEditorSelectionChangeEvent): any {
+    const newSelection = e.textEditor.selection.active;
+    if (this._lastSelection?.line !== newSelection?.line) {
+      this.triggerUpdateDecorations(e.textEditor, 0);
+      this._lastSelection = newSelection;
+    }
   }
 
   loadTrigger(): RegExp {
@@ -145,13 +163,31 @@ export class TextDecorations extends Observer<Config>{
     const document = editor.document;
 
     this.clearDecorations();
+
+    if (this.state.viewFocusModeEnabled){
+      const firstLine = document.lineAt(0);
+      const lastLine = document.lineAt(document.lineCount - 1);
+      
+      const selLine = document.lineAt(editor.selection.active.line);
+
+      this.addDecoration(decorationTypes.semiTransparent, new vscode.Range(firstLine.range.start, selLine.range.start));
+      this.addDecoration(decorationTypes.semiTransparent, new vscode.Range(selLine.range.end, lastLine.range.end));
+    }
+
     const text = document.getText();
     if (text.length === 0) return;
 
     this.decorations.forEach((dec) => {
       if (!dec.isEnabled(this.state)) return;
       let match;
+
       while ((match = dec.pattern.exec(text)) !== null) {
+
+        if (dec.skipIfContainsSelection){
+          const pos = this.getDocRange(match.index, match[0].length, document);
+          if (pos.contains(editor.selection?.active)) continue;
+        }
+
         if (!Array.isArray(dec.decoration))
           this.addDecoration(dec.decoration, this.getDocRange(match.index, match[0].length, document));
         else {
@@ -184,7 +220,9 @@ export class TextDecorations extends Observer<Config>{
   protected onStateChange(newState: Config) {
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
         this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
-        this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ){
+        this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ||
+        this.state.viewFocusModeEnabled !== newState.viewFocusModeEnabled ||
+        this.state.viewFadeMetadata !== newState.viewFadeMetadata ){
           this.loadTags();
           vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
         }

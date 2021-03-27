@@ -54,11 +54,11 @@ export class Config implements IContextConfig {
   compileTocFilename!: string;
 
   viewFileTags?: { [key: string]: string };
-  viewZenModeEnabled?: boolean;
   viewZenModeFontSize?: number;
   viewZenModeTheme?: string;
   viewStatusBarEnabled?: boolean;
   viewFadeMetadata?: boolean;
+  viewFocusModeEnabled?: boolean;
 
   metaEnabled?: boolean;
   metaEasyLists!: string;
