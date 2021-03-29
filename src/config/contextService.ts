@@ -2,13 +2,13 @@ import { Memento } from 'vscode';
 
 export class ContextService {
 
-  constructor(private storage: Memento) { }
+  constructor(private _storage: Memento) { }
 
   public getValue<T>(key: string, defaultValue: T): T {
-    return this.storage.get<T>(key, defaultValue);
+    return this._storage.get<T>(key, defaultValue);
   }
 
   public setValue<T>(key: string, value: T) {
-    this.storage.update(key, value);
+    this._storage.update(key, value);
   }
 }

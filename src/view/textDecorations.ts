@@ -24,7 +24,8 @@ const decorationTypes = {
   }),
   semiTransparent: window.createTextEditorDecorationType({
     'opacity': '0.5',
-    'rangeBehavior': DecorationRangeBehavior.ClosedClosed
+    'rangeBehavior': DecorationRangeBehavior.ClosedClosed,
+
   }),
 
   opaque: window.createTextEditorDecorationType({
@@ -82,6 +83,9 @@ export class TextDecorations extends Observer<Config>{
       skipIfContainsSelection: true
     }]
   ]);
+
+  // needs to be dynamic based on configuration
+  private _focusModeOpacityDecoration: vscode.TextEditorDecorationType | undefined;
 
   constructor(observasble: IObservable<Config>) {
     super(observasble);
@@ -164,14 +168,16 @@ export class TextDecorations extends Observer<Config>{
 
     this.clearDecorations();
 
-    if (this.state.viewFocusModeEnabled){
+    if (this.state.isFocusMode){
       const firstLine = document.lineAt(0);
       const lastLine = document.lineAt(document.lineCount - 1);
       
       const selLine = document.lineAt(editor.selection.active.line);
 
-      this.addDecoration(decorationTypes.semiTransparent, new vscode.Range(firstLine.range.start, selLine.range.start));
-      this.addDecoration(decorationTypes.semiTransparent, new vscode.Range(selLine.range.end, lastLine.range.end));
+      if (this._focusModeOpacityDecoration){
+        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(firstLine.range.start, selLine.range.start));
+        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(selLine.range.end, lastLine.range.end));
+      }
     }
 
     const text = document.getText();
@@ -218,10 +224,14 @@ export class TextDecorations extends Observer<Config>{
 
 
   protected onStateChange(newState: Config) {
+    this._focusModeOpacityDecoration = vscode.window.createTextEditorDecorationType({
+      opacity: newState.viewFocusModeOpacity.toString()
+    });
+
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
         this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
         this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ||
-        this.state.viewFocusModeEnabled !== newState.viewFocusModeEnabled ||
+        this.state.isFocusMode !== newState.isFocusMode ||
         this.state.viewFadeMetadata !== newState.viewFadeMetadata ){
           this.loadTags();
           vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));

@@ -55,7 +55,7 @@ export class StatusBarObserver extends Observer<Config>{
       Number.MAX_SAFE_INTEGER,
     );
     this.typewriterToggleButton.command = 'fiction-writer.extension.toggleTypewriterMode';
-    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter (focus) mode';
+    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter mode';
     this.updateTypewriterToggle();
 
     // Export: Compile

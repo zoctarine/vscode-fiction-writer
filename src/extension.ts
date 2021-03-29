@@ -99,7 +99,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.METADATA_TOGGLE_SUMMARY, () => { toggleMetadataSummary(); }),
     vscode.commands.registerCommand(cmd.TOGGLE_WRITING_MODE, () => writingMode.toggleWritingMode()),
     vscode.commands.registerCommand(cmd.TOGGLE_WRITING_AND_ZEN_MODE, () => writingMode.toggleWritingMode(true)),
-    vscode.commands.registerCommand(cmd.TOGGLE_FOCUS_MODE, () => toggleFocusMode()),
+    vscode.commands.registerCommand(cmd.TOGGLE_FOCUS_MODE, () => toggleFocusMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_WRITING_MODE, () => writingMode.exitWritingMode()),
     vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => writingMode.setCurrentThemeAsFullscreenTheme()),
     vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_THEME, () => writingMode.selectFullscreenTheme()),
@@ -384,10 +384,9 @@ function toggleParagraphCommand() {
 }
 
 
-function toggleFocusMode() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.view.focusMode');
-  let enabled = config.get<boolean>('enabled');
-  config.update('enabled', !enabled, vscode.ConfigurationTarget.Global);
+function toggleFocusMode(configService: ConfigService) {
+  let enabled = configService.getState().isFocusMode;
+  configService.setLocal('isFocusMode', !enabled);
 }
 
 function toggleMetadataSummary() {

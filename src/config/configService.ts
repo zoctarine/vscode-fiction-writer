@@ -82,7 +82,8 @@ export class ConfigService extends Observable<Config> {
     config.viewFadeMetadata = this.read<boolean>(view, 'fadeMetadata', true);
     config.viewZenModeTheme = this.read<string>(writingMode, 'theme', '');
     config.viewZenModeFontSize = this.read<number>(writingMode, 'fontSize', 0);
-    config.viewFocusModeEnabled = this.read<boolean>(view, 'focusMode.enabled', false);
+    config.viewZenModeToggleFocus = this.read<boolean>(writingMode, 'toggleFocusMode', true);
+    config.viewFocusModeOpacity = this.read<number>(view, 'focusMode.opacity', 0.5);
     config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
@@ -198,7 +199,7 @@ export class ConfigService extends Observable<Config> {
   }
 
   setFlag(key: string) { this._localSettings.setValue<boolean>(key, true); }
-  usetFlag(key: string) { this._localSettings.setValue<boolean>(key, false); }
+  unsetFlag(key: string) { this._localSettings.setValue<boolean>(key, false); }
 
   backup(config: string, key: string): any {
     const value = workspace.getConfiguration(config).get(key);

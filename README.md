@@ -97,6 +97,10 @@ This is a quick overview of the main features. Please read the [Full Documentati
 
 - typewriter mode
 
+- writing mode: quickly toggle font size, theme, zenMode and focusMode
+
+    ![](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/gh-pages-source-material/docs/img/wmode_toggle_01.gif)
+
 - [more details](https://zoctarine.github.io/vscode-fiction-writer/view/)
 
 ## Known Issues

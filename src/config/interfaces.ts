@@ -10,11 +10,13 @@ export interface IContextConfig {
 
   isZenMode?: boolean;
   isTypewriterMode?: boolean;
+  isFocusMode?: boolean;
 }
 export class Config implements IContextConfig {
   [key: string]: string | number | boolean | ConfigurationChangeEvent | IKvp<string> | Map<string, ThemeColor> | undefined;
   isZenMode?: boolean | undefined;
   isTypewriterMode?: boolean | undefined;
+  isFocusMode?: boolean | undefined;
 
   changeEvent?: ConfigurationChangeEvent;
 
@@ -58,8 +60,9 @@ export class Config implements IContextConfig {
   viewZenModeTheme?: string;
   viewStatusBarEnabled?: boolean;
   viewFadeMetadata?: boolean;
-  viewFocusModeEnabled?: boolean;
-
+  viewZenModeToggleFocus?: boolean;
+  viewFocusModeOpacity!: number;
+  
   metaEnabled?: boolean;
   metaEasyLists!: string;
   metaDefaultCategory?: string;

@@ -6,14 +6,21 @@ export class WritingMode {
     }
 
     exitWritingMode() {
-        if (this.configService.getState().isZenMode) {
-            this.configService.restore('workbench', 'colorTheme');
-            this.configService.restore('editor', 'fontSize');
-            this.configService.setLocal('isZenMode', false);
+        if (!this.configService.getState().isZenMode) return;
+
+        this.configService.restore('workbench', 'colorTheme');
+        this.configService.restore('editor', 'fontSize');
+        this.configService.setLocal('isZenMode', false);
+
+        if (this.configService.getState().viewZenModeToggleFocus) {
+            const prevConfig = this.configService.getFlag('previousFocusMode');
+            this.configService.setLocal<boolean>('isFocusMode', prevConfig);
         }
     }
 
     enterWritingMode() {
+        if (this.configService.getState().isZenMode) false;
+
         const changeThemeTo = this.configService.getState().viewZenModeTheme;
         const changeFontTo = this.configService.getState().viewZenModeFontSize;
 
@@ -26,10 +33,20 @@ export class WritingMode {
             this.configService.backup('editor', 'fontSize');
             vscode.workspace.getConfiguration('editor').update('fontSize', changeFontTo);
         }
+        if (this.configService.getState().viewZenModeToggleFocus) {
+            const prevConfig = this.configService.getState().isFocusMode;
+            if (prevConfig)
+                this.configService.setFlag('previousFocusMode');
+            else
+                this.configService.unsetFlag('previousFocusMode');
+
+            this.configService.setLocal<boolean>('isFocusMode', true);
+        }
+
         this.configService.setLocal('isZenMode', true);
     }
 
-    async toggleWritingMode(toggleZenMode?:boolean) {
+    async toggleWritingMode(toggleZenMode?: boolean) {
         if (!this.configService.getFlag('isAgreeZenMode')) {
             const option = await vscode.window.showWarningMessage(
                 'Writing overrides some editor settings.\n\n' +
@@ -45,7 +62,7 @@ export class WritingMode {
             }
         }
 
-        if (toggleZenMode){
+        if (toggleZenMode) {
             vscode.commands.executeCommand('workbench.action.toggleZenMode');
         }
 

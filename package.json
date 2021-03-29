@@ -485,12 +485,6 @@
           "default": true,
           "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
         },
-        "markdown-fiction-writer.view.focusMode.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "description": "Fades out all text except current text line"
-        },
         "markdown-fiction-writer.export.include.showsErrorInOutputFile": {
           "type": "boolean",
           "scope": "application",
@@ -648,6 +642,20 @@
           "minimum": 5,
           "maximum": 100,
           "markdownDescription": "The font size to be used in Writing Mode."
+        },
+        "markdown-fiction-writer.writingMode.toggleFocusMode": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "description": "When entering Writing Mode, it fades out all text except current text line (known as Focus Mode)"
+        },
+        "markdown-fiction-writer.view.focusMode.opacity": {
+          "type": "number",
+          "scope": "application",
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "default": 0.4,
+          "description": "Opacity for fade out text when focus mode is enabled"
         },
         "markdown-fiction-writer.view.statusBar.enabled": {
           "scope": "application",
