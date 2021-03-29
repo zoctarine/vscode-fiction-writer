@@ -7,4 +7,5 @@
 | ++f9++ | Compile current document | 
 | ++ctrl+f9++ | Compile all documents from current folder | 
 | ++ctrl+shift+f9++ | Compile the configured TOC file |
-| ++ctrl+f11++ | Toggle writing mode | 
+| ++shift+f11++ | Toggle Writing Mode | 
+| ++ctrl+f11++ | Toggle both Writing Mode and Zen Mode | 

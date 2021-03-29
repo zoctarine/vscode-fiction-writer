@@ -1,6 +1,24 @@
 All notable changes to this project will be documented in this file.
 
-## 0.0.50 - alpha50
+## 0.0.51 - alpha 5.1
+
+**Added**
+
+- Keybinding: ++ctrl+f11++ toggles both [ZenMode](https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_zen-mode) and [Writing Mode](view.md#writer-mode)
+- Focus Mode: fade out all text except current text line (not editor line)
+- Command: `Select Writing Mode font size` now is accessible from command pallete.
+- Command: `Select Writing Mode theme` shows a selection of all installed themes to choose from.
+- Command: `Toggle Focus Mode` enables/disables focus mode
+- **Settings**
+
+    - `markdown-fiction-writer.view.focusMode.opacity`
+    - `markdown-fiction-writer.writingMode.toggleFocusMode`
+
+**Changed**
+
+- Moved `markdown-fiction-writer.view.writingMode.*` settings under `markdown-fiction-writer.writingMode.*`
+
+## 0.0.50 - alpha 5.0
 
 **Added**
 
@@ -39,7 +57,7 @@ All notable changes to this project will be documented in this file.
 - Consistent name of _Writing Mode_ everywhere (some places still using the old _Enhanced Zen Mode_ naming)
 
 
-## 0.0.42 - alpha42
+## 0.0.42 - alpha 4.2
 
 **Added**
 
@@ -60,7 +78,7 @@ All notable changes to this project will be documented in this file.
 - Fix some configuration key descriptions
 - Fix `debug` flag that was showing file cache debug view
 
-## 0.0.35 - alpha30
+## 0.0.35 - alpha 3.0
 
 **Added**
 
@@ -104,14 +122,14 @@ All notable changes to this project will be documented in this file.
 - Fix disposables not disposed of properly
 - Fix Document Statistics view  not refreshing on config change
 
-## 0.0.23 - alpha23
+## 0.0.23 - alpha 2.3
 
 **Added**
 
 - Writing mode
 - Reorganizes settings (breaking change)
 
-## 0.0.21 - alpha21
+## 0.0.21 - alpha 2.1
 
 **Added**
 
@@ -122,7 +140,7 @@ All notable changes to this project will be documented in this file.
 - **Settings**:
   - `markdown-fiction-writer.format.backupBeforeEachFormat` setting. It always asks before performing formatting.
 
-## 0.0.17 - alpha17
+## 0.0.17 - alpha 1.7
 
 **Added**
 
@@ -131,19 +149,19 @@ All notable changes to this project will be documented in this file.
 - Export: Add option to change TOC filename
 - Export: Show OpenFileDialogue when use template is enabled
 
-## 0.0.11 - alpha11
+## 0.0.11 - alpha 1.1
 
 **Added**
 
 - add writing statistics (word count, etc)
 
-## 0.0.6 - alpha6
+## 0.0.6 - alpha 0.6
 
 **Added**
 
 - add text analysis (word frequency count)
 
-## 0.0.3 - alpha3
+## 0.0.3 - alpha 0.3
 
 **Added**
 
@@ -151,7 +169,7 @@ All notable changes to this project will be documented in this file.
 - folding, unfolding of paragraph lines
 - more support for one-sentence-per line
 
-## 0.0.2 - alpha2
+## 0.0.2 - alpha 0.2
 
 **Added**
 
@@ -159,7 +177,7 @@ All notable changes to this project will be documented in this file.
 - add include `.md` file support using `{file.md}` syntax
 - add syntax highlighting for included file
 
-## 0.0.1 - alpha1
+## 0.0.1 - alpha 0.1
 
 **Added**
 
