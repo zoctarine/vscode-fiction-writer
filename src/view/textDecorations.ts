@@ -93,12 +93,20 @@ export class TextDecorations extends Observer<Config>{
     this.loadTags();
     this.trigger = this.loadTrigger();
 
+    this.createOpacityDecoration();
     this.updateDecorations(window.activeTextEditor);
     this.addDisposable(window.onDidChangeActiveTextEditor(e => { this._lastSelection = undefined; this.updateDecorations(e);} ));
     this.addDisposable(workspace.onDidChangeTextDocument(e => this.textDocumentChanged(e)));
     this.addDisposable(window.onDidChangeTextEditorSelection(e => this.textSelectionChanged(e)));
   }
   
+  createOpacityDecoration(){      
+    this._focusModeOpacityDecoration = vscode.window.createTextEditorDecorationType({
+      opacity: this.state.viewFocusModeOpacity.toString(),
+      rangeBehavior: DecorationRangeBehavior.ClosedClosed
+    });
+  }
+
   textSelectionChanged(e: vscode.TextEditorSelectionChangeEvent): any {
     const newSelection = e.textEditor.selection.active;
     if (this._lastSelection?.line !== newSelection?.line) {
@@ -173,10 +181,11 @@ export class TextDecorations extends Observer<Config>{
       const lastLine = document.lineAt(document.lineCount - 1);
       
       const selLine = document.lineAt(editor.selection.active.line);
+      const nextLine = new vscode.Position(selLine.lineNumber + 1, 0);
 
       if (this._focusModeOpacityDecoration){
         this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(firstLine.range.start, selLine.range.start));
-        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(selLine.range.end, lastLine.range.end));
+        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(nextLine, lastLine.range.end));
       }
     }
 
@@ -224,9 +233,6 @@ export class TextDecorations extends Observer<Config>{
 
 
   protected onStateChange(newState: Config) {
-    this._focusModeOpacityDecoration = vscode.window.createTextEditorDecorationType({
-      opacity: newState.viewFocusModeOpacity.toString()
-    });
 
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
         this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
@@ -238,5 +244,6 @@ export class TextDecorations extends Observer<Config>{
         }
 
     super.onStateChange(newState);
+    this.createOpacityDecoration();
   }
 }
