@@ -49,7 +49,7 @@ export class TextDecorations extends Observer<Config>{
   }
   >([
     ['dialogueLine', {
-      pattern: /^(--{1,2}|—)(?=\s{0,1}[\p{L}]+)|(")/iugm,
+      pattern: /^(--{1,2}|—)(?=[ ]{0,1}[\p{L}]+)|(")/iugm,
       trigger: ['-'],
       decoration: decorationTypes.semiTransparent,
       isEnabled: c => c.viewDialogueHighlightMarkers === true
@@ -188,7 +188,7 @@ export class TextDecorations extends Observer<Config>{
       let match;
 
       while ((match = dec.pattern.exec(text)) !== null) {
-
+        
         if (dec.skipIfContainsSelection){
           const pos = this.getDocRange(match.index, match[0].length, document);
           if (pos.contains(editor.selection?.active)) continue;

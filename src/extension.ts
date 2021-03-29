@@ -329,8 +329,7 @@ async function showAgreeWithChanges(configService: ConfigService) {
 
   if (!configService.getFlag(flag)) {
     const option = await vscode.window.showWarningMessage(
-      `Markdwon Fiction Writer ${version} introduces some breaking changes from the previous version.\n\n` +
-      'Please review the extension configuration settings.\n\n',
+      `Markdwon Fiction Writer ${version} introduces improvements to Writing Mode and new keybindings.\n\n`,
       'Ok (don\'t show this notification)', 'View Changes');
 
     if (option === 'View Changes') {
