@@ -116,10 +116,25 @@ export class StatusBarObserver extends Observer<Config>{
     this.showHide();
   }
 
+  private _updateVisibility(button: vscode.StatusBarItem, setting: string){
+    if (this.state.viewStatusBarItems && this.state.viewStatusBarItems[setting] === 'hide'){
+      button.hide();
+    } else {
+      button.show();
+    }
+  }
   showHide() {
 
     if (getActiveEditor(SupportedContent.Fiction) && this.state.viewStatusBarEnabled) {
-      this.buttons.forEach(b => b.show());
+      this._updateVisibility(this.settingsButton, 'Open Fiction Writer Settings');
+      this._updateVisibility(this.compileButton, 'Compile/Export Documents');
+      this._updateVisibility(this.unfoldButton, 'Unfold All');
+      this._updateVisibility(this.foldButton, 'Fold All');
+      this._updateVisibility(this.writingModeToggleButton, 'Writing Mode Toggle');
+      this._updateVisibility(this.typewriterToggleButton, 'Typewriter Mode Toggle');
+      this._updateVisibility(this.paragraphToggleButton, 'New Paragraph On Enter Toggle');
+      this._updateVisibility(this.keybindingToggleButton, 'Enable/Disable Keybindings');
+      this._updateVisibility(this.dialogueMarkerSelector, 'Select Dialogue Punctuation');
     } else {
       this.buttons.forEach(b => b.hide());
     }
@@ -142,7 +157,7 @@ export class StatusBarObserver extends Observer<Config>{
   updateWritingModeToggle() {
     this.writingModeToggleButton.text = this.state.isZenMode
       ? `$(discard)`
-      : `$(zap)`
+      : `$(zap)`;
   }
   updateParagraphToggle() {
     this.paragraphToggleButton.text = this.state.inverseEnter
@@ -164,5 +179,6 @@ export class StatusBarObserver extends Observer<Config>{
     this.updateDialogueSelector();
     this.updateKeybindingToggle();
     this.updateWritingModeToggle();
+    this.showHide();
   }
 }

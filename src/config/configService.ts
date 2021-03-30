@@ -88,6 +88,7 @@ export class ConfigService extends Observable<Config> {
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
     config.viewStatusBarEnabled = this.read<boolean>(view, 'statusBar.enabled', true);
+    config.viewStatusBarItems = this.read<{[key:string]:string}>(view, 'statusBar.items', {});
 
     config.isDialogueEnabled = isDialogueEnabled;
     config.dialgoueIndent = '';

@@ -146,10 +146,11 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.onDidChangeActiveTextEditor(async e => {
       // TODO: This check is  necessary as sometimes, when switching documents,
       //       you first get an undefined event, followed by the correct event
+      statusBar.showHide();
+
       if (!e) return;
 
       updateContextValues(e);
-      statusBar.showHide();
       docStatisticProvider.refresh();
       await metadataProvider.refresh();
       await notesProvider.refresh();

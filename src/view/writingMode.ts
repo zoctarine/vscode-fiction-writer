@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { QuickPickItem } from 'vscode';
 import { ConfigService } from "../config";
 
 export class WritingMode {
@@ -106,13 +107,46 @@ export class WritingMode {
     }
 
     selectFullscreenTheme() {
-        const themes = this._getAllThemes();
+        const themes = this._getAllThemes().map(t => ({
+            label: t,
+            description: t,
+            alwaysShow: true
+        }));
 
-        vscode.window
-            .showQuickPick(themes)
-            .then(theme => {
-                this._setFullscreenTheme(theme);
-            });
+        const currentTheme = vscode.workspace.getConfiguration('workbench').get<string>('colorTheme');
+
+        let selectThemeTimeout: any | undefined;
+
+        const selectTheme = (theme?: string, applyTheme?: boolean) => {
+            if (selectThemeTimeout) {
+                clearTimeout(selectThemeTimeout);
+            }
+            if (theme) {
+                selectThemeTimeout = setTimeout(() => {
+                    selectThemeTimeout = undefined;
+                    vscode.workspace.getConfiguration('workbench').update('colorTheme', theme);
+                }, applyTheme ? 0 : 200);
+            }
+        };
+
+        const autoFocusIndex = themes.findIndex(p => p.label === this.configService.getState().viewZenModeTheme);
+        const quickpick = vscode.window.createQuickPick<vscode.QuickPickItem>();
+        quickpick.items = themes;
+        quickpick.placeholder = 'Select Color Theme (Up/Down Keys to Preview)';
+        quickpick.activeItems = [themes[autoFocusIndex] as QuickPickItem];
+        quickpick.canSelectMany = false;
+        quickpick.onDidAccept(_ => {
+            const theme = quickpick.activeItems[0];
+            if (theme && theme.label) {
+                this._setFullscreenTheme(theme.label);
+            }
+            quickpick.hide();
+        });
+        quickpick.onDidChangeActive(themes => selectTheme(themes[0].label, false));
+        quickpick.onDidHide(() => {
+            selectTheme(currentTheme, true);
+        });
+        quickpick.show();
     }
 
     private _setFullscreenTheme(theme?: string) {

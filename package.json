@@ -663,6 +663,37 @@
           "default": true,
           "markdownDescription": "Show the custom Fiction Writer status bar."
         },
+        "markdown-fiction-writer.view.statusBar.items": {
+          "scope": "application",
+          "type":"object",
+          "default": {
+            "Select Dialogue Punctuation": "show",
+            "Enable/Disable Keybindings": "show",
+            "New Paragraph On Enter Toggle": "show",
+            "Typewriter Mode Toggle": "show",
+            "Focus Mode Toggle": "show",
+            "Writing Mode Toggle": "show",
+            "Fold All": "show",
+            "Unfold All": "show",
+            "Compile/Export Documents": "show",
+            "Open Fiction Writer Settings": "show"
+          },
+          "properties": {
+            "Select Dialogue Punctuation": { "type": "string", "enum": ["show", "hide"] },
+            "Enable/Disable Keybindings": { "type": "string", "enum": ["show", "hide"] },
+            "New Paragraph On Enter Toggle": { "type": "string", "enum": ["show", "hide"] },
+            "Typewriter Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
+            "Focus Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
+            "Writing Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
+            "Fold All": { "type": "string", "enum": ["show", "hide"] },
+            "Unfold All": { "type": "string", "enum": ["show", "hide"] },
+            "Compile/Export Documents": { "type": "string", "enum": ["show", "hide"] },
+            "Open Fiction Writer Settings": { "type": "string", "enum": ["show", "hide"] }
+          },
+         
+          "additionalProperties": false,
+          "markdownDescription": "`show`/`hide` items on the **Markdown Fiction Writer** status bar"
+        },
         "markdown-fiction-writer.metadata.keywords.colors": {
           "type": "object",
           "scope": "application",
