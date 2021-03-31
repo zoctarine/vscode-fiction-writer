@@ -744,9 +744,14 @@
 <td align="left">Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)</td>
 </tr>
 <tr>
-<td align="left"><code>view.statusBar.enabled</code></td>
+<td align="left"><code>statusBar.enabled</code></td>
 <td align="center">true</td>
 <td align="left">Show the custom Fiction Writer status bar.</td>
+</tr>
+<tr>
+<td align="left"><code>statusBar.items</code></td>
+<td align="center">{}</td>
+<td align="left">Enable/disable items from Fiction Writer status Bar.</td>
 </tr>
 <tr>
 <td align="left"><code>view.wordWrapIndent</code></td>
@@ -754,14 +759,24 @@
 <td align="left">The hanging indent of wrapped lines.  <strong>Select:</strong> - <code>0</code> for same indent as first line, - <code>-1</code> for now wrapping indent, - any other value for hanging indent.    <em><strong>Warning:</strong> Only works if <code>#editor.wordWrap#</code> is enabled, and might change the <code>#editor.tabSize#</code> setting for <code>markdown</code>.</em></td>
 </tr>
 <tr>
-<td align="left"><code>view.writingMode.fontSize</code></td>
+<td align="left"><code>view.focusMode.opacity</code></td>
+<td align="center">0.5</td>
+<td align="left">Opacity for fade out text when focus mode is enabled</td>
+</tr>
+<tr>
+<td align="left"><code>writingMode.fontSize</code></td>
 <td align="center">16</td>
 <td align="left">The font size to be used in Writing Mode Mode.</td>
 </tr>
 <tr>
-<td align="left"><code>view.writingMode.theme</code></td>
+<td align="left"><code>writingMode.theme</code></td>
 <td align="center"></td>
 <td align="left">The theme to be used in Writing Mode. <em>(leave empty for no theme switch)</em></td>
+</tr>
+<tr>
+<td align="left"><code>writingMode.toggleFocusMode</code></td>
+<td align="center">true</td>
+<td align="left">When entering Writing Mode, it fades out all text except current text line (known as Focus Mode)</td>
 </tr>
 </tbody>
 </table>
