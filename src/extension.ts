@@ -15,7 +15,6 @@ let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
-
   const fileIndexer = new FileIndexer(metaService);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
@@ -289,7 +288,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await metadataProvider.refresh();
   await notesProvider.refresh();
   docStatisticProvider.refresh();
-  showAgreeWithChanges(configService);
+  showAgreeWithChanges(configService, true);
   writingMode.exitWritingMode();
 }
 
@@ -316,27 +315,30 @@ function toggleIsNotePinned(isPineed: boolean) {
   vscode.commands.executeCommand('setContext', 'fw:isNotePinned', isPineed);
 }
 
-async function showAgreeWithChanges(configService: ConfigService) {
+async function showAgreeWithChanges(configService: ConfigService, showMessage: boolean = true) {
+  if (!showMessage) return;
+
   let version = 'latest version';
-  let change = '0043-alpha43';
+  let change = '0052-alpha52';
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
     const alphaVersion: string[] = version.split('.');
-    change = alphaVersion.join('') + '-alpha' + alphaVersion[2];
+   // change = alphaVersion.join('') + '-alpha-' + alphaVersion[2];
   } catch { }
 
   const flag = `isAgreeChanges${change}`;
   const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/#${change}`;
 
   if (!configService.getFlag(flag)) {
+    const options = ['Ok (don\'t show this notification)', 'View Changes'];
     const option = await vscode.window.showWarningMessage(
-      `Markdwon Fiction Writer ${version} introduces improvements to Writing Mode and new keybindings.\n\n`,
-      'Ok (don\'t show this notification)', 'View Changes');
+      `Markdwon Fiction Writer updated to version: ${version}.\n\n`,
+      ...options);
 
-    if (option === 'View Changes') {
+    if (option === options[1]) {
       vscode.env.openExternal(vscode.Uri.parse(uri));
       return;
-    } else if (option === 'Ok (don\'t show this notification)') {
+    } else if (option === options[0]) {
       configService.setFlag(flag);
     }
   }

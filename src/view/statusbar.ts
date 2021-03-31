@@ -117,7 +117,7 @@ export class StatusBarObserver extends Observer<Config>{
   }
 
   private _updateVisibility(button: vscode.StatusBarItem, setting: string){
-    if (this.state.viewStatusBarItems && this.state.viewStatusBarItems[setting] === 'hide'){
+    if (this.state.statusBarItems && this.state.statusBarItems[setting] === 'hide'){
       button.hide();
     } else {
       button.show();
@@ -125,16 +125,20 @@ export class StatusBarObserver extends Observer<Config>{
   }
   showHide() {
 
-    if (getActiveEditor(SupportedContent.Fiction) && this.state.viewStatusBarEnabled) {
-      this._updateVisibility(this.settingsButton, 'Open Fiction Writer Settings');
-      this._updateVisibility(this.compileButton, 'Compile/Export Documents');
-      this._updateVisibility(this.unfoldButton, 'Unfold All');
-      this._updateVisibility(this.foldButton, 'Fold All');
-      this._updateVisibility(this.writingModeToggleButton, 'Writing Mode Toggle');
-      this._updateVisibility(this.typewriterToggleButton, 'Typewriter Mode Toggle');
-      this._updateVisibility(this.paragraphToggleButton, 'New Paragraph On Enter Toggle');
-      this._updateVisibility(this.keybindingToggleButton, 'Enable/Disable Keybindings');
-      this._updateVisibility(this.dialogueMarkerSelector, 'Select Dialogue Punctuation');
+    if (getActiveEditor(SupportedContent.Fiction) && this.state.statusBarEnabled) {
+      [
+       [this.settingsButton, 'Open Fiction Writer Settings'],
+       [this.compileButton, 'Compile/Export Documents'],
+       [this.unfoldButton, 'Unfold All'],
+       [this.foldButton, 'Fold All'],
+       [this.writingModeToggleButton, 'Writing Mode Toggle'],
+       [this.typewriterToggleButton, 'Typewriter Mode Toggle'],
+       [this.paragraphToggleButton, 'New Paragraph On Enter Toggle'],
+       [this.keybindingToggleButton, 'Enable/Disable Keybindings'],
+       [this.dialogueMarkerSelector, 'Select Dialogue Punctuation'],
+      ].forEach(item => 
+        this._updateVisibility(item[0] as vscode.StatusBarItem, item[1] as string)
+      );
     } else {
       this.buttons.forEach(b => b.hide());
     }

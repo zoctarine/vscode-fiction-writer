@@ -3,10 +3,14 @@
   "displayName": "Markdown Fiction Writer",
   "description": "Tools for writing fiction",
   "icon": "resources/fiction-writer-icon.png",
+  "author": {
+    "name": "ZOctarine",
+    "url": "https://zoctarine.github.io/"
+  },
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.52",
+  "version": "0.0.54",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -657,13 +661,13 @@
           "default": 0.4,
           "description": "Opacity for fade out text when focus mode is enabled"
         },
-        "markdown-fiction-writer.view.statusBar.enabled": {
-          "scope": "application",
+        "markdown-fiction-writer.statusBar.enabled": {
+          "scope": "application", 
           "type": "boolean",
           "default": true,
           "markdownDescription": "Show the custom Fiction Writer status bar."
         },
-        "markdown-fiction-writer.view.statusBar.items": {
+        "markdown-fiction-writer.statusBar.items": {
           "scope": "application",
           "type":"object",
           "default": {

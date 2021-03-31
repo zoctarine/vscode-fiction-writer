@@ -29,6 +29,7 @@ export class ConfigService extends Observable<Config> {
     const editDialogue = workspace.getConfiguration('markdown-fiction-writer.editDialogue');
     const exporting = workspace.getConfiguration('markdown-fiction-writer.export');
     const view = workspace.getConfiguration('markdown-fiction-writer.view');
+    const statusBar = workspace.getConfiguration('markdown-fiction-writer.statusBar');
     const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
     const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
@@ -87,8 +88,8 @@ export class ConfigService extends Observable<Config> {
     config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
-    config.viewStatusBarEnabled = this.read<boolean>(view, 'statusBar.enabled', true);
-    config.viewStatusBarItems = this.read<{[key:string]:string}>(view, 'statusBar.items', {});
+    config.statusBarEnabled = this.read<boolean>(statusBar, 'enabled', true);
+    config.statusBarItems = this.read<{[key:string]:string}>(statusBar, 'items', {});
 
     config.isDialogueEnabled = isDialogueEnabled;
     config.dialgoueIndent = '';

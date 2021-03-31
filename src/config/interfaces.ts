@@ -58,8 +58,8 @@ export class Config implements IContextConfig {
   viewFileTags?: { [key: string]: string };
   viewZenModeFontSize?: number;
   viewZenModeTheme?: string;
-  viewStatusBarEnabled?: boolean;
-  viewStatusBarItems?: { [key: string]: string };
+  statusBarEnabled?: boolean;
+  statusBarItems?: { [key: string]: string };
   viewFadeMetadata?: boolean;
   viewZenModeToggleFocus?: boolean;
   viewFocusModeOpacity!: number;
