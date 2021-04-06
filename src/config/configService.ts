@@ -196,6 +196,15 @@ export class ConfigService extends Observable<Config> {
     this.notify();
   }
 
+  getLocal(key: string) : any {
+    if (!this._config) { return undefined; }
+
+    let localConfig = this._localSettings.getValue<IContextConfig>('config', {});
+    
+    return localConfig[key];
+  }
+
+
   getFlag(key: string): boolean {
     return this._localSettings.getValue<boolean>(key, false);
   }

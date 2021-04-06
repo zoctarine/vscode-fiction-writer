@@ -319,17 +319,14 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   if (!showMessage) return;
 
   let version = 'latest version';
-  let change = '0052-alpha52';
+  let agreedVersionKey = 'isAgreeChanges';
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
-    const alphaVersion: string[] = version.split('.');
-   // change = alphaVersion.join('') + '-alpha-' + alphaVersion[2];
   } catch { }
 
-  const flag = `isAgreeChanges${change}`;
-  const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/#${change}`;
+  const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;
 
-  if (!configService.getFlag(flag)) {
+  if (configService.getLocal(agreedVersionKey) !== version) {
     const options = ['Ok (don\'t show this notification)', 'View Changes'];
     const option = await vscode.window.showWarningMessage(
       `Markdwon Fiction Writer updated to version: ${version}.\n\n`,
@@ -339,7 +336,7 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
       vscode.env.openExternal(vscode.Uri.parse(uri));
       return;
     } else if (option === options[0]) {
-      configService.setFlag(flag);
+      configService.setLocal(agreedVersionKey, version);
     }
   }
 }
