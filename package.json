@@ -661,6 +661,16 @@
           "default": 0.4,
           "description": "Opacity for fade out text when focus mode is enabled"
         },
+        "markdown-fiction-writer.view.focusMode.highlightType": {
+          "type": "string",
+          "scope": "application",
+          "default": "Paragraph",
+          "enum": [
+            "Paragraph",
+            "Line"
+          ],
+          "description": "Controls what portion of the text gets highlighted. Focus on:"
+        },
         "markdown-fiction-writer.statusBar.enabled": {
           "scope": "application", 
           "type": "boolean",

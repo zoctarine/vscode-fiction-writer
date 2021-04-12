@@ -63,6 +63,7 @@ export class Config implements IContextConfig {
   viewFadeMetadata?: boolean;
   viewZenModeToggleFocus?: boolean;
   viewFocusModeOpacity!: number;
+  viewFocusModeType!: string;
   
   metaEnabled?: boolean;
   metaEasyLists!: string;

@@ -85,6 +85,7 @@ export class ConfigService extends Observable<Config> {
     config.viewZenModeFontSize = this.read<number>(writingMode, 'fontSize', 0);
     config.viewZenModeToggleFocus = this.read<boolean>(writingMode, 'toggleFocusMode', true);
     config.viewFocusModeOpacity = this.read<number>(view, 'focusMode.opacity', 0.5);
+    config.viewFocusModeType = this.read<string>(view, 'focusMode.highlightType', Constants.FocusType.PARAGRAPH);
     config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);

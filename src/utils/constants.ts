@@ -36,6 +36,10 @@ export const Constants = {
       ONE_SENTENCE_PER_LINE: 'One Sentence Per Line'
     }
   },
+  FocusType: {
+    LINE: 'Line',
+    PARAGRAPH: 'Paragraph'
+  },
   Commands: {
     ON_NEW_LINE: 'fiction-writer.extension.onNewLine',
     ON_NEW_LINE_ALTERED: 'fiction-writer.extension.onNewLineAltered',
@@ -151,7 +155,9 @@ export const RegEx = {
 
   METADATA_MARKER_END: /^(---|\.\.\.)[ \t]*$/,
 
-  METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm
+  METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm,
+
+  PARAGRAPH_BREAK: /((\n|\r\n){2,})/gu
 };
 
 
