@@ -4,7 +4,7 @@
 
 ![LOGO](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/main/resources/fiction-writer-icon.png)
 
-A [vscode](https://code.visualstudio.com) extension for writers. 
+A [vscode extension](https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer) for writers. 
 
 Some tools I wrote for writing, organizing and exporting fiction (short stories, novels) using [markdown](https://daringfireball.net/projects/markdown/).
 
