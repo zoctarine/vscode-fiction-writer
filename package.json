@@ -10,7 +10,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "engines": {
     "vscode": "^1.52.0"
   },
