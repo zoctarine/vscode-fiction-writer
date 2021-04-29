@@ -51,6 +51,7 @@ export async function activate(context: vscode.ExtensionContext) {
   isWatcherEnabled = true;
   const watcher = vscode.workspace.createFileSystemWatcher(knownFileTypes.all.pattern, false, false, false);
   const cmd = Constants.Commands;
+
   context.subscriptions.push(
     cache,
     watcher,
@@ -348,7 +349,12 @@ function compileCommand() {
     ['Compile all documents', 'fiction-writer.extension.compileAll'],
     ['Cancel', '']
   ]);
-  vscode.window.showQuickPick([...options.keys()], { 'canPickMany': false, 'ignoreFocusOut': false })
+
+  vscode.window.showQuickPick(
+    [...options.keys()], { 
+      canPickMany: false,
+      ignoreFocusOut: false 
+    })
     .then(selection => {
       if (!selection) return;
 
@@ -361,37 +367,53 @@ function compileCommand() {
 
 function selectDialogueMode() {
   vscode.window.showQuickPick(
-    Object.keys(DialogueMarkerMappings),
-    { 'canPickMany': false, 'ignoreFocusOut': false }
-  ).then(selection => {
-    if (selection && selection !== 'Cancel') {
-      vscode.workspace
-        .getConfiguration('markdown-fiction-writer.editDialogue')
-        .update('marker', selection, vscode.ConfigurationTarget.Global);
+    Object.keys(DialogueMarkerMappings), {
+      canPickMany: false,
+      ignoreFocusOut: false 
     }
+  ).then(selection => {
+    if (!selection) return;
+
+    vscode.workspace
+      .getConfiguration('markdown-fiction-writer.editDialogue')
+      .update('marker', selection, vscode.ConfigurationTarget.Global);
   });
 }
 
 function toggleParagraphCommand() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<string>('easyParagraphCreation');
-  if (current === Constants.Paragraph.NEW_ON_ENTER) {
-    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_SHIFT_ENTER, vscode.ConfigurationTarget.Global);
-  } else {
-    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER, vscode.ConfigurationTarget.Global);
-  }
+  const configKey = 'easyParagraphCreation';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const current = config.get<string>(configKey);
+
+  const next = (current === Constants.Paragraph.NEW_ON_ENTER) 
+     ? Constants.Paragraph.NEW_ON_SHIFT_ENTER
+     : Constants.Paragraph.NEW_ON_ENTER;
+
+  config.update(configKey, next, vscode.ConfigurationTarget.Global);
 }
 
 
 function toggleFocusMode(configService: ConfigService) {
-  let enabled = configService.getState().isFocusMode;
+  const enabled = configService.getState().isFocusMode;
+  
   configService.setLocal('isFocusMode', !enabled);
 }
 
 function toggleMetadataSummary() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
-  let enabled = config.get<boolean>('summaryEnabled');
-  config.update('summaryEnabled', !enabled, vscode.ConfigurationTarget.Global);
+  const configKey = 'summaryEnabled';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
+  const enabled = config.get<boolean>(configKey);
+
+  config.update(configKey, !enabled, vscode.ConfigurationTarget.Global);
+}
+
+
+function toggleKeybindingsCommand() {
+  const configKey = 'disableKeybindings';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const current = config.get<boolean>(configKey);
+  
+  config.update(configKey, !current, vscode.ConfigurationTarget.Global);
 }
 
 async function toggleTypewriterModeCommand(configService: ConfigService) {
@@ -413,12 +435,6 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
 
   currentConfig.isTypewriterMode = !currentConfig.isTypewriterMode;
   configService.setLocal('isTypewriterMode', currentConfig.isTypewriterMode);
-}
-
-function toggleKeybindingsCommand() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<boolean>('disableKeybindings');
-  config.update('disableKeybindings', !current, vscode.ConfigurationTarget.Global);
 }
 
 async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
@@ -469,4 +485,3 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
-

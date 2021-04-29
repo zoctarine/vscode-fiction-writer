@@ -21,7 +21,7 @@ const decorationTypes = {
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed,
   }),
   comment: window.createTextEditorDecorationType({
-    'color': new vscode.ThemeColor('textLink.foreground'),
+    'color': new vscode.ThemeColor('fictionwriter.lightAmber'),
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed
   }),
   semiTransparent: window.createTextEditorDecorationType({
@@ -198,16 +198,16 @@ export class TextDecorations extends Observer<Config>{
   updateDecorations(editor?: TextEditor) {
     if (editor === undefined || !this.isValid(editor) || !editor.document || editor.document.languageId !== 'markdown') { return; }
     const document = editor.document;
-    
+
     this.clearDecorations();
     if (document.lineCount >= MAX_LINES_TO_HIGHLIGHT) return;
-    
+
     const firstLine = document.positionAt(0);
     const lastLine = document.lineAt(document.lineCount - 1);
 
     // apply focus decoration
     if (this.state.isFocusMode && this.state.viewFocusModeOpacity < 1) {
-      
+
       let rangeUp = 0;
       let rangeDown = 0;
       let offsetUp = 0;
@@ -217,19 +217,19 @@ export class TextDecorations extends Observer<Config>{
         rangeUp = MAX_LINES_TO_SEARCH_UP_DOWN;
         rangeDown = MAX_LINES_TO_SEARCH_UP_DOWN;
         offsetUp = 1;
-      } 
+      }
 
       const beforeStart = this._searchParagraphBreakUp(editor, offsetUp, rangeUp);
       const afterEnd = this._searchParagraphBreakDown(editor, offsetDown, rangeDown);
 
       if (beforeStart > 0) {
-        this.addDecoration(this._focusModeOpacityDecoration, 
+        this.addDecoration(this._focusModeOpacityDecoration,
           new vscode.Range(firstLine, new vscode.Position(beforeStart, 0))
         );
       }
-   
+
       if (afterEnd + 1 < document.lineCount) {
-        this.addDecoration(this._focusModeOpacityDecoration, 
+        this.addDecoration(this._focusModeOpacityDecoration,
           new vscode.Range(new vscode.Position(afterEnd + 1, 0), lastLine.range.end)
         );
       }

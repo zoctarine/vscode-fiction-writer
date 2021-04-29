@@ -105,6 +105,15 @@
         }
       },
       {
+        "id": "fictionwriter.lightAmber",
+        "description": "Amber Color",
+        "defaults": {
+          "dark": "#F6D55C",
+          "light": "#F6D55C",
+          "highContrast": "#ffffff"
+        }
+      },
+      {
         "id": "fictionwriter.purple",
         "description": "Purple Color",
         "defaults": {
@@ -672,7 +681,7 @@
           "description": "Controls what portion of the text gets highlighted. Focus on:"
         },
         "markdown-fiction-writer.statusBar.enabled": {
-          "scope": "application", 
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Show the custom Fiction Writer status bar."
@@ -704,7 +713,7 @@
             "Compile/Export Documents": { "type": "string", "enum": ["show", "hide"] },
             "Open Fiction Writer Settings": { "type": "string", "enum": ["show", "hide"] }
           },
-         
+
           "additionalProperties": false,
           "markdownDescription": "`show`/`hide` items on the **Markdown Fiction Writer** status bar"
         },
@@ -718,6 +727,7 @@
             "green": "green",
             "orange": "orange",
             "amber": "amber",
+            "lightAmber": "lightAmber",
             "purple": "purple",
             "pink": "pink",
             "bluegrey": "bluegrey",
@@ -727,7 +737,7 @@
             "white": "white",
             "black": "black",
             "draft": "grey",
-            "rev1": "amber",
+            "rev1": "lightAmber",
             "rev2": "yellow",
             "done": "green"
           },
@@ -742,6 +752,7 @@
               "green",
               "orange",
               "amber",
+              "lightAmber",
               "purple",
               "bluegrey",
               "grey",

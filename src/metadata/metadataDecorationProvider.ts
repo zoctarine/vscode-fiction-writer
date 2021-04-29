@@ -35,13 +35,13 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
        uri?.fsPath.toLowerCase().endsWith('.tmp')) {
       return Promise.resolve(new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor('tab.inactiveForeground')));
     }
-    
+
     if (contentType.has(SupportedContent.Fiction)) {
       return new Promise((resolve, reject) => {
         const useColors = this.state.metaKeywordShowInFileExplorer;
         const useBadges = this.state.metaKeywordsShowBadges;
         const meta = this.cache.get(uri);
-        
+
 
         const metadata = meta?.metadata?.value as IKvp<string | string[]>;
         let badge: string | undefined;
@@ -117,9 +117,9 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
               }
             }
           }
-          
+
           if (meta?.summary) reason.add(meta?.summary);
-          
+
           // Only return decoration if we have a reason to
           if (badge || color || reason.size > 0){
             let tooltip = [...reason.values()].join(' | ');
