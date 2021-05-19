@@ -313,6 +313,13 @@
           "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
         }
       ],
+      "editor/context": [
+        {
+          "command": "fiction-writer.extension.splitDocument",
+          "group": "1_modification",
+          "when": "resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+        }
+      ],
       "commandPalette": [
         {
           "command": "fiction-writer.extension.showIndexes",
@@ -1076,6 +1083,12 @@
         "icon": "$(find-next-match)",
         "category": "Markdown Fiction Writer",
         "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocument",
+        "title": "Split Document",
+        "category": "Markdown Fiction Writer",
+        "icon": "split-vertical"
       }
     ],
     "keybindings": [
@@ -1137,6 +1150,12 @@
         "command": "fiction-writer.extension.toggleWritingAndZenMode",
         "key": "ctrl+f11",
         "mac": "cmd+f11",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocument",
+        "key": "ctrl+k k",
+        "mac": "cmd+k k",
         "when": "textInputFocus && editorLangId == markdown"
       }
     ],

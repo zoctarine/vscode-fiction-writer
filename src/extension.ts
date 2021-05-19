@@ -109,6 +109,7 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT, async () => { await fileManager.splitDocument(); }),
     vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => {
       const oldName = e?.fsPath;
       if (!fileManager.getPathContentType(oldName).isKnown()) return;
@@ -351,9 +352,9 @@ function compileCommand() {
   ]);
 
   vscode.window.showQuickPick(
-    [...options.keys()], { 
+    [...options.keys()], {
       canPickMany: false,
-      ignoreFocusOut: false 
+      ignoreFocusOut: false
     })
     .then(selection => {
       if (!selection) return;
@@ -369,7 +370,7 @@ function selectDialogueMode() {
   vscode.window.showQuickPick(
     Object.keys(DialogueMarkerMappings), {
       canPickMany: false,
-      ignoreFocusOut: false 
+      ignoreFocusOut: false
     }
   ).then(selection => {
     if (!selection) return;
@@ -385,7 +386,7 @@ function toggleParagraphCommand() {
   const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
   const current = config.get<string>(configKey);
 
-  const next = (current === Constants.Paragraph.NEW_ON_ENTER) 
+  const next = (current === Constants.Paragraph.NEW_ON_ENTER)
      ? Constants.Paragraph.NEW_ON_SHIFT_ENTER
      : Constants.Paragraph.NEW_ON_ENTER;
 
@@ -395,7 +396,7 @@ function toggleParagraphCommand() {
 
 function toggleFocusMode(configService: ConfigService) {
   const enabled = configService.getState().isFocusMode;
-  
+
   configService.setLocal('isFocusMode', !enabled);
 }
 
@@ -412,7 +413,7 @@ function toggleKeybindingsCommand() {
   const configKey = 'disableKeybindings';
   const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
   const current = config.get<boolean>(configKey);
-  
+
   config.update(configKey, !current, vscode.ConfigurationTarget.Global);
 }
 

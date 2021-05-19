@@ -40,6 +40,12 @@ export const Constants = {
     LINE: 'Line',
     PARAGRAPH: 'Paragraph'
   },
+  SplitOptions: {
+    SPLIT_AT_SELECTION : 'Split document at selection (character)',
+    SPLIT_AT_SELECTION_LINE: 'Split document at selection (line)',
+    EXTRACT_SELECTION: 'Move Selection to new document (at character)',
+    EXTRACT_SELECTION_AT_LINE: 'Move Selection to new document (at line)'
+  },
   Commands: {
     ON_NEW_LINE: 'fiction-writer.extension.onNewLine',
     ON_NEW_LINE_ALTERED: 'fiction-writer.extension.onNewLineAltered',
@@ -80,7 +86,8 @@ export const Constants = {
     MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources',
     RENAME_SIMILAR: 'fiction-writer.extension.renameGroup',
     DEV_SHOW_INDEXES: 'fiction-writer.extension.showIndexes',
-    DEV_REINDEX: 'fiction-writer.extension.reindex'
+    DEV_REINDEX: 'fiction-writer.extension.reindex',
+    SPLIT_DOCUMENT: 'fiction-writer.extension.splitDocument'
   },
 
   KnownLabels: [
@@ -157,7 +164,9 @@ export const RegEx = {
 
   METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm,
 
-  PARAGRAPH_BREAK: /((\n|\r\n){2,})/gu
+  PARAGRAPH_BREAK: /((\n|\r\n){2,})/gu,
+
+  ENDING_NUMBER: /\d+$/gi
 };
 
 
@@ -177,3 +186,4 @@ export enum KnownColor {
     BLACK = 'black',
     PINK = 'pink'
 }
+
