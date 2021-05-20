@@ -110,7 +110,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
     vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT, async () => { await fileManager.splitDocument(); }),
-    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => {
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_LINE, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION_LINE); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_CURSOR, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_EXTRACT_SELECTION, async () => { await fileManager.splitDocument(Constants.SplitOptions.EXTRACT_SELECTION); }),
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => { 
       const oldName = e?.fsPath;
       if (!fileManager.getPathContentType(oldName).isKnown()) return;
 

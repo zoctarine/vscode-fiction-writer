@@ -87,7 +87,10 @@ export const Constants = {
     RENAME_SIMILAR: 'fiction-writer.extension.renameGroup',
     DEV_SHOW_INDEXES: 'fiction-writer.extension.showIndexes',
     DEV_REINDEX: 'fiction-writer.extension.reindex',
-    SPLIT_DOCUMENT: 'fiction-writer.extension.splitDocument'
+    SPLIT_DOCUMENT: 'fiction-writer.extension.splitDocument',
+    SPLIT_DOCUMENT_AT_LINE: 'fiction-writer.extension.splitDocumentAtLine',
+    SPLIT_DOCUMENT_AT_CURSOR: 'fiction-writer.extension.splitDocumentAtCursor',
+    SPLIT_DOCUMENT_EXTRACT_SELECTION: 'fiction-writer.extension.moveSelectionToDocument'
   },
 
   KnownLabels: [

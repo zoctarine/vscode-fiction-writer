@@ -198,7 +198,7 @@ export class FileManager {
     }
   }
 
-  public async splitDocument() {
+  public async splitDocument(selectedExtraction?: string) {
     const editor = getActiveEditor(SupportedContent.Fiction);
     if (editor && editor.selection) {
 
@@ -215,14 +215,14 @@ export class FileManager {
         if (selectionText.length > 0) {
           extractOptions.push(Constants.SplitOptions.EXTRACT_SELECTION);
         }
-
-        extractOptions.push(Constants.SplitOptions.EXTRACT_SELECTION_AT_LINE);
       }
 
-      const selectedExtraction = await vscode.window.showQuickPick(extractOptions, {
-        canPickMany: false,
-        placeHolder: 'Split current document'
-      });
+      if (!selectedExtraction) {
+        selectedExtraction = await vscode.window.showQuickPick(extractOptions, {
+          canPickMany: false,
+          placeHolder: 'Split current document'
+        });
+      }
 
       let extractFrom = undefined;
       let extractTo = undefined;
@@ -241,10 +241,6 @@ export class FileManager {
           extractFrom = editor.selection.start;
           extractTo = editor.selection.end;
           break;
-        case Constants.SplitOptions.EXTRACT_SELECTION_AT_LINE:
-          extractFrom = editor.document.lineAt(editor.selection.start.line).range.start;
-          extractTo = editor.document.lineAt(editor.selection.end.line).range.end;
-          break;
       }
 
       selectionText = editor.selection.isEmpty
@@ -255,8 +251,8 @@ export class FileManager {
 
       if (nameFromSelection.filename && nameFromSelection.filename.length > 0) {
         const namingOptions = [
-          'Filename from selection',
-          'Default filename'
+          'Default filename',
+          'Filename from selection'
         ];
         nameAsSelection = await vscode.window.showQuickPick(namingOptions) === namingOptions[0];
       }

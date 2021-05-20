@@ -231,6 +231,16 @@
         "contents": "Press refresh button to compute statistics for current file.\n[Refresh](command:fiction-writer.extension.statistics.refresh)"
       }
     ],
+    "submenus": [
+      {
+        "id": "fiction-writer.explorer",
+        "label": "Fiction Writer"
+      },
+      {
+        "id": "fiction-writer.editor",
+        "label": "Fiction Writer"
+      }
+    ],
     "menus": {
       "view/item/context": [
         {
@@ -308,16 +318,43 @@
       ],
       "explorer/context": [
         {
-          "command": "fiction-writer.extension.renameGroup",
-          "group": "1_modification",
-          "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+          "submenu": "fiction-writer.explorer",
+          "group": "fiction-writer"
         }
       ],
       "editor/context": [
         {
+          "submenu": "fiction-writer.editor",
+          "group": "fiction-writer"
+        }
+      ],
+      "fiction-writer.explorer":[
+        {
+          "command": "fiction-writer.extension.renameGroup",
+          "group": "fiction-writer@1",
+          "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+        }
+      ],
+      "fiction-writer.editor": [
+        {
           "command": "fiction-writer.extension.splitDocument",
-          "group": "1_modification",
-          "when": "resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+          "group": "fiction-writer@0",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.splitDocumentAtLine",
+          "group": "fiction-writer@1",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.splitDocumentAtCursor",
+          "group": "fiction-writer@2",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.moveSelectionToDocument",
+          "group": "fiction-writer@3",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
         }
       ],
       "commandPalette": [
@@ -695,7 +732,7 @@
         },
         "markdown-fiction-writer.statusBar.items": {
           "scope": "application",
-          "type":"object",
+          "type": "object",
           "default": {
             "Select Dialogue Punctuation": "show",
             "Enable/Disable Keybindings": "show",
@@ -709,18 +746,77 @@
             "Open Fiction Writer Settings": "show"
           },
           "properties": {
-            "Select Dialogue Punctuation": { "type": "string", "enum": ["show", "hide"] },
-            "Enable/Disable Keybindings": { "type": "string", "enum": ["show", "hide"] },
-            "New Paragraph On Enter Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Typewriter Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Focus Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Writing Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Fold All": { "type": "string", "enum": ["show", "hide"] },
-            "Unfold All": { "type": "string", "enum": ["show", "hide"] },
-            "Compile/Export Documents": { "type": "string", "enum": ["show", "hide"] },
-            "Open Fiction Writer Settings": { "type": "string", "enum": ["show", "hide"] }
+            "Select Dialogue Punctuation": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Enable/Disable Keybindings": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "New Paragraph On Enter Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Typewriter Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Focus Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Writing Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Fold All": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Unfold All": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Compile/Export Documents": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Open Fiction Writer Settings": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            }
           },
-
           "additionalProperties": false,
           "markdownDescription": "`show`/`hide` items on the **Markdown Fiction Writer** status bar"
         },
@@ -1086,9 +1182,27 @@
       },
       {
         "command": "fiction-writer.extension.splitDocument",
-        "title": "Split Document",
+        "title": "Split Document...",
         "category": "Markdown Fiction Writer",
-        "icon": "split-vertical"
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtCursor",
+        "title": "Split Document Here",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtLine",
+        "title": "Split Document At Current Line",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.moveSelectionToDocument",
+        "title": "New document from selection",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
       }
     ],
     "keybindings": [
@@ -1154,8 +1268,20 @@
       },
       {
         "command": "fiction-writer.extension.splitDocument",
-        "key": "ctrl+k k",
-        "mac": "cmd+k k",
+        "key": "alt+k k",
+        "mac": "alt+k k",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtLine",
+        "key": "alt+k l",
+        "mac": "alt+k l",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.moveSelectionToDocument",
+        "key": "alt+k x",
+        "mac": "alt+k x",
         "when": "textInputFocus && editorLangId == markdown"
       }
     ],
