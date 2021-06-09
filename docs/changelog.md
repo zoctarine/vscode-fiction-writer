@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file.
 
 **Added**
 
-- Vairous bug fixes and improvements
 - Group Fiction writer context menu in Fiction Writer category on Explorer and on Editor
 - Split File: [Possibility to split files in multiple files, or extract selected document](split.md)
 
@@ -12,6 +11,21 @@ All notable changes to this project will be documented in this file.
 - Focus Mode now can highlight paragraph, or line (set up in settings) 
 
 ## 0.0.52 - alpha 5.2
+- Status Bar: now has the possibility to show/hide specific buttons
+- Writing Mode: `Select Writing Mode theme` command now previews the theme on changing selection with Up/Down arrow keys.
+- **Settings**
+    - Added: `markdown-fiction-writer.statusbar.items`
+
+**Changed**
+
+- Settings moved: `markdown-fiction-writer.view.statusbar.*` to `markdown-fiction-writer.statusbar.*` 
+- Don't show the `This Version Contains Breaking Changes..` notification message for minor alpha version changes.
+
+**Fixed**
+
+- Fixed a bug that did not always hide status bar when changing active editor to a non-markdown editor.
+
+## 0.0.51 - alpha 5.1
 
 **Added**
 

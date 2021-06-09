@@ -50,7 +50,10 @@ This extension has the following settings:
 | `view.foldParagraphLines` | true | Show folding marker for paragraphs with multiple lines. (soft-breaks) |
 | `view.highlight.dialogueMarkers` | true | Highlights the dialogue markers (---, --, — or quote marks symbols). |
 | `view.highlight.textBetweenQuotes` | false | Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used) |
-| `view.statusBar.enabled` | true | Show the custom Fiction Writer status bar. |
+| `statusBar.enabled` | true | Show the custom Fiction Writer status bar. |
+| `statusBar.items` | {} | Enable/disable items from Fiction Writer status Bar. |
 | `view.wordWrapIndent` | 0 | The hanging indent of wrapped lines.  **Select:** - `0` for same indent as first line, - `-1` for now wrapping indent, - any other value for hanging indent.    _**Warning:** Only works if `#editor.wordWrap#` is enabled, and might change the `#editor.tabSize#` setting for `markdown`._ |
-| `view.writingMode.fontSize` | 16 | The font size to be used in Writing Mode Mode. |
-| `view.writingMode.theme` |  | The theme to be used in Writing Mode. _(leave empty for no theme switch)_ | 
+| `view.focusMode.opacity` | 0.5 | Opacity for fade out text when focus mode is enabled | 
+| `writingMode.fontSize` | 16 | The font size to be used in Writing Mode Mode. |
+| `writingMode.theme` |  | The theme to be used in Writing Mode. _(leave empty for no theme switch)_ | 
+| `writingMode.toggleFocusMode` | true | When entering Writing Mode, it fades out all text except current text line (known as Focus Mode) | 
