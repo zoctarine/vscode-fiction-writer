@@ -1,6 +1,6 @@
 **Fiction Writer** helps you work with large files by splitting then in single ones
 
-![Split](img/split-file-01.gif)
+![Split](img/split_file_01.gif)
 
 There are several options for splitting files
 
