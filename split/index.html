@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#naming" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -340,9 +345,43 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Split
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Split
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-bindings" class="md-nav__link">
+    Key Bindings
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -502,6 +541,42 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-bindings" class="md-nav__link">
+    Key Bindings
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
@@ -518,16 +593,20 @@
 <li><strong>Split Document Here (at cursor)</strong>: will take everithing from the cursor position, to the end of the file and will move it to another file</li>
 <li><strong>Move Selected Text to New Document</strong>: will extract the selected text to a new file</li>
 </ul>
-<p>Naming:
-- When splitting, files will be named as follows:
-- if there is no selected text, then the current document name will be taken, and an ending number will be added:
-- Example: 
+<h4 id="naming">Naming<a class="headerlink" href="#naming" title="Permanent link">&para;</a></h4>
+<ul>
+<li>When splitting, files will be named as follows:</li>
+<li>if there is no selected text, then the current document name will be taken, and an ending number will be added:</li>
+<li>
+<p>Example: 
 <div class="highlight"><pre><span></span><code>File: big_file.md
 Becomes: big_file.md and big_file-1.md
 If you continue splitting, the new files will be big_file-2.md, big_file-3.md, and so on...
 </code></pre></div></p>
-<ul>
-<li>if you select a part of the text, that text will be the name of the new file:</li>
+</li>
+<li>
+<p>if you select a part of the text, that text will be the name of the new file:</p>
+</li>
 <li>Example:
 <div class="highlight"><pre><span></span><code>File: big_file.md
 Selection: you select Chapter 1 text, and split
@@ -542,6 +621,12 @@ Becomes: big_file.md and chapter_1.md (as the name is taken from the selection)
 <li>Default value: <code>enabled</code></li>
 </ul>
 </div>
+<h4 id="key-bindings">Key Bindings<a class="headerlink" href="#key-bindings" title="Permanent link">&para;</a></h4>
+<ul>
+<li><span class="keys"><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-k">K</kbd></span> <span class="keys"><kbd class="key-k">K</kbd></span>: Shows the split document dialogue</li>
+<li><span class="keys"><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-k">K</kbd></span> <span class="keys"><kbd class="key-l">L</kbd></span>: Split document at line</li>
+<li><span class="keys"><kbd class="key-alt">Alt</kbd><span>+</span><kbd class="key-k">K</kbd></span> <span class="keys"><kbd class="key-x">X</kbd></span>: Move selected text to new document</li>
+</ul>
                 
               
               
