@@ -1,6 +1,6 @@
 All notable changes to this project will be documented in this file.
 
-## 0.0.53 - alpha 5.3
+## 0.0.55 - alpha 5.5
 
 **Added**
 
@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 **Fixes**
 - Focus Mode now can highlight paragraph, or line (set up in settings) 
 
-## 0.0.52 - alpha 5.2
+## 0.0.53 - alpha 5.3
 - Status Bar: now has the possibility to show/hide specific buttons
 - Writing Mode: `Select Writing Mode theme` command now previews the theme on changing selection with Up/Down arrow keys.
 - **Settings**
@@ -25,7 +25,7 @@ All notable changes to this project will be documented in this file.
 
 - Fixed a bug that did not always hide status bar when changing active editor to a non-markdown editor.
 
-## 0.0.51 - alpha 5.1
+## 0.0.52 - alpha 5.2
 
 **Added**
 
