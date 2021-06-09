@@ -442,6 +442,12 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
+        "markdown-fiction-writer.splitDocument.switchToNewlyCreatedDocument": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "When splitting a document, immediately open (and switch to) the newly created doument in the text editor."
+        },
         "markdown-fiction-writer.smartRename.enabled": {
           "type": "boolean",
           "scope": "application",
@@ -1188,19 +1194,19 @@
       },
       {
         "command": "fiction-writer.extension.splitDocumentAtCursor",
-        "title": "Split Document Here",
+        "title": "Split Document Here (at cursor)",
         "category": "Markdown Fiction Writer",
         "icon": "$(split-vertical)"
       },
       {
         "command": "fiction-writer.extension.splitDocumentAtLine",
-        "title": "Split Document At Current Line",
+        "title": "Split Document Here (at line)",
         "category": "Markdown Fiction Writer",
         "icon": "$(split-vertical)"
       },
       {
         "command": "fiction-writer.extension.moveSelectionToDocument",
-        "title": "New document from selection",
+        "title": "Move Selected Text to New Document",
         "category": "Markdown Fiction Writer",
         "icon": "$(split-vertical)"
       }
