@@ -1,17 +1,17 @@
 import * as vscode from 'vscode';
 import { Config, IKvp } from '../config';
-import { fileManager } from '../smartRename';
+import { FileManager } from '../smartRename';
 import { IObservable, Observer, SupportedContent } from '../utils';
 import { MetadataFileCache } from './index';
 
 
 export class MetadataFileDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
-  private decorations: { [key: string]: vscode.FileDecoration; };
+  private _decorations: { [key: string]: vscode.FileDecoration; };
 
-  constructor(observable: IObservable<Config>, private cache: MetadataFileCache) {
+  constructor(observable: IObservable<Config>, private _cache: MetadataFileCache, private _fileManager: FileManager) {
     super(observable);
 
-    this.decorations = {};
+    this._decorations = {};
     this.register();
   }
 
@@ -28,7 +28,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
 
-    const contentType = fileManager.getPathContentType(uri?.fsPath, true);
+    const contentType = this._fileManager.getPathContentType(uri?.fsPath, true);
 
     if (contentType.has(SupportedContent.Metadata) ||
        contentType.has(SupportedContent.Notes) ||
@@ -40,7 +40,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
       return new Promise((resolve, reject) => {
         const useColors = this.state.metaKeywordShowInFileExplorer;
         const useBadges = this.state.metaKeywordsShowBadges;
-        const meta = this.cache.get(uri);
+        const meta = this._cache.get(uri);
 
 
         const metadata = meta?.metadata?.value as IKvp<string | string[]>;
@@ -135,7 +135,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
 
   fire(uri: vscode.Uri[]) {
     const uris = uri
-      .map(u => this.cache.get(u)?.path)
+      .map(u => this._cache.get(u)?.path)
       .filter((u): u is string => u !== undefined)
       .map(u => vscode.Uri.file(u));
 
@@ -149,7 +149,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
       this.register();
     }
     if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata')) {
-      this.fire(this.cache.getAllKeys().map(fp => vscode.Uri.file(fp)));
+      this.fire(this._cache.getAllKeys().map(fp => vscode.Uri.file(fp)));
     }
   }
 

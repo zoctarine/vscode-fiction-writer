@@ -34,6 +34,7 @@ export class ConfigService extends Observable<Config> {
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
     const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
     const notes = workspace.getConfiguration('markdown-fiction-writer.notes');
+    const splitDocument = workspace.getConfiguration('markdown-fiction-writer.splitDocument');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
@@ -104,6 +105,10 @@ export class ConfigService extends Observable<Config> {
 
     config.smartRenameEnabled = this.read<boolean>(smartRename, 'enabled', false);
     config.smartRenameRelated = this.read<string>(smartRename, 'renameRelatedFiles', Constants.RenameRelated.ASK);
+
+    // SPLIT DOCUMENT
+
+    config.splitDocumentSwitchToFileEnabled = this.read<boolean>(splitDocument, 'switchToNewlyCreatedDocument', true);
 
     // METADATA
 

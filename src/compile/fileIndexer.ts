@@ -1,7 +1,7 @@
 import * as glob from 'glob';
 import * as path from 'path';
 import { IFileInfo, MetadataService } from "../metadata";
-import { fileManager } from '../smartRename';
+import { FileManager } from '../smartRename';
 import { logger, IDisposable, InMemoryCache, Observable, SupportedContent } from "../utils";
 
 export interface IIndexOptions {
@@ -12,7 +12,7 @@ export interface IIndexOptions {
 export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable {
   private fileInfos: InMemoryCache<IFileInfo>;
 
-  constructor(private metaService: MetadataService) {
+  constructor(private metaService: MetadataService, private fileManager: FileManager) {
     super();
     this.fileInfos = new InMemoryCache<IFileInfo>();
   }
@@ -53,10 +53,10 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
 
   private getKey(filePath: string): string {
     if (!filePath) return '';
-    const rootFile = fileManager.getRoot(filePath);
+    const rootFile = this.fileManager.getRoot(filePath);
 
     if (!rootFile) return '';
-    return fileManager.normalize(rootFile);
+    return this.fileManager.normalize(rootFile);
   }
 
 
@@ -72,7 +72,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     let fileInfo: IFileInfo = { key };
 
     try {
-      const group = fileManager.getGroup(filePath);
+      const group = this.fileManager.getGroup(filePath);
       fileInfo.path = group.getPath(SupportedContent.Fiction);
       group.files.forEach(p => { logger.push(` - ${p}`); });
       logger.info(`Indexing: ${key}`);

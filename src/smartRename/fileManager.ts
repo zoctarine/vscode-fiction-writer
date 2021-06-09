@@ -3,8 +3,9 @@ import * as glob from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { Constants, ContentType, getActiveEditor, logger, RegEx, SupportedContent } from '../utils';
+import { Constants, ContentType, getActiveEditor, IObservable, logger, Observer, RegEx, SupportedContent } from '../utils';
 import { extract } from '../metadata';
+import { Config } from '../config';
 
 export const knownFileTypes = {
   fiction: {
@@ -74,8 +75,11 @@ class FileGroup implements IFileGroup {
 
 
 
-export class FileManager {
+export class FileManager extends Observer<Config>{
 
+  constructor(configService: IObservable<Config>) {
+    super(configService);
+  }
 
   moveToFolder(fsPath?: string) {
     if (!fsPath) return;
@@ -202,8 +206,6 @@ export class FileManager {
     const editor = getActiveEditor(SupportedContent.Fiction);
     if (editor && editor.selection) {
 
-      let nameAsSelection = false;
-
       let selectionText = editor.document.getText(editor.selection);
 
 
@@ -243,39 +245,26 @@ export class FileManager {
           break;
       }
 
-      selectionText = editor.selection.isEmpty
-        ? editor.document.lineAt(editor.selection.active.line).text
-        : editor.document.getText(editor.selection);
-
-      const nameFromSelection = createDocumentNameFromSelection(editor.document.fileName, selectionText);
-
-      if (nameFromSelection.filename && nameFromSelection.filename.length > 0) {
-        const namingOptions = [
-          'Default filename',
-          'Filename from selection'
-        ];
-        nameAsSelection = await vscode.window.showQuickPick(namingOptions) === namingOptions[0];
-      }
-
-      const newDocumentPath = nameAsSelection
-        ? nameFromSelection
-        : createDocumentNameFromPath(editor.document.fileName);
-
-
       if (!extractFrom || !extractTo) return;
+
+      selectionText = editor.document.getText(editor.selection);
+      let newDocument = createDocumentNameFromSelection(editor.document.fileName, selectionText);
+      if (!newDocument.filename || newDocument.filename.length === 0) {
+        newDocument = createDocumentNameFromPath(editor.document.fileName);
+      }
 
       const splitRange = new vscode.Range(extractFrom, extractTo);
 
       const selFilename = await vscode.window.showInputBox({
-        value: `${newDocumentPath.filename}${newDocumentPath.ext}`,
-        valueSelection: [0, newDocumentPath.filename.length]
+        value: `${newDocument.filename}${newDocument.ext}`,
+        valueSelection: [0, newDocument.filename.length]
       });
 
       if (!selFilename) return;
 
       try {
         const splitText = editor.document.getText(splitRange);
-        const newFilePath = path.join(newDocumentPath.filepath, selFilename);
+        const newFilePath = path.join(newDocument.filepath, selFilename);
         fs.writeFileSync(newFilePath, splitText);
         vscode.workspace.openTextDocument(newFilePath);
         editor.edit(eb => eb.delete(splitRange));
@@ -289,7 +278,6 @@ export class FileManager {
   }
 }
 
-export const fileManager = new FileManager();
 
 function createDocumentNameFromPath(fileToSplit: string): { filename: string, filepath: string, ext: string } {
   const parsed = path.parse(fileToSplit);
@@ -315,7 +303,7 @@ function createDocumentNameFromSelection(fileToSplit: string, selectionText: str
   const parsed = path.parse(fileToSplit);
   let fileName = '';
   if (selectionText && selectionText.length > 0) {
-    fileName = selectionText.replace(/[^a-zA-Z0-9 -]/gi, '').trim();
+    fileName = selectionText.replace(/[^a-zA-Z0-9 -]/gi, '').trim().substr(0, 90);
   };
 
   return {

@@ -12,6 +12,12 @@ const metaServiceMock = jest.fn<MetadataService, []>(() => ({
   extractMetadata: extractMetadata
 }));
 
+const configServiceMock = ({
+  attach: jest.fn(),
+  detach: jest.fn(),
+  notify: jest.fn(),
+  getState: jest.fn()
+});
 
 jest.mock('glob');
 jest.mock('vscode');
@@ -22,15 +28,19 @@ const existSyncMock = existsSync as jest.Mock;
 
 
 import { FileIndexer } from "../../../compile";
-import { fileManager, knownFileTypes } from '../../../smartRename';
+import { FileManager, knownFileTypes } from '../../../smartRename';
+import { Config } from '../../../config';
+import { IObservable } from '../../../utils';
 
+
+const fileManager = new FileManager(configServiceMock);
 
 describe('FileIndexer', () => {
 
   let sut: FileIndexer;
 
   beforeEach(() => {
-    sut = new FileIndexer(new metaServiceMock());
+    sut = new FileIndexer(new metaServiceMock(), fileManager);
     syncMock.mockReset();
     extractMetadata.mockReset();
     existSyncMock.mockReset();

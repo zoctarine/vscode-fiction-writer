@@ -8,16 +8,18 @@ import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger,
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver, WritingMode } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, metaService } from './metadata';
-import { fileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
+import { FileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
 let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
-  const fileIndexer = new FileIndexer(metaService);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
+  
+  const fileManager = new FileManager(configService);
+  const fileIndexer = new FileIndexer(metaService, fileManager);
   const cache = new MetadataFileCache(fileIndexer, configService);
 
   currentConfig = configService.getState();
@@ -44,7 +46,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const notesWebView = vscode.window.registerWebviewViewProvider('fw-notes', notesProvider, {
     webviewOptions: { retainContextWhenHidden: true }
   });
-  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
+  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache, fileManager);
   wordFrequencyProvider.tree = freqTree;
   docStatisticProvider.tree = statTree;
   metadataProvider.tree = metadataTree;

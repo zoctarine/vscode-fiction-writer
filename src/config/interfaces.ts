@@ -83,6 +83,8 @@ export class Config implements IContextConfig {
   smartRenameEnabled?:boolean;
   smartRenameRelated!: string;
 
+  splitDocumentSwitchToFileEnabled?: boolean;
+
   notesEnabled?: boolean;
   notesDefaultText!: string;
 }
