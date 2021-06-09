@@ -122,7 +122,7 @@ Consider inspecting and rebinding some of them, as described here: [Key Bindings
 
 ## Release Notes
 
-The current version is an **early concept**. Features are still missing, and not all features are thoroguhly tested, or have reached a stable version.
+The current version is an **early concept**. Features are still missing, and not all features are thoroughly tested, or have reached a stable version.
 
 [View Changelog](https://zoctarine.github.io/vscode-fiction-writer/changelog/)
 
