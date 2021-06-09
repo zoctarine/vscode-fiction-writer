@@ -50,6 +50,7 @@ Browse each category below, to find out more about this extension capabilites.
   <li>combine multiple <code>.md</code> files into one single file</li>
   <li>export <code>.md</code> to other formats (like <code>.doc</code> or <code>.docx</code>)
   <i>(uses <a href="https://pandoc.org/installing.html">Pandoc</a>)</i></li>
+  <li>Split files in multiple fales</li>
 </ul>
 </td>
 </tr>

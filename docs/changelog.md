@@ -1,6 +1,17 @@
 All notable changes to this project will be documented in this file.
 
-## 0.0.51 - alpha 5.1
+## 0.0.53 - alpha 5.3
+
+**Added**
+
+- Vairous bug fixes and improvements
+- Group Fiction writer context menu in Fiction Writer category on Explorer and on Editor
+- Split File: [Possibility to split files in multiple files, or extract selected document](split.md)
+
+**Fixes**
+- Focus Mode now can highlight paragraph, or line (set up in settings) 
+
+## 0.0.52 - alpha 5.2
 
 **Added**
 
@@ -56,6 +67,16 @@ All notable changes to this project will be documented in this file.
 - Fix a performance issue when Document Statistics was loading even if view was not visible.
 - Consistent name of _Writing Mode_ everywhere (some places still using the old _Enhanced Zen Mode_ naming)
 
+## 0.0.50 - alpha 5
+
+**Added**
+
+- Vairous bug fixes and improvements
+- Group Fiction writer context menu in Fiction Writer category on Explorer and on Editor
+- Split File: [Possibility to split files in multiple files, or extract selected document](split.md)
+
+**Fixes**
+- Focus Mode now can highlight paragraph, or line (set up in settings) 
 
 ## 0.0.42 - alpha 4.2
 
