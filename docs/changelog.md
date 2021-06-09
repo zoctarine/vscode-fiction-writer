@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Writing Mode: `Select Writing Mode theme` command now previews the theme on changing selection with Up/Down arrow keys.
 - **Settings**
     - Added: `markdown-fiction-writer.statusbar.items`
+    - Added: `markdown-fiction-writer.splitDocument.switchToNewlyCreatedDocument`
 
 **Changed**
 

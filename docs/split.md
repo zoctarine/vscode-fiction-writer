@@ -25,3 +25,11 @@ File: big_file.md
 Selection: you select Chapter 1 text, and split
 Becomes: big_file.md and chapter_1.md (as the name is taken from the selection)
 ```
+
+
+!!! setting "Split Document: Switch To Newly Created Document`"
+    - Key: `markdown-fiction-writer.splitDocument.switchToNewlyCreatedDocument`
+    - After splitting a file, immediatly open the new file in the editor, and switch to it.
+    - Default value: `enabled`
+
+

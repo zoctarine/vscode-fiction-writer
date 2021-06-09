@@ -57,3 +57,4 @@ This extension has the following settings:
 | `writingMode.fontSize` | 16 | The font size to be used in Writing Mode Mode. |
 | `writingMode.theme` |  | The theme to be used in Writing Mode. _(leave empty for no theme switch)_ | 
 | `writingMode.toggleFocusMode` | true | When entering Writing Mode, it fades out all text except current text line (known as Focus Mode) | 
+| `splitDocument.switchToNewlyCreatedDocument` | true | When splitting a document, immediately open (and switch to) the newly created doument in the text editor. |
