@@ -4,9 +4,9 @@
 
 There are several options for splitting files
 
-- Split here (at line): will take everything from current line, to the end of the file and will move to another file
-- Split here (at cursor): will take everithing from the cursor position, to the end of the file and will move it to another file
-- Move selection: will extract the selected text to another file
+- **Split Document Here (at line)**: will take everything from current line, to the end of the file and will move to another file
+- **Split Document Here (at cursor)**: will take everithing from the cursor position, to the end of the file and will move it to another file
+- **Move Selected Text to New Document**: will extract the selected text to a new file
 
 Naming:
 - When splitting, files will be named as follows:
