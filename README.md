@@ -47,7 +47,7 @@ This is a quick overview of the main features. Please read the [Full Documentati
 - **Split files**
    - easily split large `.md` files into one multiple documents.
    
-   ![](https://zoctarine.github.io/vscode-fiction-writer/img/split_file_01.png)
+   ![](https://zoctarine.github.io/vscode-fiction-writer/img/split_file_01.gif)
 
   - [more details](https://zoctarine.github.io/vscode-fiction-writer/split/)
 
