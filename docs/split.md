@@ -8,7 +8,8 @@ There are several options for splitting files
 - **Split Document Here (at cursor)**: will take everithing from the cursor position, to the end of the file and will move it to another file
 - **Move Selected Text to New Document**: will extract the selected text to a new file
 
-Naming:
+## Naming
+
 - When splitting, files will be named as follows:
 - if there is no selected text, then the current document name will be taken, and an ending number will be added:
 - Example: 
@@ -33,3 +34,7 @@ Becomes: big_file.md and chapter_1.md (as the name is taken from the selection)
     - Default value: `enabled`
 
 
+## Key Bindings
+ - ++alt+k++ ++k++: Shows the split document dialogue
+ - ++alt+k++ ++l++: Split document at line
+ - ++alt+k++ ++x++: Move selected text to new document
