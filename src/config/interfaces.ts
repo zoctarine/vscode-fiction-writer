@@ -63,6 +63,7 @@ export class Config implements IContextConfig {
   viewFadeMetadata?: boolean;
   viewZenModeToggleFocus?: boolean;
   viewFocusModeOpacity!: number;
+  viewFocusModeType!: string;
   
   metaEnabled?: boolean;
   metaEasyLists!: string;
@@ -81,6 +82,8 @@ export class Config implements IContextConfig {
 
   smartRenameEnabled?:boolean;
   smartRenameRelated!: string;
+
+  splitDocumentSwitchToFileEnabled?: boolean;
 
   notesEnabled?: boolean;
   notesDefaultText!: string;

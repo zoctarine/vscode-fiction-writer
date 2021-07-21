@@ -36,6 +36,16 @@ export const Constants = {
       ONE_SENTENCE_PER_LINE: 'One Sentence Per Line'
     }
   },
+  FocusType: {
+    LINE: 'Line',
+    PARAGRAPH: 'Paragraph'
+  },
+  SplitOptions: {
+    SPLIT_AT_SELECTION : 'Split document at selection (character)',
+    SPLIT_AT_SELECTION_LINE: 'Split document at selection (line)',
+    EXTRACT_SELECTION: 'Move Selection to new document (at character)',
+    EXTRACT_SELECTION_AT_LINE: 'Move Selection to new document (at line)'
+  },
   Commands: {
     ON_NEW_LINE: 'fiction-writer.extension.onNewLine',
     ON_NEW_LINE_ALTERED: 'fiction-writer.extension.onNewLineAltered',
@@ -76,7 +86,11 @@ export const Constants = {
     MOVE_TO_RESOURCES: 'fiction-writer.extension.moveToResources',
     RENAME_SIMILAR: 'fiction-writer.extension.renameGroup',
     DEV_SHOW_INDEXES: 'fiction-writer.extension.showIndexes',
-    DEV_REINDEX: 'fiction-writer.extension.reindex'
+    DEV_REINDEX: 'fiction-writer.extension.reindex',
+    SPLIT_DOCUMENT: 'fiction-writer.extension.splitDocument',
+    SPLIT_DOCUMENT_AT_LINE: 'fiction-writer.extension.splitDocumentAtLine',
+    SPLIT_DOCUMENT_AT_CURSOR: 'fiction-writer.extension.splitDocumentAtCursor',
+    SPLIT_DOCUMENT_EXTRACT_SELECTION: 'fiction-writer.extension.moveSelectionToDocument'
   },
 
   KnownLabels: [
@@ -151,7 +165,11 @@ export const RegEx = {
 
   METADATA_MARKER_END: /^(---|\.\.\.)[ \t]*$/,
 
-  METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm
+  METADATA_BLOCK: /^---[ \t]*$((.|\n|\r)+?)^(---|\.\.\.)[ \t]*$(\r|\n|\r\n){0,1}/gm,
+
+  PARAGRAPH_BREAK: /((\n|\r\n){2,})/gu,
+
+  ENDING_NUMBER: /\d+$/gi
 };
 
 
@@ -171,3 +189,4 @@ export enum KnownColor {
     BLACK = 'black',
     PINK = 'pink'
 }
+

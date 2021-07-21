@@ -34,6 +34,7 @@ export class ConfigService extends Observable<Config> {
     const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
     const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
     const notes = workspace.getConfiguration('markdown-fiction-writer.notes');
+    const splitDocument = workspace.getConfiguration('markdown-fiction-writer.splitDocument');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
@@ -85,6 +86,7 @@ export class ConfigService extends Observable<Config> {
     config.viewZenModeFontSize = this.read<number>(writingMode, 'fontSize', 0);
     config.viewZenModeToggleFocus = this.read<boolean>(writingMode, 'toggleFocusMode', true);
     config.viewFocusModeOpacity = this.read<number>(view, 'focusMode.opacity', 0.5);
+    config.viewFocusModeType = this.read<string>(view, 'focusMode.highlightType', Constants.FocusType.PARAGRAPH);
     config.wrapIndent = this.read<number>(view, 'wordWrapIndent', 0);
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
@@ -103,6 +105,10 @@ export class ConfigService extends Observable<Config> {
 
     config.smartRenameEnabled = this.read<boolean>(smartRename, 'enabled', false);
     config.smartRenameRelated = this.read<string>(smartRename, 'renameRelatedFiles', Constants.RenameRelated.ASK);
+
+    // SPLIT DOCUMENT
+
+    config.splitDocumentSwitchToFileEnabled = this.read<boolean>(splitDocument, 'switchToNewlyCreatedDocument', true);
 
     // METADATA
 
@@ -195,6 +201,15 @@ export class ConfigService extends Observable<Config> {
 
     this.notify();
   }
+
+  getLocal(key: string) : any {
+    if (!this._config) { return undefined; }
+
+    let localConfig = this._localSettings.getValue<IContextConfig>('config', {});
+    
+    return localConfig[key];
+  }
+
 
   getFlag(key: string): boolean {
     return this._localSettings.getValue<boolean>(key, false);

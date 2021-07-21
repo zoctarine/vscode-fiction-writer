@@ -20,6 +20,7 @@ class DoNothingLogger implements ILogger {
     return this;
   }
 }
+
 class Logger implements ILogger {
   private channel: OutputChannel | undefined;
   private buffer: string[];
@@ -53,4 +54,6 @@ class Logger implements ILogger {
   }
 }
 
-export const logger = new DoNothingLogger();  // TODO: Replace with real logger once it is ready
+export const logger = isDebugMode   // TODO: Replace with real logger once it is ready
+  ? new Logger()
+  : new DoNothingLogger();

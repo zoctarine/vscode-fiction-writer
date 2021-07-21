@@ -101,6 +101,7 @@ export class CompileFileCommand extends Observer<Config> {
 
         let template = '';
         if (['odt', 'docx'].includes(ext) &&
+          this.state.compileUseTemplateFile &&
           this.state.compileTemplateFile &&
           this.state.compileTemplateFile.endsWith('.' + ext)) {
           let templatePath = this.state.compileTemplateFile;

@@ -14,7 +14,7 @@ describe('FileManager', () => {
   let sut: FileManager;
 
   beforeEach(() => {
-    sut = new FileManager();
+    sut = new FileManager({ attach: jest.fn(), detach: jest.fn(), notify: jest.fn(), getState: jest.fn()});
     glob.sync.mockReset();
     fs.existsSync.mockImplementation(() => true);
   });

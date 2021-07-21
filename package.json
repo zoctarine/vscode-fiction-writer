@@ -10,7 +10,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.53",
+  "version": "0.0.55",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -102,6 +102,15 @@
           "dark": "#FFC107",
           "light": "#FFA000",
           "highContrast": "#000000"
+        }
+      },
+      {
+        "id": "fictionwriter.lightAmber",
+        "description": "Amber Color",
+        "defaults": {
+          "dark": "#F6D55C",
+          "light": "#F6D55C",
+          "highContrast": "#ffffff"
         }
       },
       {
@@ -222,6 +231,16 @@
         "contents": "Press refresh button to compute statistics for current file.\n[Refresh](command:fiction-writer.extension.statistics.refresh)"
       }
     ],
+    "submenus": [
+      {
+        "id": "fiction-writer.explorer",
+        "label": "Fiction Writer"
+      },
+      {
+        "id": "fiction-writer.editor",
+        "label": "Fiction Writer"
+      }
+    ],
     "menus": {
       "view/item/context": [
         {
@@ -299,9 +318,43 @@
       ],
       "explorer/context": [
         {
+          "submenu": "fiction-writer.explorer",
+          "group": "fiction-writer"
+        }
+      ],
+      "editor/context": [
+        {
+          "submenu": "fiction-writer.editor",
+          "group": "fiction-writer"
+        }
+      ],
+      "fiction-writer.explorer":[
+        {
           "command": "fiction-writer.extension.renameGroup",
-          "group": "1_modification",
+          "group": "fiction-writer@1",
           "when": "config.markdown-fiction-writer.smartRename.enabled && resourceScheme == file && resourcePath =~ /\\.md(\\.yml|\\.txt)*$/gim"
+        }
+      ],
+      "fiction-writer.editor": [
+        {
+          "command": "fiction-writer.extension.splitDocument",
+          "group": "fiction-writer@0",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.splitDocumentAtLine",
+          "group": "fiction-writer@1",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.splitDocumentAtCursor",
+          "group": "fiction-writer@2",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
+        },
+        {
+          "command": "fiction-writer.extension.moveSelectionToDocument",
+          "group": "fiction-writer@3",
+          "when": "!config.markdown-fiction-writer.edit.disableKeybindings && textInputFocus && !editorReadonly && editorLangId == markdown && !suggestWidgetVisible"
         }
       ],
       "commandPalette": [
@@ -389,6 +442,12 @@
       "name": "markdown-fiction-writer",
       "title": "Markdown Fiction Writer",
       "properties": {
+        "markdown-fiction-writer.splitDocument.switchToNewlyCreatedDocument": {
+          "type": "boolean",
+          "scope": "application",
+          "default": true,
+          "markdownDescription": "When splitting a document, immediately open (and switch to) the newly created doument in the text editor."
+        },
         "markdown-fiction-writer.smartRename.enabled": {
           "type": "boolean",
           "scope": "application",
@@ -662,15 +721,25 @@
           "description": "Opacity for fade out text when focus mode is enabled.",
           "markdownDescription": "Opacity for fade out text when focus mode is enabled."
         },
+        "markdown-fiction-writer.view.focusMode.highlightType": {
+          "type": "string",
+          "scope": "application",
+          "default": "Paragraph",
+          "enum": [
+            "Paragraph",
+            "Line"
+          ],
+          "description": "Controls what portion of the text gets highlighted. Focus on:"
+        },
         "markdown-fiction-writer.statusBar.enabled": {
-          "scope": "application", 
+          "scope": "application",
           "type": "boolean",
           "default": true,
           "markdownDescription": "Show the custom **Fiction Writer** status bar"
         },
         "markdown-fiction-writer.statusBar.items": {
           "scope": "application",
-          "type":"object",
+          "type": "object",
           "default": {
             "Select Dialogue Punctuation": "show",
             "Enable/Disable Keybindings": "show",
@@ -684,18 +753,77 @@
             "Open Fiction Writer Settings": "show"
           },
           "properties": {
-            "Select Dialogue Punctuation": { "type": "string", "enum": ["show", "hide"] },
-            "Enable/Disable Keybindings": { "type": "string", "enum": ["show", "hide"] },
-            "New Paragraph On Enter Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Typewriter Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Focus Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Writing Mode Toggle": { "type": "string", "enum": ["show", "hide"] },
-            "Fold All": { "type": "string", "enum": ["show", "hide"] },
-            "Unfold All": { "type": "string", "enum": ["show", "hide"] },
-            "Compile/Export Documents": { "type": "string", "enum": ["show", "hide"] },
-            "Open Fiction Writer Settings": { "type": "string", "enum": ["show", "hide"] }
+            "Select Dialogue Punctuation": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Enable/Disable Keybindings": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "New Paragraph On Enter Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Typewriter Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Focus Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Writing Mode Toggle": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Fold All": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Unfold All": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Compile/Export Documents": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            },
+            "Open Fiction Writer Settings": {
+              "type": "string",
+              "enum": [
+                "show",
+                "hide"
+              ]
+            }
           },
-         
           "additionalProperties": false,
           "markdownDescription": "`show`/`hide` items on the **Fiction Writer** status bar"
         },
@@ -709,6 +837,7 @@
             "green": "green",
             "orange": "orange",
             "amber": "amber",
+            "lightAmber": "lightAmber",
             "purple": "purple",
             "pink": "pink",
             "bluegrey": "bluegrey",
@@ -718,7 +847,7 @@
             "white": "white",
             "black": "black",
             "draft": "grey",
-            "rev1": "amber",
+            "rev1": "lightAmber",
             "rev2": "yellow",
             "done": "green"
           },
@@ -733,6 +862,7 @@
               "green",
               "orange",
               "amber",
+              "lightAmber",
               "purple",
               "bluegrey",
               "grey",
@@ -1056,6 +1186,30 @@
         "icon": "$(find-next-match)",
         "category": "Markdown Fiction Writer",
         "when": "false"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocument",
+        "title": "Split Document...",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtCursor",
+        "title": "Split Document Here (at cursor)",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtLine",
+        "title": "Split Document Here (at line)",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "fiction-writer.extension.moveSelectionToDocument",
+        "title": "Move Selected Text to New Document",
+        "category": "Markdown Fiction Writer",
+        "icon": "$(split-vertical)"
       }
     ],
     "keybindings": [
@@ -1117,6 +1271,24 @@
         "command": "fiction-writer.extension.toggleWritingAndZenMode",
         "key": "ctrl+f11",
         "mac": "cmd+f11",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocument",
+        "key": "alt+k k",
+        "mac": "alt+k k",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.splitDocumentAtLine",
+        "key": "alt+k l",
+        "mac": "alt+k l",
+        "when": "textInputFocus && editorLangId == markdown"
+      },
+      {
+        "command": "fiction-writer.extension.moveSelectionToDocument",
+        "key": "alt+k x",
+        "mac": "alt+k x",
         "when": "textInputFocus && editorLangId == markdown"
       }
     ],

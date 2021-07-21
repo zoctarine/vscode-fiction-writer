@@ -1,7 +1,7 @@
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 import * as path from 'path';
-import { fileManager, IFileGroup } from '../smartRename';
+import { IFileGroup } from '../smartRename';
 import { SupportedContent } from '../utils';
 
 export * from './metadataFileCache';

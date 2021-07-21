@@ -8,16 +8,18 @@ import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger,
 import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
 import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver, WritingMode } from './view';
 import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, metaService } from './metadata';
-import { fileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
+import { FileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
 let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
   vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
-  const fileIndexer = new FileIndexer(metaService);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
+  
+  const fileManager = new FileManager(configService);
+  const fileIndexer = new FileIndexer(metaService, fileManager);
   const cache = new MetadataFileCache(fileIndexer, configService);
 
   currentConfig = configService.getState();
@@ -44,13 +46,14 @@ export async function activate(context: vscode.ExtensionContext) {
   const notesWebView = vscode.window.registerWebviewViewProvider('fw-notes', notesProvider, {
     webviewOptions: { retainContextWhenHidden: true }
   });
-  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache);
+  const metadataDecoration = new MetadataFileDecorationProvider(configService, cache, fileManager);
   wordFrequencyProvider.tree = freqTree;
   docStatisticProvider.tree = statTree;
   metadataProvider.tree = metadataTree;
   isWatcherEnabled = true;
   const watcher = vscode.workspace.createFileSystemWatcher(knownFileTypes.all.pattern, false, false, false);
   const cmd = Constants.Commands;
+
   context.subscriptions.push(
     cache,
     watcher,
@@ -108,7 +111,11 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
     vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
     vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
-    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => {
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT, async () => { await fileManager.splitDocument(); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_LINE, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION_LINE); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_CURSOR, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION); }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_EXTRACT_SELECTION, async () => { await fileManager.splitDocument(Constants.SplitOptions.EXTRACT_SELECTION); }),
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => { 
       const oldName = e?.fsPath;
       if (!fileManager.getPathContentType(oldName).isKnown()) return;
 
@@ -319,17 +326,14 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   if (!showMessage) return;
 
   let version = 'latest version';
-  let change = '0052-alpha52';
+  let agreedVersionKey = 'isAgreeChanges';
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
-    const alphaVersion: string[] = version.split('.');
-    change = alphaVersion.join('') + '-alpha-' + alphaVersion[2];
   } catch { }
 
-  const flag = `isAgreeChanges${change}`;
-  const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/#${change}`;
+  const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;
 
-  if (!configService.getFlag(flag)) {
+  if (configService.getLocal(agreedVersionKey) !== version) {
     const options = ['Ok (don\'t show this notification)', 'View Changes'];
     const option = await vscode.window.showWarningMessage(
       `Markdwon Fiction Writer updated to version: ${version}.\n\n`,
@@ -339,7 +343,7 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
       vscode.env.openExternal(vscode.Uri.parse(uri));
       return;
     } else if (option === options[0]) {
-      configService.setFlag(flag);
+      configService.setLocal(agreedVersionKey, version);
     }
   }
 }
@@ -351,7 +355,12 @@ function compileCommand() {
     ['Compile all documents', 'fiction-writer.extension.compileAll'],
     ['Cancel', '']
   ]);
-  vscode.window.showQuickPick([...options.keys()], { 'canPickMany': false, 'ignoreFocusOut': false })
+
+  vscode.window.showQuickPick(
+    [...options.keys()], {
+      canPickMany: false,
+      ignoreFocusOut: false
+    })
     .then(selection => {
       if (!selection) return;
 
@@ -364,37 +373,53 @@ function compileCommand() {
 
 function selectDialogueMode() {
   vscode.window.showQuickPick(
-    Object.keys(DialogueMarkerMappings),
-    { 'canPickMany': false, 'ignoreFocusOut': false }
-  ).then(selection => {
-    if (selection && selection !== 'Cancel') {
-      vscode.workspace
-        .getConfiguration('markdown-fiction-writer.editDialogue')
-        .update('marker', selection, vscode.ConfigurationTarget.Global);
+    Object.keys(DialogueMarkerMappings), {
+      canPickMany: false,
+      ignoreFocusOut: false
     }
+  ).then(selection => {
+    if (!selection) return;
+
+    vscode.workspace
+      .getConfiguration('markdown-fiction-writer.editDialogue')
+      .update('marker', selection, vscode.ConfigurationTarget.Global);
   });
 }
 
 function toggleParagraphCommand() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<string>('easyParagraphCreation');
-  if (current === Constants.Paragraph.NEW_ON_ENTER) {
-    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_SHIFT_ENTER, vscode.ConfigurationTarget.Global);
-  } else {
-    config.update('easyParagraphCreation', Constants.Paragraph.NEW_ON_ENTER, vscode.ConfigurationTarget.Global);
-  }
+  const configKey = 'easyParagraphCreation';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const current = config.get<string>(configKey);
+
+  const next = (current === Constants.Paragraph.NEW_ON_ENTER)
+     ? Constants.Paragraph.NEW_ON_SHIFT_ENTER
+     : Constants.Paragraph.NEW_ON_ENTER;
+
+  config.update(configKey, next, vscode.ConfigurationTarget.Global);
 }
 
 
 function toggleFocusMode(configService: ConfigService) {
-  let enabled = configService.getState().isFocusMode;
+  const enabled = configService.getState().isFocusMode;
+
   configService.setLocal('isFocusMode', !enabled);
 }
 
 function toggleMetadataSummary() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
-  let enabled = config.get<boolean>('summaryEnabled');
-  config.update('summaryEnabled', !enabled, vscode.ConfigurationTarget.Global);
+  const configKey = 'summaryEnabled';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
+  const enabled = config.get<boolean>(configKey);
+
+  config.update(configKey, !enabled, vscode.ConfigurationTarget.Global);
+}
+
+
+function toggleKeybindingsCommand() {
+  const configKey = 'disableKeybindings';
+  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const current = config.get<boolean>(configKey);
+
+  config.update(configKey, !current, vscode.ConfigurationTarget.Global);
 }
 
 async function toggleTypewriterModeCommand(configService: ConfigService) {
@@ -416,12 +441,6 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
 
   currentConfig.isTypewriterMode = !currentConfig.isTypewriterMode;
   configService.setLocal('isTypewriterMode', currentConfig.isTypewriterMode);
-}
-
-function toggleKeybindingsCommand() {
-  let config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
-  let current = config.get<boolean>('disableKeybindings');
-  config.update('disableKeybindings', !current, vscode.ConfigurationTarget.Global);
 }
 
 async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
@@ -472,4 +491,3 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
-

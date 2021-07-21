@@ -1,8 +1,10 @@
 import { DecorationRangeBehavior, Range, TextDocument, TextEditor, TextEditorDecorationType, window, workspace } from 'vscode';
 import * as vscode from 'vscode';
-import { IObservable, Observer } from '../utils';
+import { Constants, IObservable, Observer } from '../utils';
 import { Config } from '../config';
-import { defaultMaxListeners } from 'events';
+
+const MAX_LINES_TO_HIGHLIGHT = 5000;
+const MAX_LINES_TO_SEARCH_UP_DOWN = 100;
 
 const decorationTypes = {
   boldSemiTransparent: window.createTextEditorDecorationType({
@@ -19,13 +21,12 @@ const decorationTypes = {
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed,
   }),
   comment: window.createTextEditorDecorationType({
-    'color': new vscode.ThemeColor('textLink.foreground'),
+    'color': new vscode.ThemeColor('fictionwriter.lightAmber'),
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed
   }),
   semiTransparent: window.createTextEditorDecorationType({
     'opacity': '0.5',
     'rangeBehavior': DecorationRangeBehavior.ClosedClosed,
-
   }),
 
   opaque: window.createTextEditorDecorationType({
@@ -45,7 +46,7 @@ export class TextDecorations extends Observer<Config>{
     pattern: RegExp,
     trigger?: string[],
     isEnabled: (config: Config) => boolean,
-    skipIfContainsSelection?:boolean
+    skipIfContainsSelection?: boolean
   }
   >([
     ['dialogueLine', {
@@ -79,7 +80,7 @@ export class TextDecorations extends Observer<Config>{
         decorationTypes.semiTransparent,
         decorationTypes.semiTransparent,
       ],
-      isEnabled: c=> c.viewFadeMetadata === true,
+      isEnabled: c => c.viewFadeMetadata === true,
       skipIfContainsSelection: true
     }]
   ]);
@@ -95,12 +96,12 @@ export class TextDecorations extends Observer<Config>{
 
     this.createOpacityDecoration();
     this.updateDecorations(window.activeTextEditor);
-    this.addDisposable(window.onDidChangeActiveTextEditor(e => { this._lastSelection = undefined; this.updateDecorations(e);} ));
+    this.addDisposable(window.onDidChangeActiveTextEditor(e => { this._lastSelection = undefined; this.updateDecorations(e); }));
     this.addDisposable(workspace.onDidChangeTextDocument(e => this.textDocumentChanged(e)));
     this.addDisposable(window.onDidChangeTextEditorSelection(e => this.textSelectionChanged(e)));
   }
-  
-  createOpacityDecoration(){      
+
+  createOpacityDecoration() {
     this._focusModeOpacityDecoration = vscode.window.createTextEditorDecorationType({
       opacity: this.state.viewFocusModeOpacity.toString(),
       rangeBehavior: DecorationRangeBehavior.ClosedClosed
@@ -170,25 +171,71 @@ export class TextDecorations extends Observer<Config>{
     }
   }
 
+  private _searchParagraphBreakUp(editor: TextEditor, offset: number, limit: number) {
+    let beforeStart = editor.selection.start.line - offset;
+
+    while (
+      beforeStart > 0 &&
+      editor.selection.start.line - beforeStart < limit &&
+      editor.document.lineAt(beforeStart).text.trim() !== "") {
+        beforeStart--;
+      }
+
+    return beforeStart;
+  }
+
+  private _searchParagraphBreakDown(editor: TextEditor, offset: number, limit: number) {
+    let afterEnd = editor.selection.end.line;
+    while (afterEnd < editor.document.lineCount &&
+      afterEnd - editor.selection.end.line < limit &&
+      editor.document.lineAt(afterEnd).text.trim() !== "") {
+      afterEnd++;
+    }
+
+    return afterEnd;
+  }
+
   updateDecorations(editor?: TextEditor) {
     if (editor === undefined || !this.isValid(editor) || !editor.document || editor.document.languageId !== 'markdown') { return; }
     const document = editor.document;
 
     this.clearDecorations();
+    if (document.lineCount >= MAX_LINES_TO_HIGHLIGHT) return;
 
-    if (this.state.isFocusMode){
-      const firstLine = document.lineAt(0);
-      const lastLine = document.lineAt(document.lineCount - 1);
-      
-      const selLine = document.lineAt(editor.selection.active.line);
-      const nextLine = new vscode.Position(selLine.lineNumber + 1, 0);
+    const firstLine = document.positionAt(0);
+    const lastLine = document.lineAt(document.lineCount - 1);
 
-      if (this._focusModeOpacityDecoration){
-        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(firstLine.range.start, selLine.range.start));
-        this.addDecoration(this._focusModeOpacityDecoration, new vscode.Range(nextLine, lastLine.range.end));
+    // apply focus decoration
+    if (this.state.isFocusMode && this.state.viewFocusModeOpacity < 1) {
+
+      let rangeUp = 0;
+      let rangeDown = 0;
+      let offsetUp = 0;
+      let offsetDown = 0;
+
+      if (this.state.viewFocusModeType === Constants.FocusType.PARAGRAPH) {
+        rangeUp = MAX_LINES_TO_SEARCH_UP_DOWN;
+        rangeDown = MAX_LINES_TO_SEARCH_UP_DOWN;
+        offsetUp = 1;
+      }
+
+      const beforeStart = this._searchParagraphBreakUp(editor, offsetUp, rangeUp);
+      const afterEnd = this._searchParagraphBreakDown(editor, offsetDown, rangeDown);
+
+      if (beforeStart > 0) {
+        this.addDecoration(this._focusModeOpacityDecoration,
+          new vscode.Range(firstLine, new vscode.Position(beforeStart, 0))
+        );
+      }
+
+      if (afterEnd + 1 < document.lineCount) {
+        this.addDecoration(this._focusModeOpacityDecoration,
+          new vscode.Range(new vscode.Position(afterEnd + 1, 0), lastLine.range.end)
+        );
       }
     }
 
+    // apply all other decorations
     const text = document.getText();
     if (text.length === 0) return;
 
@@ -197,8 +244,8 @@ export class TextDecorations extends Observer<Config>{
       let match;
 
       while ((match = dec.pattern.exec(text)) !== null) {
-        
-        if (dec.skipIfContainsSelection){
+
+        if (dec.skipIfContainsSelection) {
           const pos = this.getDocRange(match.index, match[0].length, document);
           if (pos.contains(editor.selection?.active)) continue;
         }
@@ -224,7 +271,7 @@ export class TextDecorations extends Observer<Config>{
     });
   }
 
-  triggerUpdateDecorations(editor: TextEditor, ms: number = 500) {
+  triggerUpdateDecorations(editor: TextEditor, ms: number = 100) {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -235,13 +282,13 @@ export class TextDecorations extends Observer<Config>{
   protected onStateChange(newState: Config) {
 
     if (this.state.viewDialogueHighlight !== newState.viewDialogueHighlight ||
-        this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
-        this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ||
-        this.state.isFocusMode !== newState.isFocusMode ||
-        this.state.viewFadeMetadata !== newState.viewFadeMetadata ){
-          this.loadTags();
-          vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
-        }
+      this.state.viewDialogueHighlightMarkers !== newState.viewDialogueHighlightMarkers ||
+      this.state.metaKeywordsShowBadges !== newState.metaKeywordsShowBadges ||
+      this.state.isFocusMode !== newState.isFocusMode ||
+      this.state.viewFadeMetadata !== newState.viewFadeMetadata) {
+      this.loadTags();
+      vscode.window.visibleTextEditors.forEach(e => this.triggerUpdateDecorations(e, 10));
+    }
 
     super.onStateChange(newState);
     this.createOpacityDecoration();
