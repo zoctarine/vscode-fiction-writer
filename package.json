@@ -10,7 +10,7 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.0.54",
+  "version": "0.0.53",
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -659,13 +659,14 @@
           "minimum": 0.1,
           "maximum": 1.0,
           "default": 0.4,
-          "description": "Opacity for fade out text when focus mode is enabled"
+          "description": "Opacity for fade out text when focus mode is enabled.",
+          "markdownDescription": "Opacity for fade out text when focus mode is enabled."
         },
         "markdown-fiction-writer.statusBar.enabled": {
           "scope": "application", 
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show the custom Fiction Writer status bar."
+          "markdownDescription": "Show the custom **Fiction Writer** status bar"
         },
         "markdown-fiction-writer.statusBar.items": {
           "scope": "application",
@@ -696,7 +697,7 @@
           },
          
           "additionalProperties": false,
-          "markdownDescription": "`show`/`hide` items on the **Markdown Fiction Writer** status bar"
+          "markdownDescription": "`show`/`hide` items on the **Fiction Writer** status bar"
         },
         "markdown-fiction-writer.metadata.keywords.colors": {
           "type": "object",

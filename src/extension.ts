@@ -288,7 +288,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await metadataProvider.refresh();
   await notesProvider.refresh();
   docStatisticProvider.refresh();
-  showAgreeWithChanges(configService, true);
+  showAgreeWithChanges(configService, false);
   writingMode.exitWritingMode();
 }
 
@@ -323,7 +323,7 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   try {
     version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
     const alphaVersion: string[] = version.split('.');
-   // change = alphaVersion.join('') + '-alpha-' + alphaVersion[2];
+    change = alphaVersion.join('') + '-alpha-' + alphaVersion[2];
   } catch { }
 
   const flag = `isAgreeChanges${change}`;
