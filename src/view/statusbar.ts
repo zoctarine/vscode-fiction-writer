@@ -33,7 +33,7 @@ export class StatusBarObserver extends Observer<Config>{
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.settingsButton.tooltip = `Open extension settings`
+    this.settingsButton.tooltip = `Open extension settings`;
     this.settingsButton.text = `$(settings-gear)`;
     this.settingsButton.command = {
       title: 'Open Settings', command: 'workbench.action.openSettings', arguments: [
@@ -117,7 +117,7 @@ export class StatusBarObserver extends Observer<Config>{
   }
 
   private _updateVisibility(button: vscode.StatusBarItem, setting: string){
-    if (this.state.statusBarItems && this.state.statusBarItems[setting] === 'hide'){
+    if (this.state.statusBarItems && !this.state.statusBarItems[setting]){
       button.hide();
     } else {
       button.show();

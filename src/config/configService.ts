@@ -24,17 +24,17 @@ export class ConfigService extends Observable<Config> {
   }
 
   reload(event?: ConfigurationChangeEvent) {
-    const writingMode = workspace.getConfiguration('markdown-fiction-writer.writingMode');
-    const editing = workspace.getConfiguration('markdown-fiction-writer.edit');
-    const editDialogue = workspace.getConfiguration('markdown-fiction-writer.editDialogue');
-    const exporting = workspace.getConfiguration('markdown-fiction-writer.export');
-    const view = workspace.getConfiguration('markdown-fiction-writer.view');
-    const statusBar = workspace.getConfiguration('markdown-fiction-writer.statusBar');
-    const metadata = workspace.getConfiguration('markdown-fiction-writer.metadata');
-    const formatting = workspace.getConfiguration('markdown-fiction-writer.textFormatting');
-    const smartRename = workspace.getConfiguration('markdown-fiction-writer.smartRename');
-    const notes = workspace.getConfiguration('markdown-fiction-writer.notes');
-    const splitDocument = workspace.getConfiguration('markdown-fiction-writer.splitDocument');
+    const writingMode = workspace.getConfiguration('fictionWriter.writingMode');
+    const editing = workspace.getConfiguration('fictionWriter.edit');
+    const editDialogue = workspace.getConfiguration('fictionWriter.editDialogue');
+    const exporting = workspace.getConfiguration('fictionWriter.export');
+    const view = workspace.getConfiguration('fictionWriter.view');
+    const statusBar = workspace.getConfiguration('fictionWriter.statusBar');
+    const metadata = workspace.getConfiguration('fictionWriter.metadata');
+    const formatting = workspace.getConfiguration('fictionWriter.textFormatting');
+    const smartRename = workspace.getConfiguration('fictionWriter.smartRename');
+    const notes = workspace.getConfiguration('fictionWriter.notes');
+    const splitDocument = workspace.getConfiguration('fictionWriter.splitDocument');
 
     const dialoguePrefix = DialogueMarkerMappings[this.read<string>(editDialogue, 'marker', Constants.Dialogue.TWODASH)] ?? '';
     const isDialogueEnabled = dialoguePrefix !== '';
@@ -91,7 +91,7 @@ export class ConfigService extends Observable<Config> {
 
     config.foldSentences = this.read<boolean>(view, 'foldParagraphLines', true);
     config.statusBarEnabled = this.read<boolean>(statusBar, 'enabled', true);
-    config.statusBarItems = this.read<{[key:string]:string}>(statusBar, 'items', {});
+    config.statusBarItems = this.read<{[key:string]:boolean}>(statusBar, 'items', {});
 
     config.isDialogueEnabled = isDialogueEnabled;
     config.dialgoueIndent = '';

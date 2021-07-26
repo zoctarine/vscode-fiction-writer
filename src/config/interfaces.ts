@@ -6,14 +6,14 @@ export interface IKvp<T> {
 }
 
 export interface IContextConfig {
-  [key: string]: ConfigurationChangeEvent| string | number | boolean | undefined | IKvp<string> | Map<string, ThemeColor> | Map<string, ThemeColor>;
+  [key: string]: ConfigurationChangeEvent| string | number | boolean | undefined | IKvp<string> | IKvp<boolean> | Map<string, ThemeColor> | Map<string, ThemeColor>;
 
   isZenMode?: boolean;
   isTypewriterMode?: boolean;
   isFocusMode?: boolean;
 }
 export class Config implements IContextConfig {
-  [key: string]: string | number | boolean | ConfigurationChangeEvent | IKvp<string> | Map<string, ThemeColor> | undefined;
+  [key: string]: string | number | boolean | ConfigurationChangeEvent | IKvp<string> | IKvp<boolean> | Map<string, ThemeColor> | undefined;
   isZenMode?: boolean | undefined;
   isTypewriterMode?: boolean | undefined;
   isFocusMode?: boolean | undefined;
@@ -59,7 +59,7 @@ export class Config implements IContextConfig {
   viewZenModeFontSize?: number;
   viewZenModeTheme?: string;
   statusBarEnabled?: boolean;
-  statusBarItems?: { [key: string]: string };
+  statusBarItems?: { [key: string]: boolean };
   viewFadeMetadata?: boolean;
   viewZenModeToggleFocus?: boolean;
   viewFocusModeOpacity!: number;

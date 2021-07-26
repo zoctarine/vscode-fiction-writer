@@ -145,10 +145,10 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   protected onStateChange(newState: Config) {
     super.onStateChange(newState);
 
-    if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata.enabled')) {
+    if (this.state.changeEvent?.affectsConfiguration('fictionWriter.metadata.enabled')) {
       this.register();
     }
-    if (this.state.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata')) {
+    if (this.state.changeEvent?.affectsConfiguration('fictionWriter.metadata')) {
       this.fire(this._cache.getAllKeys().map(fp => vscode.Uri.file(fp)));
     }
   }

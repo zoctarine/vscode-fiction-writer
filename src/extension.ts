@@ -270,7 +270,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
             if (saveAnswer) {
               vscode.workspace
-                .getConfiguration('markdown-fiction-writer.smartRename')
+                .getConfiguration('fictionWriter.smartRename')
                 .update(
                   'renameRelatedFiles',
                   doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
@@ -328,7 +328,7 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   let version = 'latest version';
   let agreedVersionKey = 'isAgreeChanges';
   try {
-    version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
+    version = vscode.extensions.getExtension('vsc-zoctarine.fictionWriter')!.packageJSON.version ?? version;
   } catch { }
 
   const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;
@@ -381,14 +381,14 @@ function selectDialogueMode() {
     if (!selection) return;
 
     vscode.workspace
-      .getConfiguration('markdown-fiction-writer.editDialogue')
+      .getConfiguration('fictionWriter.editDialogue')
       .update('marker', selection, vscode.ConfigurationTarget.Global);
   });
 }
 
 function toggleParagraphCommand() {
   const configKey = 'easyParagraphCreation';
-  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const config = vscode.workspace.getConfiguration('fictionWriter.edit');
   const current = config.get<string>(configKey);
 
   const next = (current === Constants.Paragraph.NEW_ON_ENTER)
@@ -407,7 +407,7 @@ function toggleFocusMode(configService: ConfigService) {
 
 function toggleMetadataSummary() {
   const configKey = 'summaryEnabled';
-  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.metadata.categories');
+  const config = vscode.workspace.getConfiguration('fictionWriter.metadata.categories');
   const enabled = config.get<boolean>(configKey);
 
   config.update(configKey, !enabled, vscode.ConfigurationTarget.Global);
@@ -416,7 +416,7 @@ function toggleMetadataSummary() {
 
 function toggleKeybindingsCommand() {
   const configKey = 'disableKeybindings';
-  const config = vscode.workspace.getConfiguration('markdown-fiction-writer.edit');
+  const config = vscode.workspace.getConfiguration('fictionWriter.edit');
   const current = config.get<boolean>(configKey);
 
   config.update(configKey, !current, vscode.ConfigurationTarget.Global);
@@ -444,7 +444,7 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
 }
 
 async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
-  if (event.affectsConfiguration('markdown-fiction-writer')) {
+  if (event.affectsConfiguration('fictionWriter')) {
     const previousConfig = { ...currentConfig };
     configuration.reload(event);
     currentConfig = configuration.getState();
@@ -462,7 +462,7 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
       });
 
       if (selectedTemplate) {
-        vscode.workspace.getConfiguration('markdown-fiction-writer.export.outputTemplate')
+        vscode.workspace.getConfiguration('fictionWriter.export.outputTemplate')
           .update('file', selectedTemplate[0].fsPath, vscode.ConfigurationTarget.Global);
       }
     }

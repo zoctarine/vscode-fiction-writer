@@ -91,7 +91,7 @@ export class WritingMode {
             if (!newSize) return;
 
             vscode.workspace
-                .getConfiguration('markdown-fiction-writer.writingMode')
+                .getConfiguration('fictionWriter.writingMode')
                 .update('fontSize', parseInt(newSize), vscode.ConfigurationTarget.Global);
 
             vscode.window
@@ -153,7 +153,7 @@ export class WritingMode {
         if (!theme) return;
 
         vscode.workspace
-            .getConfiguration('markdown-fiction-writer.writingMode')
+            .getConfiguration('fictionWriter.writingMode')
             .update('theme', theme, vscode.ConfigurationTarget.Global);
 
         vscode.window.showInformationMessage(`Writing Mode theme set to: ${theme}`);

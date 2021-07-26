@@ -179,7 +179,7 @@ export class MarkdownMetadataTreeDataProvider extends Observer<Config> implement
 
   protected onStateChange(newState: Config) {
     super.onStateChange(newState);
-    const forced = newState.changeEvent?.affectsConfiguration('markdown-fiction-writer.metadata');
+    const forced = newState.changeEvent?.affectsConfiguration('fictionWriter.metadata');
     this.refresh(forced);
   }
 }
