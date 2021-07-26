@@ -8,7 +8,8 @@ A [vscode extension](https://marketplace.visualstudio.com/items?itemName=vsc-zoc
 
 Some tools I wrote for writing, organizing and exporting fiction (short stories, novels) using [markdown](https://daringfireball.net/projects/markdown/).
 
-> ⚠ **Warning:** This extension is soon entering the be Beta phase. This means, a major restructuring of settings and features will follow. Please make sure to remember/backup you settings if you want to reuse them with the newer version.
+> ⚠ **Warning:** This extension is entering the 
+ Beta phase. This means, a major restructuring of settings and features will follow. Please make sure to remember/backup you settings if you want to reuse them with the newer version.
 
 ## Features
 
