@@ -99,7 +99,7 @@ export class ConfigService extends Observable<Config> {
     // NOTES
 
     config.notesEnabled = this.read<boolean>(notes, 'enabled', true);
-    config.notesDefaultText = this.read<string[]>(notes, 'defaultText', ['YOUR NOTES HERE']).join('\n');
+    config.notesDefaultText = this.read<string>(notes, 'defaultText', 'YOUR NOTES HERE');
 
     // SMART EDIT
 

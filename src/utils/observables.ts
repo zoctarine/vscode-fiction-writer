@@ -44,29 +44,29 @@ export abstract class Observer<T extends {}>  extends WithDisposables  implement
 
 
 export abstract class Observable<T extends object> implements IObservable<T>, IDisposable{
-  private observers: Array<IObserver<T>> = [];
+  private _observers: Array<IObserver<T>> = [];
   
   abstract getState(): T;
   
   attach(observer: IObserver<T>) {
-      if (!this.observers.includes(observer)) {
-          this.observers.push(observer);
+      if (!this._observers.includes(observer)) {
+          this._observers.push(observer);
       }
   }
 
   detach(observer: IObserver<T>){
-      const observerIndex = this.observers.indexOf(observer);
+      const observerIndex = this._observers.indexOf(observer);
       if (observerIndex !== -1) {
-          this.observers.splice(observerIndex, 1);
+          this._observers.splice(observerIndex, 1);
       }
   }
 
   notify(...args: any[]) {
-      this.observers.forEach(o => o.update(...args));
+      this._observers.forEach(o => o.update(...args));
   }
 
 
   dispose() {
-    this.observers = [];
+    this._observers = [];
   }
 }

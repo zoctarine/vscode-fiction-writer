@@ -3,121 +3,123 @@ import { IObservable, Observer, Constants, getActiveEditor, SupportedContent } f
 import { Config } from '../config';
 
 export class StatusBarObserver extends Observer<Config>{
-  private buttons: vscode.StatusBarItem[];
-  private compileButton: vscode.StatusBarItem;
-  private foldButton: vscode.StatusBarItem;
-  private unfoldButton: vscode.StatusBarItem;
-  private settingsButton: vscode.StatusBarItem;
-  private paragraphToggleButton: vscode.StatusBarItem;
-  private typewriterToggleButton: vscode.StatusBarItem;
-  private keybindingToggleButton: vscode.StatusBarItem;
-  private writingModeToggleButton: vscode.StatusBarItem;
+  private _buttons: vscode.StatusBarItem[];
+  private _compileButton: vscode.StatusBarItem;
+  private _foldButton: vscode.StatusBarItem;
+  private _unfoldButton: vscode.StatusBarItem;
+  private _settingsButton: vscode.StatusBarItem;
+  private _paragraphToggleButton: vscode.StatusBarItem;
+  private _typewriterToggleButton: vscode.StatusBarItem;
+  private _keybindingToggleButton: vscode.StatusBarItem;
+  private _writingModeToggleButton: vscode.StatusBarItem;
 
-  private dialogueMarkerSelector: vscode.StatusBarItem;
+  private _dialogueMarkerSelector: vscode.StatusBarItem;
 
   constructor(configuration: IObservable<Config>) {
     super(configuration);
 
-    this.buttons = [];
+    this._buttons = [];
 
     // Toggle Keybindigns
-    this.keybindingToggleButton = vscode.window.createStatusBarItem(
+    this._keybindingToggleButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.keybindingToggleButton.command = 'fiction-writer.extension.toggleKeybindings';
+    this._keybindingToggleButton.command = 'fiction-writer.extension.toggleKeybindings';
     this.updateKeybindingToggle();
 
     // Open Settings
-    this.settingsButton = vscode.window.createStatusBarItem(
+    this._settingsButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.settingsButton.tooltip = `Open extension settings`;
-    this.settingsButton.text = `$(settings-gear)`;
-    this.settingsButton.command = {
-      title: 'Open Settings', command: 'workbench.action.openSettings', arguments: [
+    this._settingsButton.tooltip = 'Open extension settings'; // TODO: use new vscode.MarkdownString(``);
+    this._settingsButton.text = `$(settings-gear)`;
+    this._settingsButton.command = {
+      title: 'Open Settings',
+      command: 'workbench.action.openSettings',
+      arguments: [
         '@ext:vsc-zoctarine.markdown-fiction-writer']
     };
 
     // Toggle Paragraph On Enter
-    this.paragraphToggleButton = vscode.window.createStatusBarItem(
+    this._paragraphToggleButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.paragraphToggleButton.command = 'fiction-writer.extension.toggleNewParagraph';
-    this.paragraphToggleButton.tooltip = 'Toggle new paragraph on Enter';
+    this._paragraphToggleButton.command = 'fiction-writer.extension.toggleNewParagraph';
+    this._paragraphToggleButton.tooltip = 'Toggle new paragraph on Enter';
     this.updateParagraphToggle();
 
     // Toggle Typewriter Mode
-    this.typewriterToggleButton = vscode.window.createStatusBarItem(
+    this._typewriterToggleButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.typewriterToggleButton.command = 'fiction-writer.extension.toggleTypewriterMode';
-    this.typewriterToggleButton.tooltip = 'Toggle TypeWriter mode';
+    this._typewriterToggleButton.command = 'fiction-writer.extension.toggleTypewriterMode';
+    this._typewriterToggleButton.tooltip = 'Toggle TypeWriter mode';
     this.updateTypewriterToggle();
 
     // Export: Compile
-    this.compileButton = vscode.window.createStatusBarItem(
+    this._compileButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.compileButton.text = `$(desktop-download) Export`;
-    this.compileButton.tooltip = `Compile/Export document(s)`;
-    this.compileButton.command = 'fiction-writer.extension.compile';
+    this._compileButton.text = `$(desktop-download) Export`;
+    this._compileButton.tooltip = `Compile/Export document(s)`;
+    this._compileButton.command = 'fiction-writer.extension.compile';
 
-    this.foldButton = vscode.window.createStatusBarItem(
+    this._foldButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.foldButton.text = `$(folding-collapsed)`;
-    this.foldButton.command = 'editor.foldAllMarkerRegions';
-    this.foldButton.tooltip = 'Fold all';
+    this._foldButton.text = `$(folding-collapsed)`;
+    this._foldButton.command = 'editor.foldAllMarkerRegions';
+    this._foldButton.tooltip = 'Fold all';
 
-    this.unfoldButton = vscode.window.createStatusBarItem(
+    this._unfoldButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.unfoldButton.text = `$(folding-expanded)`;
-    this.unfoldButton.command = 'editor.unfoldAllMarkerRegions';
-    this.unfoldButton.tooltip = 'Unfold All';
+    this._unfoldButton.text = `$(folding-expanded)`;
+    this._unfoldButton.command = 'editor.unfoldAllMarkerRegions';
+    this._unfoldButton.tooltip = 'Unfold All';
 
-    this.dialogueMarkerSelector = vscode.window.createStatusBarItem(
+    this._dialogueMarkerSelector = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER
     );
-    this.dialogueMarkerSelector.command = 'fiction-writer.extension.selectEditMode';
-    this.dialogueMarkerSelector.tooltip = 'Select dialogue punctuation (change marker)';
+    this._dialogueMarkerSelector.command = 'fiction-writer.extension.selectEditMode';
+    this._dialogueMarkerSelector.tooltip = 'Select dialogue punctuation (change marker)';
     this.updateDialogueSelector();
 
     // Toggle Zen Mode
-    this.writingModeToggleButton = vscode.window.createStatusBarItem(
+    this._writingModeToggleButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       Number.MAX_SAFE_INTEGER,
     );
-    this.writingModeToggleButton.command = Constants.Commands.TOGGLE_WRITING_MODE;
-    this.writingModeToggleButton.tooltip = 'Toggle Writing Mode';
+    this._writingModeToggleButton.command = Constants.Commands.TOGGLE_WRITING_MODE;
+    this._writingModeToggleButton.tooltip = 'Toggle Writing Mode';
     this.updateWritingModeToggle();
 
-    this.buttons.push(
-      this.settingsButton,
-      this.compileButton,
-      this.unfoldButton,
-      this.foldButton,
-      this.writingModeToggleButton,
-      this.typewriterToggleButton,
-      this.paragraphToggleButton,
-      this.keybindingToggleButton,
-      this.dialogueMarkerSelector
+    this._buttons.push(
+      this._settingsButton,
+      this._compileButton,
+      this._unfoldButton,
+      this._foldButton,
+      this._writingModeToggleButton,
+      this._typewriterToggleButton,
+      this._paragraphToggleButton,
+      this._keybindingToggleButton,
+      this._dialogueMarkerSelector
     );
-    this.buttons.forEach(b => this.addDisposable(b));
+    this._buttons.forEach(b => this.addDisposable(b));
 
     this.showHide();
   }
 
-  private _updateVisibility(button: vscode.StatusBarItem, setting: string){
-    if (this.state.statusBarItems && !this.state.statusBarItems[setting]){
+  private _updateVisibility(button: vscode.StatusBarItem, setting: string) {
+    if (this.state.statusBarItems && !this.state.statusBarItems[setting]) {
       button.hide();
     } else {
       button.show();
@@ -127,50 +129,50 @@ export class StatusBarObserver extends Observer<Config>{
 
     if (getActiveEditor(SupportedContent.Fiction) && this.state.statusBarEnabled) {
       [
-       [this.settingsButton, 'Open Fiction Writer Settings'],
-       [this.compileButton, 'Compile/Export Documents'],
-       [this.unfoldButton, 'Unfold All'],
-       [this.foldButton, 'Fold All'],
-       [this.writingModeToggleButton, 'Writing Mode Toggle'],
-       [this.typewriterToggleButton, 'Typewriter Mode Toggle'],
-       [this.paragraphToggleButton, 'New Paragraph On Enter Toggle'],
-       [this.keybindingToggleButton, 'Enable/Disable Keybindings'],
-       [this.dialogueMarkerSelector, 'Select Dialogue Punctuation'],
-      ].forEach(item => 
+        [this._settingsButton, 'open_settings'],
+        [this._compileButton, 'export'],
+        [this._unfoldButton, 'unfold'],
+        [this._foldButton, 'fold'],
+        [this._writingModeToggleButton, 'writing_mode'],
+        [this._typewriterToggleButton, 'typewriter_mode'],
+        [this._paragraphToggleButton, 'new_paragraph_toggle'],
+        [this._keybindingToggleButton, 'keybindings'],
+        [this._dialogueMarkerSelector, 'dialogue_punctuation'],
+      ].forEach(item =>
         this._updateVisibility(item[0] as vscode.StatusBarItem, item[1] as string)
       );
     } else {
-      this.buttons.forEach(b => b.hide());
+      this._buttons.forEach(b => b.hide());
     }
   }
 
   updateDialogueSelector() {
-    this.dialogueMarkerSelector.text = `$(comment-discussion) ${this.state.dialoguePrefix || '" "'}`;
+    this._dialogueMarkerSelector.text = `$(comment-discussion) ${this.state.dialoguePrefix || '" "'}`;
   }
 
   updateKeybindingToggle() {
     if (this.state.keybindingsDisabled) {
-      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: disabled';
-      this.keybindingToggleButton.text = `$(clear-all)`;
+      this._keybindingToggleButton.tooltip = 'Use fiction writer keybindings: disabled';
+      this._keybindingToggleButton.text = `$(clear-all)`;
     } else {
-      this.keybindingToggleButton.tooltip = 'Use fiction writer keybindings: enabled';
-      this.keybindingToggleButton.text = `$(keyboard)`;
+      this._keybindingToggleButton.tooltip = 'Use fiction writer keybindings: enabled';
+      this._keybindingToggleButton.text = `$(keyboard)`;
     }
   }
 
   updateWritingModeToggle() {
-    this.writingModeToggleButton.text = this.state.isZenMode
+    this._writingModeToggleButton.text = this.state.isZenMode
       ? `$(discard)`
       : `$(zap)`;
   }
   updateParagraphToggle() {
-    this.paragraphToggleButton.text = this.state.inverseEnter
+    this._paragraphToggleButton.text = this.state.inverseEnter
       ? `$(list-selection)`
       : `$(list-flat)`;
   }
 
   updateTypewriterToggle() {
-    this.typewriterToggleButton.text = this.state.isTypewriterMode
+    this._typewriterToggleButton.text = this.state.isTypewriterMode
       ? `$(circle-filled)`
       : `$(circle-outline)`;
   }

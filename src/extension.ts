@@ -14,6 +14,7 @@ let currentConfig: Config;
 let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
+
   vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
@@ -328,7 +329,7 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   let version = 'latest version';
   let agreedVersionKey = 'isAgreeChanges';
   try {
-    version = vscode.extensions.getExtension('vsc-zoctarine.fictionWriter')!.packageJSON.version ?? version;
+    version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
   } catch { }
 
   const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;

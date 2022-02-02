@@ -4,7 +4,7 @@ export interface IDisposable {
 
 export abstract class WithDisposables implements IDisposable {
   protected disposables: Map<string, IDisposable>;
-  private static lastId: number = 0;
+  private static _lastId: number = 0;
 
   constructor() {
     this.disposables = new Map<string, IDisposable>();
@@ -15,7 +15,7 @@ export abstract class WithDisposables implements IDisposable {
   }
 
   addDisposable(disposable: IDisposable, key?: string) {
-    if (!key) key = `id_${++WithDisposables.lastId}`;
+    if (!key) key = `id_${++WithDisposables._lastId}`;
     this.disposables.set(key, disposable);
   }
 
