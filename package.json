@@ -12,7 +12,7 @@
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
   "version": "0.1.0",
   "engines": {
-    "vscode": "^1.63.2"
+    "vscode": "^1.64.0"
   },
   "categories": [
     "Programming Languages",
