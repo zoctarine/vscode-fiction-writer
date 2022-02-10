@@ -1,0 +1,80 @@
+site_name: Markdown Fiction Writer
+site_url: https://zoctarine.github.io/vscode-fiction-writer/index.html
+site_author: ZOctarine
+site_description: "Fiction Writer VSCode Extension Documentation"
+repo_url: "https://github.com/zoctarine/vscode-fiction-writer"
+copyright: "Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>"
+edit_uri: ""
+
+theme:
+  name: material
+  custom_dir: overrides
+
+  # Necessary for search to work properly
+  include_search_page: false
+  search_index_only: true
+  features:
+    - navigation.sections
+    - navigation.expanded
+
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+  icon:
+    logo: material/book
+  palette:
+    scheme: default
+    primary: blue
+    accent: amber
+
+nav:
+  - Overview: index.md
+  - Features: 
+     - Text Editing: edit.md
+     - Formatting: format.md
+     - Exporting: export.md
+     - Metadata: metadata.md
+     - Notes: notes.md
+     - View: view.md
+     - Split: split.md
+     - Text Statistics: stats.md
+  - Configuration:
+    - Settings: settings.md
+    - Keyboard Shortcuts: shortcuts.md
+  - Other: 
+    - Changelog: changelog.md
+    - Contribute: contribute.md
+  - About Writing: writing.md
+
+markdown_extensions:
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - attr_list
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+  - abbr
+  - toc:
+      permalink: true
+      baselevel: 3
+
+extra_javascript:
+  - resources/extra.js
+
+extra_css:
+  - resources/extra.css
