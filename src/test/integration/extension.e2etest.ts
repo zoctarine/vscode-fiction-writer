@@ -4,7 +4,7 @@ import * as utils from './testUtils';
 
 suite('Document Formatting', () => {
 	test("Should start activate @fiction-writer when opening markdown document", async () => {
-		await utils.openFile("# markdown heading");
+		await utils.newMdFile("# markdown heading");
 		await utils.sleep(1000);
 
 		const started = vscode.extensions.getExtension(
