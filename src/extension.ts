@@ -296,7 +296,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await metadataProvider.refresh();
   await notesProvider.refresh();
   docStatisticProvider.refresh();
-  showAgreeWithChanges(configService, false);
+  showAgreeWithChanges(configService, true);
   writingMode.exitWritingMode();
 }
 
@@ -334,10 +334,11 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
 
   const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;
 
-  if (configService.getLocal(agreedVersionKey) !== version) {
+  //if (configService.getLocal(agreedVersionKey) !== version) 
+  {
     const options = ['Ok (don\'t show this notification)', 'View Changes'];
     const option = await vscode.window.showWarningMessage(
-      `Markdwon Fiction Writer updated to version: ${version}.\n\n`,
+      `Markdwon Fiction Writer updated to version: ${version}.\n\n.**Warning:**Configuration key format [changed](${uri})`,
       ...options);
 
     if (option === options[1]) {
@@ -383,7 +384,7 @@ function selectDialogueMode() {
 
     vscode.workspace
       .getConfiguration('fictionWriter.editDialogue')
-      .update('marker', selection, vscode.ConfigurationTarget.Global);
+      .update('marker', selection, vscode.ConfigurationTarget.Workspace);
   });
 }
 

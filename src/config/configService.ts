@@ -138,7 +138,7 @@ export class ConfigService extends Observable<Config> {
 
     for (const [key, val] of Object.entries(metaKeywordColors)) {
       if (val && val !== KnownColor.NONE) {
-        config.metaKeywordColors.set(key.toLowerCase(), new ThemeColor(`fictionwriter.${val}`));
+        config.metaKeywordColors.set(key.toLowerCase(), new ThemeColor(`fictionWriter.${val}`));
       }
     };
 

@@ -25,6 +25,8 @@
     "fiction",
     "dialogue",
     "metadata",
+    "literature",
+    "writers",
     "pandoc"
   ],
   "bugs": {
@@ -42,7 +44,7 @@
   "contributes": {
     "colors": [
       {
-        "id":"fictionWriter.blue",
+        "id": "fictionWriter.blue",
         "description": "Blue Color",
         "defaults": {
           "dark": "#2196F3",
@@ -51,7 +53,7 @@
         }
       },
       {
-        "id":"fictionWriter.red",
+        "id": "fictionWriter.red",
         "description": "Red Color",
         "defaults": {
           "dark": "#ef5350",
@@ -60,7 +62,7 @@
         }
       },
       {
-        "id":"fictionWriter.lightred",
+        "id": "fictionWriter.lightred",
         "description": "Light Red Color",
         "defaults": {
           "dark": "#e06c75",
@@ -69,7 +71,7 @@
         }
       },
       {
-        "id":"fictionWriter.lime",
+        "id": "fictionWriter.lime",
         "description": "Lime Color",
         "defaults": {
           "dark": "#8BC34A",
@@ -78,7 +80,7 @@
         }
       },
       {
-        "id":"fictionWriter.green",
+        "id": "fictionWriter.green",
         "description": "Green Color",
         "defaults": {
           "dark": "#00E676",
@@ -87,7 +89,7 @@
         }
       },
       {
-        "id":"fictionWriter.orange",
+        "id": "fictionWriter.orange",
         "description": "Orange Color",
         "defaults": {
           "dark": "#FF9800",
@@ -96,7 +98,7 @@
         }
       },
       {
-        "id":"fictionWriter.amber",
+        "id": "fictionWriter.amber",
         "description": "Amber Color",
         "defaults": {
           "dark": "#FFC107",
@@ -105,7 +107,7 @@
         }
       },
       {
-        "id":"fictionWriter.lightAmber",
+        "id": "fictionWriter.lightAmber",
         "description": "Amber Color",
         "defaults": {
           "dark": "#F6D55C",
@@ -114,7 +116,7 @@
         }
       },
       {
-        "id":"fictionWriter.purple",
+        "id": "fictionWriter.purple",
         "description": "Purple Color",
         "defaults": {
           "dark": "#9C27B0",
@@ -123,7 +125,7 @@
         }
       },
       {
-        "id":"fictionWriter.bluegrey",
+        "id": "fictionWriter.bluegrey",
         "description": "Blue Grey Color",
         "defaults": {
           "dark": "#607D8B",
@@ -132,7 +134,7 @@
         }
       },
       {
-        "id":"fictionWriter.grey",
+        "id": "fictionWriter.grey",
         "description": "Grey Color",
         "defaults": {
           "dark": "#7e7e7e",
@@ -141,7 +143,7 @@
         }
       },
       {
-        "id":"fictionWriter.yellow",
+        "id": "fictionWriter.yellow",
         "description": "Yellow Color",
         "defaults": {
           "dark": "#FFEB3B",
@@ -150,7 +152,7 @@
         }
       },
       {
-        "id":"fictionWriter.pink",
+        "id": "fictionWriter.pink",
         "description": "Pink Color",
         "defaults": {
           "dark": "#F06292",
@@ -159,7 +161,7 @@
         }
       },
       {
-        "id":"fictionWriter.white",
+        "id": "fictionWriter.white",
         "description": "White Color",
         "defaults": {
           "dark": "#cccccc",
@@ -168,7 +170,7 @@
         }
       },
       {
-        "id":"fictionWriter.black",
+        "id": "fictionWriter.black",
         "description": "Black Color",
         "defaults": {
           "dark": "#111111",
@@ -178,6 +180,9 @@
       }
     ],
     "configurationDefaults": {
+      "explorer.experimental.fileNesting.patterns":{
+        "*.md": "$(capture).md.yml, $(capture).md.txt"
+      },
       "[markdown]": {
         "editor.wordWrap": "on",
         "editor.quickSuggestions": false
@@ -443,545 +448,597 @@
         }
       ]
     },
-    "configuration":[{"title":"test"}, {
-      "title": "Fiction Writer",
-      "properties": {
-        "fictionWriter.splitDocument.switchToNewlyCreatedDocument": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "When splitting a document, immediately open (and switch to) the newly created doument in the text editor."
-        },
-       "fictionWriter.smartRename.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If enabled, allows ordering of files based on number prefix."
-        },
-       "fictionWriter.smartRename.renameRelatedFiles": {
-          "type": "string",
-          "scope": "application",
-          "default": "Ask Every Time",
-          "enum": [
-            "Never",
-            "Always",
-            "Ask Every Time"
-          ],
-          "markdownEnumDescriptions": [
-            "Disables the rename related feature.",
-            "Will always rename/move `.yml` and `.md` files with same name, together.",
-            "For each rename/move operation, Will ask if `.yml` and `.md` files with same name are found on disk."
-          ],
-          "markdownDescription": "If `enabled`, renames/moves related (`.yml` and `.md`) files together."
-        },
-       "fictionWriter.edit.disableKeybindings": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work.\n\n\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/edit/)"
-        },
-       "fictionWriter.edit.easyParagraphCreation": {
-          "type": "string",
-          "default": "Shift+Enter",
-          "scope": "application",
-          "markdownDescription": "A new paragraph (two line breaks) will be created when pressing:",
-          "enum": [
-            "Enter",
-            "Shift+Enter"
-          ],
-          "markdownEnumDescriptions": [
-            "- `enter` will add two line-breaks.\n\n- `shift`+`enter` will add one line-break.",
-            "- `enter` will add one line-break.\n\n- `shift`+`enter` will add two line-breaks."
-          ]
-        },
-       "fictionWriter.editDialogue.marker": {
-          "type": "string",
-          "scope": "application",
-          "default": "-- ",
-          "markdownDescription": "Controls what punctuation is used when dialogue.",
-          "enum": [
-            "\"Hello,\" (quotes)",
-            "— Hello, (em-dash followed by one space)",
-            "-- Hello, (two dashes followed by one space)",
-            "--- Hello, (three dashes followed by one space)",
-            "—Hello, (em-dash, no space)",
-            "--Hello, (two dashes, no space)",
-            "---Hello, (three dashes, no space)"
-          ],
-          "markdownEnumDescriptions": [
-            "Quotes:\n\n \"Hello,\" John said.",
-            "Em-dash followed by one space: \n\n — Hello, John said.",
-            "Two dashes followed by one space: \n\n -- Hello, John said.",
-            "Three dashes followed by one space: \n\n --- Hello, John said.",
-            "Em-dash, no space: \n\n —Hello, John said.",
-            "Two dashes, no space: \n\n --Hello, John said.",
-            "Three dashes, no space: \n\n ---Hello, John said."
-          ]
-        },
-       "fictionWriter.editDialogue.markerAutoReplace": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
-        },
-       "fictionWriter.editDialogue.sentenceIndent": {
-          "type": "number",
-          "scope": "application",
-          "default": 3,
-          "minimum": 0,
-          "maximum": 100,
-          "markdownDescription": "Indent for sequential lines of the same dialogue paragraph. (`0` for no indenting)"
-        },
-       "fictionWriter.editDialogue.sentenceIndentAutoDetect": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Sets the line indent from the same dialogue paragraph equal with the selected `#fictionWriter.editDialogue.marker#`."
-        },
-       "fictionWriter.view.wordWrapIndent": {
-          "type": "number",
-          "scope": "application",
-          "default": 0,
-          "minimum": -1,
-          "maximum": 100,
-          "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if `#editor.wordWrap#` is enabled, and might change the `#editor.tabSize#` setting for `markdown`._"
-        },
-       "fictionWriter.view.foldParagraphLines": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
-        },
-       "fictionWriter.export.include.showsErrorInOutputFile": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "description": "Shows errors in compiled document."
-        },
-       "fictionWriter.export.include.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If `enabled`, the `{DOCUMENT_ID}` or `{document/file/path/filename.md}` syntax can be used to include on `.md` file into another file"
-        },
-       "fictionWriter.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "When including files, search `{DOCUMENT_ID}` in all opened files and workspace folders. If `disabled`, it only searches in the workspace folder that the document belongs to."
-        },
-       "fictionWriter.export.outputFormat.default": {
-          "type": "string",
-          "scope": "application",
-          "default": "odt",
-          "enum": [
-            "docx",
-            "odt",
-            "html",
-            "asciidoc",
-            "adoc",
-            "epub",
-            "fb2",
-            "docbook"
-          ],
-          "markdownDescription": "The output document format.\n\n**Important:** This requires having [Pandoc](https://pandoc.org/installing.html) installed on your system, and available to be run from commandline."
-        },
-       "fictionWriter.export.outputFormat.alwaysShowFormatPicker": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Select the output format each time an export command is run.\n\nIf set to `false`, the selected `#fictionWriter.export.outputFormat.default#` will be used."
-        },
-       "fictionWriter.export.showSaveDialogue": {
-          "type": "string",
-          "scope": "application",
-          "default": "Always",
-          "enum": [
-            "Always",
-            "Never"
-          ],
-          "markdownEnumDescriptions": [
-            "The Save File Dialogue is shown every time an export command is run.",
-            "Never show the Save File Dialogue. The exported document will be saved in the same directory with the source document(s)."
-          ],
-          "markdownDescription": "Control when the Save File Dialogue is shown."
-        },
-       "fictionWriter.export.outputTemplate.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "If enabled, the template file selected at `#fictionWriter.export.outputTemplate.file#` will be used when exporting to `docx` or `odt` formats."
-        },
-       "fictionWriter.export.outputTemplate.file": {
-          "type": "string",
-          "scope": "application",
-          "default": "",
-          "markdownDescription": "The output template to be used when exporting to `docx` or `odt`.\n\n**Note:** the template file extension must match the output type. It can be an absolut path, or relative to exported document."
-        },
-       "fictionWriter.export.tocFilename": {
-          "type": "string",
-          "scope": "application",
-          "default": "toc.md",
-          "markdownDescription": "The filename compiled by **Compile TOC command.**."
-        },
-       "fictionWriter.export.smartDeshes": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Converts `--` to `em-dash` (—) character in exported output. If not selected, it will default to `en-dash` (–).\n\nIs PanDoc `+old_dashes` markdown extension."
-        },
-       "fictionWriter.export.skipCodeComments": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "When parsing `.md` files, skips lines starting with `//`. "
-        },
-       "fictionWriter.textFormatting.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command..\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/format/"
-        },
-       "fictionWriter.textFormatting.fixMismatchDialogueMarkers": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "If `#fictionWriter.editDialogue.marker#` is not quotes, replaces mismatched markers with current selected marker."
-        },
-       "fictionWriter.textFormatting.fixDialogueIndents": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "If `#fictionWriter.editDialogue.marker#` is not quotes, and `#fictionWriter.editDialogue.sentenceIndent#` is enabled, reformats dialogue indents to selected dialogue indent."
-        },
-       "fictionWriter.textFormatting.fixParagraphSpacing": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
-        },
-       "fictionWriter.textFormatting.removeExtraSpaces": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)"
-        },
-       "fictionWriter.textFormatting.removeExtraLines": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Reduces multiple empty lines (more than two), to a single empty line."
-        },
-       "fictionWriter.textFormatting.removeTrailingSpaces": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Remove all whitespace characters from line ends."
-        },
-       "fictionWriter.textFormatting.fixParagraphBreaks": {
-          "scope": "application",
-          "type": "string",
-          "default": "none",
-          "enum": [
-            "none",
-            "Soft line-breaks As New Paragraph",
-            "Soft line-breaks In Same Paragraph",
-            "One Sentence Per Line"
-          ],
-          "markdownDescription": "Controls how paragraph breaks and soft line breaks will be formatted.",
-          "markdownEnumDescriptions": [
-            "No change to linebreaks",
-            "Transforms each soft line-break to a new paragraph.",
-            "Merges soft line-break lines into same paragraph line.",
-            "Splits lines into sentences. Each sentence is on a separate line."
-          ]
-        },
-       "fictionWriter.writingMode.theme": {
-          "scope": "application",
-          "type": "string",
-          "default": "",
-          "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
-        },
-       "fictionWriter.writingMode.fontSize": {
-          "scope": "application",
-          "type": "number",
-          "default": 16,
-          "minimum": 5,
-          "maximum": 100,
-          "markdownDescription": "The font size to be used in Writing Mode."
-        },
-       "fictionWriter.writingMode.toggleFocusMode": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "description": "When entering Writing Mode, it fades out all text except current text line (known as Focus Mode)"
-        },
-       "fictionWriter.view.focusMode.opacity": {
-          "type": "number",
-          "scope": "application",
-          "minimum": 0.1,
-          "maximum": 1,
-          "default": 0.4,
-          "description": "Opacity for fade out text when focus mode is enabled.",
-          "markdownDescription": "Opacity for fade out text when focus mode is enabled."
-        },
-       "fictionWriter.view.focusMode.highlightType": {
-          "type": "string",
-          "scope": "application",
-          "default": "Paragraph",
-          "enum": [
-            "Paragraph",
-            "Line"
-          ],
-          "description": "Controls what portion of the text gets highlighted. Focus on:"
-        },
-       "fictionWriter.statusBar.enabled": {
-          "scope": "application",
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "Show the custom **Fiction Writer** status bar"
-        },
-       "fictionWriter.statusBar.items": {
-          "scope": "application",
-          "type": "object",
-          "default": {
-            "dialogue_punctuation": true,
-            "keybindings": true,
-            "new_paragraph_toggle": true,
-            "typewriter_mode": true,
-            "focus_mode": true,
-            "writing_mode": true,
-            "fold": true,
-            "unfold": true,
-            "export": true,
-            "open_settings": true
+    "configuration": [
+      {
+        "title": "Editing",
+        "id": "fictionWriter.edit",
+        "order": 1,
+        "properties":{
+          "fictionWriter.edit.disableKeybindings": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Disable editor keybindings added by this extension (`enter`, `shift+enter`, `delete`, `backspace`, `tab`).\n\n**Note:** If `disabled`, some of the settings will not work.\n\n\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/edit/)"
           },
-          "properties": {
-            "dialogue_punctuation": {
-              "type": "boolean",
-              "description": "Select Dialogue Punctuation"
-            },
-            "keybindings": {
-              "type": "boolean",
-              "description": "Enable/Disable Keybindings"
-            },
-            "new_paragraph_toggle": {
-              "type": "boolean",
-              "description": "New Paragraph On Enter Toggle"
-            },
-            "typewriter_mode": {
-              "type": "boolean",
-              "description": "Typewriter Mode Toggle"
-            },
-            "focus_mode": {
-              "type": "boolean",
-              "description": "Focus Mode Toggle"
-            },
-            "writing_mode": {
-              "type": "boolean",
-              "description": "Writing Mode Toggle"
-            },
-            "fold": {
-              "type": "boolean",
-              "description": "Fold All"
-            },
-            "unfold": {
-              "type": "boolean",
-              "description": "Unfold All"
-            },
-            "export": {
-              "type": "boolean",
-              "description": "Compile/Export Documents"
-            },
-            "open_settings": {
-              "type": "boolean",
-              "description": "Open Fiction Writer Settings"
-            }
-          },
-          "additionalProperties": false,
-          "markdownDescription": "`show`/`hide` items on the **Fiction Writer** status bar"
-        },
-       "fictionWriter.metadata.keywords.colors": {
-          "type": "object",
-          "scope": "application",
-          "default": {
-            "blue": "blue",
-            "red": "red",
-            "lightred": "lightred",
-            "green": "green",
-            "orange": "orange",
-            "amber": "amber",
-            "lightAmber": "lightAmber",
-            "purple": "purple",
-            "pink": "pink",
-            "bluegrey": "bluegrey",
-            "grey": "grey",
-            "yellow": "yellow",
-            "lime": "lime",
-            "white": "white",
-            "black": "black",
-            "draft": "grey",
-            "rev1": "lightAmber",
-            "rev2": "yellow",
-            "done": "green"
-          },
-          "markdownDescription": "Defines a keyword (**Item**) and associate a color (**Value**) to it. The colors can be visible in **Metadata** view or **Explorer** view.",
-          "additionalProperties": {
+          "fictionWriter.edit.easyParagraphCreation": {
             "type": "string",
+            "default": "Shift+Enter",
+            "scope": "application",
+            "markdownDescription": "A new paragraph (two line breaks) will be created when pressing:",
             "enum": [
-              "default color",
-              "blue",
-              "red",
-              "lightred",
-              "green",
-              "orange",
-              "amber",
-              "lightAmber",
-              "purple",
-              "bluegrey",
-              "grey",
-              "yellow",
-              "white",
-              "black",
-              "pink"
+              "Enter",
+              "Shift+Enter"
+            ],
+            "markdownEnumDescriptions": [
+              "- `enter` will add two line-breaks.\n\n- `shift`+`enter` will add one line-break.",
+              "- `enter` will add one line-break.\n\n- `shift`+`enter` will add two line-breaks."
+            ]
+          },
+          "fictionWriter.editDialogue.marker": {
+            "type": "string",
+            "scope": "window",
+            "default": "-- ",
+            "markdownDescription": "Controls what punctuation is used when dialogue.",
+            "enum": [
+              "\"Hello,\" (quotes)",
+              "— Hello, (em-dash followed by one space)",
+              "-- Hello, (two dashes followed by one space)",
+              "--- Hello, (three dashes followed by one space)",
+              "—Hello, (em-dash, no space)",
+              "--Hello, (two dashes, no space)",
+              "---Hello, (three dashes, no space)"
+            ],
+            "markdownEnumDescriptions": [
+              "Quotes:\n\n \"Hello,\" John said.",
+              "Em-dash followed by one space: \n\n — Hello, John said.",
+              "Two dashes followed by one space: \n\n -- Hello, John said.",
+              "Three dashes followed by one space: \n\n --- Hello, John said.",
+              "Em-dash, no space: \n\n —Hello, John said.",
+              "Two dashes, no space: \n\n --Hello, John said.",
+              "Three dashes, no space: \n\n ---Hello, John said."
+            ]
+          },
+          "fictionWriter.editDialogue.markerAutoReplace": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If anything other than `quotes` is selected, it automatically replaces the `-- ` text at the begining of a new line, with the selected marker."
+          },
+          "fictionWriter.editDialogue.sentenceIndent": {
+            "type": "number",
+            "scope": "application",
+            "default": 3,
+            "minimum": 0,
+            "maximum": 100,
+            "markdownDescription": "Indent for sequential lines of the same dialogue paragraph. (`0` for no indenting)"
+          },
+          "fictionWriter.editDialogue.sentenceIndentAutoDetect": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Sets the line indent from the same dialogue paragraph equal with the selected `#fictionWriter.editDialogue.marker#`."
+          },
+          "fictionWriter.view.wordWrapIndent": {
+            "type": "number",
+            "scope": "application",
+            "default": 0,
+            "minimum": -1,
+            "maximum": 100,
+            "markdownDescription": "The hanging indent of wrapped lines.\n\n**Select:**\n- `0` for same indent as first line,\n- `-1` for now wrapping indent,\n- any other value for hanging indent.\n\n\n\n_**Warning:** Only works if `#editor.wordWrap#` is enabled, and might change the `#editor.tabSize#` setting for `markdown`._"
+          },
+          "fictionWriter.view.foldParagraphLines": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "description": "Show folding marker for paragraphs with multiple lines. (soft-breaks)"
+          },
+          "fictionWriter.view.highlight.textBetweenQuotes": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)"
+          },
+          "fictionWriter.view.highlight.dialogueMarkers": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
+          }
+        }
+      },
+      {
+        "title": "Formatting",
+        "id": "fictionWriter.textFormatting",
+        "order": 2,
+        "properties":{
+          "fictionWriter.textFormatting.enabled": {
+            "type": "boolean",
+            "scope": "window",
+            "default": true,
+            "markdownDescription": "This is feature is **EXPERIMENTAL**. Make sure make a backup before trying it out.\n\nIf enabled, it formats document using the selected formatters. Formatting is available with `Format Document` command..\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/format/"
+          },
+          "fictionWriter.textFormatting.fixMismatchDialogueMarkers": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "If `#fictionWriter.editDialogue.marker#` is not quotes, replaces mismatched markers with current selected marker."
+          },
+          "fictionWriter.textFormatting.fixDialogueIndents": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "If `#fictionWriter.editDialogue.marker#` is not quotes, and `#fictionWriter.editDialogue.sentenceIndent#` is enabled, reformats dialogue indents to selected dialogue indent."
+          },
+          "fictionWriter.textFormatting.fixParagraphSpacing": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Normalizes space between different paragraph types (header, body, dialogue, ...)."
+          },
+          "fictionWriter.textFormatting.removeExtraSpaces": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)"
+          },
+          "fictionWriter.textFormatting.removeExtraLines": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Reduces multiple empty lines (more than two), to a single empty line."
+          },
+          "fictionWriter.textFormatting.removeTrailingSpaces": {
+            "scope": "window",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Remove all whitespace characters from line ends."
+          },
+          "fictionWriter.textFormatting.fixParagraphBreaks": {
+            "scope": "window",
+            "type": "string",
+            "default": "none",
+            "enum": [
+              "none",
+              "Soft line-breaks As New Paragraph",
+              "Soft line-breaks In Same Paragraph",
+              "One Sentence Per Line"
+            ],
+            "markdownDescription": "Controls how paragraph breaks and soft line breaks will be formatted.",
+            "markdownEnumDescriptions": [
+              "No change to linebreaks",
+              "Transforms each soft line-break to a new paragraph.",
+              "Merges soft line-break lines into same paragraph line.",
+              "Splits lines into sentences. Each sentence is on a separate line."
             ]
           }
-        },
-       "fictionWriter.metadata.keywords.colorsInMetadataView": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Use [Keyword Colors](#fictionWriter.metadata.keywords.colors) as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
-        },
-       "fictionWriter.metadata.keywords.colorsInFileExplorer": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Use [Keyword Colors](#fictionWriter.metadata.keywords.colors) in **Explorer** view.\n\n _**Note:** Only the `first matched keyword` will be considered_\n\n_**Note:** file colors can be ovewritten by other extensions, so they might not show as expected._\n\n_**Also:** `#explorer.decorations.colors#` must be `enabled`._"
-        },
-       "fictionWriter.metadata.categories.icons": {
-          "type": "object",
-          "default": {
-            "tag": "tag",
-            "tags": "tag",
-            "author": "edit",
-            "authors": "edit",
-            "keyword": "circle-filled",
-            "keywords": "circle-filled",
-            "character": "person",
-            "characters": "organization",
-            "title": "symbol-type-parameter",
-            "summary": "output",
-            "description": "output",
-            "status": "repo",
-            "pov": "eye"
+        }
+      },
+      {
+        "title": "Metadata",
+        "id": "fictionWriter.metadata",
+        "order": 3,
+        "properties":{        
+          "fictionWriter.metadata.keywords.colors": {
+            "type": "object",
+            "scope": "window",
+            "default": {
+              "blue": "blue",
+              "red": "red",
+              "lightred": "lightred",
+              "green": "green",
+              "orange": "orange",
+              "amber": "amber",
+              "lightAmber": "lightAmber",
+              "purple": "purple",
+              "pink": "pink",
+              "bluegrey": "bluegrey",
+              "grey": "grey",
+              "yellow": "yellow",
+              "white": "white",
+              "black": "black",
+              "draft": "grey",
+              "rev1": "lightAmber",
+              "rev2": "yellow",
+              "done": "green"
+            },
+            "markdownDescription": "Defines a keyword (**Item**) and associate a color (**Value**) to it. The colors can be visible in **Metadata** view or **Explorer** view.",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "default color",
+                "blue",
+                "red",
+                "lightred",
+                "green",
+                "orange",
+                "amber",
+                "lightAmber",
+                "purple",
+                "bluegrey",
+                "grey",
+                "yellow",
+                "white",
+                "black",
+                "pink"
+              ]
+            }
           },
-          "scope": "application",
-          "markdownDescription": "Assign for each metadata category (**Item**) a vscode icon (**Value**)\n\n_**Note:** You can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)._",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-       "fictionWriter.metadata.categories.showIcons": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Show icons in **Metadata** view."
-        },
-       "fictionWriter.metadata.categories.showNames": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If `disabled`, it hides category name in **Metadata View** for 1st level categories only."
-        },
-       "fictionWriter.metadata.easyLists": {
-          "type": "string",
-          "scope": "application",
-          "default": ",",
-          "markdownDescription": "Metadata values separated by this string, will be treated as list items.\n\nEnter the list item separator character below _(or leave it empty to disable this feature)_:\n\n_**Example:** `item1, item2, item three` will be equivalent to `[item1, item2, item three]` if the separator is comma (`,`)._\n\n"
-        },
-       "fictionWriter.metadata.categories.summaryEnabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "If `enabled`, it will show the contents of the `summary` 1st level category in the _message_ section of the  **Metadata View**, and not in the tree itself.\n\n To use it, simply define a metadata block:\n\n`---`\n\n**`summary: The document summary`**\n\n`---`"
-        },
-       "fictionWriter.metadata.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "It enables metadata reltated features. If `disabled` then **all** metadata related featueres will be disabled (parsing, metadata view, colors, etc...).\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/metadata/)"
-        },
-       "fictionWriter.metadata.categories.default": {
-          "type": "string",
-          "scope": "application",
-          "default": "tags",
-          "markdownDescription": "Assigning keywords to this category, if none is specified.\n\nFor example, if default category is `tags`, then the metadata block:\n\n`---`\n\n**`draft, ch1`**\n\n`---`\n\n is equivalent to:\n\n`---`\n\n_`tags`_`: `**`draft, ch1`**\n\n`---`"
-        },
-       "fictionWriter.metadata.keywords.colorsCategory": {
-          "type": "string",
-          "scope": "application",
-          "markdownDescription": "Uses only this category when resolving **Explorer** colors. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the color._"
-        },
-       "fictionWriter.metadata.keywords.badgesCategory": {
-          "type": "string",
-          "scope": "application",
-          "markdownDescription": "Uses only this category when resolving **Explorer** badges. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the badge._"
-        },
-       "fictionWriter.metadata.keywords.badges": {
-          "type": "object",
-          "default": {
-            "draft": "D",
-            "rev1": "R1",
-            "rev2": "R2",
-            "done": "OK"
+          "fictionWriter.metadata.keywords.colorsInMetadataView": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Use [Keyword Colors](#fictionWriter.metadata.keywords.colors) as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
           },
-          "scope": "application",
-          "markdownDescription": "",
-          "additionalProperties": {
-            "type": "string"
+          "fictionWriter.metadata.keywords.colorsInFileExplorer": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Use [Keyword Colors](#fictionWriter.metadata.keywords.colors) in **Explorer** view.\n\n _**Note:** Only the `first matched keyword` will be considered_\n\n_**Note:** file colors can be ovewritten by other extensions, so they might not show as expected._\n\n_**Also:** `#explorer.decorations.colors#` must be `enabled`._"
+          },
+          "fictionWriter.metadata.categories.icons": {
+            "type": "object",
+            "default": {
+              "tag": "tag",
+              "tags": "tag",
+              "author": "edit",
+              "authors": "edit",
+              "keyword": "circle-filled",
+              "keywords": "circle-filled",
+              "character": "person",
+              "characters": "organization",
+              "title": "symbol-type-parameter",
+              "summary": "output",
+              "description": "output",
+              "status": "repo",
+              "pov": "eye"
+            },
+            "scope": "window",
+            "markdownDescription": "Assign for each metadata category (**Item**) a vscode icon (**Value**)\n\n_**Note:** You can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)._",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "fictionWriter.metadata.categories.showIcons": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Show icons in **Metadata** view."
+          },
+          "fictionWriter.metadata.categories.showNames": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If `disabled`, it hides category name in **Metadata View** for 1st level categories only."
+          },
+          "fictionWriter.metadata.easyLists": {
+            "type": "string",
+            "scope": "application",
+            "default": ",",
+            "markdownDescription": "Metadata values separated by this string, will be treated as list items.\n\nEnter the list item separator character below _(or leave it empty to disable this feature)_:\n\n_**Example:** `item1, item2, item three` will be equivalent to `[item1, item2, item three]` if the separator is comma (`,`)._\n\n"
+          },
+          "fictionWriter.metadata.categories.summaryEnabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If `enabled`, it will show the contents of the `summary` 1st level category in the _message_ section of the  **Metadata View**, and not in the tree itself.\n\n To use it, simply define a metadata block:\n\n`---`\n\n**`summary: The document summary`**\n\n`---`"
+          },
+          "fictionWriter.metadata.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "It enables metadata reltated features. If `disabled` then **all** metadata related featueres will be disabled (parsing, metadata view, colors, etc...).\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/metadata/)"
+          },
+          "fictionWriter.metadata.categories.default": {
+            "type": "string",
+            "scope": "window",
+            "default": "tags",
+            "markdownDescription": "Assigning keywords to this category, if none is specified.\n\nFor example, if default category is `tags`, then the metadata block:\n\n`---`\n\n**`draft, ch1`**\n\n`---`\n\n is equivalent to:\n\n`---`\n\n_`tags`_`: `**`draft, ch1`**\n\n`---`"
+          },
+          "fictionWriter.metadata.keywords.colorsCategory": {
+            "type": "string",
+            "scope": "window",
+            "markdownDescription": "Uses only this category when resolving **Explorer** colors. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the color._"
+          },
+          "fictionWriter.metadata.keywords.badgesCategory": {
+            "type": "string",
+            "scope": "window",
+            "markdownDescription": "Uses only this category when resolving **Explorer** badges. _(leave empty to do a full metadata search)_\n\n_**Note:** the `first matched keyword` in this category will dictate the badge._"
+          },
+          "fictionWriter.metadata.keywords.badges": {
+            "type": "object",
+            "default": {
+              "draft": "D",
+              "rev1": "R1",
+              "rev2": "R2",
+              "done": "OK"
+            },
+            "scope": "window",
+            "markdownDescription": "Keyword badges are 1 or 2 letter abreviations of the keywords that appear in file explorer next to the filename.\n\n***Example:*** For a file containing the metadata block:\n\n`---`\n\n**`Status: draft, ch1`**\n\n`---`\n\n and, if for `draft` keyword you set `D` badge, then the file will apear in **Explorer** as:\n\n`yourFileName.md D`",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "fictionWriter.metadata.keywords.badgesInFileExplorer": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Show [Keyword Badges](#fictionWriter.metadata.keywords.badges) in **Explorer** view.\n\n _**Note:** Only the first matched keyword will be considered._"
+          },
+          "fictionWriter.view.fadeMetadata": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Fade markdown metadata section by 50%."
           }
-        },
-       "fictionWriter.metadata.keywords.badgesInFileExplorer": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Show [Keyword Badges](#fictionWriter.metadata.keywords.badges) in **Explorer** view.\n\n _**Note:** Only the first matched keyword will be considered._"
-        },
-       "fictionWriter.view.fadeMetadata": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Fade markdown metadata section by 50%."
-        },
-       "fictionWriter.view.highlight.textBetweenQuotes": {
-          "type": "boolean",
-          "scope": "application",
-          "default": false,
-          "markdownDescription": "Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)"
-        },
-       "fictionWriter.view.highlight.dialogueMarkers": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Highlights the dialogue markers (---, --, — or quote marks symbols)."
-        },
-       "fictionWriter.notes.enabled": {
-          "type": "boolean",
-          "scope": "application",
-          "default": true,
-          "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files.\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/notes/)"
-        },
-       "fictionWriter.notes.defaultText": {
-          "type": "string",
-          "scope": "application",
-          "default": "Your Notes Here",
-          "editPresentation": "multilineText",
-          "markdownDescription": "The default text for all new note files.\n\nAdd each line as a new _item_."
+        }
+      },    
+      {
+        "title": "Notes",
+        "id": "fictionWriter.notes",
+        "order": 4,
+        "properties":{
+          "fictionWriter.notes.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Enables the notes view, that recognizes (and groups) `.txt` files together with `.md` and metadata files.\n\n[Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/notes/)"
+          },
+          "fictionWriter.notes.defaultText": {
+            "type": "string",
+            "scope": "window",
+            "default": "Your Notes Here",
+            "editPresentation": "multilineText",
+            "markdownDescription": "The default text for all new note files.\n\nAdd each line as a new _item_."
+          }
+        }
+      }, 
+      {
+        "title": "File Operations",
+        "id": "fictionWriter.splitDocument",
+        "order": 5,
+        "properties":{
+          "fictionWriter.splitDocument.switchToNewlyCreatedDocument": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "When splitting a document, immediately open (and switch to) the newly created doument in the text editor."
+          },
+          "fictionWriter.smartRename.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If enabled, allows batch operations on related files (eg. `.md`, `.md.yml` and `.md.txt`)"
+          },
+          "fictionWriter.smartRename.renameRelatedFiles": {
+            "type": "string",
+            "scope": "application",
+            "default": "Ask Every Time",
+            "enum": [
+              "Never",
+              "Always",
+              "Ask Every Time"
+            ],
+            "markdownEnumDescriptions": [
+              "Disables the rename related feature.",
+              "Will always rename/move `.yml` and `.md` files with same name, together.",
+              "For each rename/move operation, Will ask if `.yml` and `.md` files with same name are found on disk."
+            ],
+            "markdownDescription": "If `enabled`, renames/moves related (`.yml` and `.md`) files together."
+          }  
+        }
+      },
+      {
+        "title": "Export/Compile",
+        "id": "fictionWriter.export",
+        "order": 6,
+        "properties": {
+          "fictionWriter.export.include.showsErrorInOutputFile": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "description": "Shows errors in compiled document."
+          },
+          "fictionWriter.export.include.enabled": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "If `enabled`, the `{DOCUMENT_ID}` or `{document/file/path/filename.md}` syntax can be used to include on `.md` file into another file"
+          },
+          "fictionWriter.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "When including files, search `{DOCUMENT_ID}` in all opened files and workspace folders. If `disabled`, it only searches in the workspace folder that the document belongs to."
+          },
+          "fictionWriter.export.outputFormat.default": {
+            "type": "string",
+            "scope": "application",
+            "default": "odt",
+            "enum": [
+              "docx",
+              "odt",
+              "html",
+              "asciidoc",
+              "adoc",
+              "epub",
+              "fb2",
+              "docbook"
+            ],
+            "markdownDescription": "The output document format.\n\n**Important:** This requires having [Pandoc](https://pandoc.org/installing.html) installed on your system, and available to be run from commandline."
+          },
+          "fictionWriter.export.outputFormat.alwaysShowFormatPicker": {
+            "type": "boolean",
+            "scope": "application",
+            "default": false,
+            "markdownDescription": "Select the output format each time an export command is run.\n\nIf set to `false`, the selected `#fictionWriter.export.outputFormat.default#` will be used."
+          },
+          "fictionWriter.export.showSaveDialogue": {
+            "type": "string",
+            "scope": "application",
+            "default": "Always",
+            "enum": [
+              "Always",
+              "Never"
+            ],
+            "markdownEnumDescriptions": [
+              "The Save File Dialogue is shown every time an export command is run.",
+              "Never show the Save File Dialogue. The exported document will be saved in the same directory with the source document(s)."
+            ],
+            "markdownDescription": "Control when the Save File Dialogue is shown."
+          },
+          "fictionWriter.export.outputTemplate.enabled": {
+            "type": "boolean",
+            "scope": "window",
+            "default": false,
+            "markdownDescription": "If enabled, the template file selected at `#fictionWriter.export.outputTemplate.file#` will be used when exporting to `docx` or `odt` formats."
+          },
+          "fictionWriter.export.outputTemplate.file": {
+            "type": "string",
+            "scope": "window",
+            "default": "",
+            "markdownDescription": "The output template to be used when exporting to `docx` or `odt`.\n\n**Note:** the template file extension must match the output type. It can be an absolut path, or relative to exported document."
+          },
+          "fictionWriter.export.tocFilename": {
+            "type": "string",
+            "scope": "window",
+            "default": "toc.md",
+            "markdownDescription": "The filename compiled by **Compile TOC command.**."
+          },
+          "fictionWriter.export.smartDeshes": {
+            "type": "boolean",
+            "scope": "window",
+            "default": true,
+            "markdownDescription": "Converts `--` to `em-dash` (—) character in exported output. If not selected, it will default to `en-dash` (–).\n\nIs PanDoc `+old_dashes` markdown extension."
+          },
+          "fictionWriter.export.skipCodeComments": {
+            "type": "boolean",
+            "scope": "window",
+            "default": true,
+            "markdownDescription": "When parsing `.md` files, skips lines starting with `//`. "
+          }
+        }
+      },
+      {
+        "title": "Writing Mode",
+        "id": "fictionWriter.writingMode",
+        "order": 7,
+        "properties": {
+          "fictionWriter.writingMode.theme": {
+            "scope": "application",
+            "type": "string",
+            "default": "",
+            "markdownDescription": "The theme to be used in Writing Mode. _(leave empty for no theme switch)_"
+          },
+          "fictionWriter.writingMode.fontSize": {
+            "scope": "application",
+            "type": "number",
+            "default": 16,
+            "minimum": 5,
+            "maximum": 100,
+            "markdownDescription": "The font size to be used in Writing Mode."
+          },
+          "fictionWriter.writingMode.toggleFocusMode": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "description": "When entering Writing Mode, it fades out all text except current text line (known as Focus Mode)"
+          },
+          "fictionWriter.view.focusMode.opacity": {
+            "type": "number",
+            "scope": "application",
+            "minimum": 0.1,
+            "maximum": 1,
+            "default": 0.4,
+            "description": "Opacity for fade out text when focus mode is enabled.",
+            "markdownDescription": "Opacity for fade out text when focus mode is enabled."
+          },
+          "fictionWriter.view.focusMode.highlightType": {
+            "type": "string",
+            "scope": "application",
+            "default": "Paragraph",
+            "enum": [
+              "Paragraph",
+              "Line"
+            ],
+            "description": "Controls what portion of the text gets highlighted. Focus on:"
+          }          
+        }
+      },
+      {
+        "title": "Status Bar",
+        "id": "fictionWriter.statusBar",        
+        "order": 8,
+        "properties":{
+          "fictionWriter.statusBar.enabled": {
+            "scope": "application",
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Show the custom **Fiction Writer** status bar"
+          },
+          "fictionWriter.statusBar.items": {
+            "scope": "application",
+            "type": "object",
+            "default": {
+              "dialogue_punctuation": true,
+              "keybindings": true,
+              "new_paragraph_toggle": true,
+              "typewriter_mode": true,
+              "focus_mode": true,
+              "writing_mode": true,
+              "fold": true,
+              "unfold": true,
+              "export": true,
+              "open_settings": true
+            },
+            "properties": {
+              "dialogue_punctuation": {
+                "type": "boolean",
+                "description": "Select Dialogue Punctuation"
+              },
+              "keybindings": {
+                "type": "boolean",
+                "description": "Enable/Disable Keybindings"
+              },
+              "new_paragraph_toggle": {
+                "type": "boolean",
+                "description": "New Paragraph On Enter Toggle"
+              },
+              "typewriter_mode": {
+                "type": "boolean",
+                "description": "Typewriter Mode Toggle"
+              },
+              "focus_mode": {
+                "type": "boolean",
+                "description": "Focus Mode Toggle"
+              },
+              "writing_mode": {
+                "type": "boolean",
+                "description": "Writing Mode Toggle"
+              },
+              "fold": {
+                "type": "boolean",
+                "description": "Fold All"
+              },
+              "unfold": {
+                "type": "boolean",
+                "description": "Unfold All"
+              },
+              "export": {
+                "type": "boolean",
+                "description": "Compile/Export Documents"
+              },
+              "open_settings": {
+                "type": "boolean",
+                "description": "Open Fiction Writer Settings"
+              }
+            },
+            "additionalProperties": false,
+            "markdownDescription": "`show`/`hide` items on the **Fiction Writer** status bar"
+          }
         }
       }
-    }],
-    "commands": [ 
+    ],
+    "commands": [
       {
         "command": "fiction-writer.extension.showIndexes",
         "category": "Markdown Fiction Writer",
@@ -1311,6 +1368,7 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
+    "@vscode/test-electron": "^2.1.2",
     "js-yaml": "^4.0.0",
     "prune": "^0.0.2"
   }

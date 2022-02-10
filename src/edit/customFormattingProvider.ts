@@ -21,7 +21,10 @@ export class CustomFormattingProvider extends Observer<Config> implements Docume
     this.clearDisposable('FP');
 
     if (this.state.formattingIsEnabled) {
-      this.addDisposable(languages.registerDocumentFormattingEditProvider('markdown', this), 'FP');
+      this.addDisposable(languages.registerDocumentFormattingEditProvider({
+        scheme: 'file',
+        language: 'markdown'
+      }, this), 'FP');
     }
   }
 
