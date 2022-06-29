@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased Beta 1.0
 
 **Added**
-- Support for experimental [file nesting](https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting). Adds `{"*.md": "$(capture).md.yml, $(capture).md.txt"}` pattern to `explorer.experimental.fileNesting.patterns` in configuration defaults.
+
+- Upgrade minimum supported version to `1.68`
+- Support for [file nesting](https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting). Adds `{"*.md": "${capture}.md.txt, ${capture}.md.yml"}` pattern to `explorer.fileNesting.patterns` in configuration defaults.
 
 **Changed**
 

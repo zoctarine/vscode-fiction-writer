@@ -21,7 +21,7 @@ export function parse(yamlText: string | undefined) {
   if (!yamlText) return undefined;
 
   const result = yaml.load(yamlText, {
-    json: true // dplicate keys in a mapping will override values rather than throwing an error.
+    json: true // duplicate keys in a mapping will override values rather than throwing an error.
   });
 
   return result;

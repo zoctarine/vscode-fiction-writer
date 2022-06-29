@@ -12,7 +12,7 @@
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
   "version": "0.1.0",
   "engines": {
-    "vscode": "^1.64.0"
+    "vscode": "^1.68.0"
   },
   "categories": [
     "Programming Languages",
@@ -180,8 +180,8 @@
       }
     ],
     "configurationDefaults": {
-      "explorer.experimental.fileNesting.patterns":{
-        "*.md": "$(capture).md.yml, $(capture).md.txt"
+      "explorer.fileNesting.patterns":{
+        "*.md": "${capture}.md.txt, ${capture}.md.yml"
       },
       "[markdown]": {
         "editor.wordWrap": "on",
@@ -765,6 +765,151 @@
             "markdownDescription": "Show [Keyword Badges](#fictionWriter.metadata.keywords.badges) in **Explorer** view.\n\n _**Note:** Only the first matched keyword will be considered._"
           },
           "fictionWriter.view.fadeMetadata": {
+            "type": "boolean",
+            "scope": "application",
+            "default": true,
+            "markdownDescription": "Fade markdown metadata section by 50%."
+          }
+        }
+      }, 
+      {
+        "title": "Decorations",
+        "id": "fictionWriter.decorations",
+        "order": 3,
+        "properties":{        
+          "fictionWriter.metadata.colors.mappings": {
+            "type": "object",
+            "scope": "window",
+            "default": {
+              "blue": "blue",
+              "red": "red",
+              "lightred": "lightred",
+              "green": "green",
+              "orange": "orange",
+              "amber": "amber",
+              "lightAmber": "lightAmber",
+              "purple": "purple",
+              "pink": "pink",
+              "bluegrey": "bluegrey",
+              "grey": "grey",
+              "yellow": "yellow",
+              "white": "white",
+              "black": "black",
+              "draft": "grey",
+              "rev1": "lightAmber",
+              "rev2": "yellow",
+              "done": "green"
+            },
+            "markdownDescription": "Defines a keyword (**Item**) and associate a color (**Value**) to it. The colors can be visible in **Metadata** view or **Explorer** view.",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "default color",
+                "blue",
+                "red",
+                "lightred",
+                "green",
+                "orange",
+                "amber",
+                "lightAmber",
+                "purple",
+                "bluegrey",
+                "grey",
+                "yellow",
+                "white",
+                "black",
+                "pink"
+              ]
+            }
+          },
+          "fictionWriter.metadata.colors.enabled": {
+            "type": "object",
+            "scope": "application",
+            "default": {
+              "showInExplorer": true,
+              "showInMetadataView": true
+            },
+            "properties": {
+              "showInExplorer": {
+                "type": "boolean",
+                "description": "Show Metadaata Colors in File Explorer"
+              },
+              "showInMetadataView": {
+                "type": "boolean",
+                "description": "Show Metadata Colors in Metadata View"
+              }
+            },
+            "additionalProperties": false,
+            "markdownDescription": "Use [Keyword Colors](#fictionWriter.metadata.keywords.colors) as icon colors in **Metadata** view.\n\n_**Note:** if no icon is set/visible, then the color will not be visible._"
+          },
+          "fictionWriter.metadata.icons.mappings": {
+            "type": "object",
+            "default": {
+              "tag": "tag",
+              "tags": "tag",
+              "author": "edit",
+              "authors": "edit",
+              "keyword": "circle-filled",
+              "keywords": "circle-filled",
+              "character": "person",
+              "characters": "organization",
+              "title": "symbol-type-parameter",
+              "summary": "output",
+              "description": "output",
+              "status": "repo",
+              "pov": "eye"
+            },
+            "scope": "window",
+            "markdownDescription": "Assign for each metadata category (**Item**) a vscode icon (**Value**)\n\n_**Note:** You can use any icon from [Product Icon Reference](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)._",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "fictionWriter.metadata.icons.enabled": {
+            "type":"object",
+            "scope": "application",
+            "default": {
+              "showInMetadataView": true
+            },
+            "properties": {
+              "showInMetadataView": {
+                "type": "boolean",
+                "description": "Show Category icons in Metadata View"
+              }
+            },
+            "additionalProperties": false,
+            "markdownDescription": "Show icons in **Metadata** view."
+          },
+          "fictionWriter.metadata.badges.mappings": {
+            "type": "object",
+            "default": {
+              "draft": "D",
+              "rev1": "R1",
+              "rev2": "R2",
+              "done": "OK"
+            },
+            "scope": "window",
+            "markdownDescription": "Keyword badges are 1 or 2 letter abreviations of the keywords that appear in file explorer next to the filename.\n\n***Example:*** For a file containing the metadata block:\n\n`---`\n\n**`Status: draft, ch1`**\n\n`---`\n\n and, if for `draft` keyword you set `D` badge, then the file will apear in **Explorer** as:\n\n`yourFileName.md D`",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "fictionWriter.metadata.badges.enabled": {
+            "type": "object",
+            "scope": "application",
+            "default": {
+              "showInExplorer": true
+            },
+            "properties": {
+              "showInExplorer": {
+                "type": "boolean",
+                "description": "Show Metadata Badges in File Explorer"
+              }
+            },
+            "additionalProperties": false,
+            "markdownDescription": "Show [Keyword Badges](#fictionWriter.metadata.keywords.badges) in **Explorer** view.\n\n _**Note:** Only the first matched keyword will be considered._"
+          },
+          "fictionWriter.metadata.fadeMetadataBlockInEdtior": {
             "type": "boolean",
             "scope": "application",
             "default": true,
