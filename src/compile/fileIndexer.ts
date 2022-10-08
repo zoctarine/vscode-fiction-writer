@@ -18,12 +18,13 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
   }
 
   public indexLocation(baseDir: string, pattern: string): Promise<string[]> {
+    baseDir = baseDir.split(path.sep).join(path.posix.sep);
     if (!baseDir || !pattern) return Promise.reject('error');
 
-    const p = path.join(baseDir, pattern);
+    const p = path.posix.join(baseDir, pattern);
     return new Promise((resolve, reject) => {
       try {
-        const matches = glob.sync(p, { nodir: true });
+        const matches = glob.sync(p, {  nodir: true });
         if (matches){
           matches.forEach(match => this.index(match, { skipNotify: true, skipIndexedLocations: true }));
           this.notify(matches);

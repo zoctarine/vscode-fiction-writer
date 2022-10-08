@@ -38,7 +38,7 @@ export class CompileTocCommand extends CompileFileCommand {
       if (toc !== '') {
         return {
           includePath: path.parse(toc).dir,
-          text: fs.readFileSync(toc, 'UTF-8'),
+          text: fs.readFileSync(toc, {encoding: 'utf-8'}),
           success: true
         };
       } else {

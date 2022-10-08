@@ -35,7 +35,7 @@ export class CompileFileCommand extends Observer<Config> {
       const inputPath = inputs[0];
 
       return {
-        text: fs.readFileSync(inputPath, 'UTF-8'),
+        text: fs.readFileSync(inputPath, { encoding: 'utf-8'}),
         includePath: path.parse(inputPath).dir,
         success: true
       };
@@ -123,7 +123,7 @@ export class CompileFileCommand extends Observer<Config> {
         }
       }
       catch (error) {
-        window.showErrorMessage('Error converting to [' + outputFormat + ']\n\n' + error.toString());
+        window.showErrorMessage('Error converting to [' + outputFormat + ']\n\n' + String(error));
       } finally {
         try {
           fs.unlinkSync(tempCompiled);
@@ -133,7 +133,7 @@ export class CompileFileCommand extends Observer<Config> {
       }
     }
     catch (Error) {
-      window.showErrorMessage(Error);
+      window.showErrorMessage(String(Error));
     } finally {
       this.item.hide();
     }
@@ -214,14 +214,14 @@ export class CompileFileCommand extends Observer<Config> {
       if (fs.existsSync(filePath)) {
         opened.push(filePath);
         const docPath = path.parse(filePath);
-        const text = fs.readFileSync(filePath, 'UTF-8');
+        const text = fs.readFileSync(filePath, {encoding: 'utf-8'});
         buffer.push('');  // add empty line before include
         this.load(text, docPath.dir, buffer, opened, errors);
       } else {
         errors.push(`Could not export file: ${filePath}. File is missing.`);
       }
     } catch (error) {
-      errors.push(error);
+      errors.push(String(error));
     }
   }
 }
