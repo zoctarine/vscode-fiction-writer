@@ -130,8 +130,10 @@ export class FileManager extends Observer<Config>{
     if (fs.existsSync(rootPath)) {
       files.set(SupportedContent.Fiction, rootPath);
     }
+    const posixBaseDir = rootPath.split(path.sep).join(path.posix.sep);
+    const p = `${posixBaseDir}${knownFileTypes.related.pattern}`;
 
-    const matches = glob.sync(`${rootPath}${knownFileTypes.related.pattern}`);
+    const matches = glob.sync(p);
 
     matches.forEach((match) => {
       const foundContentType = this.getPathContentType(match, true); // get only first match

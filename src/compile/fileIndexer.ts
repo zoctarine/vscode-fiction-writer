@@ -18,8 +18,8 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
   }
 
   public indexLocation(baseDir: string, pattern: string): Promise<string[]> {
-    baseDir = baseDir.split(path.sep).join(path.posix.sep);
     if (!baseDir || !pattern) return Promise.reject('error');
+    baseDir = baseDir.split(path.sep).join(path.posix.sep);
 
     const p = path.posix.join(baseDir, pattern);
     return new Promise((resolve, reject) => {
@@ -38,6 +38,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
 
   public removeLocation(baseDir: string, pattern: string): Promise<string[]> {
     if (!baseDir || !pattern) return Promise.reject('error');
+    baseDir = baseDir.split(path.sep).join(path.posix.sep);
 
     const p = path.join(baseDir, pattern);
     return new Promise((resolve, reject) => {
