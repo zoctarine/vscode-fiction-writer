@@ -1,5 +1,6 @@
 import { InMemoryCache } from '../../../utils';
 import { unique } from '..';
+import { jest, describe, it } from '@jest/globals';
 
 jest.mock('vscode');
 
@@ -16,13 +17,17 @@ describe('InMemoryCache', function () {
   });
 
   describe('set() / get()', function () {
-    ['', undefined, null, 'a', 'SOME TEST'].forEach(value => {
 
-      it(`should add '${value}' value to map`, function () {
-        const key = unique('key');
-        sut.set(key, value);
-        expect(sut.getSnapshot()).toStrictEqual([[key, value]]);
-      });
+    it.each([
+      '',
+      undefined,
+      null,
+      'a',
+      'SOME TEST'
+    ])('should add %s value to map', function (value) {
+      const key = unique('key');
+      sut.set(key, value);
+      expect(sut.getSnapshot()).toStrictEqual([[key, value]]);
     });
 
     it('should not set empty keys', function () {

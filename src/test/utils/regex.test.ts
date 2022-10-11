@@ -1,5 +1,5 @@
 import { RegEx } from "../../utils";
-import { each } from "../unit";
+import { describe, it } from '@jest/globals';
 
 describe('RegEx', () => {
   describe('METADATA_BLOCK', () => {
@@ -56,7 +56,7 @@ This has no enclosing meta char`;
   });
 
   describe('METADATA_MARKER_START', () => {
-    each([
+    it.each([
       '---',
       '---  ',
       '--- ',
@@ -65,7 +65,7 @@ This has no enclosing meta char`;
       expect(RegEx.METADATA_MARKER_START.test(line)).toBeTruthy();
     });
 
-    each([
+    it.each([
       '----',
       '  ---',
       '--',
@@ -76,7 +76,7 @@ This has no enclosing meta char`;
   });
 
   describe('METADATA_MARKER_END', () => {
-    each([
+    it.each([
       '---',
       '---  ',
       '--- ',
@@ -89,7 +89,7 @@ This has no enclosing meta char`;
       expect(RegEx.METADATA_MARKER_END.test(line)).toBeTruthy();
     });
 
-    each([
+    it.each([
       '----',
       '....',
       '  ---',

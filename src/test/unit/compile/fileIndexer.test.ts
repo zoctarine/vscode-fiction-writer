@@ -160,7 +160,7 @@ describe('FileIndexer', () => {
       const expectedInfo = { id, metadata, path: fsPath, key: fsPath, notes: undefined, summary: undefined };
       extractMetadata.mockReturnValue(metadata);
       syncMock.mockReturnValue([fsPath]);
-      
+
       sut.index(fsPath);
 
       expect(sut.keys().length).toBe(1);
@@ -325,6 +325,10 @@ describe('FileIndexer', () => {
         uniqueMdFile('path3')
       ];
 
+      syncMock.mockImplementation((tst) => {
+        return [];
+      });
+
       paths.forEach(p => sut.index(p));
 
       expect(() => sut.delete(unique('some/nonindexed/file'))).not.toThrow();
@@ -340,9 +344,12 @@ describe('FileIndexer', () => {
       ];
 
       extractMetadata
-        .mockImplementationOnce(p => ({type: MetaLocation.Internal, value: { id: 'id1' }}))
-        .mockImplementationOnce(p => ({type: MetaLocation.Internal, value: { id: 'id2' }}))
-        .mockImplementationOnce(p => ({type: MetaLocation.Internal, value: { id: 'id3' }}));
+        .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id1' } }))
+        .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id2' } }))
+        .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id3' } }));
+      syncMock.mockImplementation((tst) => {
+        return [];
+      });
       paths.forEach(p => sut.index(p));
 
       sut.delete(paths[1]);
