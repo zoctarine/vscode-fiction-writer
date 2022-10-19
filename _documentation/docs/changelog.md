@@ -5,18 +5,25 @@ All notable changes to this project will be documented in this file.
 
 **Added**
 
-- Add `exclude` and `compile: false` support for metadata block so, file is not include in the compiled script [[#36]](https://github.com/zoctarine/vscode-fiction-writer/issues/36)
-- Upgrade minimum supported version to `1.68`
+- Add `exclude` and `compile: false` support for metadata block so, a file can be exluded from the automatic compiled script [[#36]](https://github.com/zoctarine/vscode-fiction-writer/issues/36)
+- Upgrade minimum supported version to `1.72`
 - Support for [file nesting](https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting). Adds `{"*.md": "${capture}.md.txt, ${capture}.md.yml"}` pattern to `explorer.fileNesting.patterns` in configuration defaults.
 
 **Fixes**
-- A bug that did not include all files in compilation [[38]](https://github.com/zoctarine/vscode-fiction-writer/issues/38)
+
+- A bug that did not parse all nested indcluded files in compilation [[#38]](https://github.com/zoctarine/vscode-fiction-writer/issues/38)
+- Some speed issues and loading times with the indexer
+- Fixed failing tests on Windows envirnoment
+- Fixed Linux/Windows Glob match pattern, on file indexer and metadata indexer
 
 **Changed**
 
+- Changed the build tool from `webpack` to `esbuild`
 - Changed extension display name from **Markdown Fiction Writer** to **Fiction Writer** to accomodate future language support
 - Changed settings prefix from `markdowon-fiction-writer.` to `fiction-writer`  [[#28]](https://github.com/zoctarine/vscode-fiction-writer/issues/28)
+
 - **Settings**
+
     - Changed: `fictionWriter.statusBar.items` to be of type `object` with checkboxes
     - Changed settings from `application` scope to `window` scope so it can be configured per workspace as well:
         - `fictionWriter.editDialogue.marker`
