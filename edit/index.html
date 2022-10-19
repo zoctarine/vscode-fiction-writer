@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/edit/">
       
       <link rel="shortcut icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
     
     
       
@@ -101,7 +101,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -194,7 +194,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -669,14 +669,14 @@
                 
                 <h3 id="disable-key-bindings">Disable Key-bindings<a class="headerlink" href="#disable-key-bindings" title="Permanent link">&para;</a></h3>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.edit.disableKeybindings</code></p>
+<p class="admonition-title"><code>fictionWriter.edit.disableKeybindings</code></p>
 </div>
 <p>Disables the following keybindings added by this extension:
 - <span class="keys"><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span>, <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-tab">Tab</kbd></span>)</p>
 <p><strong>Note:</strong> If <code>disabled</code>, some of the other features, that depend or ar triggered by this keybindings will be disabled (eg. easy Paragraph Creation needs <span class="keys"><kbd class="key-enter">Enter</kbd></span> end <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> in order to work properly).</p>
 <h3 id="easy-paragraph-creation">Easy Paragraph Creation<a class="headerlink" href="#easy-paragraph-creation" title="Permanent link">&para;</a></h3>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.edit.easyParagraphCreation</code></p>
+<p class="admonition-title"><code>fictionWriter.edit.easyParagraphCreation</code></p>
 </div>
 <p>To create paragraphs in markdown, you need to add an extra empty line. That, usually, means pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> key twice.</p>
 <p>With this setting, you can easily create new paragraphs by hitting one key only (or a combination).</p>
@@ -704,7 +704,7 @@
 <p>Markdown can convert three dashes to em-dash and two dashes to en-dash. However, typing three dash character and one space is not necessarly convenient when writing lots of dialogue lines. </p>
 <p>A widespread practice is to write <code>--</code> for an <code>em-dash</code>, and the text editor will automatically replace it.</p>
 <h4 id="selecting-dialogue-punctuation">Selecting dialogue punctuation:<a class="headerlink" href="#selecting-dialogue-punctuation" title="Permanent link">&para;</a></h4>
-<details class="setting"><summary><code>markdown-fiction-writer.editDialogue.marker</code></summary><ul>
+<details class="setting"><summary><code>fictionWriter.editDialogue.marker</code></summary><ul>
 <li><code>"Hello,"</code> (quotes) <strong>default</strong></li>
 <li><code>— Hello,</code> (em-dash followed by one space)</li>
 <li><code>-- Hello</code>, (two dashes followed by one space)</li>
@@ -729,7 +729,7 @@
 <p>Once a dialogue marker is selected (other than quotes), the paragraph starting with that marker will be recognized as a dialogue paragraph enabeling other dialogue related features, like text formatting, auto replace, etc.</p>
 <h4 id="auto-replace-dialogue-markers">Auto-replace dialogue markers<a class="headerlink" href="#auto-replace-dialogue-markers" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.markerAutoReplace</code></p>
+<p class="admonition-title"><code>fictionWriter.editDialogue.markerAutoReplace</code></p>
 </div>
 <p>If enabled, typing <code>--</code> followed by a space will insert the selected marker.</p>
 <p><img alt="AutoReplace" src="../img/dlg_marker_01.gif" /></p>
@@ -761,11 +761,11 @@
 The two lines continued their chat.
 </code></pre></div>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.sentenceIndent</code></p>
+<p class="admonition-title"><code>fictionWriter.editDialogue.sentenceIndent</code></p>
 </div>
 <p>The indent can be manually set under <em>Edit Dialouge - Sentence Indent</em>.</p>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect</code></p>
+<p class="admonition-title"><code>fictionWriter.editDialogue.sentenceIndentAutoDetect</code></p>
 </div>
 <p>If <em>Edit Dialogue: Sentence Indent Auto-Detect</em> is enabled, the indent will be automatically calculated based on the selected dialogue marker, and the previous setting will be ignored.</p>
 <p>Example:</p>
@@ -847,7 +847,7 @@ The two lines continued their chat.
     </div>
     
       <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({

@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/format/">
       
       <link rel="shortcut icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
     
     
       
@@ -101,7 +101,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -194,7 +194,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -737,7 +737,7 @@
                 
                 <h3 id="document-formatting">Document Formatting<a class="headerlink" href="#document-formatting" title="Permanent link">&para;</a></h3>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.enabled</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.enabled</code></p>
 </div>
 <p>Enables all document formatting features.</p>
 <div class="admonition danger">
@@ -748,7 +748,7 @@ is on drafts and test documents only.</p>
 </div>
 <h4 id="remove-extra-spaces">Remove extra spaces<a class="headerlink" href="#remove-extra-spaces" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeExtraSpaces</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.removeExtraSpaces</code></p>
 </div>
 <p>Removes multiple spaces (not at beginning or ending of lines), with one space.</p>
 <div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Before</label><div class="tabbed-content">
@@ -768,7 +768,7 @@ On multiple lines.
 </div>
 <h4 id="remove-trailing-spaces">Remove Trailing Spaces<a class="headerlink" href="#remove-trailing-spaces" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeTrailingSpaces</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.removeTrailingSpaces</code></p>
 </div>
 <p>Removes all whitespace characters from line ends.</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Before</label><div class="tabbed-content">
@@ -783,7 +783,7 @@ Having too much space at the end of each line.
 </div>
 </div>
 <h4 id="fix-paragraph-breaks">Fix Paragraph Breaks<a class="headerlink" href="#fix-paragraph-breaks" title="Permanent link">&para;</a></h4>
-<details class="setting"><summary><code>markdown-fiction-writer.textFormatting.fixParagraphBreaks</code></summary><ul>
+<details class="setting"><summary><code>fictionWriter.textFormatting.fixParagraphBreaks</code></summary><ul>
 <li><code>none</code> <strong>default</strong></li>
 <li><code>Soft line-breaks As New Paragraph</code></li>
 <li><code>Soft line-breaks In Same Paragraph</code></li>
@@ -848,7 +848,7 @@ And another line break
 - Adds every sentence on a new line.
 - Keeps spacing between paragraphs.</p>
 <div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Before</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
+<div class="highlight"><pre><span></span><code><span class="gh"># Using one sentence per line</span>
 
 This means, each sentence. If in the same paragraph. Uses a soft line break.
 Already separated sentences, will remain as they are.
@@ -857,7 +857,7 @@ Paragraph breaks are also kept. This is it.
 </code></pre></div>
 </div>
 <input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">After</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh">#</span> Using one sentence per line
+<div class="highlight"><pre><span></span><code><span class="gh"># Using one sentence per line</span>
 
 This means, each sentence.
 If in the same paragraph.
@@ -871,28 +871,28 @@ This is it.
 </div>
 <h4 id="fix-paragraph-spacing">Fix Paragraph Spacing<a class="headerlink" href="#fix-paragraph-spacing" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixParagraphSpacing</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.fixParagraphSpacing</code></p>
 </div>
 <p>Normalizes space between different paragraph types (header, body, dialogue, ...) by adding a new line if needed.</p>
 <div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Before</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
+<div class="highlight"><pre><span></span><code><span class="gh"># This is a header</span>
 And this is a first line. The second sentence is this.
 
 Then, a lot of empty lines here.
-<span class="gu">##</span> This can be another header
+<span class="gu">## This can be another header</span>
 
 And a lot here.
 ***
 </code></pre></div>
 </div>
 <input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">After</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="gh">#</span> This is a header
+<div class="highlight"><pre><span></span><code><span class="gh"># This is a header</span>
 
 And this is a first line. The second sentence is this.
 
 Then, a lot of empty lines here.
 
-<span class="gu">##</span> This can be another header
+<span class="gu">## This can be another header</span>
 
 And a lot here.
 
@@ -902,7 +902,7 @@ And a lot here.
 </div>
 <h4 id="remove-extra-lines">Remove Extra Lines<a class="headerlink" href="#remove-extra-lines" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.removeExtraLines</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.removeExtraLines</code></p>
 </div>
 <p>Reduces multiple empty lines (more than two), to a single empty line.</p>
 <div class="tabbed-set" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><label for="__tabbed_7_1">Before</label><div class="tabbed-content">
@@ -932,7 +932,7 @@ And a lot here.
 </div>
 <h4 id="fix-mismatch-dialogue-markers">Fix Mismatch Dialogue Markers<a class="headerlink" href="#fix-mismatch-dialogue-markers" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixMismatchDialogueMarkers</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.fixMismatchDialogueMarkers</code></p>
 </div>
 <p>If the currently selected dialogue marker is not quotes, then it replaces all known dialogue markers (not quotes) with the selected one.</p>
 <div class="tabbed-set" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><label for="__tabbed_8_1">Before</label><div class="tabbed-content">
@@ -958,10 +958,10 @@ And a lot here.
 </div>
 <h4 id="fix-dialogue-indents">Fix Dialogue Indents<a class="headerlink" href="#fix-dialogue-indents" title="Permanent link">&para;</a></h4>
 <div class="admonition setting">
-<p class="admonition-title"><code>markdown-fiction-writer.textFormatting.fixDialogueIndents</code></p>
+<p class="admonition-title"><code>fictionWriter.textFormatting.fixDialogueIndents</code></p>
 </div>
 <p>Replaces all dialogue indents (visible if one sentence per line technique is used) with the currently selected dialogue indent.</p>
-<p>This works only if  <code>markdown-fiction-writer.editDialogue.marker</code>is not <code>quotes</code>, and <code>markdown-fiction-writer.editDialogue.sentenceIndent</code> is greater than 0, or <code>markdown-fiction-writer.editDialogue.sentenceIndentAutoDetect</code> is enabled</p>
+<p>This works only if  <code>fictionWriter.editDialogue.marker</code>is not <code>quotes</code>, and <code>fictionWriter.editDialogue.sentenceIndent</code> is greater than 0, or <code>fictionWriter.editDialogue.sentenceIndentAutoDetect</code> is enabled</p>
 <div class="tabbed-set" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><label for="__tabbed_9_1">Before</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>This text has mixed dialogue indents.
 
@@ -1060,7 +1060,7 @@ Of course, normal paragraphs are left untouched.
     </div>
     
       <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({

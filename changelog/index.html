@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/changelog/">
       
       <link rel="shortcut icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
     
     
       
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#0055-alpha-55" class="md-skip">
+        <a href="#unreleased-beta-10" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -194,7 +194,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
@@ -480,6 +480,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-beta-10" class="md-nav__link">
+    Unreleased Beta 1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#0055-alpha-55" class="md-nav__link">
     0.0.55 - alpha 5.5
   </a>
@@ -655,6 +662,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#unreleased-beta-10" class="md-nav__link">
+    Unreleased Beta 1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#0055-alpha-55" class="md-nav__link">
     0.0.55 - alpha 5.5
   </a>
@@ -782,6 +796,41 @@
                   <h1>Changelog</h1>
                 
                 <p>All notable changes to this project will be documented in this file.</p>
+<h4 id="unreleased-beta-10">Unreleased Beta 1.0<a class="headerlink" href="#unreleased-beta-10" title="Permanent link">&para;</a></h4>
+<p><strong>Added</strong></p>
+<ul>
+<li>Add <code>exclude</code> and <code>compile: false</code> support for metadata block so, file is not include in the compiled script <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/36">[#36]</a></li>
+<li>Upgrade minimum supported version to <code>1.68</code></li>
+<li>Support for <a href="https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting">file nesting</a>. Adds <code>{"*.md": "${capture}.md.txt, ${capture}.md.yml"}</code> pattern to <code>explorer.fileNesting.patterns</code> in configuration defaults.</li>
+</ul>
+<p><strong>Fixes</strong>
+- A bug that did not include all files in compilation <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/38">[38]</a></p>
+<p><strong>Changed</strong></p>
+<ul>
+<li>Changed extension display name from <strong>Markdown Fiction Writer</strong> to <strong>Fiction Writer</strong> to accomodate future language support</li>
+<li>Changed settings prefix from <code>markdowon-fiction-writer.</code> to <code>fiction-writer</code>  <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/28">[#28]</a></li>
+<li><strong>Settings</strong><ul>
+<li>Changed: <code>fictionWriter.statusBar.items</code> to be of type <code>object</code> with checkboxes</li>
+<li>Changed settings from <code>application</code> scope to <code>window</code> scope so it can be configured per workspace as well:<ul>
+<li><code>fictionWriter.editDialogue.marker</code></li>
+<li><code>fictionWriter.export.outputTemplate.file</code></li>
+<li><code>fictionWriter.export.outputTemplate.enabled</code></li>
+<li><code>fictionWriter.export.tocFilename</code></li>
+<li><code>fictionWriter.export.smartDeshes</code></li>
+<li><code>fictionWriter.export.skipCodeComments</code></li>
+<li><code>fictionWriter.textFormatting.*</code></li>
+<li><code>fictionWriter.metadata.keywords.colors</code></li>
+<li><code>fictionWriter.metadata.keywords.colorsCategory</code></li>
+<li><code>fictionWriter.metadata.keywords.badgesCategory</code></li>
+<li><code>fictionWriter.metadata.keywords.badges</code></li>
+<li><code>fictionWriter.metadata.categories.icons</code></li>
+<li><code>fictionWriter.metadata.categories.default</code></li>
+<li><code>fictionWriter.notes.defaultText</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="0055-alpha-55">0.0.55 - alpha 5.5<a class="headerlink" href="#0055-alpha-55" title="Permanent link">&para;</a></h4>
 <p><strong>Added</strong></p>
 <ul>
@@ -802,7 +851,7 @@
 </ul>
 <p><strong>Changed</strong></p>
 <ul>
-<li>Settings moved: <code>markdown-fiction-writer.view.statusbar.*</code> to <code>markdown-fiction-writer.statusbar.*</code> </li>
+<li>Settings moved: <code>markdown-fiction-writer.view.statusbar.*</code> to <code>markdown-fiction-writer.statusbar.*</code>.</li>
 <li>Don't show the <code>This Version Contains Breaking Changes..</code> notification message for minor alpha version changes.</li>
 </ul>
 <p><strong>Fixed</strong></p>
@@ -1083,7 +1132,7 @@
     </div>
     
       <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
-      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
       
       <script>
         app = initialize({
