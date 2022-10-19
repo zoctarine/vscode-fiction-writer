@@ -5,10 +5,11 @@ import { jest, describe, it } from '@jest/globals';
 jest.mock('vscode');
 
 describe('InMemoryCache', function () {
-
   let sut: InMemoryCache<string>;
 
-  beforeEach(() => { sut = new InMemoryCache(); });
+  beforeEach(() => {
+    sut = new InMemoryCache();
+  });
 
   describe('_constructor()', function () {
     it('should create empty cache', function () {
@@ -17,18 +18,14 @@ describe('InMemoryCache', function () {
   });
 
   describe('set() / get()', function () {
-
-    it.each([
-      '',
-      undefined,
-      null,
-      'a',
-      'SOME TEST'
-    ])('should add %s value to map', function (value) {
-      const key = unique('key');
-      sut.set(key, value);
-      expect(sut.getSnapshot()).toStrictEqual([[key, value]]);
-    });
+    it.each(['', undefined, null, 'a', 'SOME TEST'])(
+      'should add %s value to map',
+      function (value) {
+        const key = unique('key');
+        sut.set(key, value);
+        expect(sut.getSnapshot()).toStrictEqual([[key, value]]);
+      }
+    );
 
     it('should not set empty keys', function () {
       const emptyKey = '';
@@ -51,23 +48,19 @@ describe('InMemoryCache', function () {
     });
 
     it(`should add multiple values`, function () {
-      const expected =
-        [
-          [unique('key'), unique('value')],
-          [unique('key'), unique('value')],
-          [unique('key'), unique('value')]
-        ];
+      const expected = [
+        [unique('key'), unique('value')],
+        [unique('key'), unique('value')],
+        [unique('key'), unique('value')],
+      ];
 
-      expected
-        .forEach(([key, value]) =>
-          sut.set(key, value));
+      expected.forEach(([key, value]) => sut.set(key, value));
 
       expect(sut.getSnapshot()).toStrictEqual(expected);
     });
   });
 
   describe('dispose()', function () {
-
     it('should not crash on empty cache', function () {
       expect(() => sut.dispose()).not.toThrowError();
     });

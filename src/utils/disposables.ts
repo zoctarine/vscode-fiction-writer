@@ -19,7 +19,7 @@ export abstract class WithDisposables implements IDisposable {
     this.disposables.set(key, disposable);
   }
 
-  clearDisposable(...keys:string[]) {
+  clearDisposable(...keys: string[]) {
     keys.forEach(k => {
       this.getDisposable(k)?.dispose();
       this.disposables.delete(k);

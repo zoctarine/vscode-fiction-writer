@@ -6,16 +6,15 @@ import { Config } from '../config';
 import { IObservable } from '../utils';
 import { FileIndexer } from '.';
 
-
-
 export class CompileTocCommand extends CompileFileCommand {
-
   constructor(config: IObservable<Config>, indexer: FileIndexer) {
     super(config, indexer);
   }
 
-  protected makeToc(inputs: Array<string>, errors: Array<string>)
-    : { includePath: string, text: string, success: boolean } {
+  protected makeToc(
+    inputs: Array<string>,
+    errors: Array<string>
+  ): { includePath: string; text: string; success: boolean } {
     try {
       let toc = '';
 
@@ -38,19 +37,26 @@ export class CompileTocCommand extends CompileFileCommand {
       if (toc !== '') {
         return {
           includePath: path.parse(toc).dir,
-          text: fs.readFileSync(toc, {encoding: 'utf-8'}),
-          success: true
+          text: fs.readFileSync(toc, { encoding: 'utf-8' }),
+          success: true,
         };
       } else {
         throw new Error('cannot find toc');
       }
     } catch {
-      errors.push(`Cannod find ${this.state.compileTocFilename} file. In current folder or workspace.`);
+      errors.push(
+        `Cannod find ${this.state.compileTocFilename} file. In current folder or workspace.`
+      );
       return { includePath: '', text: '', success: false };
     }
   }
 
-  protected async convertAndOpen(editor: vscode.TextEditor, inputs: Array<string>, outputName?: string, format?: string) {
+  protected async convertAndOpen(
+    editor: vscode.TextEditor,
+    inputs: Array<string>,
+    outputName?: string,
+    format?: string
+  ) {
     const parsedToc = path.parse(this.state.compileTocFilename);
     await super.convertAndOpen(editor, inputs, parsedToc.name, format);
   }

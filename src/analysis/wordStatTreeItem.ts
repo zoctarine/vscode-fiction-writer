@@ -13,11 +13,11 @@ export class WordStatTreeItem extends vscode.TreeItem {
     super(label, collapsibleState ?? vscode.TreeItemCollapsibleState.None);
     this.description = desc;
 
-    if (commandId){
+    if (commandId) {
       this.command = {
         title: 'On Click',
         command: commandId,
-        arguments: [{ search: this.label }]
+        arguments: [{ search: this.label }],
       };
 
       this.contextValue = 'wordStat';

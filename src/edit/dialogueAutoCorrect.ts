@@ -1,6 +1,13 @@
 import { Position, Range, TextDocumentChangeEvent, window, workspace } from 'vscode';
 import { Config } from '../config';
-import { IObservable, Observer, Constants, getActiveEditor, IDisposable, SupportedContent } from '../utils';
+import {
+  IObservable,
+  Observer,
+  Constants,
+  getActiveEditor,
+  IDisposable,
+  SupportedContent,
+} from '../utils';
 
 export class DialogueAutoCorrectObserver extends Observer<Config> implements IDisposable {
   constructor(observable: IObservable<Config>) {
@@ -17,12 +24,19 @@ export class DialogueAutoCorrectObserver extends Observer<Config> implements IDi
     this.clearDisposable('TC');
 
     if (this.state.dialogueMarkerAutoReplace) {
-      this.addDisposable(workspace.onDidChangeTextDocument(e => this.onTextChange(e)), 'TC');
+      this.addDisposable(
+        workspace.onDidChangeTextDocument(e => this.onTextChange(e)),
+        'TC'
+      );
     }
   }
 
   onTextChange(event: TextDocumentChangeEvent) {
-    if (!this.state.isDialogueEnabled || this.state.dialoguePrefix === Constants.Dialogue.AUTO_REPLACE) return;
+    if (
+      !this.state.isDialogueEnabled ||
+      this.state.dialoguePrefix === Constants.Dialogue.AUTO_REPLACE
+    )
+      return;
     if (!event?.contentChanges?.length) return;
     if (event.contentChanges[0].text !== ' ') return;
 
@@ -34,14 +48,18 @@ export class DialogueAutoCorrectObserver extends Observer<Config> implements IDi
     let replaceString = Constants.Dialogue.AUTO_REPLACE;
     let replaceLength = replaceString.length;
 
-    if (line.text.startsWith(replaceString) && cursorPos.character == replaceLength - 1) {
-      return editor.edit(editBuilder => {
-        editBuilder.delete(new Range(line.range.start, line.range.start.translate(undefined, replaceLength)));
-        editBuilder.insert(line.range.start, this.state.dialoguePrefix);
-        editor.selection.start.translate(replaceLength);
-      }).then(() => {
-        editor?.revealRange(editor.selection);
-      });
+    if (line.text.startsWith(replaceString) && cursorPos.character === replaceLength - 1) {
+      return editor
+        .edit(editBuilder => {
+          editBuilder.delete(
+            new Range(line.range.start, line.range.start.translate(undefined, replaceLength))
+          );
+          editBuilder.insert(line.range.start, this.state.dialoguePrefix);
+          editor.selection.start.translate(replaceLength);
+        })
+        .then(() => {
+          editor?.revealRange(editor.selection);
+        });
     }
   }
 }

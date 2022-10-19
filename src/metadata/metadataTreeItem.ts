@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 
-
 export class MetadataTreeItem extends vscode.TreeItem {
   constructor(
     public readonly key: string,
@@ -14,9 +13,8 @@ export class MetadataTreeItem extends vscode.TreeItem {
     super(label, collapsibleState ?? vscode.TreeItemCollapsibleState.None);
     if (displayValue) {
       this.description = displayValue;
-      if (this.label)
-        this.label += ':';
-        this.tooltip = displayValue;
+      if (this.label) this.label += ':';
+      this.tooltip = displayValue;
     }
   }
 }

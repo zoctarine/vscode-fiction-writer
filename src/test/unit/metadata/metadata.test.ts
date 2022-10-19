@@ -3,28 +3,29 @@ import { extract, parse } from '../../../metadata';
 jest.mock('vscode');
 
 function asName(text?: string): string {
-  return text
-    ? text.replace(/\n/g, '\\n')
-    : 'test';
+  return text ? text.replace(/\n/g, '\\n') : 'test';
 }
 
 describe('Markdown Metadata Tests', function () {
-
   describe('extract()', function () {
-
     describe('should return metadata if block is starting with --- and ending with --- or ..., like:', function () {
       [
         ['---\ntitle: metadata\nblock:metadata\n---', `title: metadata\nblock:metadata`],
         ['---\ntitle: metadata\nblock:metadata\n...', `title: metadata\nblock:metadata`],
-        ['---\ntitle: metadata\nblock:metadata\n---\nwith more lines\nof\ntext', `title: metadata\nblock:metadata`],
-        ['---\ntitle: metadata\nblock:metadata\n...\nwith more lines\nof\ntext', `title: metadata\nblock:metadata`],
+        [
+          '---\ntitle: metadata\nblock:metadata\n---\nwith more lines\nof\ntext',
+          `title: metadata\nblock:metadata`,
+        ],
+        [
+          '---\ntitle: metadata\nblock:metadata\n...\nwith more lines\nof\ntext',
+          `title: metadata\nblock:metadata`,
+        ],
         ['---\ntest\n---', `test`],
-      ]
-        .forEach(([value, expected]) => {
-          it(asName(value), () => {
-            expect(extract(value)).toBe(expected);
-          });
+      ].forEach(([value, expected]) => {
+        it(asName(value), () => {
+          expect(extract(value)).toBe(expected);
         });
+      });
     });
 
     describe('should return empty string if block is not starting with --- and ending with --- or ..., like:', () => {
@@ -40,29 +41,28 @@ describe('Markdown Metadata Tests', function () {
         '--- this is not metadata ---',
         '--- this is not metadata ...',
         'two line\ntext',
-        'this\nis\nnot\n\metadata',
+        'this\nis\nnot\nmetadata',
         'this\n---\nis not\n---\nmetadata',
         '--- ---',
         '------',
         '---...',
         '--- ...',
         '---\n---',
-        '---\n...'
-      ]
-        .forEach(function (text) {
-          it(asName(text), function () {
-            expect(extract(text)).toBe('');
-          });
+        '---\n...',
+      ].forEach(function (text) {
+        it(asName(text), function () {
+          expect(extract(text)).toBe('');
         });
+      });
     });
   });
 
   describe('parse()', function () {
-
     describe('should return object with valid yaml block', () => {
       [
         {
-          text: `title:  'This is the title: it contains a colon'\n` +
+          text:
+            `title:  'This is the title: it contains a colon'\n` +
             `author:\n` +
             `- Author One\n` +
             `- Author Two\n` +
@@ -78,20 +78,20 @@ describe('Markdown Metadata Tests', function () {
             keywords: ['fiction', 'writer', 'markdown'],
             tags: ['draft'],
             abstract: 'This is the abstract.\n\nIt consists of two paragraphs.\n',
-          }
+          },
         },
         {
           text: `title: A Title`,
-          expected: { title: 'A Title' }
+          expected: { title: 'A Title' },
         },
         {
           text: `Something`,
-          expected: `Something`
+          expected: `Something`,
         },
         {
           text: `42`,
-          expected: 42
-        }
+          expected: 42,
+        },
       ].forEach(testValue => {
         it(asName(testValue.text), () => {
           expect(parse(testValue.text)).toStrictEqual(testValue.expected);
@@ -99,17 +99,14 @@ describe('Markdown Metadata Tests', function () {
       });
     });
 
-
     describe('should return undefined if empty or invalid yaml block', () => {
-      ['',
-        'not yaml',
-        '{ "this": "is json" }',
-        'unformated: yaml: block\ntitle: test'
-      ].forEach(value => {
-        it(value, () => {
-          expect(parse('')).toBeUndefined();
-        });
-      });
+      ['', 'not yaml', '{ "this": "is json" }', 'unformated: yaml: block\ntitle: test'].forEach(
+        value => {
+          it(value, () => {
+            expect(parse('')).toBeUndefined();
+          });
+        }
+      );
     });
   });
 });

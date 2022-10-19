@@ -1,19 +1,36 @@
-import { ConfigurationChangeEvent, ThemeColor, ThemeIcon } from "vscode";
-import { KnownColor } from "../utils";
+import { ConfigurationChangeEvent, ThemeColor, ThemeIcon } from 'vscode';
+import { KnownColor } from '../utils';
 
 export interface IKvp<T> {
-  [key:string]: T
+  [key: string]: T;
 }
 
 export interface IContextConfig {
-  [key: string]: ConfigurationChangeEvent| string | number | boolean | undefined | IKvp<string> | IKvp<boolean> | Map<string, ThemeColor> | Map<string, ThemeColor>;
+  [key: string]:
+    | ConfigurationChangeEvent
+    | string
+    | number
+    | boolean
+    | undefined
+    | IKvp<string>
+    | IKvp<boolean>
+    | Map<string, ThemeColor>
+    | Map<string, ThemeColor>;
 
   isZenMode?: boolean;
   isTypewriterMode?: boolean;
   isFocusMode?: boolean;
 }
 export class Config implements IContextConfig {
-  [key: string]: string | number | boolean | ConfigurationChangeEvent | IKvp<string> | IKvp<boolean> | Map<string, ThemeColor> | undefined;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | ConfigurationChangeEvent
+    | IKvp<string>
+    | IKvp<boolean>
+    | Map<string, ThemeColor>
+    | undefined;
   isZenMode?: boolean | undefined;
   isTypewriterMode?: boolean | undefined;
   isFocusMode?: boolean | undefined;
@@ -50,8 +67,8 @@ export class Config implements IContextConfig {
   compileShowFormatPicker?: boolean;
   compileShowSaveDialogue?: boolean;
   compileSkipCommentsFromToc?: boolean;
-  compileShowsErrorInOutputFile?:boolean;
-  compileSearchDocumentIdsInAllOpened?:boolean;
+  compileShowsErrorInOutputFile?: boolean;
+  compileSearchDocumentIdsInAllOpened?: boolean;
   compileIncludeIsEnabled?: boolean;
   compileTocFilename!: string;
 
@@ -64,7 +81,7 @@ export class Config implements IContextConfig {
   viewZenModeToggleFocus?: boolean;
   viewFocusModeOpacity!: number;
   viewFocusModeType!: string;
-  
+
   metaEnabled?: boolean;
   metaEasyLists!: string;
   metaDefaultCategory?: string;
@@ -80,7 +97,7 @@ export class Config implements IContextConfig {
   metaKeywordBadgeCategory!: string;
   metaSummaryCategoryEnabled?: boolean;
 
-  smartRenameEnabled?:boolean;
+  smartRenameEnabled?: boolean;
   smartRenameRelated!: string;
 
   splitDocumentSwitchToFileEnabled?: boolean;

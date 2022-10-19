@@ -6,7 +6,10 @@ import * as path from 'path';
 import { Observer, IObservable } from '../utils';
 import { Config } from '../config';
 
-export class FileTagDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
+export class FileTagDecorationProvider
+  extends Observer<Config>
+  implements vscode.FileDecorationProvider
+{
   private decorations: { [key: string]: vscode.FileDecoration };
 
   constructor(observable: IObservable<Config>) {
@@ -22,22 +25,23 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
 
     if (this.state.metaKeywordsShowBadges) {
       this.addDisposable(vscode.window.registerFileDecorationProvider(this), 'FD');
-      this.addDisposable(vscode.workspace.onDidSaveTextDocument(e => this.fire([e.uri])), 'SV');
+      this.addDisposable(
+        vscode.workspace.onDidSaveTextDocument(e => this.fire([e.uri])),
+        'SV'
+      );
     }
   }
 
   private loadDecorations() {
     this.decorations = {};
 
-    Object
-      .getOwnPropertyNames(this.state.viewFileTags)
-      .forEach(p => {
-        const badge = this.state.viewFileTags![p].substr(0, 2);
-        if (badge && badge.length > 0) {
-          this.decorations[p] = new vscode.FileDecoration(badge, p);
-          this.decorations[badge] = new vscode.FileDecoration(badge, p);
-        }
-      });
+    Object.getOwnPropertyNames(this.state.viewFileTags).forEach(p => {
+      const badge = this.state.viewFileTags![p].substr(0, 2);
+      if (badge && badge.length > 0) {
+        this.decorations[p] = new vscode.FileDecoration(badge, p);
+        this.decorations[badge] = new vscode.FileDecoration(badge, p);
+      }
+    });
   }
 
   protected onStateChange(newState: Config) {
@@ -45,7 +49,10 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
 
     super.onStateChange(newState);
 
-    if (JSON.stringify(newState.viewFileTags) !== JSON.stringify(prev.viewFileTags) || newState.metaKeywordsShowBadges !== prev.metaKeywordsShowBadges) {
+    if (
+      JSON.stringify(newState.viewFileTags) !== JSON.stringify(prev.viewFileTags) ||
+      newState.metaKeywordsShowBadges !== prev.metaKeywordsShowBadges
+    ) {
       this.loadDecorations();
       this.register();
 
@@ -61,8 +68,9 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
   readonly onDidChangeFileDecorations: Event<Uri[]> = this._onDidChangeDecorations.event;
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
-
-    if (!uri.fsPath.endsWith('.md')) {return Promise.reject(); }
+    if (!uri.fsPath.endsWith('.md')) {
+      return Promise.reject();
+    }
 
     return new Promise((resolve, reject) => {
       try {
@@ -70,25 +78,22 @@ export class FileTagDecorationProvider extends Observer<Config> implements vscod
         let rs = fs.createReadStream(uri.fsPath, { encoding: 'utf8', highWaterMark: 256 });
         let pos = 0;
         let index;
-        rs
-          .on('data', data => {
-            index = data.indexOf('\n');
-            buffer += data;
-            if (index !== -1) {
-              pos += index;
-              rs.close();
-            } else {
-              pos += data.length;
-            }
-          })
+        rs.on('data', data => {
+          index = data.indexOf('\n');
+          buffer += data;
+          if (index !== -1) {
+            pos += index;
+            rs.close();
+          } else {
+            pos += data.length;
+          }
+        })
           .on('close', () => {
-            let line = buffer.slice(buffer.charCodeAt(0) === 0xFEFF ? 1 : 0, pos);
+            let line = buffer.slice(buffer.charCodeAt(0) === 0xfeff ? 1 : 0, pos);
             let match = /(?:(\/\/\s+))([\p{L}\p{N}\-_]+)/giu.exec(line);
             let dec: vscode.FileDecoration;
-            if (match && match.length >= 3 && (dec = this.decorations[match[2]]))
-              resolve(dec);
-            else
-              reject();
+            if (match && match.length >= 3 && (dec = this.decorations[match[2]])) resolve(dec);
+            else reject();
           })
           .on('error', err => reject(err));
       } catch (error) {

@@ -34,7 +34,10 @@ class TextSelector {
     }
   }
 
-  private _find(selection: WordStatTreeItem[], findAction: (text: string, search: string) => number) {
+  private _find(
+    selection: WordStatTreeItem[],
+    findAction: (text: string, search: string) => number
+  ) {
     const editor = getActiveEditor(SupportedContent.Fiction);
     if (!editor) return;
     if (!selection || selection.length === 0) return;
@@ -53,17 +56,15 @@ class TextSelector {
     this._lastSearch = search;
   }
 
-
   private selectText(editor: vscode.TextEditor, startIndex: number, length: number) {
     if (startIndex < 0) return;
 
     let pos = editor.document.positionAt(startIndex);
     let range = new vscode.Range(pos, pos?.translate(0, length));
     editor.selection = new vscode.Selection(range.start, range.end);
-   vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+    vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
     editor.revealRange(range);
   }
 }
 
 export const WordStatTreeItemSelector = new TextSelector();
-

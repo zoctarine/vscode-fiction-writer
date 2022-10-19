@@ -1,4 +1,4 @@
-import { RegEx } from "../../utils";
+import { RegEx } from '../../utils';
 import { describe, it } from '@jest/globals';
 
 describe('RegEx', () => {
@@ -56,47 +56,28 @@ This has no enclosing meta char`;
   });
 
   describe('METADATA_MARKER_START', () => {
-    it.each([
-      '---',
-      '---  ',
-      '--- ',
-      '---   '
-    ])('should detect [%s] as meta start block', (line) => {
+    it.each(['---', '---  ', '--- ', '---   '])('should detect [%s] as meta start block', line => {
       expect(RegEx.METADATA_MARKER_START.test(line)).toBeTruthy();
     });
 
-    it.each([
-      '----',
-      '  ---',
-      '--',
-      '...'
-    ])('should not detect [%s] as meta start marker', (line) => {
+    it.each(['----', '  ---', '--', '...'])('should not detect [%s] as meta start marker', line => {
       expect(RegEx.METADATA_MARKER_START.test(line)).toBeFalsy();
     });
   });
 
   describe('METADATA_MARKER_END', () => {
-    it.each([
-      '---',
-      '---  ',
-      '--- ',
-      '---   ',
-      '...',
-      '...  ',
-      '... ',
-      '...   '
-    ])('should detect [%s] as end start block', (line) => {
-      expect(RegEx.METADATA_MARKER_END.test(line)).toBeTruthy();
-    });
+    it.each(['---', '---  ', '--- ', '---   ', '...', '...  ', '... ', '...   '])(
+      'should detect [%s] as end start block',
+      line => {
+        expect(RegEx.METADATA_MARKER_END.test(line)).toBeTruthy();
+      }
+    );
 
-    it.each([
-      '----',
-      '....',
-      '  ---',
-      '--',
-      ' ...'
-    ])('should not detect [%s] as meta end marker', (line) => {
-      expect(RegEx.METADATA_MARKER_END.test(line)).toBeFalsy();
-    });
+    it.each(['----', '....', '  ---', '--', ' ...'])(
+      'should not detect [%s] as meta end marker',
+      line => {
+        expect(RegEx.METADATA_MARKER_END.test(line)).toBeFalsy();
+      }
+    );
   });
 });

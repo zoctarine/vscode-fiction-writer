@@ -8,16 +8,14 @@ export * from './inMemoryCache';
 export * from './logger';
 
 export enum SupportedContent {
-  Unknown  = 0,  	   // 000 -- the bitshift is unnecessary
-  Fiction  = 1 << 0, // 001
+  Unknown = 0, // 000 -- the bitshift is unnecessary
+  Fiction = 1 << 0, // 001
   Metadata = 1 << 1, // 010
-  Notes    = 1 << 2, // 100
+  Notes = 1 << 2, // 100
 }
 
 export class ContentType {
-
-  constructor(public supports: SupportedContent = SupportedContent.Unknown) {
-  }
+  constructor(public supports: SupportedContent = SupportedContent.Unknown) {}
 
   isKnown(): boolean {
     return this.supports !== SupportedContent.Unknown;
@@ -40,7 +38,6 @@ export class ContentType {
   }
 }
 
-
 /**
  * Checks that the editor is valid editor for this extension
  * @param editor Usually the active text editor
@@ -48,7 +45,7 @@ export class ContentType {
 export function getContentType(document?: TextDocument): ContentType {
   const result = new ContentType();
   if (document === undefined || document === null) return result;
-  
+
   // Skip backup files, no matter what language they have
   const name = document.fileName.toLowerCase();
   if (name.endsWith('.tmp')) return result;
@@ -69,7 +66,10 @@ export function getContentType(document?: TextDocument): ContentType {
   return result;
 }
 
-export function isInActiveEditor(uri: Uri | undefined, supportedContent: SupportedContent): boolean {
+export function isInActiveEditor(
+  uri: Uri | undefined,
+  supportedContent: SupportedContent
+): boolean {
   if (!uri) return false;
 
   const editor = getActiveEditor(supportedContent);
@@ -84,7 +84,5 @@ export function isInActiveEditor(uri: Uri | undefined, supportedContent: Support
 export function getActiveEditor(supportedContent: SupportedContent): TextEditor | undefined {
   const editor = window.activeTextEditor;
 
-  return getContentType(editor?.document).has(supportedContent)
-    ? editor
-    : undefined;
+  return getContentType(editor?.document).has(supportedContent) ? editor : undefined;
 }

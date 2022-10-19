@@ -3,7 +3,14 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { exec, execSync } from 'child_process';
 import { Config } from '../config';
-import { IObservable, Observer, getActiveEditor, OutputFormats, RegEx, SupportedContent } from '../utils';
+import {
+  IObservable,
+  Observer,
+  getActiveEditor,
+  OutputFormats,
+  RegEx,
+  SupportedContent,
+} from '../utils';
 import { TextEditor } from 'vscode';
 import { FileIndexer } from './fileIndexer';
 
@@ -29,15 +36,17 @@ export class CompileFileCommand extends Observer<Config> {
     await this.convertAndOpen(editor, [editor.document.fileName], undefined, format);
   }
 
-  protected makeToc(inputs: Array<string>, errors: Array<string>)
-    : { includePath: string, text: string, success: boolean } {
+  protected makeToc(
+    inputs: Array<string>,
+    errors: Array<string>
+  ): { includePath: string; text: string; success: boolean } {
     try {
       const inputPath = inputs[0];
 
       return {
-        text: fs.readFileSync(inputPath, { encoding: 'utf-8'}),
+        text: fs.readFileSync(inputPath, { encoding: 'utf-8' }),
         includePath: path.parse(inputPath).dir,
-        success: true
+        success: true,
       };
     } catch {
       errors.push(`Cannot read: ${inputs.join(', ')}`);
@@ -45,7 +54,12 @@ export class CompileFileCommand extends Observer<Config> {
     }
   }
 
-  protected async convertAndOpen(editor: TextEditor, inputs: Array<string>, outputName?: string, format?: string) {
+  protected async convertAndOpen(
+    editor: TextEditor,
+    inputs: Array<string>,
+    outputName?: string,
+    format?: string
+  ) {
     try {
       const doc = editor.document;
       const docPath = path.parse(path.resolve(doc.fileName));
@@ -60,17 +74,22 @@ export class CompileFileCommand extends Observer<Config> {
       const buffer: string[] = [];
       const compiled = await this.makeToc(inputs, errors);
 
-      if (compiled.success) { this.load(compiled.text, compiled.includePath, buffer, [], errors); }
+      if (compiled.success) {
+        this.load(compiled.text, compiled.includePath, buffer, [], errors);
+      }
 
       if (errors.length > 0) {
         const result = await window.showErrorMessage(
           'Generating output files encountered some errors: ' + errors.join('; '),
           'Continue with Errors',
-          'Cancel');
+          'Cancel'
+        );
         if (result === 'Cancel') return;
       }
 
-      if (buffer.length === 0) { return; }
+      if (buffer.length === 0) {
+        return;
+      }
 
       fs.writeFileSync(tempCompiled, buffer.join('\n'));
 
@@ -83,7 +102,6 @@ export class CompileFileCommand extends Observer<Config> {
       }
       let output = path.join(docPath.dir, filename + '.' + ext);
       try {
-
         if (this.state.compileShowSaveDialogue) {
           const result = await window.showSaveDialog({
             defaultUri: Uri.file(output),
@@ -100,10 +118,12 @@ export class CompileFileCommand extends Observer<Config> {
         const input = `"${tempCompiled}"`;
 
         let template = '';
-        if (['odt', 'docx'].includes(ext) &&
+        if (
+          ['odt', 'docx'].includes(ext) &&
           this.state.compileUseTemplateFile &&
           this.state.compileTemplateFile &&
-          this.state.compileTemplateFile.endsWith('.' + ext)) {
+          this.state.compileTemplateFile.endsWith('.' + ext)
+        ) {
           let templatePath = this.state.compileTemplateFile;
 
           if (!path.isAbsolute(templatePath)) {
@@ -112,17 +132,21 @@ export class CompileFileCommand extends Observer<Config> {
           template = `--reference-doc "${templatePath}"`;
         }
 
-        execSync(`pandoc -f ${inputFormat} -t ${outputFormat} -s ${input} -o "${output}" ${template}`);
-        const selection = await window.showInformationMessage(`Successfully compiled to '${outputFormat}':`, output);
+        execSync(
+          `pandoc -f ${inputFormat} -t ${outputFormat} -s ${input} -o "${output}" ${template}`
+        );
+        const selection = await window.showInformationMessage(
+          `Successfully compiled to '${outputFormat}':`,
+          output
+        );
         if (selection === output) {
           try {
             env.openExternal(Uri.file(output));
           } catch (error) {
-            window.showErrorMessage('Could not open file in external application.')
+            window.showErrorMessage('Could not open file in external application.');
           }
         }
-      }
-      catch (error) {
+      } catch (error) {
         window.showErrorMessage('Error converting to [' + outputFormat + ']\n\n' + String(error));
       } finally {
         try {
@@ -131,17 +155,23 @@ export class CompileFileCommand extends Observer<Config> {
           window.showErrorMessage(`Could not delete temporary file: ${tempCompiled}. ` + error);
         }
       }
-    }
-    catch (Error) {
+    } catch (Error) {
       window.showErrorMessage(String(Error));
     } finally {
       this.item.hide();
     }
   }
 
-
-  private load(text: string, rootPath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>): boolean {
-    if (!buffer) { buffer = []; }
+  private load(
+    text: string,
+    rootPath: string,
+    buffer: Array<string>,
+    opened: Array<string>,
+    errors: Array<string>
+  ): boolean {
+    if (!buffer) {
+      buffer = [];
+    }
     const lines = text.split(/\n/);
     let insideMeta = false;
     for (let line of lines) {
@@ -153,7 +183,12 @@ export class CompileFileCommand extends Observer<Config> {
         // comment skipped
       } else {
         let includedFiles = trimmedLine.match(RegEx.MARKDOWN_INCLUDE_FILE);
-        if (this.state.compileIncludeIsEnabled && !insideMeta && includedFiles && includedFiles.length > 0) {
+        if (
+          this.state.compileIncludeIsEnabled &&
+          !insideMeta &&
+          includedFiles &&
+          includedFiles.length > 0
+        ) {
           includedFiles.forEach(match => {
             match = match.replace(RegEx.MARKDOWN_INCLUDE_FILE_BOUNDARIES, '').trim();
             let includedPath = match;
@@ -174,7 +209,11 @@ export class CompileFileCommand extends Observer<Config> {
                   return;
                 }
                 if (paths.length > 1) {
-                  errors.push(`Multiple files having id: '${match}'. None included. Conflicts: ${paths.map(p => p.path).join('; ')}`);
+                  errors.push(
+                    `Multiple files having id: '${match}'. None included. Conflicts: ${paths
+                      .map(p => p.path)
+                      .join('; ')}`
+                  );
                   return;
                 }
               }
@@ -205,7 +244,12 @@ export class CompileFileCommand extends Observer<Config> {
     return true;
   }
 
-  private loadFile(filePath: string, buffer: Array<string>, opened: Array<string>, errors: Array<string>) {
+  private loadFile(
+    filePath: string,
+    buffer: Array<string>,
+    opened: Array<string>,
+    errors: Array<string>
+  ) {
     try {
       if (opened.includes(filePath)) {
         errors.push(`File: ${filePath} is included multiple times. Skipping.`);
@@ -214,8 +258,8 @@ export class CompileFileCommand extends Observer<Config> {
       if (fs.existsSync(filePath)) {
         opened.push(filePath);
         const docPath = path.parse(filePath);
-        const text = fs.readFileSync(filePath, {encoding: 'utf-8'});
-        buffer.push('');  // add empty line before include
+        const text = fs.readFileSync(filePath, { encoding: 'utf-8' });
+        buffer.push(''); // add empty line before include
         this.load(text, docPath.dir, buffer, opened, errors);
       } else {
         errors.push(`Could not export file: ${filePath}. File is missing.`);

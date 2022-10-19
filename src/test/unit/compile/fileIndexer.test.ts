@@ -9,15 +9,15 @@ let normalizeMock = jest.fn();
 let extractMetadata = jest.fn();
 
 const metaServiceMock = jest.fn<MetadataService, []>(() => ({
-  extractMetadata: extractMetadata
+  extractMetadata: extractMetadata,
 }));
 
-const configServiceMock = ({
+const configServiceMock = {
   attach: jest.fn(),
   detach: jest.fn(),
   notify: jest.fn(),
-  getState: jest.fn()
-});
+  getState: jest.fn(),
+};
 
 jest.mock('glob');
 jest.mock('vscode');
@@ -26,17 +26,14 @@ jest.mock('fs');
 const syncMock = sync as jest.Mock;
 const existSyncMock = existsSync as jest.Mock;
 
-
-import { FileIndexer } from "../../../compile";
+import { FileIndexer } from '../../../compile';
 import { FileManager, knownFileTypes } from '../../../smartRename';
 import { Config } from '../../../config';
 import { IObservable } from '../../../utils';
 
-
 const fileManager = new FileManager(configServiceMock);
 
 describe('FileIndexer', () => {
-
   let sut: FileIndexer;
 
   beforeEach(() => {
@@ -84,7 +81,7 @@ describe('FileIndexer', () => {
         path: filePath,
         metadata: undefined,
         notes: undefined,
-        summary: undefined
+        summary: undefined,
       });
     });
 
@@ -92,7 +89,7 @@ describe('FileIndexer', () => {
       const filePath = uniqueMdFile('file/location');
       const metadata: IMetadata = {
         type: MetaLocation.Internal,
-        value: { notId: 'someValue' }
+        value: { notId: 'someValue' },
       };
       syncMock.mockReturnValue([filePath]);
       extractMetadata.mockReturnValue(metadata);
@@ -106,26 +103,46 @@ describe('FileIndexer', () => {
         path: filePath,
         metadata: metadata,
         notes: undefined,
-        summary: undefined
+        summary: undefined,
       });
     });
 
     it('should index entries with same id and return all of them', () => {
-
       // ARRANGE
       const path1 = uniqueMdFile('path1');
       const id12 = unique('id 1 and 2');
       const meta1 = { type: MetaLocation.Internal, value: { id: id12 } };
-      const expectedInfo1 = { id: id12, metadata: meta1, path: path1, key: path1, notes: undefined, summary: undefined };
+      const expectedInfo1 = {
+        id: id12,
+        metadata: meta1,
+        path: path1,
+        key: path1,
+        notes: undefined,
+        summary: undefined,
+      };
 
       const path2 = uniqueMdFile('path2');
       const meta2 = { type: MetaLocation.Internal, value: { id: id12, a: 'A', b: 'B' } }; // same id as path 1
-      const expectedInfo2 = { id: id12, metadata: meta2, path: path2, key: path2, notes: undefined, summary: undefined };
+      const expectedInfo2 = {
+        id: id12,
+        metadata: meta2,
+        path: path2,
+        key: path2,
+        notes: undefined,
+        summary: undefined,
+      };
 
       const path3 = uniqueMdFile('path3');
       const id3 = unique('id 3');
       const meta3 = { type: MetaLocation.Internal, value: { id: id3, somethingElse: 'test' } };
-      const expectedInfo3 = { id: id3, metadata: meta3, path: path3, key: path3, notes: undefined, summary: undefined };
+      const expectedInfo3 = {
+        id: id3,
+        metadata: meta3,
+        path: path3,
+        key: path3,
+        notes: undefined,
+        summary: undefined,
+      };
 
       extractMetadata
         .mockImplementationOnce(p => meta1)
@@ -140,7 +157,6 @@ describe('FileIndexer', () => {
       syncMock.mockReturnValue([path3]);
       sut.index(path3);
 
-
       // ASSERT
       expect(sut.getById(id12)).toStrictEqual([expectedInfo1, expectedInfo2]);
       expect(sut.getById(id3)).toStrictEqual([expectedInfo3]);
@@ -152,12 +168,18 @@ describe('FileIndexer', () => {
       expect(extractMetadata.mock.calls.length).toBe(3);
     });
 
-
     it('should index file id for files with metetadata.id', async () => {
       const fsPath = uniqueMdFile('path');
       const id = unique('id');
       const metadata = { type: MetaLocation.Internal, value: { id: id } };
-      const expectedInfo = { id, metadata, path: fsPath, key: fsPath, notes: undefined, summary: undefined };
+      const expectedInfo = {
+        id,
+        metadata,
+        path: fsPath,
+        key: fsPath,
+        notes: undefined,
+        summary: undefined,
+      };
       extractMetadata.mockReturnValue(metadata);
       syncMock.mockReturnValue([fsPath]);
 
@@ -170,7 +192,9 @@ describe('FileIndexer', () => {
     });
 
     it('should index only filepath if extractMeta throws error', () => {
-      extractMetadata.mockImplementation(p => { throw new Error(); });
+      extractMetadata.mockImplementation(p => {
+        throw new Error();
+      });
       const fsPath = uniqueMdFile('any path');
       syncMock.mockReturnValue([fsPath]);
 
@@ -183,42 +207,32 @@ describe('FileIndexer', () => {
 
   describe('indexLocation()', () => {
     it('should not index anything for empty baseDir', async () => {
-
       await expect(sut.indexLocation('', '*.*')).rejects.toMatch('error');
 
       expect(sut.keys()).toStrictEqual([]);
     });
 
     it('should not index anything for empty pattern', async () => {
-
       await expect(sut.indexLocation('some/path/to/file', '')).rejects.toMatch('error');
 
       expect(sut.keys()).toStrictEqual([]);
     });
 
     it('should index location', async () => {
-      const paths = [
-        uniqueMdFile('file1'),
-        uniqueMdFile('file2'),
-        uniqueMdFile('file3')
-      ];
+      const paths = [uniqueMdFile('file1'), uniqueMdFile('file2'), uniqueMdFile('file3')];
 
       syncMock.mockImplementation(() => paths);
 
-      await expect(sut.indexLocation('any/location/meta/is/mocked', '**/*'))
-        .resolves
-        .toStrictEqual(paths);
+      await expect(sut.indexLocation('any/location/meta/is/mocked', '**/*')).resolves.toStrictEqual(
+        paths
+      );
     });
 
     it('should append/overwrite indexes if called multiple times', async () => {
-      const paths1 = [
-        uniqueMdFile('file1'),
-        uniqueMdFile('file2'),
-        uniqueMdFile('file3')
-      ];
+      const paths1 = [uniqueMdFile('file1'), uniqueMdFile('file2'), uniqueMdFile('file3')];
 
       const paths2 = [
-        paths1[2],    // will ovwerite paths1 path
+        paths1[2], // will ovwerite paths1 path
         uniqueMdFile('file4'),
       ];
 
@@ -228,15 +242,11 @@ describe('FileIndexer', () => {
       syncMock.mockImplementation(() => paths2);
       await sut.indexLocation('location/two', '**/*');
 
-      expect(sut.keys()).toStrictEqual([
-        paths1[0], paths1[1], paths1[2], paths2[1]
-      ]);
+      expect(sut.keys()).toStrictEqual([paths1[0], paths1[1], paths1[2], paths2[1]]);
     });
-
   });
 
   describe('getByPath()', () => {
-
     it('should return undefined if no files indexed', () => {
       expect(sut.getByPath(uniqueMdFile('name'))).toBeUndefined();
     });
@@ -252,7 +262,7 @@ describe('FileIndexer', () => {
       const key = fsPath;
       const metadata: IMetadata = {
         type: MetaLocation.Internal,
-        value: { id }
+        value: { id },
       };
       syncMock.mockReturnValue([fsPath]);
       extractMetadata.mockReturnValue(metadata);
@@ -264,14 +274,12 @@ describe('FileIndexer', () => {
         metadata,
         path: fsPath,
         notes: undefined,
-        summary: undefined
+        summary: undefined,
       });
     });
   });
 
-
   describe('getById()', () => {
-
     it('should return undefined if no files indexed', () => {
       expect(sut.getById(unique('name'))).toStrictEqual([]);
     });
@@ -287,12 +295,11 @@ describe('FileIndexer', () => {
       const key = path;
       const metadata: IMetadata = {
         type: MetaLocation.Internal,
-        value: { id }
+        value: { id },
       };
 
-      syncMock.mockImplementation((tst) => {
-        if (tst.endsWith(knownFileTypes.metadata.pattern))
-          return [path];
+      syncMock.mockImplementation(tst => {
+        if (tst.endsWith(knownFileTypes.metadata.pattern)) return [path];
         return [];
       });
 
@@ -306,26 +313,22 @@ describe('FileIndexer', () => {
           metadata,
           path,
           notes: undefined,
-          summary: undefined
-        }]);
+          summary: undefined,
+        },
+      ]);
     });
   });
 
   describe('delete()', () => {
-
     it('should not throw if indexes are empty', () => {
       expect(() => sut.delete(uniqueMdFile('some/nonindexed/file'))).not.toThrow();
       expect(sut.keys()).toStrictEqual([]);
     });
 
     it('should leave indexes intact, if key to remove does not exist', () => {
-      const paths = [
-        uniqueMdFile('path1'),
-        uniqueMdFile('path2'),
-        uniqueMdFile('path3')
-      ];
+      const paths = [uniqueMdFile('path1'), uniqueMdFile('path2'), uniqueMdFile('path3')];
 
-      syncMock.mockImplementation((tst) => {
+      syncMock.mockImplementation(tst => {
         return [];
       });
 
@@ -337,17 +340,13 @@ describe('FileIndexer', () => {
     });
 
     it('should delete indexed entry in both id and path', () => {
-      const paths = [
-        uniqueMdFile('path1'),
-        uniqueMdFile('path2'),
-        uniqueMdFile('path3')
-      ];
+      const paths = [uniqueMdFile('path1'), uniqueMdFile('path2'), uniqueMdFile('path3')];
 
       extractMetadata
         .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id1' } }))
         .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id2' } }))
         .mockImplementationOnce(p => ({ type: MetaLocation.Internal, value: { id: 'id3' } }));
-      syncMock.mockImplementation((tst) => {
+      syncMock.mockImplementation(tst => {
         return [];
       });
       paths.forEach(p => sut.index(p));
@@ -373,15 +372,13 @@ describe('FileIndexer', () => {
   });
 
   describe('clear()', () => {
-
     it('should not crash if no file indexed', () => {
       expect(() => sut.clear()).not.toThrow();
     });
 
     it('should clear all elements', () => {
-
       extractMetadata.mockImplementation(p => ({
-        someMeta: unique('someValue')
+        someMeta: unique('someValue'),
       }));
 
       sut.index(uniqueMdFile('filePath'));
@@ -392,19 +389,16 @@ describe('FileIndexer', () => {
 
       expect(sut.keys()).toStrictEqual([]);
     });
-
   });
 
-
   describe('dispose()', () => {
-
     it('should not crash if no file indexed', () => {
       expect(() => sut.dispose()).not.toThrow();
     });
 
     it('should clear all elements', () => {
       extractMetadata.mockImplementation(p => ({
-        someMeta: unique('someValue')
+        someMeta: unique('someValue'),
       }));
 
       sut.index(uniqueMdFile('filePath'));

@@ -3,22 +3,49 @@ import * as path from 'path';
 
 import { ConfigService, Config, ContextService } from './config';
 import { CompileAllCommand, CompileFileCommand, CompileTocCommand, FileIndexer } from './compile';
-import { EnhancedEditBehaviour, EnhancedEditDialogueBehaviour, CustomFormattingProvider, DialogueAutoCorrectObserver } from "./edit";
-import { Constants, DialogueMarkerMappings, getContentType, isDebugMode, logger, SupportedContent } from './utils';
-import { DocStatisticTreeDataProvider, WordFrequencyTreeDataProvider, WordStatTreeItemSelector } from './analysis';
-import { TextDecorations, FoldingObserver, StatusBarObserver, TypewriterModeObserver, WritingMode } from './view';
-import { MarkdownMetadataTreeDataProvider, MetadataFileCache, MetadataFileDecorationProvider, MetadataNotesProvider, metaService } from './metadata';
+import {
+  EnhancedEditBehaviour,
+  EnhancedEditDialogueBehaviour,
+  CustomFormattingProvider,
+  DialogueAutoCorrectObserver,
+} from './edit';
+import {
+  Constants,
+  DialogueMarkerMappings,
+  getContentType,
+  isDebugMode,
+  logger,
+  SupportedContent,
+} from './utils';
+import {
+  DocStatisticTreeDataProvider,
+  WordFrequencyTreeDataProvider,
+  WordStatTreeItemSelector,
+} from './analysis';
+import {
+  TextDecorations,
+  FoldingObserver,
+  StatusBarObserver,
+  TypewriterModeObserver,
+  WritingMode,
+} from './view';
+import {
+  MarkdownMetadataTreeDataProvider,
+  MetadataFileCache,
+  MetadataFileDecorationProvider,
+  MetadataNotesProvider,
+  metaService,
+} from './metadata';
 import { FileManager, knownFileTypes, ProjectFilesTreeDataProvider } from './smartRename';
 
 let currentConfig: Config;
 let isWatcherEnabled = true;
 
 export async function activate(context: vscode.ExtensionContext) {
-
   vscode.commands.executeCommand('setContext', 'fw:isDevelopmentMode', isDebugMode);
   const storageManager = new ContextService(context.globalState);
   const configService = new ConfigService(storageManager);
-  
+
   const fileManager = new FileManager(configService);
   const fileIndexer = new FileIndexer(metaService, fileManager);
   const cache = new MetadataFileCache(fileIndexer, configService);
@@ -29,7 +56,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const enhancedBehaviour = new EnhancedEditBehaviour(configService);
   const dialogueBehaviour = new EnhancedEditDialogueBehaviour(configService);
 
-  const behaviour = () => currentConfig.isDialogueEnabled ? dialogueBehaviour : enhancedBehaviour;
+  const behaviour = () => (currentConfig.isDialogueEnabled ? dialogueBehaviour : enhancedBehaviour);
   const compileFileCommand = new CompileFileCommand(configService, fileIndexer);
   const compileAllCommand = new CompileAllCommand(configService, fileIndexer);
   const compileTocCommand = new CompileTocCommand(configService, fileIndexer);
@@ -38,21 +65,39 @@ export async function activate(context: vscode.ExtensionContext) {
   const wordFrequencyProvider = new WordFrequencyTreeDataProvider();
   const docStatisticProvider = new DocStatisticTreeDataProvider();
   const projectFilesProvider = new ProjectFilesTreeDataProvider(configService, fileIndexer);
-  const notesProvider = new MetadataNotesProvider(configService, context.extensionUri, fileIndexer, context.subscriptions);
+  const notesProvider = new MetadataNotesProvider(
+    configService,
+    context.extensionUri,
+    fileIndexer,
+    context.subscriptions
+  );
   const metadataProvider = new MarkdownMetadataTreeDataProvider(configService, cache);
-  const freqTree = vscode.window.createTreeView('fw-wordFrequencies', { treeDataProvider: wordFrequencyProvider });
-  const projectTree = vscode.window.createTreeView('fw-projectFiles', { treeDataProvider: projectFilesProvider });
-  const statTree = vscode.window.createTreeView('fw-statistics', { treeDataProvider: docStatisticProvider });
-  const metadataTree = vscode.window.createTreeView('fw-metadata', { treeDataProvider: metadataProvider });
+  const freqTree = vscode.window.createTreeView('fw-wordFrequencies', {
+    treeDataProvider: wordFrequencyProvider,
+  });
+  const projectTree = vscode.window.createTreeView('fw-projectFiles', {
+    treeDataProvider: projectFilesProvider,
+  });
+  const statTree = vscode.window.createTreeView('fw-statistics', {
+    treeDataProvider: docStatisticProvider,
+  });
+  const metadataTree = vscode.window.createTreeView('fw-metadata', {
+    treeDataProvider: metadataProvider,
+  });
   const notesWebView = vscode.window.registerWebviewViewProvider('fw-notes', notesProvider, {
-    webviewOptions: { retainContextWhenHidden: true }
+    webviewOptions: { retainContextWhenHidden: true },
   });
   const metadataDecoration = new MetadataFileDecorationProvider(configService, cache, fileManager);
   wordFrequencyProvider.tree = freqTree;
   docStatisticProvider.tree = statTree;
   metadataProvider.tree = metadataTree;
   isWatcherEnabled = true;
-  const watcher = vscode.workspace.createFileSystemWatcher(knownFileTypes.all.pattern, false, false, false);
+  const watcher = vscode.workspace.createFileSystemWatcher(
+    knownFileTypes.all.pattern,
+    false,
+    false,
+    false
+  );
   const cmd = Constants.Commands;
 
   context.subscriptions.push(
@@ -77,65 +122,113 @@ export async function activate(context: vscode.ExtensionContext) {
       if (e.visible) docStatisticProvider.refresh();
     }),
 
-    vscode.workspace.onDidChangeConfiguration((e) => onConfigChange(e, configService)),
+    vscode.workspace.onDidChangeConfiguration(e => onConfigChange(e, configService)),
     vscode.commands.registerCommand(cmd.ON_NEW_LINE, () => behaviour().onEnterKey()),
     vscode.commands.registerCommand(cmd.ON_NEW_LINE_ALTERED, () => behaviour().onShiftEnterKey()),
     vscode.commands.registerCommand(cmd.ON_BACKSPACE, () => behaviour().onBackspaceKey()),
     vscode.commands.registerCommand(cmd.ON_DELETE, () => behaviour().onDeleteKey()),
     vscode.commands.registerCommand(cmd.ON_TAB, () => behaviour().onTabKey()),
-    vscode.commands.registerCommand(cmd.COMPILE_FILE, async () => { await compileFileCommand.execute(); }),
-    vscode.commands.registerCommand(cmd.COMPILE_ALL, async () => { await compileAllCommand.execute(); }),
-    vscode.commands.registerCommand(cmd.COMPILE_TOC, async () => { await compileTocCommand.execute(); }),
+    vscode.commands.registerCommand(cmd.COMPILE_FILE, async () => {
+      await compileFileCommand.execute();
+    }),
+    vscode.commands.registerCommand(cmd.COMPILE_ALL, async () => {
+      await compileAllCommand.execute();
+    }),
+    vscode.commands.registerCommand(cmd.COMPILE_TOC, async () => {
+      await compileTocCommand.execute();
+    }),
     vscode.commands.registerCommand(cmd.COMPILE, compileCommand),
     vscode.commands.registerCommand(cmd.SELECT_EDIT_MODE, selectDialogueMode),
     vscode.commands.registerCommand(cmd.TOGGLE_PARAGRAPH, toggleParagraphCommand),
-    vscode.commands.registerCommand(cmd.TOGGLE_TYPEWRITER, () => toggleTypewriterModeCommand(configService)),
+    vscode.commands.registerCommand(cmd.TOGGLE_TYPEWRITER, () =>
+      toggleTypewriterModeCommand(configService)
+    ),
     vscode.commands.registerCommand(cmd.TOGGLE_KEYBINDINGS, toggleKeybindingsCommand),
-    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, (e) => { WordStatTreeItemSelector.prev([e]); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, (e) => { WordStatTreeItemSelector.next([e]); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => { wordFrequencyProvider.refresh(); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_OPEN, () => { wordFrequencyProvider.open(); }),
-    vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => { wordFrequencyProvider.clear(); }),
-    vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => { docStatisticProvider.refresh(); }),
-    vscode.commands.registerCommand(cmd.METADATA_REFRESH, () => { metadataProvider.refresh(); }),
-    vscode.commands.registerCommand(cmd.METADATA_OPEN, () => { metadataProvider.open(); }),
-    vscode.commands.registerCommand(cmd.METADATA_TOGGLE_SUMMARY, () => { toggleMetadataSummary(); }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_PREV, e => {
+      WordStatTreeItemSelector.prev([e]);
+    }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_FIND_NEXT, e => {
+      WordStatTreeItemSelector.next([e]);
+    }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_REFRESH, () => {
+      wordFrequencyProvider.refresh();
+    }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_OPEN, () => {
+      wordFrequencyProvider.open();
+    }),
+    vscode.commands.registerCommand(cmd.WORDFREQ_CLEAR, () => {
+      wordFrequencyProvider.clear();
+    }),
+    vscode.commands.registerCommand(cmd.DOCSTAT_REFRESH, () => {
+      docStatisticProvider.refresh();
+    }),
+    vscode.commands.registerCommand(cmd.METADATA_REFRESH, () => {
+      metadataProvider.refresh();
+    }),
+    vscode.commands.registerCommand(cmd.METADATA_OPEN, () => {
+      metadataProvider.open();
+    }),
+    vscode.commands.registerCommand(cmd.METADATA_TOGGLE_SUMMARY, () => {
+      toggleMetadataSummary();
+    }),
     vscode.commands.registerCommand(cmd.TOGGLE_WRITING_MODE, () => writingMode.toggleWritingMode()),
-    vscode.commands.registerCommand(cmd.TOGGLE_WRITING_AND_ZEN_MODE, () => writingMode.toggleWritingMode(true)),
+    vscode.commands.registerCommand(cmd.TOGGLE_WRITING_AND_ZEN_MODE, () =>
+      writingMode.toggleWritingMode(true)
+    ),
     vscode.commands.registerCommand(cmd.TOGGLE_FOCUS_MODE, () => toggleFocusMode(configService)),
     vscode.commands.registerCommand(cmd.EXIT_WRITING_MODE, () => writingMode.exitWritingMode()),
-    vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () => writingMode.setCurrentThemeAsFullscreenTheme()),
-    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_THEME, () => writingMode.selectFullscreenTheme()),
-    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_FONT_SIZE, () => writingMode.selectFullscreenFont()),
-    vscode.commands.registerCommand(cmd.UNPIN_NOTE, () => { if (notesProvider.unPin()) toggleIsNotePinned(false); }),
-    vscode.commands.registerCommand(cmd.PIN_NOTE, () => { if (notesProvider.pin()) toggleIsNotePinned(true); }),
-    vscode.commands.registerCommand(cmd.SAVE_NOTES, () => { notesProvider.saveNotes(); }),
-    vscode.commands.registerCommand(cmd.NEW_NOTES, () => { notesProvider.newNotes(); }),
-    vscode.commands.registerCommand(cmd.OPEN_NOTES, () => { notesProvider.openNotes(); }),
-    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT, async () => { await fileManager.splitDocument(); }),
-    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_LINE, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION_LINE); }),
-    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_CURSOR, async () => { await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION); }),
-    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_EXTRACT_SELECTION, async () => { await fileManager.splitDocument(Constants.SplitOptions.EXTRACT_SELECTION); }),
-    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => { 
+    vscode.commands.registerCommand(cmd.SET_FULLSCREEN_THEME, () =>
+      writingMode.setCurrentThemeAsFullscreenTheme()
+    ),
+    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_THEME, () =>
+      writingMode.selectFullscreenTheme()
+    ),
+    vscode.commands.registerCommand(cmd.SELECT_FULLSCREEN_FONT_SIZE, () =>
+      writingMode.selectFullscreenFont()
+    ),
+    vscode.commands.registerCommand(cmd.UNPIN_NOTE, () => {
+      if (notesProvider.unPin()) toggleIsNotePinned(false);
+    }),
+    vscode.commands.registerCommand(cmd.PIN_NOTE, () => {
+      if (notesProvider.pin()) toggleIsNotePinned(true);
+    }),
+    vscode.commands.registerCommand(cmd.SAVE_NOTES, () => {
+      notesProvider.saveNotes();
+    }),
+    vscode.commands.registerCommand(cmd.NEW_NOTES, () => {
+      notesProvider.newNotes();
+    }),
+    vscode.commands.registerCommand(cmd.OPEN_NOTES, () => {
+      notesProvider.openNotes();
+    }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT, async () => {
+      await fileManager.splitDocument();
+    }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_LINE, async () => {
+      await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION_LINE);
+    }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_AT_CURSOR, async () => {
+      await fileManager.splitDocument(Constants.SplitOptions.SPLIT_AT_SELECTION);
+    }),
+    vscode.commands.registerCommand(cmd.SPLIT_DOCUMENT_EXTRACT_SELECTION, async () => {
+      await fileManager.splitDocument(Constants.SplitOptions.EXTRACT_SELECTION);
+    }),
+    vscode.commands.registerCommand(cmd.RENAME_SIMILAR, (e: vscode.Uri) => {
       const oldName = e?.fsPath;
       if (!fileManager.getPathContentType(oldName).isKnown()) return;
-
 
       const rootName = fileManager.getRoot(oldName);
       if (!rootName) return;
 
       const parsed = path.parse(rootName);
-      vscode.window
-        .showInputBox({ value: parsed.name })
-        .then(fileName => {
-          if (!fileName) return;
-          const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
-          if (fileName) fileManager.batchRename(rootName, newName);
-        });
+      vscode.window.showInputBox({ value: parsed.name }).then(fileName => {
+        if (!fileName) return;
+        const newName = path.join(parsed.dir, `${fileName}${parsed.ext}`);
+        if (fileName) fileManager.batchRename(rootName, newName);
+      });
     }),
     vscode.commands.registerCommand(cmd.DEV_SHOW_INDEXES, async () => {
-      fileIndexer.getState().forEach((val) => {
-
+      fileIndexer.getState().forEach(val => {
         if (val.path) logger.push('- main: ' + val.path);
         if (val.metadata?.location) logger.push('- meta: ' + val.metadata?.location);
         if (val.notes?.path) logger.push('- note: ' + val.notes?.path);
@@ -148,7 +241,6 @@ export async function activate(context: vscode.ExtensionContext) {
       await metadataProvider.refresh(true);
       await notesProvider.refresh(true);
     }),
-
 
     vscode.window.onDidChangeActiveTextEditor(async e => {
       // TODO: This check is  necessary as sometimes, when switching documents,
@@ -239,7 +331,6 @@ export async function activate(context: vscode.ExtensionContext) {
     }),
 
     vscode.workspace.onDidRenameFiles(async e => {
-
       if (!currentConfig.smartRenameEnabled) return;
       if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) return;
 
@@ -250,38 +341,44 @@ export async function activate(context: vscode.ExtensionContext) {
         if (!fileManager.getPathContentType(f.oldUri.fsPath).has(SupportedContent.Fiction)) return;
 
         if (f.oldUri.scheme === 'file' && f.newUri.scheme === 'file') {
-
           // do not want to interfere with move operations
           // Note: renaming of folders does not trigger file watcher (known limitation of workspace watcher that can change in the future)
           if (!fileManager.areInSameLocation(f.oldUri.fsPath, f.newUri.fsPath)) return;
 
-          await fileManager.batchRename(f.oldUri.fsPath, f.newUri.fsPath, async (from: string, to: string) => {
+          await fileManager.batchRename(
+            f.oldUri.fsPath,
+            f.newUri.fsPath,
+            async (from: string, to: string) => {
+              if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) {
+                return false;
+              }
+              if (currentConfig.smartRenameRelated === Constants.RenameRelated.ALWAYS) {
+                return true;
+              }
+              const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
 
-            if (currentConfig.smartRenameRelated === Constants.RenameRelated.NEVER) {
-              return false;
+              const answer = await vscode.window.showInformationMessage(
+                `A file with similar name exists on disk. Do you want to also rename ${from}?`,
+                ...options
+              );
+              const doRename = answer === options[0] || answer === options[2];
+              const saveAnswer = answer === options[2] || answer === options[3];
+
+              if (saveAnswer) {
+                vscode.workspace
+                  .getConfiguration('fictionWriter.smartRename')
+                  .update(
+                    'renameRelatedFiles',
+                    doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
+                    vscode.ConfigurationTarget.Global
+                  );
+              }
+
+              return doRename;
             }
-            if (currentConfig.smartRenameRelated === Constants.RenameRelated.ALWAYS) {
-              return true;
-            }
-            const options = ['Yes', 'No', 'Yes (never ask again)', 'No (never ask again)'];
-
-            const answer = await vscode.window.showInformationMessage(`A file with similar name exists on disk. Do you want to also rename ${from}?`, ...options);
-            const doRename = answer === options[0] || answer === options[2];
-            const saveAnswer = answer === options[2] || answer === options[3];
-
-            if (saveAnswer) {
-              vscode.workspace
-                .getConfiguration('fictionWriter.smartRename')
-                .update(
-                  'renameRelatedFiles',
-                  doRename ? Constants.RenameRelated.ALWAYS : Constants.RenameRelated.NEVER,
-                  vscode.ConfigurationTarget.Global);
-            }
-
-            return doRename;
-          });
+          );
         }
-      };
+      }
     })
   );
 
@@ -316,7 +413,11 @@ function updateContextValues(editor: vscode.TextEditor | undefined) {
   const contentType = getContentType(editor?.document);
 
   vscode.commands.executeCommand('setContext', 'fw:isSupportedMetadata', contentType.isKnown());
-  vscode.commands.executeCommand('setContext', 'fw:isSupportedEditor', contentType.has(SupportedContent.Fiction));
+  vscode.commands.executeCommand(
+    'setContext',
+    'fw:isSupportedEditor',
+    contentType.has(SupportedContent.Fiction)
+  );
 }
 
 function toggleIsNotePinned(isPineed: boolean) {
@@ -329,17 +430,20 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
   let version = 'latest version';
   let agreedVersionKey = 'isAgreeChanges';
   try {
-    version = vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON.version ?? version;
-  } catch { }
+    version =
+      vscode.extensions.getExtension('vsc-zoctarine.markdown-fiction-writer')!.packageJSON
+        .version ?? version;
+  } catch {}
 
   const uri = `https://zoctarine.github.io/vscode-fiction-writer/changelog/`;
 
-  //if (configService.getLocal(agreedVersionKey) !== version) 
+  //if (configService.getLocal(agreedVersionKey) !== version)
   {
-    const options = ['Ok (don\'t show this notification)', 'View Changes'];
+    const options = ["Ok (don't show this notification)", 'View Changes'];
     const option = await vscode.window.showWarningMessage(
       `Markdwon Fiction Writer updated to version: ${version}.\n\n.**Warning:**Configuration key format [changed](${uri})`,
-      ...options);
+      ...options
+    );
 
     if (option === options[1]) {
       vscode.env.openExternal(vscode.Uri.parse(uri));
@@ -353,15 +457,18 @@ async function showAgreeWithChanges(configService: ConfigService, showMessage: b
 function compileCommand() {
   const options = new Map<string, string>([
     ['Compile current document', 'fiction-writer.extension.compileFile'],
-    [`Compile TOC file: ${currentConfig.compileTocFilename}`, 'fiction-writer.extension.compileToc'],
+    [
+      `Compile TOC file: ${currentConfig.compileTocFilename}`,
+      'fiction-writer.extension.compileToc',
+    ],
     ['Compile all documents', 'fiction-writer.extension.compileAll'],
-    ['Cancel', '']
+    ['Cancel', ''],
   ]);
 
-  vscode.window.showQuickPick(
-    [...options.keys()], {
+  vscode.window
+    .showQuickPick([...options.keys()], {
       canPickMany: false,
-      ignoreFocusOut: false
+      ignoreFocusOut: false,
     })
     .then(selection => {
       if (!selection) return;
@@ -374,18 +481,18 @@ function compileCommand() {
 }
 
 function selectDialogueMode() {
-  vscode.window.showQuickPick(
-    Object.keys(DialogueMarkerMappings), {
+  vscode.window
+    .showQuickPick(Object.keys(DialogueMarkerMappings), {
       canPickMany: false,
-      ignoreFocusOut: false
-    }
-  ).then(selection => {
-    if (!selection) return;
+      ignoreFocusOut: false,
+    })
+    .then(selection => {
+      if (!selection) return;
 
-    vscode.workspace
-      .getConfiguration('fictionWriter.editDialogue')
-      .update('marker', selection, vscode.ConfigurationTarget.Workspace);
-  });
+      vscode.workspace
+        .getConfiguration('fictionWriter.editDialogue')
+        .update('marker', selection, vscode.ConfigurationTarget.Workspace);
+    });
 }
 
 function toggleParagraphCommand() {
@@ -393,13 +500,13 @@ function toggleParagraphCommand() {
   const config = vscode.workspace.getConfiguration('fictionWriter.edit');
   const current = config.get<string>(configKey);
 
-  const next = (current === Constants.Paragraph.NEW_ON_ENTER)
-     ? Constants.Paragraph.NEW_ON_SHIFT_ENTER
-     : Constants.Paragraph.NEW_ON_ENTER;
+  const next =
+    current === Constants.Paragraph.NEW_ON_ENTER
+      ? Constants.Paragraph.NEW_ON_SHIFT_ENTER
+      : Constants.Paragraph.NEW_ON_ENTER;
 
   config.update(configKey, next, vscode.ConfigurationTarget.Global);
 }
-
 
 function toggleFocusMode(configService: ConfigService) {
   const enabled = configService.getState().isFocusMode;
@@ -415,7 +522,6 @@ function toggleMetadataSummary() {
   config.update(configKey, !enabled, vscode.ConfigurationTarget.Global);
 }
 
-
 function toggleKeybindingsCommand() {
   const configKey = 'disableKeybindings';
   const config = vscode.workspace.getConfiguration('fictionWriter.edit');
@@ -428,14 +534,19 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
   if (!configService.getFlag('isAgreeTypewriterMode')) {
     const option = await vscode.window.showWarningMessage(
       'Typewriter Mode overrides some editor settings.\n\n' +
-      'It can be that some settings would need to be restored manually.\n\n' +
-      'Make sure you exit writer mode before deactivating/uninstalling this extension.',
-      'OK, Continue', 'Cancel', 'ReadMore');
+        'It can be that some settings would need to be restored manually.\n\n' +
+        'Make sure you exit writer mode before deactivating/uninstalling this extension.',
+      'OK, Continue',
+      'Cancel',
+      'ReadMore'
+    );
 
     if (option === 'OK, Continue') {
       configService.setFlag('isAgreeTypewriterMode');
     } else if (option === 'ReadMore') {
-      vscode.env.openExternal(vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode'));
+      vscode.env.openExternal(
+        vscode.Uri.parse('https://zoctarine.github.io/vscode-fiction-writer/view/#writing-mode')
+      );
     } else {
       return;
     }
@@ -445,7 +556,10 @@ async function toggleTypewriterModeCommand(configService: ConfigService) {
   configService.setLocal('isTypewriterMode', currentConfig.isTypewriterMode);
 }
 
-async function onConfigChange(event: vscode.ConfigurationChangeEvent, configuration: ConfigService) {
+async function onConfigChange(
+  event: vscode.ConfigurationChangeEvent,
+  configuration: ConfigService
+) {
   if (event.affectsConfiguration('fictionWriter')) {
     const previousConfig = { ...currentConfig };
     configuration.reload(event);
@@ -460,36 +574,42 @@ async function onConfigChange(event: vscode.ConfigurationChangeEvent, configurat
         canSelectMany: false,
         filters: {
           '.doc, .docx or .odt files': ['odt', 'doc', 'docx'],
-        }
+        },
       });
 
       if (selectedTemplate) {
-        vscode.workspace.getConfiguration('fictionWriter.export.outputTemplate')
+        vscode.workspace
+          .getConfiguration('fictionWriter.export.outputTemplate')
           .update('file', selectedTemplate[0].fsPath, vscode.ConfigurationTarget.Global);
       }
     }
 
     if (currentConfig.wrapIndent <= 0) {
-      mdConfig.update('tabSize',
+      mdConfig.update(
+        'tabSize',
         vscode.workspace.getConfiguration('editor').get<number>('tabSize'),
-        vscode.ConfigurationTarget.Workspace, true);
+        vscode.ConfigurationTarget.Workspace,
+        true
+      );
 
-      mdConfig.update('wrappingIndent',
+      mdConfig.update(
+        'wrappingIndent',
         currentConfig.wrapIndent < 0 ? 'none' : 'same',
-        vscode.ConfigurationTarget.Workspace, true);
-
+        vscode.ConfigurationTarget.Workspace,
+        true
+      );
     } else {
-      mdConfig.update('tabSize',
+      mdConfig.update(
+        'tabSize',
         currentConfig.wrapIndent,
-        vscode.ConfigurationTarget.Workspace, true);
+        vscode.ConfigurationTarget.Workspace,
+        true
+      );
 
-      mdConfig.update('wrappingIndent',
-        'indent',
-        vscode.ConfigurationTarget.Workspace, true);
+      mdConfig.update('wrappingIndent', 'indent', vscode.ConfigurationTarget.Workspace, true);
     }
   }
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {
-}
+export function deactivate() {}

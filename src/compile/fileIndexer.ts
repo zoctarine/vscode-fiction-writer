@@ -1,8 +1,8 @@
 import * as glob from 'glob';
 import * as path from 'path';
-import { IFileInfo, MetadataService } from "../metadata";
+import { IFileInfo, MetadataService } from '../metadata';
 import { FileManager } from '../smartRename';
-import { logger, IDisposable, InMemoryCache, Observable, SupportedContent } from "../utils";
+import { logger, IDisposable, InMemoryCache, Observable, SupportedContent } from '../utils';
 
 export interface IIndexOptions {
   skipNotify?: boolean;
@@ -24,9 +24,11 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     const p = path.posix.join(baseDir, pattern);
     return new Promise((resolve, reject) => {
       try {
-        const matches = glob.sync(p, {  nodir: true });
-        if (matches){
-          matches.forEach(match => this.index(match, { skipNotify: true, skipIndexedLocations: true }));
+        const matches = glob.sync(p, { nodir: true });
+        if (matches) {
+          matches.forEach(match =>
+            this.index(match, { skipNotify: true, skipIndexedLocations: true })
+          );
           this.notify(matches);
         }
         resolve(this.keys());
@@ -45,7 +47,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
       try {
         const matches = glob.sync(p, { nodir: true });
         matches.forEach(match => this.delete(match, false)); // do not want to notify for each file,
-        this.notify(matches);                                // but only when parsing has finished
+        this.notify(matches); // but only when parsing has finished
         resolve(this.keys());
       } catch (error) {
         reject(error);
@@ -61,7 +63,6 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     return this.fileManager.normalize(rootFile);
   }
 
-
   public index(filePath?: string, options: IIndexOptions = {}): IFileInfo | undefined {
     if (!filePath || filePath === '') return;
     const key = this.getKey(filePath);
@@ -76,7 +77,9 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     try {
       const group = this.fileManager.getGroup(filePath);
       fileInfo.path = group.getPath(SupportedContent.Fiction);
-      group.files.forEach(p => { logger.push(` - ${p}`); });
+      group.files.forEach(p => {
+        logger.push(` - ${p}`);
+      });
       logger.info(`Indexing: ${key}`);
 
       try {
@@ -84,19 +87,17 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
         fileInfo.id = meta?.value?.id;
         fileInfo.summary = meta?.value?.summary;
         fileInfo.metadata = meta;
-      } catch { }
+      } catch {}
 
       try {
         const notes = group.getPath(SupportedContent.Notes);
         fileInfo.notes = notes ? { path: notes } : undefined;
-      } catch { }
+      } catch {}
     } catch (err) {
       logger.error(`Could not read [${filePath}]: ${err}`);
     } finally {
-      if (!fileInfo.path)
-        this.fileInfos.remove(key);
-      else
-        this.fileInfos.set(key, fileInfo);
+      if (!fileInfo.path) this.fileInfos.remove(key);
+      else this.fileInfos.set(key, fileInfo);
       if (!options.skipNotify) this.notify([filePath]);
     }
     return fileInfo;
@@ -105,13 +106,11 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
   public getById(id: string): IFileInfo[] {
     const result: IFileInfo[] = [];
 
-    this.fileInfos
-      .getSnapshot()
-      .forEach(f => {
-        if (f && f[1] && f[1].id === id) {
-          result.push(f[1]);
-        }
-      });
+    this.fileInfos.getSnapshot().forEach(f => {
+      if (f && f[1] && f[1].id === id) {
+        result.push(f[1]);
+      }
+    });
 
     return result;
   }
@@ -132,7 +131,9 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
     if (notify) this.notify([filePath]);
   }
 
-  public keys(): string[] { return this.fileInfos.getAllKeys(); }
+  public keys(): string[] {
+    return this.fileInfos.getAllKeys();
+  }
 
   public clear() {
     this.fileInfos.clear();
@@ -150,7 +151,7 @@ export class FileIndexer extends Observable<IFileInfo[]> implements IDisposable 
       return allInfo.map(s => {
         if (s[1]) return s[1];
         return {
-          key: s[0]
+          key: s[0],
         };
       });
     }

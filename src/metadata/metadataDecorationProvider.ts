@@ -4,11 +4,17 @@ import { FileManager } from '../smartRename';
 import { IObservable, Observer, SupportedContent } from '../utils';
 import { MetadataFileCache } from './index';
 
+export class MetadataFileDecorationProvider
+  extends Observer<Config>
+  implements vscode.FileDecorationProvider
+{
+  private _decorations: { [key: string]: vscode.FileDecoration };
 
-export class MetadataFileDecorationProvider extends Observer<Config> implements vscode.FileDecorationProvider {
-  private _decorations: { [key: string]: vscode.FileDecoration; };
-
-  constructor(observable: IObservable<Config>, private _cache: MetadataFileCache, private _fileManager: FileManager) {
+  constructor(
+    observable: IObservable<Config>,
+    private _cache: MetadataFileCache,
+    private _fileManager: FileManager
+  ) {
     super(observable);
 
     this._decorations = {};
@@ -24,16 +30,24 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
   }
 
   private readonly _onDidChangeDecorations = new vscode.EventEmitter<vscode.Uri[]>();
-  readonly onDidChangeFileDecorations: vscode.Event<vscode.Uri[]> = this._onDidChangeDecorations.event;
+  readonly onDidChangeFileDecorations: vscode.Event<vscode.Uri[]> =
+    this._onDidChangeDecorations.event;
 
   provideFileDecoration(uri: vscode.Uri): Promise<vscode.FileDecoration> {
-
     const contentType = this._fileManager.getPathContentType(uri?.fsPath, true);
 
-    if (contentType.has(SupportedContent.Metadata) ||
-       contentType.has(SupportedContent.Notes) ||
-       uri?.fsPath.toLowerCase().endsWith('.tmp')) {
-      return Promise.resolve(new vscode.FileDecoration(undefined, undefined, new vscode.ThemeColor('tab.inactiveForeground')));
+    if (
+      contentType.has(SupportedContent.Metadata) ||
+      contentType.has(SupportedContent.Notes) ||
+      uri?.fsPath.toLowerCase().endsWith('.tmp')
+    ) {
+      return Promise.resolve(
+        new vscode.FileDecoration(
+          undefined,
+          undefined,
+          new vscode.ThemeColor('tab.inactiveForeground')
+        )
+      );
     }
 
     if (contentType.has(SupportedContent.Fiction)) {
@@ -41,7 +55,6 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
         const useColors = this.state.metaKeywordShowInFileExplorer;
         const useBadges = this.state.metaKeywordsShowBadges;
         const meta = this._cache.get(uri);
-
 
         const metadata = meta?.metadata?.value as IKvp<string | string[]>;
         let badge: string | undefined;
@@ -81,9 +94,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
               const match = this.findFirstMatchIn(metadata, knownKeywords);
               if (match) {
                 reason.add(match);
-                badge = useBadges
-                  ? this.state.metaFileBadges.get(match)?.substr(0, 2)
-                  : undefined;
+                badge = useBadges ? this.state.metaFileBadges.get(match)?.substr(0, 2) : undefined;
               }
             }
           }
@@ -92,7 +103,9 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
            * Resolve File Explorer Colors
            */
           if (useColors) {
-            const knownKeywords = [...this.state.metaKeywordColors.keys()].map(k => k.toLowerCase());
+            const knownKeywords = [...this.state.metaKeywordColors.keys()].map(k =>
+              k.toLowerCase()
+            );
             const defaultColorCat = this.state.metaKeywordColorCategory;
 
             // - if we have a default color category, deep search only
@@ -121,14 +134,14 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
           if (meta?.summary) reason.add(meta?.summary);
 
           // Only return decoration if we have a reason to
-          if (badge || color || reason.size > 0){
+          if (badge || color || reason.size > 0) {
             let tooltip = [...reason.values()].join(' | ');
             return resolve(new vscode.FileDecoration(badge, tooltip, color));
           }
         }
         return reject();
       });
-    };
+    }
 
     return Promise.reject();
   }
@@ -165,7 +178,7 @@ export class MetadataFileDecorationProvider extends Observer<Config> implements 
       return undefined;
     }
 
-    if (typeof (obj) === 'object') {
+    if (typeof obj === 'object') {
       for (let item of Object.getOwnPropertyNames(obj)) {
         let res = this.findFirstMatchIn(obj[item], values);
         if (res) return res;

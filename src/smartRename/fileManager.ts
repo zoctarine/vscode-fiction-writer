@@ -3,7 +3,16 @@ import * as glob from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { Constants, ContentType, getActiveEditor, IObservable, logger, Observer, RegEx, SupportedContent } from '../utils';
+import {
+  Constants,
+  ContentType,
+  getActiveEditor,
+  IObservable,
+  logger,
+  Observer,
+  RegEx,
+  SupportedContent,
+} from '../utils';
 import { extract } from '../metadata';
 import { Config } from '../config';
 
@@ -15,22 +24,22 @@ export const knownFileTypes = {
   metadata: {
     extension: '.md.yml',
     pattern: '.[mM][dD].[yY][mM][lL]',
-    optionalSubdir: Constants.WorkDir
+    optionalSubdir: Constants.WorkDir,
   },
   notes: {
     extension: '.md.txt',
     pattern: '.[mM][dD].[tT][xX][tT]',
-    optionalSubdir: Constants.WorkDir
+    optionalSubdir: Constants.WorkDir,
   },
   all: {
-    pattern: '**/*.{[mM][dD],[mM][dD].[yY][mM][lL],[mM][dD].[tT][xX][tT]}'
+    pattern: '**/*.{[mM][dD],[mM][dD].[yY][mM][lL],[mM][dD].[tT][xX][tT]}',
   },
   related: {
-    pattern: '.{[yY][mM][lL],[tT][xX][tT]}'
-  }
+    pattern: '.{[yY][mM][lL],[tT][xX][tT]}',
+  },
 };
 
-const knownPatterns: { type: SupportedContent, pattern: string, subdir: string }[] = [
+const knownPatterns: { type: SupportedContent; pattern: string; subdir: string }[] = [
   { type: SupportedContent.Fiction, pattern: knownFileTypes.fiction.pattern, subdir: '' },
   { type: SupportedContent.Metadata, pattern: knownFileTypes.metadata.pattern, subdir: '' },
   { type: SupportedContent.Notes, pattern: knownFileTypes.notes.pattern, subdir: '' },
@@ -46,17 +55,13 @@ export interface IFileGroup {
   isEmpty(): boolean;
 }
 
-
-
 class FileGroup implements IFileGroup {
   public static readonly EMPTY: IFileGroup = new FileGroup();
   public files: Map<SupportedContent, string>;
 
   constructor(files?: Map<SupportedContent, string>) {
-    if (!files)
-      this.files = new Map<SupportedContent, string>();
-    else
-      this.files = files;
+    if (!files) this.files = new Map<SupportedContent, string>();
+    else this.files = files;
   }
   isEmpty(): boolean {
     return this.files.size === 0;
@@ -68,15 +73,12 @@ class FileGroup implements IFileGroup {
 
   getAll(): string[] {
     const result: string[] = [];
-    this.files.forEach((path) => result.push(path));
+    this.files.forEach(path => result.push(path));
     return result;
   }
 }
 
-
-
-export class FileManager extends Observer<Config>{
-
+export class FileManager extends Observer<Config> {
   constructor(configService: IObservable<Config>) {
     super(configService);
   }
@@ -99,8 +101,7 @@ export class FileManager extends Observer<Config>{
       } catch (error) {
         vscode.window.showErrorMessage(`Could not move '${fsPath}' to resources folder.`);
       }
-    };
-
+    }
   }
 
   public normalize(fsPath: string): string {
@@ -118,7 +119,6 @@ export class FileManager extends Observer<Config>{
     return fsPath.replace(/(\.yml|\.txt)*$/gi, '');
   }
 
-
   public getGroup(fsPath: string): IFileGroup {
     const contentType = this.getPathContentType(fsPath, true);
     if (!contentType.isKnown()) return FileGroup.EMPTY;
@@ -135,7 +135,7 @@ export class FileManager extends Observer<Config>{
 
     const matches = glob.sync(p);
 
-    matches.forEach((match) => {
+    matches.forEach(match => {
       const foundContentType = this.getPathContentType(match, true); // get only first match
       if (files.has(foundContentType.supports)) return;
       files.set(foundContentType.supports, match);
@@ -143,7 +143,6 @@ export class FileManager extends Observer<Config>{
 
     return new FileGroup(files);
   }
-
 
   public getPathContentType(path?: string, strict: boolean = false): ContentType {
     const result = new ContentType();
@@ -175,8 +174,8 @@ export class FileManager extends Observer<Config>{
   public async batchRename(
     oldName: string,
     newName: string,
-    question: (from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)) {
-
+    question: (from: string, to: string) => Promise<boolean> = (from, to) => Promise.resolve(true)
+  ) {
     const oldContent = this.getPathContentType(oldName, true);
     const newContent = this.getPathContentType(newName, true);
     if (oldContent.supports !== newContent.supports) return;
@@ -191,25 +190,21 @@ export class FileManager extends Observer<Config>{
       for (let [type, oldName] of fileGroup.files.entries()) {
         const oldExt = path.parse(oldName).ext;
 
-        const newName = type === SupportedContent.Fiction
-          ? newPart
-          : `${newPart}${oldExt}`;
+        const newName = type === SupportedContent.Fiction ? newPart : `${newPart}${oldExt}`;
 
         const shouldRename = await question(oldName, newName);
         if (shouldRename) {
           fs.renameSync(oldName, newName);
           logger.info(`renamed: ${oldName} to ${newName}`);
         }
-      };
+      }
     }
   }
 
   public async splitDocument(selectedExtraction?: string) {
     const editor = getActiveEditor(SupportedContent.Fiction);
     if (editor && editor.selection) {
-
       let selectionText = editor.document.getText(editor.selection);
-
 
       let extractOptions = [];
       extractOptions.push(Constants.SplitOptions.SPLIT_AT_SELECTION_LINE);
@@ -224,7 +219,7 @@ export class FileManager extends Observer<Config>{
       if (!selectedExtraction) {
         selectedExtraction = await vscode.window.showQuickPick(extractOptions, {
           canPickMany: false,
-          placeHolder: 'Split current document'
+          placeHolder: 'Split current document',
         });
       }
 
@@ -259,7 +254,7 @@ export class FileManager extends Observer<Config>{
 
       const selFilename = await vscode.window.showInputBox({
         value: `${newDocument.filename}${newDocument.ext}`,
-        valueSelection: [0, newDocument.filename.length]
+        valueSelection: [0, newDocument.filename.length],
       });
 
       if (!selFilename) return;
@@ -272,7 +267,6 @@ export class FileManager extends Observer<Config>{
         editor.edit(eb => eb.delete(splitRange));
 
         vscode.commands.executeCommand('vscode.open', vscode.Uri.file(newFilePath));
-
       } catch (err) {
         vscode.window.showErrorMessage(`${selFilename} is not a valid file name`);
       }
@@ -280,8 +274,11 @@ export class FileManager extends Observer<Config>{
   }
 }
 
-
-function createDocumentNameFromPath(fileToSplit: string): { filename: string, filepath: string, ext: string } {
+function createDocumentNameFromPath(fileToSplit: string): {
+  filename: string;
+  filepath: string;
+  ext: string;
+} {
   const parsed = path.parse(fileToSplit);
   let fileName = parsed.name;
 
@@ -297,20 +294,26 @@ function createDocumentNameFromPath(fileToSplit: string): { filename: string, fi
   return {
     filename: fileName,
     filepath: path.normalize(parsed.dir),
-    ext: parsed.ext
+    ext: parsed.ext,
   };
 }
 
-function createDocumentNameFromSelection(fileToSplit: string, selectionText: string): { filename: string, filepath: string, ext: string } {
+function createDocumentNameFromSelection(
+  fileToSplit: string,
+  selectionText: string
+): { filename: string; filepath: string; ext: string } {
   const parsed = path.parse(fileToSplit);
   let fileName = '';
   if (selectionText && selectionText.length > 0) {
-    fileName = selectionText.replace(/[^a-zA-Z0-9 -]/gi, '').trim().substr(0, 90);
-  };
+    fileName = selectionText
+      .replace(/[^a-zA-Z0-9 -]/gi, '')
+      .trim()
+      .substr(0, 90);
+  }
 
   return {
     filename: fileName,
     filepath: path.normalize(parsed.dir),
-    ext: parsed.ext
+    ext: parsed.ext,
   };
 }

@@ -40,7 +40,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "colors": [
       {
@@ -1475,21 +1475,23 @@
       }
     ]
   },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "arrowParens": "avoid"
+  },
   "scripts": {
-    "vscode:prepublish": "webpack --mode production",
-    "webpack": "webpack --mode development",
-    "webpack-dev": "webpack --mode development --watch",
-    "test-compile": "tsc -p ./",
-    "run": "\"d:\\Microsoft VS Code\\Code.exe\" --extensionDevelopmentPath=\"e:\\Stuff\\fiction-writer\\vscode-fiction-writer\"",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test-int": "node ./out/test/integration/runTests.js",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "build": "npm run esbuild-base -- --sourcemap",
+    "watch": "npm run esbuild-base -- --sourcemap --watch",
+    "fmt": "prettier --write \"src/**/*.ts\"&& npm run test -- --fix",
+    "lint": "eslint src --ext ts && tsc --noEmit",
     "test": "jest",
-    "deploy": "vsce publish --yarn",
-    "postversion": "git push --tags && git push",
-    "release": "npm version patch"
+    "test-compile": "tsc -p ./",
+    "test-int": "node ./out/test/integration/runTests.js",
+    "deploy": "vsce publish --yarn"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
@@ -1500,16 +1502,17 @@
     "@types/vscode": "^1.63.2",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
+    "esbuild": "^0.15.11",
     "eslint": "^8.25.0",
     "glob": "^8.0.3",
-    "jest": "^29.1.2",  
+    "jest": "^29.1.2",
     "mocha": "^10.0.0",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
-    "vsce": "^2.11.0",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "vsce": "^2.11.0"
   },
   "dependencies": {
     "@vscode/test-electron": "^2.1.5",

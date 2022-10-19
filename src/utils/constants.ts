@@ -8,11 +8,11 @@ export const Constants = {
   Compile: {
     SaveDialogue: {
       ALWAYS: 'Always',
-      NONE: 'Never (save in same directory as exported file)'
-    }
+      NONE: 'Never (save in same directory as exported file)',
+    },
   },
 
-  Dialogue : {
+  Dialogue: {
     NONE: '"Hello," (quotes)',
     EMDASH: '— Hello, (em-dash followed by one space)',
     TWODASH: '-- Hello, (two dashes followed by one space)',
@@ -20,12 +20,12 @@ export const Constants = {
     EMDASH_NOSP: '—Hello, (em-dash, no space)',
     TWODASH_NOSP: '--Hello, (two dashes, no space)',
     THREEDASH_NOSP: '---Hello, (three dashes, no space)',
-    AUTO_REPLACE: '-- '
+    AUTO_REPLACE: '-- ',
   },
   RenameRelated: {
     NEVER: 'Never',
     ALWAYS: 'Always',
-    ASK: 'Ask Every Time'
+    ASK: 'Ask Every Time',
   },
   Format: {
     BACKUP_DIR: '_bk',
@@ -33,18 +33,18 @@ export const Constants = {
       NONE: 'none',
       SOFT_BREAK_NEW_PARAGRAPH: 'Soft line-breaks As New Paragraph',
       SOFT_BREAK_SAME_PARAGRAPH: 'Soft line-breaks In Same Paragraph',
-      ONE_SENTENCE_PER_LINE: 'One Sentence Per Line'
-    }
+      ONE_SENTENCE_PER_LINE: 'One Sentence Per Line',
+    },
   },
   FocusType: {
     LINE: 'Line',
-    PARAGRAPH: 'Paragraph'
+    PARAGRAPH: 'Paragraph',
   },
   SplitOptions: {
-    SPLIT_AT_SELECTION : 'Split document at selection (character)',
+    SPLIT_AT_SELECTION: 'Split document at selection (character)',
     SPLIT_AT_SELECTION_LINE: 'Split document at selection (line)',
     EXTRACT_SELECTION: 'Move Selection to new document (at character)',
-    EXTRACT_SELECTION_AT_LINE: 'Move Selection to new document (at line)'
+    EXTRACT_SELECTION_AT_LINE: 'Move Selection to new document (at line)',
   },
   Commands: {
     ON_NEW_LINE: 'fiction-writer.extension.onNewLine',
@@ -90,26 +90,27 @@ export const Constants = {
     SPLIT_DOCUMENT: 'fiction-writer.extension.splitDocument',
     SPLIT_DOCUMENT_AT_LINE: 'fiction-writer.extension.splitDocumentAtLine',
     SPLIT_DOCUMENT_AT_CURSOR: 'fiction-writer.extension.splitDocumentAtCursor',
-    SPLIT_DOCUMENT_EXTRACT_SELECTION: 'fiction-writer.extension.moveSelectionToDocument'
+    SPLIT_DOCUMENT_EXTRACT_SELECTION: 'fiction-writer.extension.moveSelectionToDocument',
   },
 
   KnownLabels: [
-    'keyword', 'keywords',
-    'tag','tags',
-    'character', 'characters',
+    'keyword',
+    'keywords',
+    'tag',
+    'tags',
+    'character',
+    'characters',
     'title',
     'summary',
     'description',
     'author',
-    'authors'
-  ]
+    'authors',
+  ],
 };
 
-export const ReservedNames: Array<string> = [
-  Constants.Format.BACKUP_DIR
-];
+export const ReservedNames: Array<string> = [Constants.Format.BACKUP_DIR];
 
-const dialogueMarkerMappings: {[id:string]: string} = {};
+const dialogueMarkerMappings: { [id: string]: string } = {};
 dialogueMarkerMappings[`${Constants.Dialogue.EMDASH}`] = '— ';
 dialogueMarkerMappings[`${Constants.Dialogue.EMDASH_NOSP}`] = '—';
 dialogueMarkerMappings[`${Constants.Dialogue.THREEDASH}`] = '--- ';
@@ -119,29 +120,26 @@ dialogueMarkerMappings[`${Constants.Dialogue.TWODASH_NOSP}`] = '--';
 dialogueMarkerMappings[`${Constants.Dialogue.NONE}`] = '';
 export const DialogueMarkerMappings = dialogueMarkerMappings;
 
-
-export const OutputFormats: { [id: string]: string; } = {
-  'docx': 'docx',
-  'odt': 'odt',
-  'html': 'html',
-  'asciidoc': 'adoc',
-  'epub': 'epub',
-  'fb2': 'fb2',
-  'docbook': 'xml'
+export const OutputFormats: { [id: string]: string } = {
+  docx: 'docx',
+  odt: 'odt',
+  html: 'html',
+  asciidoc: 'adoc',
+  epub: 'epub',
+  fb2: 'fb2',
+  docbook: 'xml',
 };
 
-
 export const RegEx = {
+  WORDS_AND_SEPARATORS: /([\p{L}'\-]+)(?: *)([^\p{L}]*)/giu,
 
-  WORDS_AND_SEPARATORS: /([\p{L}'\-]+)(?: *)([^\p{L}]*)/igu,
+  WORD_OR_MULTIWORD: /^[\p{L}\-' ]+$/giu,
 
-  WORD_OR_MULTIWORD: /^[\p{L}\-' ]+$/uig,
+  WHOLE_WORD: /[\p{L}'\-]+/giu,
 
-  WHOLE_WORD: /[\p{L}'\-]+/igu,
+  ANY_CHARACTER_ESCEPT_NEWLINE: /[^\r\n]/gu,
 
-  ANY_CHARACTER_ESCEPT_NEWLINE: /[^\r\n]/ug,
-
-  ANY_CHARACTER_EXCEPT_WHITESPACE: /[^\s]/ug,
+  ANY_CHARACTER_EXCEPT_WHITESPACE: /[^\s]/gu,
 
   KNOWN_DIALOGUE_MARKERS: /^(\-\-{1,2} {0,1}|— {0,1})/,
 
@@ -155,9 +153,9 @@ export const RegEx = {
 
   SENTENCE_SEPARATORS: /([\.\?\!\:\;])([\s]+)/g,
 
-  MARKDOWN_INCLUDE_FILE:  /^\s*{(.*?)}/g,
+  MARKDOWN_INCLUDE_FILE: /^\s*{(.*?)}/g,
 
-  MARKDOWN_INCLUDE_FILE_BOUNDARIES:  /[{}]/g,
+  MARKDOWN_INCLUDE_FILE_BOUNDARIES: /[{}]/g,
 
   NEWLINE: /\r?\n/g,
 
@@ -169,24 +167,22 @@ export const RegEx = {
 
   PARAGRAPH_BREAK: /((\n|\r\n){2,})/gu,
 
-  ENDING_NUMBER: /\d+$/gi
+  ENDING_NUMBER: /\d+$/gi,
 };
 
-
 export enum KnownColor {
-    NONE = 'default color',
-    BLUE = 'blue',
-    RED = 'red',
-    GREEN = 'green',
-    LIME = 'lime',
-    ORANGE = 'orange',
-    AMBER = 'amber',
-    PURPLE = 'purple',
-    BLUEGREY = 'bluegrey',
-    GREY = 'grey',
-    YELLOW = 'yellow',
-    WHITE = 'white',
-    BLACK = 'black',
-    PINK = 'pink'
+  NONE = 'default color',
+  BLUE = 'blue',
+  RED = 'red',
+  GREEN = 'green',
+  LIME = 'lime',
+  ORANGE = 'orange',
+  AMBER = 'amber',
+  PURPLE = 'purple',
+  BLUEGREY = 'bluegrey',
+  GREY = 'grey',
+  YELLOW = 'yellow',
+  WHITE = 'white',
+  BLACK = 'black',
+  PINK = 'pink',
 }
-

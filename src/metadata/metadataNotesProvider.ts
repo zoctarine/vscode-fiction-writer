@@ -31,35 +31,38 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
     context: vscode.WebviewViewResolveContext,
-    _token: vscode.CancellationToken,
-    ) {
-
+    _token: vscode.CancellationToken
+  ) {
     this._isDisposed = false;
 
     webviewView.webview.options = {
       // Allow scripts in the webview
       enableScripts: true,
-      localResourceRoots: [
-        this._extensionUri
-      ]
+      localResourceRoots: [this._extensionUri],
     };
-
 
     this._view = webviewView;
 
     this._reloadWebView();
 
-    this._view.webview?.onDidReceiveMessage(data => {
-      switch (data.type) {
-
-        case 'saveNotes': this._save(data.value); break;
-        case 'newNote': this.newNotes(); break;
-        case 'changed':
-          this._buffer = data.value;
-          this._setTitle('NOTES*');
-          break;
+    this._view.webview?.onDidReceiveMessage(
+      data => {
+        switch (data.type) {
+          case 'saveNotes':
+            this._save(data.value);
+            break;
+          case 'newNote':
+            this.newNotes();
+            break;
+          case 'changed':
+            this._buffer = data.value;
+            this._setTitle('NOTES*');
+            break;
         }
-      }, {}, this._disposables);
+      },
+      {},
+      this._disposables
+    );
 
     this._view.onDidDispose(() => {
       this._isDisposed = true;
@@ -70,7 +73,7 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
     try {
       if (!this._isDisposed && this._view) {
         this._view.title = title;
-      };
+      }
     } catch (error) {
       console.log(error);
     }
@@ -127,13 +130,22 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
 
   private async _loadDocument(documentPath?: string, forced?: boolean) {
     this._fileInfo = this._fileIndex.getByPath(documentPath);
-    if (!forced && this._fileInfo?.notes?.path === this._currentDocumentPath && this._fileInfo?.notes?.path) return;
+    if (
+      !forced &&
+      this._fileInfo?.notes?.path === this._currentDocumentPath &&
+      this._fileInfo?.notes?.path
+    )
+      return;
 
-    if (this._pinned && (!forced || this._fileInfo?.notes?.path !== this._currentDocumentPath)) return;
+    if (this._pinned && (!forced || this._fileInfo?.notes?.path !== this._currentDocumentPath))
+      return;
 
     if (this._buffer !== this._noteText) {
       const answer = await vscode.window.showInformationMessage(
-        `The notes view has unsaved changes. Do you want to overwrite ${this._currentDocumentPath} notes file?`, 'Yes', 'No');
+        `The notes view has unsaved changes. Do you want to overwrite ${this._currentDocumentPath} notes file?`,
+        'Yes',
+        'No'
+      );
       if (answer === 'Yes') {
         this._save(this._buffer);
       }
@@ -152,11 +164,10 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
       this._buffer = content;
       this._noteText = content;
       fs.writeFileSync(this._currentDocumentPath, content);
-    };
+    }
   }
 
   private _reloadWebView() {
-
     this._noteText = '';
     let title = '';
     if (this._currentDocumentPath) {
@@ -182,16 +193,25 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
     if (!webview) return '';
 
     // Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.
-    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js'));
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js')
+    );
 
     // Do the same for the stylesheet.
-    const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css'));
-    const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css'));
-    const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css'));
+    const styleResetUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css')
+    );
+    const styleVSCodeUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css')
+    );
+    const styleMainUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css')
+    );
     // Use a nonce to only allow a specific script to be run.
     const nonce = getNonce();
 
-    return `<!DOCTYPE html>
+    return (
+      `<!DOCTYPE html>
 			<html lang="en">
 			<head>
 				<meta charset="UTF-8">
@@ -205,17 +225,18 @@ export class MetadataNotesProvider extends Observer<Config> implements vscode.We
 			</head>
 			<body>` +
       (this._fileInfo?.notes?.path
-        ?	`<textarea id="fw-txt-notes">${this._noteText}</textarea>`
+        ? `<textarea id="fw-txt-notes">${this._noteText}</textarea>`
         : `<div class="welcome-view-content">
             <p>There are no notes for the current file group.</p>
             <div class="button-container">
               <button id="fw-txt-add-note">Add Note</button>
             </div>
-          </div>`)
-        +`
+          </div>`) +
+      `
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
-			</html>`;
+			</html>`
+    );
   }
 }
 

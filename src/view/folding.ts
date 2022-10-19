@@ -1,12 +1,22 @@
 import {
-  FoldingContext, FoldingRange, FoldingRangeKind, FoldingRangeProvider, Disposable,
-  CancellationToken, TextDocument, languages
+  FoldingContext,
+  FoldingRange,
+  FoldingRangeKind,
+  FoldingRangeProvider,
+  Disposable,
+  CancellationToken,
+  TextDocument,
+  languages,
 } from 'vscode';
 import { IObservable, Observer } from '../utils';
 import { Config } from '../config';
 
 class ParagraphFoldingProvider implements FoldingRangeProvider {
-  provideFoldingRanges(document: TextDocument, context: FoldingContext, token: CancellationToken): FoldingRange[] {
+  provideFoldingRanges(
+    document: TextDocument,
+    context: FoldingContext,
+    token: CancellationToken
+  ): FoldingRange[] {
     const result = [];
     let textLines = 0;
 
@@ -24,17 +34,13 @@ class ParagraphFoldingProvider implements FoldingRangeProvider {
 
     // If we have lines left, add them to folding region
     if (textLines > 0) {
-      result.push(
-        new FoldingRange(
-          line - textLines, line - 1,
-          FoldingRangeKind.Region));
+      result.push(new FoldingRange(line - textLines, line - 1, FoldingRangeKind.Region));
     }
     return result;
   }
 }
 
 export class FoldingObserver extends Observer<Config> implements Disposable {
-
   private foldingDisposable?: Disposable;
   private foldingProvider: ParagraphFoldingProvider;
 
@@ -59,9 +65,10 @@ export class FoldingObserver extends Observer<Config> implements Disposable {
       this.foldingDisposable = languages.registerFoldingRangeProvider(
         {
           scheme: 'file',
-          language: 'markdown'
+          language: 'markdown',
         },
-        this.foldingProvider);
+        this.foldingProvider
+      );
     }
   }
 

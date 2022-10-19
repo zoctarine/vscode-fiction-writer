@@ -3,12 +3,11 @@ import * as path from 'path';
 import { Constants, RegEx } from '../utils';
 import { WordStatTreeItem } from './wordStatTreeItem';
 
-
 export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<WordStatTreeItem> {
   private _document: vscode.TextDocument | undefined;
   public tree: vscode.TreeView<WordStatTreeItem> | undefined;
 
-  constructor() { }
+  constructor() {}
 
   public open() {
     if (this._document) {
@@ -28,24 +27,58 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
     if (element) {
       const rawText = this._document.getText();
       const text = rawText.replace(RegEx.METADATA_BLOCK, '');
-      return Promise.resolve(
-        this._getFrequencies(text, element.count)
-      );
+      return Promise.resolve(this._getFrequencies(text, element.count));
     } else {
       return Promise.resolve([
-        new WordStatTreeItem("1 Word", '', 1, 'Word frequency', vscode.ThemeIcon.Folder, vscode.TreeItemCollapsibleState.Collapsed),
-        new WordStatTreeItem("2 Words", '', 2, 'Two word phrases', vscode.ThemeIcon.Folder, vscode.TreeItemCollapsibleState.Collapsed),
-        new WordStatTreeItem("3 Words", '', 3, 'Three word phrases', vscode.ThemeIcon.Folder, vscode.TreeItemCollapsibleState.Collapsed),
-        new WordStatTreeItem("4 Words", '', 4, 'Four word phrases', vscode.ThemeIcon.Folder, vscode.TreeItemCollapsibleState.Collapsed),
-        new WordStatTreeItem("5 Words", '', 5, 'Five word phrases', vscode.ThemeIcon.Folder, vscode.TreeItemCollapsibleState.Collapsed),
+        new WordStatTreeItem(
+          '1 Word',
+          '',
+          1,
+          'Word frequency',
+          vscode.ThemeIcon.Folder,
+          vscode.TreeItemCollapsibleState.Collapsed
+        ),
+        new WordStatTreeItem(
+          '2 Words',
+          '',
+          2,
+          'Two word phrases',
+          vscode.ThemeIcon.Folder,
+          vscode.TreeItemCollapsibleState.Collapsed
+        ),
+        new WordStatTreeItem(
+          '3 Words',
+          '',
+          3,
+          'Three word phrases',
+          vscode.ThemeIcon.Folder,
+          vscode.TreeItemCollapsibleState.Collapsed
+        ),
+        new WordStatTreeItem(
+          '4 Words',
+          '',
+          4,
+          'Four word phrases',
+          vscode.ThemeIcon.Folder,
+          vscode.TreeItemCollapsibleState.Collapsed
+        ),
+        new WordStatTreeItem(
+          '5 Words',
+          '',
+          5,
+          'Five word phrases',
+          vscode.ThemeIcon.Folder,
+          vscode.TreeItemCollapsibleState.Collapsed
+        ),
       ]);
     }
   }
 
   private _getWords(text: string): string[] {
     const result: string[] = [];
-    [...text.matchAll(RegEx.WORDS_AND_SEPARATORS)]
-      .forEach(matches => result.push(...matches.slice(1).filter(s => s !== '')));
+    [...text.matchAll(RegEx.WORDS_AND_SEPARATORS)].forEach(matches =>
+      result.push(...matches.slice(1).filter(s => s !== ''))
+    );
 
     return result;
   }
@@ -63,35 +96,37 @@ export class WordFrequencyTreeDataProvider implements vscode.TreeDataProvider<Wo
     for (let i = 0; i < words.length - windowSize; i++) {
       let word = words.slice(i, i + windowSize).join(' ');
 
-      if (word.match(RegEx.WORD_OR_MULTIWORD))
-        addWord(word);
+      if (word.match(RegEx.WORD_OR_MULTIWORD)) addWord(word);
     }
 
     return new Map([...freq.entries()].sort((a, b) => b[1] - a[1]));
   }
-
 
   private _getFrequencies(text: string, count: number): WordStatTreeItem[] {
     const result: WordStatTreeItem[] = [];
     const icon = vscode.ThemeIcon.File;
 
     const wf = this._countWords(text, count).forEach((value: number, key: string) => {
-      result.push(new WordStatTreeItem(
-        key,
-        `${value}`,
-        value,
-        `"${key}" repeats ${value} time${value > 1 ? 's' : ''}`,
-        icon,
-        vscode.TreeItemCollapsibleState.None,
-        Constants.Commands.WORDFREQ_FIND_NEXT));
+      result.push(
+        new WordStatTreeItem(
+          key,
+          `${value}`,
+          value,
+          `"${key}" repeats ${value} time${value > 1 ? 's' : ''}`,
+          icon,
+          vscode.TreeItemCollapsibleState.None,
+          Constants.Commands.WORDFREQ_FIND_NEXT
+        )
+      );
     });
-
 
     return result;
   }
 
-  private _onDidChangeTreeData: vscode.EventEmitter<WordStatTreeItem | undefined | null | void> = new vscode.EventEmitter<WordStatTreeItem | undefined | null | void>();
-  readonly onDidChangeTreeData: vscode.Event<WordStatTreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<WordStatTreeItem | undefined | null | void> =
+    new vscode.EventEmitter<WordStatTreeItem | undefined | null | void>();
+  readonly onDidChangeTreeData: vscode.Event<WordStatTreeItem | undefined | null | void> =
+    this._onDidChangeTreeData.event;
 
   refresh(): void {
     this._document = vscode.window.activeTextEditor?.document;

@@ -11,7 +11,7 @@ export * from './metadataTreeItem';
 export * from './metadataNotesProvider';
 
 export function extract(text: string) {
-  const exp = /(?:^---[\n\r]+)(.*?)(?:---|\.\.\.)/sgu;
+  const exp = /(?:^---[\n\r]+)(.*?)(?:---|\.\.\.)/gsu;
   const result = exp.exec(text);
   if (result && result.length > 0) return result[1].trim();
   return '';
@@ -21,7 +21,7 @@ export function parse(yamlText: string | undefined) {
   if (!yamlText) return undefined;
 
   const result = yaml.load(yamlText, {
-    json: true // duplicate keys in a mapping will override values rather than throwing an error.
+    json: true, // duplicate keys in a mapping will override values rather than throwing an error.
   });
 
   return result;
@@ -33,18 +33,18 @@ export interface KnownMeta {
   summary: string[] | string | undefined;
   tag: string[] | string | undefined;
   tags: string[] | string | undefined;
-};
+}
 
 export enum MetaLocation {
   Unknown,
   Internal,
-  External
+  External,
 }
 
 export interface IMetadata {
   location?: string;
   type: MetaLocation;
-  value?: any
+  value?: any;
 }
 
 /**
@@ -64,7 +64,7 @@ export class MetadataService {
           return {
             location: actualFile,
             type: MetaLocation.Internal,
-            value: value
+            value: value,
           };
         }
       }
@@ -79,17 +79,15 @@ export class MetadataService {
           return {
             location: externalMeta,
             type: MetaLocation.External,
-            value: value
+            value: value,
           };
         }
       }
-
-
     } catch (error) {
       //TODO Log some error
     }
     return {
-      type: MetaLocation.Unknown
+      type: MetaLocation.Unknown,
     };
   }
 }
