@@ -803,32 +803,44 @@
 <li>Upgrade minimum supported version to <code>1.72</code></li>
 <li>Support for <a href="https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting">file nesting</a>. Adds <code>{"*.md": "${capture}.md.txt, ${capture}.md.yml"}</code> pattern to <code>explorer.fileNesting.patterns</code> in configuration defaults.</li>
 </ul>
-<p><strong>Fixes</strong>
-- A bug that did not parse all nested indcluded files in compilation <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/38">[38]</a>
-- Some speed issues and loading times with the indexer
-- Fixed failing tests on Windows envirnoment
-- Fixed Linux/Windows Glob match pattern, on file indexer and metadata indexer</p>
-<p><strong>Changed</strong>
-- Changed the build tool from <code>webpack</code> to <code>esbuild</code>
-- Changed extension display name from <strong>Markdown Fiction Writer</strong> to <strong>Fiction Writer</strong> to accomodate future language support
-- Changed settings prefix from <code>markdowon-fiction-writer.</code> to <code>fiction-writer</code>  <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/28">[#28]</a>
-- <strong>Settings</strong>
-    - Changed: <code>fictionWriter.statusBar.items</code> to be of type <code>object</code> with checkboxes
-    - Changed settings from <code>application</code> scope to <code>window</code> scope so it can be configured per workspace as well:
-        - <code>fictionWriter.editDialogue.marker</code>
-        - <code>fictionWriter.export.outputTemplate.file</code>
-        - <code>fictionWriter.export.outputTemplate.enabled</code>
-        - <code>fictionWriter.export.tocFilename</code>
-        - <code>fictionWriter.export.smartDeshes</code>
-        - <code>fictionWriter.export.skipCodeComments</code>
-        - <code>fictionWriter.textFormatting.*</code>
-        - <code>fictionWriter.metadata.keywords.colors</code>
-        - <code>fictionWriter.metadata.keywords.colorsCategory</code>
-        - <code>fictionWriter.metadata.keywords.badgesCategory</code>
-        - <code>fictionWriter.metadata.keywords.badges</code>
-        - <code>fictionWriter.metadata.categories.icons</code>
-        - <code>fictionWriter.metadata.categories.default</code>
-        - <code>fictionWriter.notes.defaultText</code></p>
+<p><strong>Fixes</strong></p>
+<ul>
+<li>A bug that did not parse all nested indcluded files in compilation <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/38">[#38]</a></li>
+<li>Some speed issues and loading times with the indexer</li>
+<li>Fixed failing tests on Windows envirnoment</li>
+<li>Fixed Linux/Windows Glob match pattern, on file indexer and metadata indexer</li>
+</ul>
+<p><strong>Changed</strong></p>
+<ul>
+<li>Changed the build tool from <code>webpack</code> to <code>esbuild</code></li>
+<li>Changed extension display name from <strong>Markdown Fiction Writer</strong> to <strong>Fiction Writer</strong> to accomodate future language support</li>
+<li>
+<p>Changed settings prefix from <code>markdowon-fiction-writer.</code> to <code>fiction-writer</code>  <a href="https://github.com/zoctarine/vscode-fiction-writer/issues/28">[#28]</a></p>
+</li>
+<li>
+<p><strong>Settings</strong></p>
+<ul>
+<li>Changed: <code>fictionWriter.statusBar.items</code> to be of type <code>object</code> with checkboxes</li>
+<li>Changed settings from <code>application</code> scope to <code>window</code> scope so it can be configured per workspace as well:<ul>
+<li><code>fictionWriter.editDialogue.marker</code></li>
+<li><code>fictionWriter.export.outputTemplate.file</code></li>
+<li><code>fictionWriter.export.outputTemplate.enabled</code></li>
+<li><code>fictionWriter.export.tocFilename</code></li>
+<li><code>fictionWriter.export.smartDeshes</code></li>
+<li><code>fictionWriter.export.skipCodeComments</code></li>
+<li><code>fictionWriter.textFormatting.*</code></li>
+<li><code>fictionWriter.metadata.keywords.colors</code></li>
+<li><code>fictionWriter.metadata.keywords.colorsCategory</code></li>
+<li><code>fictionWriter.metadata.keywords.badgesCategory</code></li>
+<li><code>fictionWriter.metadata.keywords.badges</code></li>
+<li><code>fictionWriter.metadata.categories.icons</code></li>
+<li><code>fictionWriter.metadata.categories.default</code></li>
+<li><code>fictionWriter.notes.defaultText</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="0055-alpha-55">0.0.55 - alpha 5.5<a class="headerlink" href="#0055-alpha-55" title="Permanent link">&para;</a></h4>
 <p><strong>Added</strong></p>
 <ul>
