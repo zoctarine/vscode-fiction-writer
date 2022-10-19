@@ -4,12 +4,26 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			
+			
 			"type": "npm",
 			"script": "watch",
 			"isBackground": true,
-			"problemMatcher":["$tsc-watch"],
+			"problemMatcher": {
+				"owner": "typescript",
+				"fileLocation": "relative",
+				"pattern": {
+				  "regexp": "^(.*)$",
+				  "file": 1,
+				},
+				"background": {
+				  "activeOnStart": true,
+				  "beginsPattern": "^(> npm run esbuild-base).*",
+				  "endsPattern": "^\\[watch\\].*"
+				}
+			},
 			"presentation": {
-				"reveal": "silent"
+				"reveal": "never"
 			},
 			"group": {
 				"kind": "build",

@@ -44,7 +44,6 @@
 				"--extensionTestsPath=${workspaceFolder}/dist/test/integration/index",
 				"--disable-extensions"
 			],
-			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [
 				"${workspaceFolder}/dist/test/integration/**/*.js"
