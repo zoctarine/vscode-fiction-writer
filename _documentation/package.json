@@ -1,0 +1,7 @@
+{
+    "name": "markdown-fiction-writer",
+    "scripts": {
+        "serve": "python -m mkdocs serve",
+        "build": "python -m mkdocs build"
+    }
+}

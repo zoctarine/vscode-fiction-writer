@@ -5,8 +5,12 @@ All notable changes to this project will be documented in this file.
 
 **Added**
 
+- Add `exclude` and `compile: false` support for metadata block so, file is not include in the compiled script [[#36]](https://github.com/zoctarine/vscode-fiction-writer/issues/36)
 - Upgrade minimum supported version to `1.68`
 - Support for [file nesting](https://code.visualstudio.com/updates/v1_64#_explorer-file-nesting). Adds `{"*.md": "${capture}.md.txt, ${capture}.md.yml"}` pattern to `explorer.fileNesting.patterns` in configuration defaults.
+
+**Fixes**
+- A bug that did not include all files in compilation [[38]](https://github.com/zoctarine/vscode-fiction-writer/issues/38)
 
 **Changed**
 
