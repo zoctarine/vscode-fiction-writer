@@ -1,7 +1,23 @@
 All notable changes to this project will be documented in this file.
 
 
-## Unreleased Beta 1.0
+## Unreleased 
+
+**Added**
+
+- Add `exclude` and `compile: false` support for metadata block so, a file can be exluded from the automatic compiled script [[#36]](https://github.com/zoctarine/vscode-fiction-writer/issues/36)
+
+**Fixes**
+
+- A bug that did not parse all nested indcluded files in compilation [[#38]](https://github.com/zoctarine/vscode-fiction-writer/issues/38)
+- Fixed failing tests on Windows envirnoment
+
+## 0.1.1 - pre-release 1 
+
+!!! bug "Unstable warning"
+
+    The pre-release versions are highly unstable at this moment, and for testing purposes only.
+    Use the latest stable version ([0.0.55](#0055-alpha-55)). Some settings might not be backward compatile at this point.
 
 **Added**
 
