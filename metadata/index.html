@@ -1,0 +1,1095 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fiction Writer VSCode Extension Documentation">
+      
+      
+      
+        <meta name="author" content="ZOctarine">
+      
+      
+        <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/metadata/">
+      
+      <link rel="shortcut icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Metadata - Markdown Fiction Writer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../resources/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adding-metadata" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-announce">
+          <div class="md-announce__inner md-grid md-typeset">
+            
+
+<a style="float:right;" href="https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer"><img src="https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg"/></a> <small>The documentation is work in progress, the extension is only on early draft stage.</small>
+
+
+          </div>
+        </aside>
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Markdown Fiction Writer
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Metadata
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    Markdown Fiction Writer
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      
+      <label class="md-nav__link" for="nav-2">
+        Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edit/" class="md-nav__link">
+        Text Editing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        Formatting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export/" class="md-nav__link">
+        Exporting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Metadata
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Metadata
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adding-metadata" class="md-nav__link">
+    Adding Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-metadata" class="md-nav__link">
+    Known Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-metadata-view" class="md-nav__link">
+    The Metadata View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-exceptions" class="md-nav__link">
+    yaml Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="yaml Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#easy-lists" class="md-nav__link">
+    Easy Lists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-categories" class="md-nav__link">
+    Default categories
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icons" class="md-nav__link">
+    Icons
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-category-icons-or-names" class="md-nav__link">
+    Disable category icons or names
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-explorer-badges" class="md-nav__link">
+    File Explorer Badges
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keywords-and-colors" class="md-nav__link">
+    Keywords and Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-metadata" class="md-nav__link">
+    External Metadata
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        View
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../split/" class="md-nav__link">
+        Split
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        Text Statistics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        Configuration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        Settings
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shortcuts/" class="md-nav__link">
+        Keyboard Shortcuts
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+      
+      <label class="md-nav__link" for="nav-4">
+        Other
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing/" class="md-nav__link">
+        About Writing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adding-metadata" class="md-nav__link">
+    Adding Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-metadata" class="md-nav__link">
+    Known Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-metadata-view" class="md-nav__link">
+    The Metadata View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-exceptions" class="md-nav__link">
+    yaml Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="yaml Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#easy-lists" class="md-nav__link">
+    Easy Lists
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-categories" class="md-nav__link">
+    Default categories
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icons" class="md-nav__link">
+    Icons
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disable-category-icons-or-names" class="md-nav__link">
+    Disable category icons or names
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-explorer-badges" class="md-nav__link">
+    File Explorer Badges
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keywords-and-colors" class="md-nav__link">
+    Keywords and Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-metadata" class="md-nav__link">
+    External Metadata
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Metadata</h1>
+                
+                <p>Quick overview:</p>
+<p><img alt="Meta view" src="../img/meta_view_02.jpg" /></p>
+<ul>
+<li>
+<p><strong>(1)</strong>: The <code>yaml</code> metadata block. The first thing in the document.</p>
+</li>
+<li>
+<p><strong>(2)</strong>: The <strong>Metadata</strong> tree view. Parses the metadata block.</p>
+</li>
+<li>
+<p><strong>(3)</strong>: Assign keyword badges: <code>Rake</code> has the badge <code>RK</code>, shown in <strong>Explorer</strong>. It also is part of <code>pov</code> category, visible in <strong>Metadata</strong> view</p>
+</li>
+<li>
+<p><strong>(4)</strong>: Assigned keyword colors: <code>done</code> has the color green, visible as icon color in <strong>Metadata</strong> and as file color in <strong>Explorer</strong>. The <code>04 - A door is opened.md</code> has the tag <code>rev1</code> that has the yellow color.</p>
+</li>
+</ul>
+<details class="setting"><summary>Metadata: Enabled</summary><ul>
+<li>Key: <code>config.fictionWriter.metadata.enabled</code></li>
+<li>Enables/disables all metadata related features described in this section.</li>
+<li>Default: <code>enabled</code></li>
+</ul>
+</details>
+<h3 id="adding-metadata">Adding Metadata<a class="headerlink" href="#adding-metadata" title="Permanent link">&para;</a></h3>
+<p><strong>Fiction Writer</strong> understands <code>yaml</code> markdown metadata.</p>
+<p>To use metadata blocks with <strong>Fiction Writer</strong>, you need to:</p>
+<ul>
+<li>add the metadata block on the top of the document (no even an empty line before the beginning of text)</li>
+<li>separate the block with <code>---</code> and end the block with <code>---</code> or <code>...</code>, each one on a separate line.</li>
+<li>follow <code>yaml</code> structure</li>
+<li>e.g.
+  <div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The Fictional Adventures of Fiction Writer</span>
+<span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draft</span>
+<span class="nt">tags</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">red</span><span class="p p-Indicator">,</span> <span class="nv">green</span><span class="p p-Indicator">,</span> <span class="nv">blue</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">It was a cold and starry night...</span>
+</code></pre></div></li>
+</ul>
+<div class="admonition note pandoc and metadata">
+<p class="admonition-title">Note</p>
+<p>As this extension uses <strong>Pandoc</strong> to export documents, keep in mind that <strong>Pandoc</strong> also parses, and understands, markdown metadata.</p>
+<p>Read more about what kind of metadata is supported by <strong>Pandoc</strong> here: <a href="https://pandoc.org/MANUAL.html#extension-yaml_metadata_block">Metadata blocks</a>.</p>
+</div>
+<h3 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Permanent link">&para;</a></h3>
+<p>In the context of metadata, this extension uses the following wording:</p>
+<ul>
+<li><strong>metadata category</strong>: the label/fieldname on the 1<sup>st</sup> level of metadata.</li>
+<li><strong>metadata keyword</strong>: any word in the label/field value of a metadata category, anyware in the metadata tree.</li>
+<li>in the following example, <code>title</code>, <code>status</code> and <code>tags</code> are metadata <em>categories</em>, and <code>draft</code>, <code>red</code>, <code>green</code>, <code>blue</code>, <code>Main Title</code> are <em>keywords</em>:
+  <div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">title</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Main Title</span>
+<span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draft</span>
+<span class="nt">tags</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">red</span><span class="p p-Indicator">,</span> <span class="nv">green</span><span class="p p-Indicator">,</span> <span class="nv">blue</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+</code></pre></div></li>
+</ul>
+<h3 id="known-metadata">Known Metadata<a class="headerlink" href="#known-metadata" title="Permanent link">&para;</a></h3>
+<p>You can add any metadata category or keyword, but some categories are recognized (and used) by <strong>Fiction Writer</strong>:</p>
+<ul>
+<li>
+<p><code>id</code> category: used to uniquely identify a file during <a href="../export/#include-by-metadata-id">include/export process</a>. You can either specify a file by path/filename or by this metadata <code>id</code> property.</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myFile</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">My file contents...</span>
+</code></pre></div>
+<p>More information <a href="../export/#include-by-metadata-id">here</a>.</p>
+</li>
+<li>
+<p><code>summary</code> category: used to show a short description in <strong>Explorer</strong> tooltip and in the <strong>Metadata View</strong> as the first message above metadata tree.</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">summary</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Where we find about the summary category.</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">My file contents...</span>
+</code></pre></div>
+<p><img alt="Meta Summary" src="../img/meta_summary_01.gif" /></p>
+</li>
+</ul>
+<h3 id="the-metadata-view">The Metadata View<a class="headerlink" href="#the-metadata-view" title="Permanent link">&para;</a></h3>
+<p>For all known documents (in this case, markdown) that contain <code>yaml</code> metadata, the <strong>Metadata View</strong> will be enabled in the <strong>Explorer</strong>.</p>
+<p>The view parses known metadata, and displays it as a tree.</p>
+<p>It optionally can include icons, or colors.</p>
+<p><img alt="Meta view" src="../img/meta_view_01.gif" /></p>
+<h3 id="yaml-exceptions"><code>yaml</code> Exceptions<a class="headerlink" href="#yaml-exceptions" title="Permanent link">&para;</a></h3>
+<h4 id="easy-lists">Easy Lists<a class="headerlink" href="#easy-lists" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Metadata: Easy Lists</summary><ul>
+<li>Key: <code>fictionWriter.metadata.easyLists</code>
+Under <strong>Metadata: Easy Lists</strong>, you can configure if you want to split metadata values by a specific character.</li>
+</ul>
+<p>The default value is comma (<code>,</code>), that means each comma separated item will be treated as a list item.</p>
+<p>To <code>disable</code> this setting, just leave the <strong>Metadata: Easy Lists</strong> value blank.</p>
+</details>
+<p>Although lists (arrays) in yaml are defined like:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">items</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">item1</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">item2</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">item3</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p>or like</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">items</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">item1</span><span class="p p-Indicator">,</span> <span class="nv">item2</span><span class="p p-Indicator">,</span> <span class="nv">item3</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p>to make writing lists easyer, <strong>Fiction Writer</strong> can split a text value into a list, by a configured item separator.</p>
+<p>So, the, previous example could be written like so:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">items</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">item1, item2, item3</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p>if the separator is <code>,</code>. The separator is configurable under <strong>Metadata: Easy Lists</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only if the category is a <em>known category</em>, meaning: the category is added to the <a href="#icons">Category icons</a> list, explained below.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Spaces are not trimmed</p>
+<p>If this feature does not behave as expected, make sure that the separator value does not include unwanted spaces. Especially at the beginning or end.</p>
+</div>
+<h4 id="default-categories">Default categories<a class="headerlink" href="#default-categories" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Metadata: Default Category</summary><ul>
+<li>Key: <code>fictionWriter.metadata.defaultCategory</code></li>
+<li>You can configure the default category you want uncategorized items to be assigned to. To disable this feature, just leave the default category name empty.</li>
+</ul>
+</details>
+<p>If you quickly want to categorize a document, you can write only the <em>keyword</em> or <em>keywords</em> between the metadata block markers, like so:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">item1, item2, item3</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p>or even</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">draft</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p>This will automatically add these items to the configured <strong>Default Category</strong></p>
+<p>e.g. If the <strong>Default Category</strong> is <code>status</code>, then the above blocks will be similar to:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">status</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">item1</span><span class="p p-Indicator">,</span> <span class="nv">item2</span><span class="p p-Indicator">,</span> <span class="nv">item3</span><span class="p p-Indicator">]</span>
+<span class="nn">---</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">draft</span>
+<span class="nn">---</span>
+</code></pre></div>
+<p><img alt="default" src="../img/meta_default_01.gif" /></p>
+<h3 id="icons">Icons<a class="headerlink" href="#icons" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title">Metadata &gt; Categories: Icons</p>
+<ul>
+<li>Key: <code>fictionWriter.metadata.categories.icons</code></li>
+<li>Predefined category icons, with the possiblity to add any number of new ones.</li>
+</ul>
+</div>
+<p>Sets icons for categories in the <strong>Metadata View</strong>.</p>
+<p>Only icons from VSCode <a href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">Product Icon Reference</a> are supported.</p>
+<p>Add your custom category name to the <strong>Metadata &gt; Categories: Icons</strong> list (<strong>Item</strong>) and set it's value to the icon id from Product Icon Reference. (Eg. <code>tag</code>, <code>eye</code>, <code>book</code>).</p>
+<p>There are some predefined icons and categories. If you want, you can easily change any predefined icon by editing it's value.</p>
+<p><img alt="icons" src="../img/meta_icons_01.gif" /></p>
+<p>All categories from this list, are treated as <em>known categories</em>. This means, they will support the <a href="#easy-lists">Easy Lists</a> functionality.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you just want to add a category as <em>known category</em>, add it to this list, but leave the Icon (<strong>Value</strong>) field empty.</p>
+</div>
+<h3 id="disable-category-icons-or-names">Disable category icons or names<a class="headerlink" href="#disable-category-icons-or-names" title="Permanent link">&para;</a></h3>
+<p>You can completely disable icons, by unchecking <strong>Metadata &gt; Category: Show Icons</strong></p>
+<div class="admonition setting">
+<p class="admonition-title">Metadata &gt; Categories: Show Icons</p>
+<ul>
+<li>Key: <code>fictionWriter.metadata.categories.showIcons</code></li>
+<li>Shows category icons in the <strong>Metadata</strong> view. Disable this if you do not want to view any icons.</li>
+<li>Default value: <code>enabled</code></li>
+</ul>
+</div>
+<p>If you want, you can also hide category labels (only for 1<sup>st</sup> level/root categories) by unchecking <strong>Metadata &gt; Category: Show Names</strong></p>
+<details class="setting"><summary>Metadata &gt; Category: Show Names</summary><ul>
+<li>Key: <code>fictionWriter.metadata.categories.showNames</code></li>
+<li>Default value: <code>enabled</code></li>
+</ul>
+</details>
+<h3 id="file-explorer-badges">File Explorer Badges<a class="headerlink" href="#file-explorer-badges" title="Permanent link">&para;</a></h3>
+<p>Visual studio code File Explorer has the possibility of showing 1-2 character badges near a document.
+Of course, multiple extensions already contribute to this functionality, but you can also make <strong>Fiction Writer</strong> add additional badges based on metadata keywords.</p>
+<p>A mapping between metadata keywords and the displayed badge can be set in <strong>Fiction Writer</strong> settings.</p>
+<details class="setting"><summary>Metadata &gt; Keywords: Badges</summary><ul>
+<li>Key: <code>fictionWriter.metadata.keywords.badges</code></li>
+</ul>
+</details>
+<p><img alt="Badge Mapping" src="../img/meta_badge_01.jpg" /></p>
+<p>To define a badge following this steps:</p>
+<ul>
+<li><strong>Step 1:</strong> Define a new mapping in Settings, under <strong>Metadata: Keyword: Badges</strong>. Example <code>rev2</code> is <code>R2</code></li>
+<li><strong>Step 2:</strong> Add metadata to your document. Example: <code>tag: rev2</code></li>
+<li><strong>Step 3:</strong> Inspect <strong>Explorer</strong>. You should see <code>R2</code> badge for your document.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When resolving kewyord/badge mappings, only the <strong>first match</strong> will be used. So, if you have defined multiple keyword mappings, only one can be shown in file explorer.</p>
+<p>For example, if you define the following metadata block and have mappings: <code>done</code>-&gt;<code>OK</code> and <code>rev</code>-&gt;<code>R1</code>:
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">tag</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rev1</span>
+<span class="nt">state </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">done</span>
+<span class="nn">---</span>
+</code></pre></div>
+<code>rev1</code>-&gt;<code>R1</code> will be used, as <code>rev1</code> is the first match found.</p>
+</div>
+<details class="setting"><summary>Metadata &gt; Keywords: Badge Category</summary><ul>
+<li>Key: <code>fictionWriter.metadata.keywords.badgeCategory</code></li>
+<li>Default value: empty</li>
+</ul>
+</details>
+<p>By default, all metadata keywords are considered when searching for badge mappings. If you want to restrict the search for only one category, you can specify a 1<sup>st</sup> level category name under <strong>Metadata &gt; Keywords: Badge Categosry</strong> and only that will be considered.</p>
+<p>Considering the above example, where we have mappings between: <code>done</code>-&gt;<code>OK</code> and <code>rev</code>-&gt;<code>R1</code>:
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">tag</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rev1</span>
+<span class="nt">state </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">done</span>
+<span class="nn">---</span>
+</code></pre></div>
+if, the <strong>Metadata &gt; Keywords: Badge Category</strong> is set to <code>state</code>, then <code>done</code>-&gt;<code>OK</code> will be used, as <code>done</code> is the first match found under the <code>state</code> category.</p>
+<details class="setting"><summary>Metadata &gt; Keywords: Badges in File Explorer</summary><ul>
+<li>Key: <code>fictionWriter.metadata.keywords.badgesInFileExplorer</code></li>
+<li>Default value: <code>enabled</code></li>
+</ul>
+</details>
+<h3 id="keywords-and-colors">Keywords and Colors<a class="headerlink" href="#keywords-and-colors" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.metadata.keywords.colors</code></p>
+</div>
+<p><em>documentation coming soon...</em></p>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.metadata.keywords.colorCategory</code></p>
+<p><em>documentation coming soon...</em></p>
+</div>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.metadata.keywords.colorsInMetadataView</code></p>
+<p><em>documentation coming soon...</em></p>
+</div>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.metadata.keywords.colorsInFileExplorer</code></p>
+<p><em>documentation coming soon...</em></p>
+</div>
+<h3 id="external-metadata">External Metadata<a class="headerlink" href="#external-metadata" title="Permanent link">&para;</a></h3>
+<p><strong>Fiction Writer</strong> supports reading file metadata from a separate <code>.yml</code> file.</p>
+<p>Matching between a fiction (<code>.md</code>) file and the (<code>.yml</code>) file is done by the same naming convention used for all related files:</p>
+<p><em>Related File must have the same name of the <code>.md</code> file (including the extension) + the specific file extension (in this case <code>.yml</code>. They also need to be in the same location</em></p>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Recognized related metadata files</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.
+├─ chapter01.md
+└─ chapter01.md.yml
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">Not Recognized metadata files</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>.
+├─ chapter01.md
+├─ chapter01.yml        // missing .md
+├─ chapter1.md.yml      // missing 01
+└─ chapter01.md.yaml    // yaml instead of yml
+</code></pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The order in which metadata is resolved is this: first look in the <code>.md</code> file. If no metadata block is present, then search for external <code>.yml</code> file in same directory.</p>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../export/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Exporting
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../notes/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Notes
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ['navigation.sections', 'navigation.expanded'],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../resources/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,887 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fiction Writer VSCode Extension Documentation">
+      
+      
+      
+        <meta name="author" content="ZOctarine">
+      
+      
+        <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/settings/">
+      
+      <link rel="shortcut icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Settings - Markdown Fiction Writer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../resources/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-announce">
+          <div class="md-announce__inner md-grid md-typeset">
+            
+
+<a style="float:right;" href="https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer"><img src="https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg"/></a> <small>The documentation is work in progress, the extension is only on early draft stage.</small>
+
+
+          </div>
+        </aside>
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Markdown Fiction Writer
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Settings
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    Markdown Fiction Writer
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+      
+      <label class="md-nav__link" for="nav-2">
+        Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edit/" class="md-nav__link">
+        Text Editing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        Formatting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export/" class="md-nav__link">
+        Exporting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        View
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../split/" class="md-nav__link">
+        Split
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        Text Statistics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      
+      <label class="md-nav__link" for="nav-3">
+        Configuration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Settings
+      </a>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shortcuts/" class="md-nav__link">
+        Keyboard Shortcuts
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+      
+      <label class="md-nav__link" for="nav-4">
+        Other
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing/" class="md-nav__link">
+        About Writing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Settings</h1>
+                
+                <p>This extension has the following settings:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Setting (prefixed by <code>fictionWriter.</code>)</th>
+<th align="center">Default</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>edit.disableKeybindings</code></td>
+<td align="center">false</td>
+<td align="left">Disable editor keybindings added by this extension (<code>enter</code>, <code>shift+enter</code>, <code>delete</code>, <code>backspace</code>, <code>tab</code>).  <strong>Note:</strong> If <code>disabled</code>, some of the settings will not work.    <a href="https://zoctarine.github.io/vscode-fiction-writer/edit/">Open Online Documentation</a></td>
+</tr>
+<tr>
+<td align="left"><code>edit.easyParagraphCreation</code></td>
+<td align="center">Shift+Enter</td>
+<td align="left">A new paragraph (two line breaks) will be created when pressing:</td>
+</tr>
+<tr>
+<td align="left"><code>editDialogue.marker</code></td>
+<td align="center">--</td>
+<td align="left">Controls what punctuation is used when dialogue.</td>
+</tr>
+<tr>
+<td align="left"><code>editDialogue.markerAutoReplace</code></td>
+<td align="center">true</td>
+<td align="left">If anything other than <code>quotes</code> is selected, it automatically replaces the <code>--</code> text at the begining of a new line, with the selected marker.</td>
+</tr>
+<tr>
+<td align="left"><code>editDialogue.sentenceIndent</code></td>
+<td align="center">3</td>
+<td align="left">Indent for sequential lines of the same dialogue paragraph. (<code>0</code> for no indenting)</td>
+</tr>
+<tr>
+<td align="left"><code>editDialogue.sentenceIndentAutoDetect</code></td>
+<td align="center">true</td>
+<td align="left">Sets the line indent from the same dialogue paragraph equal with the selected <code>#editDialogue.marker#</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>export.include.enabled</code></td>
+<td align="center">true</td>
+<td align="left">If <code>enabled</code>, the <code>{DOCUMENT_ID}</code> or <code>{document/file/path/filename.md}</code> syntax can be used to include on <code>.md</code> file into another file</td>
+</tr>
+<tr>
+<td align="left"><code>export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces</code></td>
+<td align="center">false</td>
+<td align="left">When including files, search <code>{DOCUMENT_ID}</code> in all opened files and workspace folders. If <code>disabled</code>, it only searches in the workspace folder that the document belongs to.</td>
+</tr>
+<tr>
+<td align="left"><code>export.include.showsErrorInOutputFile</code></td>
+<td align="center">true</td>
+<td align="left">Shows errors in compiled document.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputFormat.alwaysShowFormatPicker</code></td>
+<td align="center">false</td>
+<td align="left">Select the output format each time an export command is run.  If set to <code>false</code>, the selected <code>#export.outputFormat.default#</code> will be used.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputFormat.default</code></td>
+<td align="center">odt</td>
+<td align="left">The output document format.  <strong>Important:</strong> This requires having <a href="https://pandoc.org/installing.html">Pandoc</a> installed on your system, and available to be run from commandline.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputTemplate.enabled</code></td>
+<td align="center">false</td>
+<td align="left">If enabled, the template file selected at <code>#export.outputTemplate.file#</code> will be used when exporting to <code>docx</code> or <code>odt</code> formats.</td>
+</tr>
+<tr>
+<td align="left"><code>export.outputTemplate.file</code></td>
+<td align="center"></td>
+<td align="left">The output template to be used when exporting to <code>docx</code> or <code>odt</code>.  <strong>Note:</strong> the template file extension must match the output type. It can be an absolut path, or relative to exported document.</td>
+</tr>
+<tr>
+<td align="left"><code>export.showSaveDialogue</code></td>
+<td align="center">Always</td>
+<td align="left">Control when the Save File Dialogue is shown.</td>
+</tr>
+<tr>
+<td align="left"><code>export.skipCodeComments</code></td>
+<td align="center">true</td>
+<td align="left">When parsing <code>.md</code> files, skips lines starting with <code>//</code>.</td>
+</tr>
+<tr>
+<td align="left"><code>export.smartDeshes</code></td>
+<td align="center">true</td>
+<td align="left">Converts <code>--</code> to <code>em-dash</code> (—) character in exported output. If not selected, it will default to <code>en-dash</code> (–).  Is PanDoc <code>+old_dashes</code> markdown extension.</td>
+</tr>
+<tr>
+<td align="left"><code>export.tocFilename</code></td>
+<td align="center">toc.md</td>
+<td align="left">The filename compiled by <strong>Compile TOC command.</strong>.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.default</code></td>
+<td align="center">tags</td>
+<td align="left">Assigning keywords to this category, if none is specified.  For example, if default category is <code>tags</code>, then the metadata block:  <code>---</code>  <strong><code>draft, ch1</code></strong>  <code>---</code>   is equivalent to:  <code>---</code>  <em><code>tags</code></em><code>:</code><strong><code>draft, ch1</code></strong>  <code>---</code></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.icons</code></td>
+<td align="center">[object Object]</td>
+<td align="left">Assign for each metadata category (<strong>Item</strong>) a vscode icon (<strong>Value</strong>)  <em><strong>Note:</strong> You can use any icon from <a href="https://code.visualstudio.com/api/references/icons-in-labels#icon-listing">Product Icon Reference</a>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.showIcons</code></td>
+<td align="center">true</td>
+<td align="left">Show icons in <strong>Metadata</strong> view.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.showNames</code></td>
+<td align="center">true</td>
+<td align="left">If <code>disabled</code>, it hides category name in <strong>Metadata View</strong> for 1st level categories only.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.categories.summaryEnabled</code></td>
+<td align="center">true</td>
+<td align="left">If <code>enabled</code>, it will show the contents of the <code>summary</code> 1st level category in the <em>message</em> section of the  <strong>Metadata View</strong>, and not in the tree itself.   To use it, simply define a metadata block:  <code>---</code>  <strong><code>summary: The document summary</code></strong>  <code>---</code></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.easyLists</code></td>
+<td align="center">,</td>
+<td align="left">Metadata values separated by this string, will be treated as list items.  Enter the list item separator character below <em>(or leave it empty to disable this feature)</em>:  <em><strong>Example:</strong> <code>item1, item2, item three</code> will be equivalent to <code>[item1, item2, item three]</code> if the separator is comma (<code>,</code>).</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.enabled</code></td>
+<td align="center">true</td>
+<td align="left">It enables metadata reltated features. If <code>disabled</code> then <strong>all</strong> metadata related featueres will be disabled (parsing, metadata view, colors, etc...).  <a href="https://zoctarine.github.io/vscode-fiction-writer/metadata/">Open Online Documentation</a></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badges</code></td>
+<td align="center">[object Object]</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badgesCategory</code></td>
+<td align="center"></td>
+<td align="left">Uses only this category when resolving <strong>Explorer</strong> badges. <em>(leave empty to do a full metadata search)</em>  <em><strong>Note:</strong> the <code>first matched keyword</code> in this category will dictate the badge.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.badgesInFileExplorer</code></td>
+<td align="center">true</td>
+<td align="left">Show <a href="#metadata.keywords.badges">Keyword Badges</a> in <strong>Explorer</strong> view.   <em><strong>Note:</strong> Only the first matched keyword will be considered.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colors</code></td>
+<td align="center">[object Object]</td>
+<td align="left">Defines a keyword (<strong>Item</strong>) and associate a color (<strong>Value</strong>) to it. The colors can be visible in <strong>Metadata</strong> view or <strong>Explorer</strong> view.</td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsCategory</code></td>
+<td align="center"></td>
+<td align="left">Uses only this category when resolving <strong>Explorer</strong> colors. <em>(leave empty to do a full metadata search)</em>  <em><strong>Note:</strong> the <code>first matched keyword</code> in this category will dictate the color.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsInFileExplorer</code></td>
+<td align="center">true</td>
+<td align="left">Use <a href="#metadata.keywords.colors">Keyword Colors</a> in <strong>Explorer</strong> view.   <em><strong>Note:</strong> Only the <code>first matched keyword</code> will be considered</em>  <em><strong>Note:</strong> file colors can be ovewritten by other extensions, so they might not show as expected.</em>  <em><strong>Also:</strong> <code>#explorer.decorations.colors#</code> must be <code>enabled</code>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>metadata.keywords.colorsInMetadataView</code></td>
+<td align="center">true</td>
+<td align="left">Use <a href="#metadata.keywords.colors">Keyword Colors</a> as icon colors in <strong>Metadata</strong> view.  <em><strong>Note:</strong> if no icon is set/visible, then the color will not be visible.</em></td>
+</tr>
+<tr>
+<td align="left"><code>notes.defaultText</code></td>
+<td align="center">Your Notes Here</td>
+<td align="left">The default text for all new note files.  Add each line as a new <em>item</em>.</td>
+</tr>
+<tr>
+<td align="left"><code>notes.enabled</code></td>
+<td align="center">true</td>
+<td align="left">Enables the notes view, that recognizes (and groups) <code>.txt</code> files together with <code>.md</code> and metadata files.  <a href="https://zoctarine.github.io/vscode-fiction-writer/notes/">Open Online Documentation</a></td>
+</tr>
+<tr>
+<td align="left"><code>smartRename.enabled</code></td>
+<td align="center">true</td>
+<td align="left">If enabled, allows ordering of files based on number prefix.</td>
+</tr>
+<tr>
+<td align="left"><code>smartRename.renameRelatedFiles</code></td>
+<td align="center">Ask Every Time</td>
+<td align="left">If <code>enabled</code>, renames/moves related (<code>.yml</code> and <code>.md</code>) files together.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.enabled</code></td>
+<td align="center">true</td>
+<td align="left">This is feature is <strong>EXPERIMENTAL</strong>. Make sure make a backup before trying it out.  If enabled, it formats document using the selected formatters. Formatting is available with <code>Format Document</code> command..  [Open Online Documentation](https://zoctarine.github.io/vscode-fiction-writer/format/</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixDialogueIndents</code></td>
+<td align="center">true</td>
+<td align="left">If <code>#editDialogue.marker#</code> is not quotes, and <code>#editDialogue.sentenceIndent#</code> is enabled, reformats dialogue indents to selected dialogue indent.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixMismatchDialogueMarkers</code></td>
+<td align="center">true</td>
+<td align="left">If <code>#editDialogue.marker#</code> is not quotes, replaces mismatched markers with current selected marker.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixParagraphBreaks</code></td>
+<td align="center">none</td>
+<td align="left">Controls how paragraph breaks and soft line breaks will be formatted.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.fixParagraphSpacing</code></td>
+<td align="center">true</td>
+<td align="left">Normalizes space between different paragraph types (header, body, dialogue, ...).</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeExtraLines</code></td>
+<td align="center">true</td>
+<td align="left">Reduces multiple empty lines (more than two), to a single empty line.</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeExtraSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Replaces multiple consecutive spaces with one single space. (not from begining or ending of line)</td>
+</tr>
+<tr>
+<td align="left"><code>textFormatting.removeTrailingSpaces</code></td>
+<td align="center">true</td>
+<td align="left">Remove all whitespace characters from line ends.</td>
+</tr>
+<tr>
+<td align="left"><code>view.fadeMetadata</code></td>
+<td align="center">true</td>
+<td align="left">Fade markdown metadata section by 50%.</td>
+</tr>
+<tr>
+<td align="left"><code>view.foldParagraphLines</code></td>
+<td align="center">true</td>
+<td align="left">Show folding marker for paragraphs with multiple lines. (soft-breaks)</td>
+</tr>
+<tr>
+<td align="left"><code>view.highlight.dialogueMarkers</code></td>
+<td align="center">true</td>
+<td align="left">Highlights the dialogue markers (---, --, — or quote marks symbols).</td>
+</tr>
+<tr>
+<td align="left"><code>view.highlight.textBetweenQuotes</code></td>
+<td align="center">false</td>
+<td align="left">Highlights all text between quotes. Usefull for highlighting dialogues (if quoted syntax is used)</td>
+</tr>
+<tr>
+<td align="left"><code>statusBar.enabled</code></td>
+<td align="center">true</td>
+<td align="left">Show the custom Fiction Writer status bar.</td>
+</tr>
+<tr>
+<td align="left"><code>statusBar.items</code></td>
+<td align="center">{}</td>
+<td align="left">Enable/disable items from Fiction Writer status Bar.</td>
+</tr>
+<tr>
+<td align="left"><code>view.wordWrapIndent</code></td>
+<td align="center">0</td>
+<td align="left">The hanging indent of wrapped lines.  <strong>Select:</strong> - <code>0</code> for same indent as first line, - <code>-1</code> for now wrapping indent, - any other value for hanging indent.    <em><strong>Warning:</strong> Only works if <code>#editor.wordWrap#</code> is enabled, and might change the <code>#editor.tabSize#</code> setting for <code>markdown</code>.</em></td>
+</tr>
+<tr>
+<td align="left"><code>view.focusMode.opacity</code></td>
+<td align="center">0.5</td>
+<td align="left">Opacity for fade out text when focus mode is enabled</td>
+</tr>
+<tr>
+<td align="left"><code>writingMode.fontSize</code></td>
+<td align="center">16</td>
+<td align="left">The font size to be used in Writing Mode Mode.</td>
+</tr>
+<tr>
+<td align="left"><code>writingMode.theme</code></td>
+<td align="center"></td>
+<td align="left">The theme to be used in Writing Mode. <em>(leave empty for no theme switch)</em></td>
+</tr>
+<tr>
+<td align="left"><code>writingMode.toggleFocusMode</code></td>
+<td align="center">true</td>
+<td align="left">When entering Writing Mode, it fades out all text except current text line (known as Focus Mode)</td>
+</tr>
+<tr>
+<td align="left"><code>splitDocument.switchToNewlyCreatedDocument</code></td>
+<td align="center">true</td>
+<td align="left">When splitting a document, immediately open (and switch to) the newly created doument in the text editor.</td>
+</tr>
+</tbody>
+</table>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../stats/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Text Statistics
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../shortcuts/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Keyboard Shortcuts
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ['navigation.sections', 'navigation.expanded'],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../resources/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,866 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fiction Writer VSCode Extension Documentation">
+      
+      
+      
+        <meta name="author" content="ZOctarine">
+      
+      
+        <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/edit/">
+      
+      <link rel="shortcut icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Text Editing - Markdown Fiction Writer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../resources/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#disable-key-bindings" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-announce">
+          <div class="md-announce__inner md-grid md-typeset">
+            
+
+<a style="float:right;" href="https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer"><img src="https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg"/></a> <small>The documentation is work in progress, the extension is only on early draft stage.</small>
+
+
+          </div>
+        </aside>
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Markdown Fiction Writer
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Text Editing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    Markdown Fiction Writer
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      
+      <label class="md-nav__link" for="nav-2">
+        Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Text Editing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Text Editing
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#disable-key-bindings" class="md-nav__link">
+    Disable Key-bindings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#easy-paragraph-creation" class="md-nav__link">
+    Easy Paragraph Creation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-dialogues" class="md-nav__link">
+    Writing Dialogues
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Dialogues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-dialogue-punctuation" class="md-nav__link">
+    Selecting dialogue punctuation:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-replace-dialogue-markers" class="md-nav__link">
+    Auto-replace dialogue markers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#easily-create-new-dialogue-paragraphs" class="md-nav__link">
+    Easily create new dialogue paragraphs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-dialgoue-indents" class="md-nav__link">
+    Using Dialgoue indents:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        Formatting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export/" class="md-nav__link">
+        Exporting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        View
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../split/" class="md-nav__link">
+        Split
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        Text Statistics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        Configuration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        Settings
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shortcuts/" class="md-nav__link">
+        Keyboard Shortcuts
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+      
+      <label class="md-nav__link" for="nav-4">
+        Other
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing/" class="md-nav__link">
+        About Writing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#disable-key-bindings" class="md-nav__link">
+    Disable Key-bindings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#easy-paragraph-creation" class="md-nav__link">
+    Easy Paragraph Creation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-dialogues" class="md-nav__link">
+    Writing Dialogues
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Dialogues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selecting-dialogue-punctuation" class="md-nav__link">
+    Selecting dialogue punctuation:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-replace-dialogue-markers" class="md-nav__link">
+    Auto-replace dialogue markers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#easily-create-new-dialogue-paragraphs" class="md-nav__link">
+    Easily create new dialogue paragraphs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-dialgoue-indents" class="md-nav__link">
+    Using Dialgoue indents:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Text Editing</h1>
+                
+                <h3 id="disable-key-bindings">Disable Key-bindings<a class="headerlink" href="#disable-key-bindings" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.edit.disableKeybindings</code></p>
+</div>
+<p>Disables the following keybindings added by this extension:
+- <span class="keys"><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span>, <span class="keys"><kbd class="key-delete">Del</kbd></span>, <span class="keys"><kbd class="key-backspace">Backspace</kbd></span>, <span class="keys"><kbd class="key-tab">Tab</kbd></span>)</p>
+<p><strong>Note:</strong> If <code>disabled</code>, some of the other features, that depend or ar triggered by this keybindings will be disabled (eg. easy Paragraph Creation needs <span class="keys"><kbd class="key-enter">Enter</kbd></span> end <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> in order to work properly).</p>
+<h3 id="easy-paragraph-creation">Easy Paragraph Creation<a class="headerlink" href="#easy-paragraph-creation" title="Permanent link">&para;</a></h3>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.edit.easyParagraphCreation</code></p>
+</div>
+<p>To create paragraphs in markdown, you need to add an extra empty line. That, usually, means pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> key twice.</p>
+<p>With this setting, you can easily create new paragraphs by hitting one key only (or a combination).</p>
+<p>It has two options:</p>
+<ul>
+<li>
+<p><strong>Enter</strong>: pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> once will add two line-breaks, and pressing <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> will add one line-break.</p>
+<p><img alt="NewOnShiftEnter" src="../img/shift_enter_01.gif" /></p>
+</li>
+<li>
+<p><strong>Shift+Enter</strong>: pressing <span class="keys"><kbd class="key-enter">Enter</kbd></span> once will add one line-break, but <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> will add two line-breaks.</p>
+<p><img alt="NewOnEnter" src="../img/shift_enter_02.gif" /></p>
+</li>
+</ul>
+<h3 id="writing-dialogues">Writing Dialogues<a class="headerlink" href="#writing-dialogues" title="Permanent link">&para;</a></h3>
+<p>This is a proposed solution for writing dialogue. In some languages, dialogue is not marked by quotation marks, but is marked only at the beginning a dialogue line.</p>
+<p>For example, each line can start with em-dash (—), like so:</p>
+<div class="admonition quote">
+<p class="admonition-title">The Time Machine, by H. G. Wells</p>
+<p>— You mean to say that that machine has travelled into the future? said Filby.</p>
+<p>— Into the future or the past. I don’t, for certain, know which.</p>
+<p>After an interval the Psychologist had an inspiration. </p>
+<p>— It must have gone into the past if it has gone anywhere, he said.</p>
+</div>
+<p>Markdown can convert three dashes to em-dash and two dashes to en-dash. However, typing three dash character and one space is not necessarly convenient when writing lots of dialogue lines. </p>
+<p>A widespread practice is to write <code>--</code> for an <code>em-dash</code>, and the text editor will automatically replace it.</p>
+<h4 id="selecting-dialogue-punctuation">Selecting dialogue punctuation:<a class="headerlink" href="#selecting-dialogue-punctuation" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary><code>fictionWriter.editDialogue.marker</code></summary><ul>
+<li><code>"Hello,"</code> (quotes) <strong>default</strong></li>
+<li><code>— Hello,</code> (em-dash followed by one space)</li>
+<li><code>-- Hello</code>, (two dashes followed by one space)</li>
+<li><code>--- Hello,</code> (three dashes followed by one space)</li>
+<li><code>—Hello,</code> (em-dash, no space)</li>
+<li><code>--Hello,</code> (two dashes, no space)</li>
+<li><code>---Hello,</code> (three dashes, no space</li>
+</ul>
+</details>
+<p>With this feature, you can controlsthe punctuation used when writing dialogue.</p>
+<p>The following options are possible:</p>
+<ul>
+<li>Quotes: <em>"Hello," John said.</em> (<strong>default</strong>: this is equivalent with disabling all proposed dialogue features)</li>
+<li>Em-dash followed by one space: <em>— Hello, John said.</em></li>
+<li>Two dashes followed by one space:  <em><code>--</code>Hello, John said.</em></li>
+<li>Three dashes followed by one space: <em><code>---</code>Hello, John said.</em></li>
+<li>Em-dash, no space: <em>—Hello, John said.</em></li>
+<li>Two dashes, no space: <em><code>--</code>Hello, John said.</em></li>
+<li>Three dashes, no space: <em><code>---</code>Hello, John said.</em></li>
+</ul>
+<p><img alt="SelectMarker" src="../img/dlg_marker_03.gif" /></p>
+<p>Once a dialogue marker is selected (other than quotes), the paragraph starting with that marker will be recognized as a dialogue paragraph enabeling other dialogue related features, like text formatting, auto replace, etc.</p>
+<h4 id="auto-replace-dialogue-markers">Auto-replace dialogue markers<a class="headerlink" href="#auto-replace-dialogue-markers" title="Permanent link">&para;</a></h4>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.editDialogue.markerAutoReplace</code></p>
+</div>
+<p>If enabled, typing <code>--</code> followed by a space will insert the selected marker.</p>
+<p><img alt="AutoReplace" src="../img/dlg_marker_01.gif" /></p>
+<p>Disable this feature if you do not want to auto-replace markers.</p>
+<h4 id="easily-create-new-dialogue-paragraphs">Easily create new dialogue paragraphs<a class="headerlink" href="#easily-create-new-dialogue-paragraphs" title="Permanent link">&para;</a></h4>
+<p>Selecting a dialogue marker (other than quotes) changes the <em>Easy Paragraph Creation</em> behaviour as follows:</p>
+<ul>
+<li>if new paragraph is created (either by <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-enter">Enter</kbd></span> or by <span class="keys"><kbd class="key-enter">Enter</kbd></span>), and is from a dialogue paragraph (meaning, the paragraph starts with a marker), then the next paragraph will automatically start with the selected dialogue marker. </li>
+</ul>
+<p>This makes writing alternative dialogue lines much faster.</p>
+<p><img alt="Auto dialogue" src="../img/dlg_marker_02.gif" /></p>
+<ul>
+<li>
+<p>when hitting new line, if the only thing on that line is a dialogue marker, is automatically deleted.</p>
+</li>
+<li>
+<p>when hitting backspace, and the only thing in front of the cursor is the dialogue marker, the line will be cleared</p>
+</li>
+</ul>
+<h4 id="using-dialgoue-indents">Using Dialgoue indents:<a class="headerlink" href="#using-dialgoue-indents" title="Permanent link">&para;</a></h4>
+<p>Indent for sequential lines of the same dialogue paragraph. (<code>0</code> for no indenting)</p>
+<p>This is especially useful when using the <em>one sentence per line</em> technique. Thus, having sentences from the same dialogue separated by simple line-breaks.</p>
+<div class="highlight"><pre><span></span><code>-- Hi, said the first dialogue line.
+   I am here, on multiple lines.
+
+-- Hi, said the other dialogue line.
+   I am also here.
+
+The two lines continued their chat.
+</code></pre></div>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.editDialogue.sentenceIndent</code></p>
+</div>
+<p>The indent can be manually set under <em>Edit Dialouge - Sentence Indent</em>.</p>
+<div class="admonition setting">
+<p class="admonition-title"><code>fictionWriter.editDialogue.sentenceIndentAutoDetect</code></p>
+</div>
+<p>If <em>Edit Dialogue: Sentence Indent Auto-Detect</em> is enabled, the indent will be automatically calculated based on the selected dialogue marker, and the previous setting will be ignored.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code>-- Hi, this is a dialogue.
+   It uses two dashes and one space.
+   Thus, it has a 3 space indent.
+
+— Hi, this uses em-dash and one space.
+  It has just a two space indent.
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../format/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Formatting
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ['navigation.sections', 'navigation.expanded'],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../resources/extra.js"></script>
+      
+    
+  </body>
+</html>

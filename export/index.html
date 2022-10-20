@@ -1,0 +1,1085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Fiction Writer VSCode Extension Documentation">
+      
+      
+      
+        <meta name="author" content="ZOctarine">
+      
+      
+        <link rel="canonical" href="https://zoctarine.github.io/vscode-fiction-writer/index.html/export/">
+      
+      <link rel="shortcut icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
+    
+    
+      
+        <title>Exporting - Markdown Fiction Writer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.cb6bc1d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.39b8e14a.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+	integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+	crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ionicons/1.5.2/css/ionicons.min.css">
+
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../resources/extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="amber">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#requirements" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-announce">
+          <div class="md-announce__inner md-grid md-typeset">
+            
+
+<a style="float:right;" href="https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer"><img src="https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg"/></a> <small>The documentation is work in progress, the extension is only on early draft stage.</small>
+
+
+          </div>
+        </aside>
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-header-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            Markdown Fiction Writer
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Exporting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://zoctarine.github.io/vscode-fiction-writer/index.html/" title="Markdown Fiction Writer" class="md-nav__button md-logo" aria-label="Markdown Fiction Writer">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 002-2V4a2 2 0 00-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 00-2 2v16a2 2 0 002 2h12z"/></svg>
+
+    </a>
+    Markdown Fiction Writer
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zoctarine/vscode-fiction-writer" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+      
+      <label class="md-nav__link" for="nav-2">
+        Features
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Features" data-md-level="1">
+        <label class="md-nav__title" for="nav-2">
+          <span class="md-nav__icon md-icon"></span>
+          Features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edit/" class="md-nav__link">
+        Text Editing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../format/" class="md-nav__link">
+        Formatting
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Exporting
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Exporting
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-flavors-coming-in-next-alpha-release" class="md-nav__link">
+    Markdown flavors - COMING IN NEXT ALPHA RELEASE
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#including-other-documents" class="md-nav__link">
+    Including other documents
+  </a>
+  
+    <nav class="md-nav" aria-label="Including other documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-by-aboslute-or-relative-path" class="md-nav__link">
+    Include by aboslute or relative path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-by-metadata-id" class="md-nav__link">
+    Include by metadata id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolve-document-id" class="md-nav__link">
+    Resolve document id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-errors" class="md-nav__link">
+    Include errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-toc-document" class="md-nav__link">
+    The toc document
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-current-file" class="md-nav__link">
+    Compile Current File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-selected-files" class="md-nav__link">
+    Compile Selected files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-toc" class="md-nav__link">
+    Compile TOC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metadata/" class="md-nav__link">
+        Metadata
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes/" class="md-nav__link">
+        Notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        View
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../split/" class="md-nav__link">
+        Split
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stats/" class="md-nav__link">
+        Text Statistics
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" >
+      
+      <label class="md-nav__link" for="nav-3">
+        Configuration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Configuration" data-md-level="1">
+        <label class="md-nav__title" for="nav-3">
+          <span class="md-nav__icon md-icon"></span>
+          Configuration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        Settings
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shortcuts/" class="md-nav__link">
+        Keyboard Shortcuts
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" >
+      
+      <label class="md-nav__link" for="nav-4">
+        Other
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other" data-md-level="1">
+        <label class="md-nav__title" for="nav-4">
+          <span class="md-nav__icon md-icon"></span>
+          Other
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../writing/" class="md-nav__link">
+        About Writing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-flavors-coming-in-next-alpha-release" class="md-nav__link">
+    Markdown flavors - COMING IN NEXT ALPHA RELEASE
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#including-other-documents" class="md-nav__link">
+    Including other documents
+  </a>
+  
+    <nav class="md-nav" aria-label="Including other documents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#include-by-aboslute-or-relative-path" class="md-nav__link">
+    Include by aboslute or relative path
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-by-metadata-id" class="md-nav__link">
+    Include by metadata id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolve-document-id" class="md-nav__link">
+    Resolve document id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-errors" class="md-nav__link">
+    Include errors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-toc-document" class="md-nav__link">
+    The toc document
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-current-file" class="md-nav__link">
+    Compile Current File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-selected-files" class="md-nav__link">
+    Compile Selected files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-toc" class="md-nav__link">
+    Compile TOC
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Exporting</h1>
+                
+                <p><strong>Fiction Writer</strong> helps you export markdown documents to other formats, by integrating <strong>Pandoc</strong> in the writing flow.</p>
+<p><img alt="Export01" src="../img/export_01.gif" /></p>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Important!</p>
+<p>If you want to compile <code>.md</code> to other document formats using this extension, you need to have <a href="https://pandoc.org">Pandoc</a> installed on your machine, and configured to run from command line! </p>
+</div>
+<p>Pandoc is a universal document converter, that understands a large number of useful markdown syntax extensions, including document metadata (title, author, date); footnotes; tables; etc.</p>
+<p>You can get it from here: <a href="https://pandoc.org/installing.html">Installing pandoc</a>.</p>
+<p>You can test that pandoc is properly installed by opening your prefered command-line app and running:</p>
+<div class="highlight"><pre><span></span><code>pandoc --version
+</code></pre></div>
+<p>You should get an output similar to:
+<div class="highlight"><pre><span></span><code>pandoc 2.11.4
+Compiled with pandoc-types 1.22, texmath 0.12.1, skylighting 0.10.2,
+citeproc 0.3.0.5, ipynb 0.1.0.1
+User data directory: C:\Users\YourUserName\AppData\Roaming\pandoc
+Copyright (C) 2006-2021 John MacFarlane. Web:  https://pandoc.org
+This is free software; see the source for copying conditions. There is no
+warranty, not even for merchantability or fitness for a particular purpose.
+</code></pre></div></p>
+<h3 id="markdown-flavors-coming-in-next-alpha-release">Markdown flavors - <em>COMING IN NEXT ALPHA RELEASE</em><a class="headerlink" href="#markdown-flavors-coming-in-next-alpha-release" title="Permanent link">&para;</a></h3>
+<p>As exporting is done by using Pandoc, all Pandoc related markdown flavors can be used.</p>
+<p>Note that Pandoc already includes a list of enabled extensions. You can read more about these here <a href="https://pandoc.org/MANUAL.html#pandocs-markdown">Pandoc's Markdown</a>.</p>
+<p>There are some extensions that are not included by default, but they can be enabled via settings panel.</p>
+<p>Read more about the following extensions here: <a href="https://pandoc.org/MANUAL.html#non-pandoc-extensions">Non Pandc Extensions</a></p>
+<ul>
+<li>
+<p><code>attributes</code>: allows attributes to be attached to any inline or block-level element.</p>
+</li>
+<li>
+<p><code>old_dashes</code>: Selects the pandoc &lt;= 1.8.2.1 behavior for parsing smart dashes: - before a numeral is an en-dash, and -- is an em-dash. This option only has an effect if smart is enabled.</p>
+</li>
+<li>
+<p><code>angle_brackets_escapable</code>: Allow <code>&lt;</code> and <code>&gt;</code> to be backslash-escaped</p>
+</li>
+<li>
+<p><code>lists_without_preceding_blankline</code>: Allow a list to occur right after a paragraph, with no intervening blank space. </p>
+</li>
+<li>
+<p><code>four_space_rule</code>: Selects the pandoc &lt;= 2.0 behavior for parsing lists, so that four spaces indent are needed for list item continuation paragraphs.</p>
+</li>
+<li>
+<p><code>spaced_reference_links</code>: Allow whitespace between the two components of a reference link, for example,</p>
+</li>
+<li>
+<p><code>hard_line_breaks</code>: Causes all newlines within a paragraph to be interpreted as hard line breaks instead of spaces.</p>
+</li>
+<li>
+<p><code>ignore_line_breaks</code>: Causes newlines within a paragraph to be ignored, rather than being treated as spaces or as hard line breaks.</p>
+</li>
+<li>
+<p><code>east_asian_line_breaks</code>: Causes newlines within a paragraph to be ignored, rather than being treated as spaces or as hard line breaks</p>
+</li>
+<li>
+<p><code>emoji</code>: Parses textual emojis like <img alt="😄" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f604.svg" title=":smile:" /> as Unicode emoticons.</p>
+</li>
+<li>
+<p><code>tex_math_single_backslash</code>: Causes anything between <code>\(</code> and <code>\)</code> to be interpreted as inline TeX math, and anything between <code>\[</code> and <code>\]</code> to be interpreted as display TeX math.</p>
+</li>
+<li>
+<p><code>tex_math_double_backslash</code>: Causes anything between <code>\\(</code> and <code>\\)</code> to be interpreted as inline TeX math, and anything between <code>\\[</code> and <code>\\]</code> to be interpreted as display TeX math.</p>
+</li>
+<li>
+<p><code>markdown_attribute</code>: Markdown is only parsed inside block-level tags if the tags have the attribute <code>markdown=1</code>.</p>
+</li>
+<li>
+<p><code>mmd_title_block</code>: Enables a MultiMarkdown style title block at the top of the document. If <code>pandoc_title_block</code> or <code>yaml_metadata_block</code> is enabled, it will take precedence over <code>mmd_title_block</code>.</p>
+</li>
+<li>
+<p><code>abbreviations</code>: Parses PHP Markdown Extra abbreviation keys, like</p>
+</li>
+<li>
+<p><code>autolink_bare_uris</code>: Makes all absolute URIs into links, even when not surrounded by pointy braces &lt;...&gt;.</p>
+</li>
+<li>
+<p><code>mmd_link_attributes</code>: Parses multimarkdown style key-value attributes on link and image references. This extension should not be confused with the link_attributes extension.</p>
+</li>
+<li>
+<p><code>mmd_header_identifiers</code>: Parses multimarkdown style heading identifiers (in square brackets, after the heading but before any trailing #s in an ATX heading).</p>
+</li>
+<li>
+<p><code>compact_definition_lists</code>: Activates the definition list syntax of pandoc 1.12.x and earlier.</p>
+</li>
+<li>
+<p><code>gutenberg</code>: Use Project Gutenberg conventions for plain output: all-caps for strong emphasis, surround by underscores for regular emphasis, add extra blank space around headings.</p>
+</li>
+<li>
+<p><code>sourcepos</code>: Include source position attributes when parsing commonmark. For elements that accept attributes, a data-pos attribute is added; other elements are placed in a surrounding Div or Span elemnet with a data-pos attribute.</p>
+</li>
+</ul>
+<h3 id="including-other-documents">Including other documents<a class="headerlink" href="#including-other-documents" title="Permanent link">&para;</a></h3>
+<details class="setting"><summary>Export &gt; Include: Enabled</summary><ul>
+<li>Key: <code>fictionWriter.export.include.enabled</code></li>
+<li>Enables the include file functionality</li>
+<li>Default: <code>enabled</code></li>
+</ul>
+</details>
+<p>This extension adds support for combining multiple markdown documents into one.</p>
+<p>You can use the following syntax <code>{file_to_include.md}</code> the the contents of <code>file_to_include.md</code> will be added in the exported document.</p>
+<p>Specifying included files can be done in multiple ways.</p>
+<h4 id="include-by-aboslute-or-relative-path">Include by aboslute or relative path<a class="headerlink" href="#include-by-aboslute-or-relative-path" title="Permanent link">&para;</a></h4>
+<p>A valid path to the file:</p>
+<ul>
+<li>
+<p>like a relative path</p>
+<p><div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">my_file.md</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+or
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">relative/path/to/my_file.md</span><span class="p p-Indicator">}</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>or an absolute path</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">c</span><span class="p p-Indicator">:</span><span class="nv">\MyBook\Chapter1\my_file.md</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+</li>
+</ul>
+<h4 id="include-by-metadata-id">Include by metadata <code>id</code><a class="headerlink" href="#include-by-metadata-id" title="Permanent link">&para;</a></h4>
+<div class="admonition info">
+<p class="admonition-title">This is the recommended way to include files, as it does not depend on the filename</p>
+</div>
+<p>If the document has a metadata block with <code>id</code> top level field, this can be used in the include file syntax <code>{}</code></p>
+<p>For example, if <code>my_file.md</code> has the following contents:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prologue</span>
+<span class="nn">---</span>
+
+<span class="l l-Scalar l-Scalar-Plain">Prologue begins here...</span>
+</code></pre></div>
+<p>You can include it in another file like this:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Prologue</span>
+
+<span class="p p-Indicator">{</span><span class="nv">prologue</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+<h4 id="resolve-document-id">Resolve document <code>id</code><a class="headerlink" href="#resolve-document-id" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Export &gt; Include: Search Document Ids in All Opened Files And Workspaces</summary><ul>
+<li>Key: <code>fictionWriter.export.include.searchDocumentIdsInAllOpenFilesAndWorkspaces</code></li>
+<li>Default: <code>disabled</code></li>
+</ul>
+</details>
+<p>if you opt to include a file by <code>id</code>, and not by relative or absolute path, you have the option to search for that <code>id</code> only in the document workspace folder, or in all opened documents or worskpaces in Visual Studio Code.</p>
+<p>By default, this option is <code>disabled</code></p>
+<h4 id="include-errors">Include errors<a class="headerlink" href="#include-errors" title="Permanent link">&para;</a></h4>
+<details class="setting"><summary>Export &gt; Include: Show Errors in Output File</summary><ul>
+<li>Key: <code>fictionWriter.export.include.showsErrorInOutputFile</code></li>
+<li>Adds errors to the compiled document.</li>
+<li>Default: <code>enabled</code></li>
+</ul>
+</details>
+<p>If, during the export process, some errors occured, they will be shown in a warning message before the actual export takes place.</p>
+<p><img alt="Error01" src="../img/export_errors_01.jpg" /></p>
+<p>You can choose to continue (with errors) or cancel the operation.</p>
+<p>By default, include errors are visible in the exported document in <strong>Error</strong> paragraphs, like this:</p>
+<p><img alt="Error02" src="../img/export_errors_02.jpg" /></p>
+<p>Disable this option if you want to never see errors in exported document.</p>
+<h4 id="the-toc-document">The <code>toc</code> document<a class="headerlink" href="#the-toc-document" title="Permanent link">&para;</a></h4>
+<p>A common practice is to have just one TOC document, where you include all other documents.</p>
+<p>A simple <code>toc.md</code> document can look like this:</p>
+<p><div class="highlight"><pre><span></span><code><span class="p p-Indicator">{</span><span class="nv">chapter01.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter02.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter03.md</span><span class="p p-Indicator">}</span>
+<span class="p p-Indicator">{</span><span class="nv">chapter04.md</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+This will include all 4 referenced files.</p>
+<p>Of course a TOC document can contain any additional markdown syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="gh"># My Book Title</span>
+
+<span class="gu">## Preface</span>
+
+Some opening words
+
+<span class="gu">## Chapter One</span>
+
+{chapter01.md}
+
+<span class="gu">## Chapter Tso</span>
+
+{chapter02.md}
+
+<span class="gu">## The End</span>
+
+This is the end.
+</code></pre></div>
+<p>If <code>{chapter01.md}</code> does not exist, you will get a warning message, but the exporting can still continue with the other documents.</p>
+<p>For example, the <code>toc.md</code> from the following directory:
+<div class="highlight"><pre><span></span><code>.
+├─ toc.md
+├─ prologue.md
+├─ part1
+│  ├─ ch1.md
+│  ├─ ch2.md
+│  └─ ch3.md
+├─ part2/
+│  ├─ ch4.md/
+│  └─ ch5.md
+└─ epilogue.md
+</code></pre></div></p>
+<p>could look like:</p>
+<div class="highlight"><pre><span></span><code>{prologue.md}
+
+{part1\ch1.md}
+{part1\ch2.md}
+{part1\ch3.md}
+
+{part2\ch4.md}
+{part2\ch5.md}
+
+{epilogue.md}
+</code></pre></div>
+<h3 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h3>
+<h4 id="compile-current-file">Compile Current File<a class="headerlink" href="#compile-current-file" title="Permanent link">&para;</a></h4>
+<p><em>documentation coming soon...</em></p>
+<h4 id="compile-selected-files">Compile Selected files<a class="headerlink" href="#compile-selected-files" title="Permanent link">&para;</a></h4>
+<p>Compiles all selected markdown documents (having <code>.md</code> extension) from current directory, into one file.</p>
+<p>The include order is filename order.</p>
+<p><em>documentation coming soon...</em></p>
+<h4 id="compile-toc">Compile TOC<a class="headerlink" href="#compile-toc" title="Permanent link">&para;</a></h4>
+<p>Exports the TOC file.</p>
+<p>A TOC file is a simple <code>.md</code> file that serves as a table of contents for exporting. The file-name can be configured under <code>fictionWriter.export.tocFilename</code>.</p>
+<p>By default, the <code>toc.md</code> file-name will be used. </p>
+<p>If the TOC file is searched for in two locations:</p>
+<ul>
+<li>first, in the same folder as the opened document</li>
+<li>second, in the workspace root.</li>
+</ul>
+<p>If no TOC files is found in either location, then compile will fail.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code>.
+├─ toc.md          # The toc.md in workspace root
+├─ part1
+│  ├─ chapter1.md
+│  ├─ chapter2.md
+│  └─ toc.md        # The toc.md from part.1
+├─ part2/
+│  ├─ chapter3.md/
+│  └─ chapter4.md
+</code></pre></div></p>
+<ul>
+<li>
+<p>if <code>chapter1.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/part1/toc.md</code> will be used.</p>
+</li>
+<li>
+<p>if <code>chapter4.md</code> is opened, and <strong>Compile toc.md</strong> command is run, then <code>/toc.md</code> from workspace root will be used.</p>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../format/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Formatting
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../metadata/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Metadata
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Markdown Fiction Writer is licensed under the <a href='https://github.com/zoctarine/vscode-fiction-writer/blob/main/LICENSE'>MIT license</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.18f0862e.min.js"></script>
+      <script src="../assets/javascripts/bundle.994580cf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: ['navigation.sections', 'navigation.expanded'],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="../resources/extra.js"></script>
+      
+    
+  </body>
+</html>
