@@ -1,15 +1,18 @@
 # Markdown Fiction Writer <!-- omit in toc -->
 
-[![](https://vsmarketplacebadge.apphb.com/version-short/vsc-zoctarine.markdown-fiction-writer.svg)](https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer)
-
 ![LOGO](https://raw.githubusercontent.com/zoctarine/vscode-fiction-writer/main/resources/fiction-writer-icon.png)
+
+**Extension Versions:**
+- `0.0.55`: the latest stable version, **use this** one if you want to benefit from the extension features described in the documentation, and use the extension  in our writing projects.
+- `0.1.x`: the `pre-release` versions. For testing purposes only. Includes frequent release to address bugs and neaw features. Only use this version if you want to test the extension on help with testing the new features ([GitHub Issues](https://github.com/zoctarine/vscode-fiction-writer/issues)). The documentaion for `0.1.x` is slightly out of date, as it will be updated once more work is done.
 
 A [vscode extension](https://marketplace.visualstudio.com/items?itemName=vsc-zoctarine.markdown-fiction-writer) for writers.
 
 Some tools I wrote for writing, organizing and exporting fiction (short stories, novels) using [markdown](https://daringfireball.net/projects/markdown/).
 
-> ⚠ **Warning:** This extension is entering the 
- Beta phase. This means, a major restructuring of settings and features will follow. Please make sure to remember/backup you settings if you want to reuse them with the newer version.
+> ⚠ **Warning:** This extension netered the beta phase
+ This means, a major restructuring of settings and features will follow. Please make sure to remember/backup you settings if you want to reuse them with the newer version.
+ 
 
 ## Features
 

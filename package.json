@@ -10,9 +10,9 @@
   "publisher": "vsc-zoctarine",
   "preview": true,
   "homepage": "https://zoctarine.github.io/vscode-fiction-writer/",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
-    "vscode": "^1.17.0"
+    "vscode": "^1.72.0"
   },
   "categories": [
     "Programming Languages",

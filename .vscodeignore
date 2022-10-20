@@ -13,9 +13,9 @@ vsc-extension-quickstart.md
 **/*.ts
 vscode
 node_modules
-out/
 src/
 tsconfig.json
 webpack.config.js
 jest.config.js
 jest.setup.js
+_documentation/
